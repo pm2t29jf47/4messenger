@@ -11,10 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsClient", "WinFormsClient\WinFormsClient.csproj", "{414F48B6-E214-4A06-A376-A5E976DC3203}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4846A902-46B6-4F66-8ECB-CF8D899EBCA0} = {4846A902-46B6-4F66-8ECB-CF8D899EBCA0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSourceLayer", "DataSourceLayer\DataSourceLayer.csproj", "{6E871981-7F57-4CE8-8374-9B139A690D6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExceptionHandler", "ExceptionHandler\ExceptionHandler.csproj", "{98E57650-2ED0-43FA-9239-17A7BE7CB477}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerSideExceptionHandler", "ExceptionHandler\ServerSideExceptionHandler.csproj", "{98E57650-2ED0-43FA-9239-17A7BE7CB477}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBWcfService", "DBWcfService\DBWcfService.csproj", "{4846A902-46B6-4F66-8ECB-CF8D899EBCA0}"
 EndProject

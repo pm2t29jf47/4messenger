@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using WinFormsClient.localhost;
+using WinFormsClient.ServiceReference1;
 
 namespace WFClient
 {
@@ -20,10 +21,12 @@ namespace WFClient
         /// <summary> 
         /// Экземпляр прокси-класса для вызова матодов веб-сервиса 
         /// </summary>
-        DBWebService dbws = new DBWebService();
+        //DBWebService dbs = new DBWebService();
+        Service1Client dbs = new Service1Client();
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
             ReloadForm();
         }
 
@@ -35,9 +38,9 @@ namespace WFClient
         /// <summary> 
         /// Заполняет объект DataGridView данными 
         /// </summary>
-        private void DisplayLetters()        {
-            var a = dbws.GetMessageList();
-            dataGridView1.DataSource = dbws.GetMessageList();
+        private void DisplayLetters()        
+        {
+            dataGridView1.DataSource = dbs.GetMessageList();
             dataGridView1.Columns.Remove("MessageId");
             dataGridView1.Columns.Remove("RecipientId");
             dataGridView1.Columns.Remove("SenderId");
@@ -47,8 +50,8 @@ namespace WFClient
         /// Задает имена получателей в ComboBox-e 
         /// </summary>
         private void SetRecipient()
-        {            
-            comboBox1.DataSource = dbws.GetEmployeeList();
+        {
+            comboBox1.DataSource = dbs.GetEmployeeList();
             comboBox1.DisplayMember = "Name";
             comboBox1.ValueMember = "EmployeeId";
         }
@@ -58,7 +61,7 @@ namespace WFClient
         /// </summary>
         private void SetSender()
         {
-            comboBox2.DataSource = dbws.GetEmployeeList();
+            comboBox2.DataSource = dbs.GetEmployeeList();
             comboBox2.DisplayMember = "Name";
             comboBox2.ValueMember = "EmployeeId";
         }
@@ -71,7 +74,7 @@ namespace WFClient
             if (!Validate()) return;
             try
             {
-                dbws.InsertMessage(new WinFormsClient.localhost.Message
+                dbs.InsertMessage(new Entities.Message
                 {
                     Content = textBox2.Text,
                     Date = dateTimePicker2.Value,
@@ -109,7 +112,6 @@ namespace WFClient
             }
             if (textBox2.Text.Length == 0)
             {
-                MessageBox.Show("sss");
                 errorProvider2.SetError(textBox2, "Сообщение не может быть пустым");
                 return false;
             }

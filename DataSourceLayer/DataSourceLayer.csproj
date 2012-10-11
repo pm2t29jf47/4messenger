@@ -8,7 +8,7 @@
     <ProjectGuid>{6E871981-7F57-4CE8-8374-9B139A690D6B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DBWebService</RootNamespace>
+    <RootNamespace>ServerSideExceptionHandler</RootNamespace>
     <AssemblyName>DataSourceLayer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -51,9 +51,9 @@
       <Project>{AC3D427A-B2F7-4973-B975-6BCF522358B3}</Project>
       <Name>Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ExceptionHandler\ExceptionHandler.csproj">
+    <ProjectReference Include="..\ExceptionHandler\ServerSideExceptionHandler.csproj">
       <Project>{98E57650-2ED0-43FA-9239-17A7BE7CB477}</Project>
-      <Name>ExceptionHandler</Name>
+      <Name>ServerSideExceptionHandler</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

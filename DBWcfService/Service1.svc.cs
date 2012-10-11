@@ -5,14 +5,26 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using DBWebService;
 
 namespace DBWcfService
 {
     public class Service1 : IService1
     {
-        public string GetData(int value)
+        public List<Entities.Employee> GetEmployeeList()
         {
-            return string.Format("You entered: {0}", value);
+            var a = new EmployeeGateway().SelectEmployees();
+            return new EmployeeGateway().SelectEmployees();
+        }
+
+        public List<Entities.Message> GetMessageList()
+        {
+            return new MessageGateway().SelectMessages();
+        }
+
+        public void InsertMessage(Entities.Message message)
+        {
+            new MessageGateway().InsertMessage(message);
         }
     }
 }

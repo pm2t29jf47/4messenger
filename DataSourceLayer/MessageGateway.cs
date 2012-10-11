@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Data;
 using DBWebService;
 using Entities;
+using ServerSideExceptionHandler;
 
 namespace DBWebService
 {

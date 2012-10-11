@@ -25,25 +25,13 @@ namespace WFClient
         Service1Client dbs = new Service1Client();
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            
+        {            
             ReloadForm();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             ReloadForm();
-        }
-
-        /// <summary> 
-        /// Заполняет объект DataGridView данными 
-        /// </summary>
-        private void DisplayLetters()        
-        {
-            dataGridView1.DataSource = dbs.GetMessageList();
-            dataGridView1.Columns.Remove("MessageId");
-            dataGridView1.Columns.Remove("RecipientId");
-            dataGridView1.Columns.Remove("SenderId");
         }
 
         /// <summary> 
@@ -73,15 +61,14 @@ namespace WFClient
         {
             if (!Validate()) return;
             try
-            {
-                dbs.InsertMessage(new Entities.Message
-                {
-                    Content = textBox2.Text,
-                    Date = dateTimePicker2.Value,
-                    Title = textBox1.Text,
-                    RecipientId = (int)comboBox1.SelectedValue,
-                    SenderId = (int)comboBox2.SelectedValue
-                });
+            {                
+                dbs.InsertMessage(
+                    new Entities.Message(
+                        0,
+                        textBox1.Text,
+                        dateTimePicker2.Value,
+                        (Entities.Employee)comboBox2.SelectedItem,
+                        textBox2.Text));
                 ReloadForm();
             }
             catch (Exception ex)
@@ -137,7 +124,6 @@ namespace WFClient
             {
                 groupBox2.Enabled = true;
                 groupBox1.Enabled = true;
-                DisplayLetters();
                 SetRecipient();
                 SetSender();
             }
@@ -147,6 +133,11 @@ namespace WFClient
                 groupBox1.Enabled = false;
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

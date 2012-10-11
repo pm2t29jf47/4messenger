@@ -19,15 +19,9 @@ namespace DBWcfService
         List<Employee> GetEmployeeList();
 
         /// <summary> 
-        /// Возвращает коллекцию содержащую все письма 
-        /// </summary>
-        [OperationContract]
-        List<Message> GetMessageList();
-
-        /// <summary> 
         /// Производит вставку письма в таблицу Message 
         /// </summary>
         [OperationContract]
-        void InsertMessage(Message message);
+        void SendMessage(Message message);
     }   
 }

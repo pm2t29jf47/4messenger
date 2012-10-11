@@ -31,16 +31,6 @@ namespace DBWebService
         }
 
         /// <summary> 
-        /// Возвращает коллекцию содержащую все письма 
-        /// </summary>
-        [WebMethod]
-        public List<Message> GetMessageList()
-        {
-            var a = new MessageGateway().SelectMessages();
-            return new MessageGateway().SelectMessages();
-        }
-
-        /// <summary> 
         /// Производит вставку письма в таблицу Message 
         /// </summary>
         [WebMethod]

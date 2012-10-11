@@ -17,12 +17,7 @@ namespace DBWcfService
             return new EmployeeGateway().SelectEmployees();
         }
 
-        public List<Entities.Message> GetMessageList()
-        {
-            return new MessageGateway().SelectMessages();
-        }
-
-        public void InsertMessage(Entities.Message message)
+        public void SendMessage(Entities.Message message)
         {
             new MessageGateway().InsertMessage(message);
         }

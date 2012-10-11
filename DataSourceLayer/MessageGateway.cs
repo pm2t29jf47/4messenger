@@ -17,30 +17,6 @@ namespace DBWebService
     public class MessageGateway : Gateway
     {
         /// <summary> 
-        /// Возвращает коллекцию всех писем
-        /// </summary>
-        public List<Message> SelectMessages()
-        {
-            List<Message> rows = new List<Message>();
-            try
-            {
-                using (SqlCommand cmd = new SqlCommand("select_messages", sqlConnection))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    using (var reader = cmd.ExecuteReader())
-                        while (reader.Read())
-                            rows.Add(CreateMessage(reader));
-                    return rows;
-                }                
-            }
-            catch (Exception ex)
-            {
-                new ExceptionHandler().HandleExcepion(ex);
-                return rows;
-            }
-        }
-
-        /// <summary> 
         /// Производит вставку письма в таблицу 
         /// </summary>
         public void InsertMessage(Message message)
@@ -91,7 +67,7 @@ namespace DBWebService
         {
             cmd.Parameters["@title"].Value = message.Title;
             cmd.Parameters["@date"].Value = message.Date.Date;
-            cmd.Parameters["@senderId"].Value = message.SenderId;
+            cmd.Parameters["@senderId"].Value = message.Sender.EmployeeId;
             cmd.Parameters["@content"].Value = message.Content;
             cmd.Parameters["@deleteBySender"].Value = false;
         }
@@ -99,15 +75,5 @@ namespace DBWebService
         /// <summary> 
         /// Создает объек типа Message по данным из таблицы 
         /// </summary>
-        private Message CreateMessage(SqlDataReader reader)
-        {
-            return new Message(
-                int.Parse(reader["MessageId"].ToString()),
-                reader["Title"].ToString(),
-                DateTime.Parse(reader["Date"].ToString()),
-                reader["Recipient"].ToString(),
-                reader["Sender"].ToString(),
-                reader["Content"].ToString());                
-        }
     }
 }

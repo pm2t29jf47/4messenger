@@ -53,6 +53,7 @@ namespace DBWebService
                     CreateSPParameters(cmd);
                     SetSPParameters(cmd, message);
                     cmd.ExecuteNonQuery();
+                    int a = int.Parse(cmd.Parameters["@id"].Value.ToString());//нужен для вставки в другие таблицы
                 }                
             }
             catch (Exception ex)
@@ -66,11 +67,21 @@ namespace DBWebService
         /// </summary>
         private void CreateSPParameters(SqlCommand cmd)
         {
-            cmd.Parameters.Add(new SqlParameter("@title", SqlDbType.VarChar, 100));
-            cmd.Parameters.Add(new SqlParameter("@date", SqlDbType.Date));
-            cmd.Parameters.Add(new SqlParameter("@recipientId", SqlDbType.Int));
-            cmd.Parameters.Add(new SqlParameter("@senderId", SqlDbType.Int));
-            cmd.Parameters.Add(new SqlParameter("@content", SqlDbType.VarChar, 1000));
+            cmd.Parameters.Add(
+                new SqlParameter("@title", SqlDbType.VarChar, 100));
+            cmd.Parameters.Add(
+                new SqlParameter("@date", SqlDbType.Date));
+            cmd.Parameters.Add(
+                new SqlParameter("@senderId", SqlDbType.Int));
+            cmd.Parameters.Add(
+                new SqlParameter("@content", SqlDbType.VarChar, 1000));
+            cmd.Parameters.Add(
+                new SqlParameter("@id", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                });
+            cmd.Parameters.Add(
+                new SqlParameter("@deleteBySender", SqlDbType.Bit));
         }
 
         /// <summary> 
@@ -80,9 +91,9 @@ namespace DBWebService
         {
             cmd.Parameters["@title"].Value = message.Title;
             cmd.Parameters["@date"].Value = message.Date.Date;
-            cmd.Parameters["@recipientId"].Value = message.RecipientId;
             cmd.Parameters["@senderId"].Value = message.SenderId;
             cmd.Parameters["@content"].Value = message.Content;
+            cmd.Parameters["@deleteBySender"].Value = false;
         }
 
         /// <summary> 

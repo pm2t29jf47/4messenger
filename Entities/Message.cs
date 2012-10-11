@@ -171,7 +171,7 @@ namespace Entities
         }
 
         /// <summary> 
-        /// Получатели
+        /// Получател id
         /// </summary>     
         [DataMember]
         public int RecipientId
@@ -181,7 +181,7 @@ namespace Entities
         }
 
         /// <summary> 
-        /// Отпраитель
+        /// Отпраитель id
         /// </summary>
         [DataMember]
         public int SenderId
@@ -190,12 +190,21 @@ namespace Entities
             set;
         }
 
+        /// <summary> 
+        /// Получател
+        /// </summary>     
+        
+        [DataMember]
         public string Recipient
         {
             get;
             set;
         }
 
+        /// <summary> 
+        /// Отпраитель
+        /// </summary>
+        [DataMember]
         public string Sender
         {
             get;

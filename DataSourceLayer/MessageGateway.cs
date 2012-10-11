@@ -68,8 +68,8 @@ namespace DBWebService
         {
             cmd.Parameters.Add(new SqlParameter("@title", SqlDbType.VarChar, 100));
             cmd.Parameters.Add(new SqlParameter("@date", SqlDbType.Date));
-            cmd.Parameters.Add(new SqlParameter("@recipient_Id", SqlDbType.Int));
-            cmd.Parameters.Add(new SqlParameter("@sender_Id", SqlDbType.Int));
+            cmd.Parameters.Add(new SqlParameter("@recipientId", SqlDbType.Int));
+            cmd.Parameters.Add(new SqlParameter("@senderId", SqlDbType.Int));
             cmd.Parameters.Add(new SqlParameter("@content", SqlDbType.VarChar, 1000));
         }
 
@@ -80,8 +80,8 @@ namespace DBWebService
         {
             cmd.Parameters["@title"].Value = message.Title;
             cmd.Parameters["@date"].Value = message.Date.Date;
-            cmd.Parameters["@recipient_Id"].Value = message.RecipientId;
-            cmd.Parameters["@sender_Id"].Value = message.SenderId;
+            cmd.Parameters["@recipientId"].Value = message.RecipientId;
+            cmd.Parameters["@senderId"].Value = message.SenderId;
             cmd.Parameters["@content"].Value = message.Content;
         }
 
@@ -91,7 +91,7 @@ namespace DBWebService
         private Message CreateMessage(SqlDataReader reader)
         {
             return new Message(
-                int.Parse(reader/*[0]*/["Message_Id"].ToString()),
+                int.Parse(reader/*[0]*/["MessageId"].ToString()),
                 reader/*[1]*/["Title"].ToString(),
                 DateTime.Parse(reader/*[2]*/["Date"].ToString()),
                 reader/*[3]*/["Recipient"].ToString(),

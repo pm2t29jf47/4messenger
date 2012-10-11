@@ -91,12 +91,12 @@ namespace DBWebService
         private Message CreateMessage(SqlDataReader reader)
         {
             return new Message(
-                int.Parse(reader/*[0]*/["MessageId"].ToString()),
-                reader/*[1]*/["Title"].ToString(),
-                DateTime.Parse(reader/*[2]*/["Date"].ToString()),
-                reader/*[3]*/["Recipient"].ToString(),
-                reader/*[4]*/["Sender"].ToString(),
-                reader/*[5]*/["Content"].ToString());                
+                int.Parse(reader["MessageId"].ToString()),
+                reader["Title"].ToString(),
+                DateTime.Parse(reader["Date"].ToString()),
+                reader["Recipient"].ToString(),
+                reader["Sender"].ToString(),
+                reader["Content"].ToString());                
         }
     }
 }

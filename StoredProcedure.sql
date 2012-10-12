@@ -1,15 +1,15 @@
 /*==============================================================*/
 /* Хп. Выводит данные всех работников                           */
 /*==============================================================*/
-create procedure select_employees
-as
-select * from [dbo].[Employee]
-go
+CREATE PROCEDURE select_employees
+AS
+	SELECT * FROM [dbo].[Employee]
+GO
 
 /*==============================================================*/
 /* Хп. Добавляет новое письмо в таблицу                         */
 /*==============================================================*/
-alter procedure insert_message
+ALTER PROCEDURE insert_message
 (
 	@title	varchar(100),
 	@date	datetime,
@@ -18,18 +18,59 @@ alter procedure insert_message
 	@deleteBySender bit,
 	@id int output	
 )
-as
-	insert into Message values(
-	@title,
-	@date,
-	@content,
-	@senderId,
-	0
+AS
+BEGIN
+	INSERT INTO Message 
+	VALUES
+	(
+		@title,
+		@date,
+		@content,
+		@senderId,
+		0
 	)
-	select @id = MessageId
-	from Message 
-	where Title = @title 
+	SELECT @id = MessageId
+	FROM Message 
+	WHERE Title = @title 
 	AND [Date] = @date
 	AND SenderId = @senderId
 	AND Content = @content
-go  
+END
+GO  
+
+/*==============================================================*/
+/* Хп. Добавляет нового адресата в таблицу                      */
+/*==============================================================*/
+ALTER PROCEDURE insert_recipient
+(
+	@employeeId int,
+	@messageId int,
+	@deleteByRecipient bit
+)
+AS
+BEGIN
+	IF NOT EXISTS
+	(
+		SELECT * 
+		FROM Recipient
+		WHERE 
+			EmployeeId = @employeeId
+			AND MessageId = @messageId
+			AND DeleteByRecipient = @deleteByRecipient
+	)
+	BEGIN		
+		INSERT INTO Recipient
+		(
+			EmployeeId,
+			MessageId,
+			DeleteByRecipient
+		) 
+		VALUES
+		(
+			@employeeId,
+			@messageId,
+			@deleteByRecipient
+		)
+	END
+END
+GO

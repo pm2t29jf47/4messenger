@@ -27,12 +27,6 @@ namespace DataSourceLayer
                 return ConfigurationManager.ConnectionStrings["DB"].ConnectionString.ToString();
             }
         }
-
-        protected static SqlConnection sqlConnection = new SqlConnection(dbSource);
-
-       
-            
-        
-        
+        protected static SqlConnection sqlConnection = new SqlConnection(dbSource);       
     }
 }

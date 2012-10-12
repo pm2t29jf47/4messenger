@@ -18,7 +18,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Производит вставку письма в таблицу 
         /// </summary>
-        public void InsertMessage(Message message)
+        public int InsertMessage(Message message)
         {
             try
             {   
@@ -28,12 +28,13 @@ namespace DataSourceLayer
                     CreateSPParameters(cmd);
                     SetSPParameters(cmd, message);
                     cmd.ExecuteNonQuery();
-                    int a = int.Parse(cmd.Parameters["@id"].Value.ToString());//нужен для вставки в другие таблицы
+                    return int.Parse(cmd.Parameters["@id"].Value.ToString());//нужен для вставки в другие таблицы
                 }                
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex);          
+                new ExceptionHandler().HandleExcepion(ex);
+                return -1;
             }
         }
 

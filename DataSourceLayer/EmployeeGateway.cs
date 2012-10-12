@@ -5,13 +5,10 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Data;
 using System.Configuration;
-using DBWebService;
 using Entities;
 using ServerSideExceptionHandler;
 
-
-
-namespace DBWebService
+namespace DataSourceLayer
 {
 
     /// <summary> 

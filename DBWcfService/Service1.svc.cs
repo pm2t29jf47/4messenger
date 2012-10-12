@@ -5,7 +5,8 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
-using DBWebService;
+using DataSourceLayer;
+
 
 namespace DBWcfService
 {
@@ -13,7 +14,6 @@ namespace DBWcfService
     {
         public List<Entities.Employee> GetEmployeeList()
         {
-            var a = new EmployeeGateway().SelectEmployees();
             return new EmployeeGateway().SelectEmployees();
         }
 

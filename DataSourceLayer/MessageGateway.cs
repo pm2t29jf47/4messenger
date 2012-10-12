@@ -4,11 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
 using System.Data;
-using DBWebService;
 using Entities;
 using ServerSideExceptionHandler;
 
-namespace DBWebService
+namespace DataSourceLayer
 {
 
     /// <summary> 

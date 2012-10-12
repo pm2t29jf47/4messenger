@@ -5,7 +5,7 @@ using System.Web;
 using System.Configuration;
 using System.Data.SqlClient;
 
-namespace DBWebService
+namespace DataSourceLayer
 {
     /// <summary> 
     ///Базовый класс для уровня доступа к данным

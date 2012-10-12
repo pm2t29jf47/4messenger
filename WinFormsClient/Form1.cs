@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using WinFormsClient.ServiceReference1;
 
-namespace WFClient
+namespace WinFormsClient
 {
     public partial class Form1 : Form
     {

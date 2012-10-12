@@ -1,4 +1,4 @@
-﻿namespace WFClient
+﻿namespace WinFormsClient
 {
     partial class Form1
     {

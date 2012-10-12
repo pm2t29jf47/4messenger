@@ -15,33 +15,44 @@ namespace DataSourceLayer
     /// </summary>
     public class MessageGateway : Gateway
     {
+
         /// <summary> 
         /// Производит вставку письма в таблицу 
         /// </summary>
-        public int InsertMessage(Message message)
+        public int? InsertMessage(Message message)
         {
             try
             {   
                 using (SqlCommand cmd = new SqlCommand("insert_message", sqlConnection))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    CreateSPParameters(cmd);
-                    SetSPParameters(cmd, message);
+                    PrepareIM(cmd, message);                    
                     cmd.ExecuteNonQuery();
-                    return int.Parse(cmd.Parameters["@id"].Value.ToString());//нужен для вставки в другие таблицы
+                    return int.Parse(cmd.Parameters["@id"].Value.ToString());
                 }                
             }
             catch (Exception ex)
             {
                 new ExceptionHandler().HandleExcepion(ex);
-                return -1;
+                return null;
             }
         }
 
-        /// <summary> 
-        /// Определяет параметры хранимой процедуры для объекта типа SqlCommand 
+        /// <summary>
+        /// Подготавливает команду для выполнения ХП insert_message (IM)
         /// </summary>
-        private void CreateSPParameters(SqlCommand cmd)
+        /// <param name="cmd"></param>
+        /// <param name="message"></param>
+        private void PrepareIM(SqlCommand cmd, Message message)
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            CreateIMParameters(cmd);
+            SetIMParameters(cmd, message);
+        }
+
+        /// <summary> 
+        /// Задает параметры хранимой процедуры insert_mesage 
+        /// </summary>
+        private void CreateIMParameters(SqlCommand cmd)
         {
             cmd.Parameters.Add(
                 new SqlParameter("@title", SqlDbType.VarChar, 100));
@@ -61,9 +72,9 @@ namespace DataSourceLayer
         }
 
         /// <summary> 
-        /// Задает параметры хранимой процедуры для объекта типа SqlCommand 
+        /// Заполняет параметры хранимой процедуры insert_mesage 
         /// </summary>
-        private void SetSPParameters(SqlCommand cmd, Message message)
+        private void SetIMParameters(SqlCommand cmd, Message message)
         {
             cmd.Parameters["@title"].Value = message.Title;
             cmd.Parameters["@date"].Value = message.Date.Date;
@@ -71,9 +82,5 @@ namespace DataSourceLayer
             cmd.Parameters["@content"].Value = message.Content;
             cmd.Parameters["@deleteBySender"].Value = false;
         }
-
-        /// <summary> 
-        /// Создает объек типа Message по данным из таблицы 
-        /// </summary>
     }
 }

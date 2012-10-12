@@ -9,9 +9,17 @@ using ServerSideExceptionHandler;
 
 namespace DataSourceLayer
 {
-    public class RecipientGateway : Gateway
+    /// <summary>
+    /// Класс для доступа к данным таблицы Recipient
+    /// </summary>
+    public static class RecipientGateway
     {
-        public void InsertRecipient(Recipient recipient)
+
+        /// <summary>
+        /// Добавляет нового адресата к письму
+        /// </summary>
+        /// <param name="recipient"></param>
+        public static void InsertRecipient(Recipient recipient, SqlConnection sqlConnection)
         {
             try
             {
@@ -27,21 +35,33 @@ namespace DataSourceLayer
             }
         }
 
-        private void PrepareIR(SqlCommand cmd, Recipient recipient)
+        /// <summary>
+        /// Подготавливает команду для выполнения ХП insert_recipient (IR)
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="recipient"></param>
+        private static void PrepareIR(SqlCommand cmd, Recipient recipient)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             CreateIRParameters(cmd);
             SetIRParameters(cmd, recipient);
         }
 
-        private void CreateIRParameters(SqlCommand cmd)
+        /// <summary>
+        /// Задает параметры хранимой процедуры insert_recipient 
+        /// </summary>
+        /// <param name="cmd"></param>
+        private static void CreateIRParameters(SqlCommand cmd)
         {
             cmd.Parameters.Add(new SqlParameter("@employeeId", SqlDbType.Int));
             cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
             cmd.Parameters.Add(new SqlParameter("@deleteByRecipient", SqlDbType.Bit));
         }
 
-        private void SetIRParameters(SqlCommand cmd, Recipient recipient)
+        /// <summary> 
+        /// Заполняет параметры хранимой процедуры insert_recipient 
+        /// </summary>
+        private static void SetIRParameters(SqlCommand cmd, Recipient recipient)
         {
             cmd.Parameters["@employeeId"].Value = recipient.EmployeeId;
             cmd.Parameters["@messageId"].Value = recipient.MessageId;

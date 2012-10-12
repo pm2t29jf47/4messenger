@@ -13,13 +13,13 @@ namespace DataSourceLayer
     /// <summary> 
     /// Класс для доступа к данным таблицы Message 
     /// </summary>
-    public class MessageGateway : Gateway
+    public static class MessageGateway
     {
 
         /// <summary> 
         /// Производит вставку письма в таблицу 
         /// </summary>
-        public int? InsertMessage(Message message)
+        public static int? InsertMessage(Message message, SqlConnection sqlConnection)
         {
             try
             {   
@@ -42,7 +42,7 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="message"></param>
-        private void PrepareIM(SqlCommand cmd, Message message)
+        private static void PrepareIM(SqlCommand cmd, Message message)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             CreateIMParameters(cmd);
@@ -52,7 +52,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Задает параметры хранимой процедуры insert_mesage 
         /// </summary>
-        private void CreateIMParameters(SqlCommand cmd)
+        private static void CreateIMParameters(SqlCommand cmd)
         {
             cmd.Parameters.Add(
                 new SqlParameter("@title", SqlDbType.VarChar, 100));
@@ -74,7 +74,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Заполняет параметры хранимой процедуры insert_mesage 
         /// </summary>
-        private void SetIMParameters(SqlCommand cmd, Message message)
+        private static void SetIMParameters(SqlCommand cmd, Message message)
         {
             cmd.Parameters["@title"].Value = message.Title;
             cmd.Parameters["@date"].Value = message.Date.Date;

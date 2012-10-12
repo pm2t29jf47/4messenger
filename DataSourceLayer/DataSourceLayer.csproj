@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gateway.cs" />
     <Compile Include="EmployeeGateway.cs" />
     <Compile Include="MessageGateway.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

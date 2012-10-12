@@ -29,12 +29,14 @@ BEGIN
 		@senderId,
 		0
 	)
+	--------------именить----------------
 	SELECT @id = MessageId
 	FROM Message 
 	WHERE Title = @title 
 	AND [Date] = @date
 	AND SenderId = @senderId
 	AND Content = @content
+	--------------------------------------
 END
 GO  
 

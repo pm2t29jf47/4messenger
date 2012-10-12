@@ -56,6 +56,10 @@
       <Project>{6E871981-7F57-4CE8-8374-9B139A690D6B}</Project>
       <Name>DataSourceLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DBWcfService\DBWcfService.csproj">
+      <Project>{4846A902-46B6-4F66-8ECB-CF8D899EBCA0}</Project>
+      <Name>DBWcfService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{AC3D427A-B2F7-4973-B975-6BCF522358B3}</Project>
       <Name>Entities</Name>

@@ -14,13 +14,13 @@ namespace DataSourceLayer
     /// <summary> 
     /// Класс для доступа к данным таблицы Employee 
     /// </summary>
-    public class EmployeeGateway : Gateway
+    public static class EmployeeGateway
     {
 
         /// <summary> 
         /// Возвращает коллекцию всех сотрудников
         /// </summary>
-        public List<Employee> SelectEmployees()
+        public static List<Employee> SelectEmployees(SqlConnection sqlConnection)
         {
             List<Employee> rows = new List<Employee>();
             try
@@ -44,7 +44,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Создает объек типа Employee по данным из таблицы 
         /// </summary>
-        private Employee CreateEmployee(SqlDataReader reader)
+        private static Employee CreateEmployee(SqlDataReader reader)
         {
             return new Employee(
                 int.Parse(reader[0].ToString()),

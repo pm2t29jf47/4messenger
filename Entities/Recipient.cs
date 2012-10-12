@@ -33,7 +33,7 @@ namespace Entities
         public int EmployeeId
         {
             get;
-            internal set;
+            set;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Entities
         public int MessageId
         {
             get;
-            internal set;
+            set;
         }
 
         /// <summary>

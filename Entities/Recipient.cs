@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
-namespace ServerSideExceptionHandler
+namespace Entities
 {
+    [DataContract]
     public class Recipient
     {
         /// <summary>
@@ -22,9 +24,12 @@ namespace ServerSideExceptionHandler
             this.MessageId = MessageId;
         }
 
+        public Recipient() { }
+
         /// <summary>
         /// Идентификатор сотрудника-получателя
         /// </summary>
+        [DataMember]
         public int EmployeeId
         {
             get;
@@ -34,6 +39,7 @@ namespace ServerSideExceptionHandler
         /// <summary>
         /// Идентификатор сообщения
         /// </summary>
+        [DataMember]
         public int MessageId
         {
             get;
@@ -43,6 +49,7 @@ namespace ServerSideExceptionHandler
         /// <summary>
         /// Флаг для переноса полученых писем в папку удаленных
         /// </summary>
+        [DataMember]
         public bool DeleteByRecipient
         {
             get;

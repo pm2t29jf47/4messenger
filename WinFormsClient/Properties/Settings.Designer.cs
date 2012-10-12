@@ -22,15 +22,5 @@ namespace WinFormsClient.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:21676/DBWebService.asmx")]
-        public string WinFormsClient_localhost_DBWebService {
-            get {
-                return ((string)(this["WinFormsClient_localhost_DBWebService"]));
-            }
-        }
     }
 }

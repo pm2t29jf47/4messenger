@@ -13,19 +13,14 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Employee" nillable="true" type="tns:Employee" />
-  <xs:complexType name="ArrayOfMessage">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="tns:Message" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfMessage" nillable="true" type="tns:ArrayOfMessage" />
   <xs:complexType name="Message">
     <xs:sequence>
       <xs:element minOccurs="0" name="Content" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Date" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DeleteBySender" type="xs:boolean" />
       <xs:element minOccurs="0" name="MessageId" type="xs:int" />
-      <xs:element minOccurs="0" name="RecipientId" type="xs:int" />
-      <xs:element minOccurs="0" name="SenderId" type="xs:int" />
+      <xs:element minOccurs="0" name="Recipients" nillable="true" type="tns:ArrayOfEmployee" />
+      <xs:element minOccurs="0" name="Sender" nillable="true" type="tns:Employee" />
       <xs:element minOccurs="0" name="Title" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>

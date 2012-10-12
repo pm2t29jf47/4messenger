@@ -18,11 +18,8 @@ namespace WinFormsClient.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetEmployeeList", ReplyAction="http://tempuri.org/IService1/GetEmployeeListResponse")]
         Entities.Employee[] GetEmployeeList();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetMessageList", ReplyAction="http://tempuri.org/IService1/GetMessageListResponse")]
-        Entities.Message[] GetMessageList();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/InsertMessage", ReplyAction="http://tempuri.org/IService1/InsertMessageResponse")]
-        void InsertMessage(Entities.Message message);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SendMessage", ReplyAction="http://tempuri.org/IService1/SendMessageResponse")]
+        void SendMessage(Entities.Message message);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -56,12 +53,8 @@ namespace WinFormsClient.ServiceReference1 {
             return base.Channel.GetEmployeeList();
         }
         
-        public Entities.Message[] GetMessageList() {
-            return base.Channel.GetMessageList();
-        }
-        
-        public void InsertMessage(Entities.Message message) {
-            base.Channel.InsertMessage(message);
+        public void SendMessage(Entities.Message message) {
+            base.Channel.SendMessage(message);
         }
     }
 }

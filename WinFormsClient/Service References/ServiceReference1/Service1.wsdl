@@ -13,30 +13,20 @@
   <wsdl:message name="IService1_GetEmployeeList_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetEmployeeListResponse" />
   </wsdl:message>
-  <wsdl:message name="IService1_GetMessageList_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetMessageList" />
+  <wsdl:message name="IService1_SendMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendMessage" />
   </wsdl:message>
-  <wsdl:message name="IService1_GetMessageList_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetMessageListResponse" />
-  </wsdl:message>
-  <wsdl:message name="IService1_InsertMessage_InputMessage">
-    <wsdl:part name="parameters" element="tns:InsertMessage" />
-  </wsdl:message>
-  <wsdl:message name="IService1_InsertMessage_OutputMessage">
-    <wsdl:part name="parameters" element="tns:InsertMessageResponse" />
+  <wsdl:message name="IService1_SendMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendMessageResponse" />
   </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="GetEmployeeList">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetEmployeeList" message="tns:IService1_GetEmployeeList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetEmployeeListResponse" message="tns:IService1_GetEmployeeList_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetMessageList">
-      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetMessageList" message="tns:IService1_GetMessageList_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetMessageListResponse" message="tns:IService1_GetMessageList_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="InsertMessage">
-      <wsdl:input wsaw:Action="http://tempuri.org/IService1/InsertMessage" message="tns:IService1_InsertMessage_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IService1/InsertMessageResponse" message="tns:IService1_InsertMessage_OutputMessage" />
+    <wsdl:operation name="SendMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/SendMessage" message="tns:IService1_SendMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/SendMessageResponse" message="tns:IService1_SendMessage_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -50,17 +40,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetMessageList">
-      <soap:operation soapAction="http://tempuri.org/IService1/GetMessageList" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="InsertMessage">
-      <soap:operation soapAction="http://tempuri.org/IService1/InsertMessage" style="document" />
+    <wsdl:operation name="SendMessage">
+      <soap:operation soapAction="http://tempuri.org/IService1/SendMessage" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

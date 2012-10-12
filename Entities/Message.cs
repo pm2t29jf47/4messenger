@@ -25,7 +25,7 @@ namespace Entities
             int MessageId,
             string Title,
             DateTime Date,
-            //List<Employee> Recipients,
+            List<Recipient> Recipients,
             Employee Sender,
             string Content)
         {
@@ -34,6 +34,7 @@ namespace Entities
             this.Date = Date;
             this.Sender = Sender;
             this.Content = Content;
+            this.Recipients = Recipients;
         }
 
         /// <summary> 
@@ -89,7 +90,8 @@ namespace Entities
         /// <summary> 
         /// Получатели
         /// </summary>
-        public List<Employee> Recipients
+        [DataMember]
+        public List<Recipient> Recipients
         {
             get;
             internal set;

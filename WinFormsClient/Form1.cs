@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using WinFormsClient.localhost;
 using WinFormsClient.ServiceReference1;
 
 namespace WFClient
@@ -61,12 +60,15 @@ namespace WFClient
         {
             if (!Validate()) return;
             try
-            {                
-                dbs.InsertMessage(
+            {
+                var a = new List<Entities.Recipient>();//////////////
+                a.Add(new Entities.Recipient(5, 6,true));//////////////
+                dbs.SendMessage(
                     new Entities.Message(
                         0,
                         textBox1.Text,
                         dateTimePicker2.Value,
+                        a,
                         (Entities.Employee)comboBox2.SelectedItem,
                         textBox2.Text));
                 ReloadForm();

@@ -29,15 +29,19 @@ namespace DBWcfService
         }
 
         public void SendMessage(Entities.Message message)
-        {
-         
+        {         
             int? insertedMessageId = MessageGateway.InsertMessage(message, sqlConnection);
             if (insertedMessageId == null) return;
-            foreach (var a in message.Recipients)
-                a.MessageId = (int) insertedMessageId;            
             foreach (var recipient in message.Recipients)
+            {
+                recipient.MessageId = (int)insertedMessageId;
                 RecipientGateway.InsertRecipient(recipient, sqlConnection);
+            }
+        }
 
+        public List<Entities.Message> ReceiveMessages()//должен возвращать входящие письма для текущего пользователя
+        {
+            return null;
         }
     }
 }

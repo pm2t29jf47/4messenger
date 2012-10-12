@@ -23,5 +23,12 @@ namespace DBWcfService
         /// </summary>
         [OperationContract]
         void SendMessage(Message message);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        List<Entities.Message> ReceiveMessages();
     }   
 }

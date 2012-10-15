@@ -5,6 +5,7 @@
       <xsd:import schemaLocation="http://localhost:2456/Service1.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:2456/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:2456/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Entities" />
+      <xsd:import schemaLocation="http://localhost:2456/Service1.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IService1_GetEmployeeList_InputMessage">
@@ -19,6 +20,18 @@
   <wsdl:message name="IService1_SendMessage_OutputMessage">
     <wsdl:part name="parameters" element="tns:SendMessageResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_ReceiveMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReceiveMessages" />
+  </wsdl:message>
+  <wsdl:message name="IService1_ReceiveMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReceiveMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetRoles_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRoles" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetRoles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRolesResponse" />
+  </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="GetEmployeeList">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetEmployeeList" message="tns:IService1_GetEmployeeList_InputMessage" />
@@ -27,6 +40,14 @@
     <wsdl:operation name="SendMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/SendMessage" message="tns:IService1_SendMessage_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/SendMessageResponse" message="tns:IService1_SendMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReceiveMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/ReceiveMessages" message="tns:IService1_ReceiveMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/ReceiveMessagesResponse" message="tns:IService1_ReceiveMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRoles">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetRoles" message="tns:IService1_GetRoles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetRolesResponse" message="tns:IService1_GetRoles_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -42,6 +63,24 @@
     </wsdl:operation>
     <wsdl:operation name="SendMessage">
       <soap:operation soapAction="http://tempuri.org/IService1/SendMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReceiveMessages">
+      <soap:operation soapAction="http://tempuri.org/IService1/ReceiveMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoles">
+      <soap:operation soapAction="http://tempuri.org/IService1/GetRoles" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -30,5 +30,8 @@ namespace DBWcfService
         /// <returns></returns>
         [OperationContract]
         List<Entities.Message> ReceiveMessages();
+
+        [OperationContract]
+        string[] GetRoles(string username);
     }   
 }

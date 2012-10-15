@@ -20,6 +20,12 @@ namespace WinFormsClient.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SendMessage", ReplyAction="http://tempuri.org/IService1/SendMessageResponse")]
         void SendMessage(Entities.Message message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ReceiveMessages", ReplyAction="http://tempuri.org/IService1/ReceiveMessagesResponse")]
+        Entities.Message[] ReceiveMessages();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetRoles", ReplyAction="http://tempuri.org/IService1/GetRolesResponse")]
+        string[] GetRoles(string username);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -55,6 +61,14 @@ namespace WinFormsClient.ServiceReference1 {
         
         public void SendMessage(Entities.Message message) {
             base.Channel.SendMessage(message);
+        }
+        
+        public Entities.Message[] ReceiveMessages() {
+            return base.Channel.ReceiveMessages();
+        }
+        
+        public string[] GetRoles(string username) {
+            return base.Channel.GetRoles(username);
         }
     }
 }

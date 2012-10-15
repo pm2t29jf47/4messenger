@@ -29,6 +29,9 @@ BEGIN
 		@senderId,
 		0
 	)
+	
+	--@@SCOPE_I
+	
 	--------------именить----------------
 	SELECT @id = MessageId
 	FROM Message 

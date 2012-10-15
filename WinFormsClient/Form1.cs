@@ -24,7 +24,8 @@ namespace WinFormsClient
         Service1Client dbs = new Service1Client();
 
         private void Form1_Load(object sender, EventArgs e)
-        {            
+        {
+            var a = dbs.GetRoles("Aa");
             ReloadForm();
         }
 

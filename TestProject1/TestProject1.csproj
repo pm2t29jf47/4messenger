@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Shadow Include="Test References\DBWcfService.accessor" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataSourceLayer\DataSourceLayer.csproj">

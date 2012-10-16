@@ -25,13 +25,19 @@ namespace DBWcfService
         void SendMessage(Message message);
 
         /// <summary>
-        /// 
+        /// Получить письма
         /// </summary>
         /// <returns></returns>
         [OperationContract]
         List<Entities.Message> ReceiveMessages();
 
+        /// <summary>
+        /// Получить true
+        /// </summary>
+        /// <returns></returns>
         [OperationContract]
-        string[] GetRoles(string username);
+        bool GetTrue();
+
+
     }   
 }

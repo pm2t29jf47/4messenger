@@ -24,7 +24,6 @@ namespace DBWcfService
         {
             sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString);
             sqlConnection.Open();
-
         }
 
         SqlConnection sqlConnection;
@@ -50,38 +49,10 @@ namespace DBWcfService
             return null;
         }
 
-
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public string[] GetRoles(string username)
+        //[PrincipalPermission(SecurityAction.Demand, Role = "administrators")]
+        public bool GetTrue()
         {
-            if (ServiceSecurityContext.Current.PrimaryIdentity.Name == username)
-            {
-                return null; //CustomPrincpal.Current.Roles;
-            }
-            else
-            {
-                return Roles.GetRolesForUser(username);
-            }
-
-            //// inline authorization
-
-            //// only administrators can retrieve the role information for other users
-            //if (ServiceSecurityContext.Current.PrimaryIdentity.Name != username)
-            //{
-            //    if (Thread.CurrentPrincipal.IsInRole("administrators"))
-            //    {
-            //        // return roles for given user
-            //        return Roles.GetRolesForUser(username);
-            //    }
-            //    else
-            //    {
-            //        // access denied
-            //        throw new SecurityException();
-            //    }
-            //}
-
-            //// return roles for current user
-            //return CustomPrincipal.Current.Roles;
+            throw new NotImplementedException();
         }
     }
 }

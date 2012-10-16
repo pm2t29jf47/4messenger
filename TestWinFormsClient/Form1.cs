@@ -26,6 +26,7 @@ namespace TestWinFormsClient
 
         private void sendButton_Click(object sender, EventArgs e)
         {
+           
             ///переделывать под текущую бд
             var a = new List<Entities.Recipient>();
             a.Add(new Entities.Recipient(5, 6, true));

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TestWinFormsClient.Properties
+namespace DBWcfService.Properties
 {
 
 

@@ -28,13 +28,19 @@ namespace DBService
 
         SqlConnection sqlConnection;
 
+        /// <summary> 
+        /// Возвращает коллекцию содержащую всех сотрудников 
+        /// </summary>
         public List<Entities.Employee> GetEmployeeList()
         {
             return EmployeeGateway.SelectEmployees(sqlConnection);
         }
 
+        /// <summary> 
+        /// Производит вставку письма в таблицу Message 
+        /// </summary>
         public void SendMessage(Entities.Message message)
-        {         
+        {   
             int? insertedMessageId = MessageGateway.InsertMessage(message, sqlConnection);
             if (insertedMessageId == null) return;
             foreach (var recipient in message.Recipients)
@@ -44,20 +50,33 @@ namespace DBService
             }
         }
 
+        /// <summary>
+        /// Получить письма
+        /// </summary>
+        /// <returns></returns>
         public List<Entities.Message> ReceiveMessages()
         {
             return null;
         }
 
-
+        /// <summary>
+        /// Получить true
+        /// </summary>
+        /// <returns></returns>
         public bool GetTrue()
-        {
-      
+        {      
             return true;
-      
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = "administrators")]
+        /// <summary>
+        /// Доступ имеют все зарегистрированные пользователи
+        /// </summary>
+        /// <returns></returns>
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        /// <summary>
+        /// получить объект сотруднка
+        /// </summary>
+        /// <returns></returns>
         public Entities.Employee GetNewEmployee()
         {
             
@@ -65,6 +84,3 @@ namespace DBService
         }
     }
 }
-
-//[PrincipalPermission(SecurityAction.Demand, Role = "administrators")]
-//проверка по ролям не работает

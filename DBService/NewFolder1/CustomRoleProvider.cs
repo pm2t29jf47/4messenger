@@ -17,7 +17,7 @@ namespace DBService
             }
             else
             {
-                return new string[] { "sales", "marketing", "users" };
+                return new string[] { "users" };
             }
         }
 

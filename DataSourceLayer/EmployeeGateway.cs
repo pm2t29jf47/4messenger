@@ -14,7 +14,7 @@ namespace DataSourceLayer
     /// <summary> 
     /// Класс для доступа к данным таблицы Employee 
     /// </summary>
-    public static class EmployeeGateway
+    public class EmployeeGateway
     {
 
         /// <summary> 

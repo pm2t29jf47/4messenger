@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmployeeGateway.cs" />
+    <Compile Include="Gateway.cs" />
     <Compile Include="MessageGateway.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecipientGateway.cs" />

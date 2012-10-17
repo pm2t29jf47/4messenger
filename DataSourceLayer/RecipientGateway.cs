@@ -12,7 +12,7 @@ namespace DataSourceLayer
     /// <summary>
     /// Класс для доступа к данным таблицы Recipient
     /// </summary>
-    public static class RecipientGateway
+    public class RecipientGateway : Gateway
     {
 
         /// <summary>

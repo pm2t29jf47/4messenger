@@ -13,7 +13,7 @@ namespace DataSourceLayer
     /// <summary> 
     /// Класс для доступа к данным таблицы Message 
     /// </summary>
-    public static class MessageGateway
+    public class MessageGateway
     {
 
         /// <summary> 

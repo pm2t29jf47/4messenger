@@ -12,9 +12,9 @@ namespace SelfHostedService
         static void Main(string[] args)
         {
             //Create a URI to serve as the base address
-            Uri httpUrl = new Uri("http://localhost:8090/DBService");
+            
             //Create ServiceHost
-            ServiceHost host = new ServiceHost(typeof(Service1), httpUrl);
+            ServiceHost host = new ServiceHost(typeof(Service1));
             //Add a service endpoint
             //host.AddServiceEndpoint(typeof(MyCalculatorService.ISimpleCalculator)
            // , new WSHttpBinding(), "");

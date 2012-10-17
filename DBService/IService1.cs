@@ -38,6 +38,13 @@ namespace DBService
         [OperationContract]
         bool GetTrue();
 
+        /// <summary>
+        /// получить объект сотруднка
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        Employee GetNewEmployee();
+
 
     }   
 }

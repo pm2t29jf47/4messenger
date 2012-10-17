@@ -52,7 +52,14 @@ namespace DBService
         //[PrincipalPermission(SecurityAction.Demand, Role = "administrators")]
         public bool GetTrue()
         {
-            throw new NotImplementedException();
+            return true;
+           // throw new NotImplementedException();
+        }
+
+
+        public Entities.Employee GetNewEmployee()
+        {
+            return new Entities.Employee(1, "new new new employee");
         }
     }
 }

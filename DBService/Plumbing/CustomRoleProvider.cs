@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Security;
 
-namespace DBWcfService
+namespace DBService
 {
     // sample role provider
     class CustomRoleProvider : RoleProvider

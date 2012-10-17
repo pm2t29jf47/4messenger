@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DBWcfService.Properties
+namespace DBService.Properties
 {
 
 

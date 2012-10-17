@@ -7,7 +7,7 @@ using System.ServiceModel.Web;
 using System.Text;
 using Entities;
 
-namespace DBWcfService
+namespace DBService
 {
     [ServiceContract]
     public interface IService1

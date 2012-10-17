@@ -16,7 +16,7 @@ using System.Web.Security;
 
 
 
-namespace DBWcfService
+namespace DBService
 {
     public class Service1 : IService1
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 
-namespace DBWcfService
+namespace DBService
 {
     // validator that checks that username == password
     class PasswordValidator : UserNamePasswordValidator

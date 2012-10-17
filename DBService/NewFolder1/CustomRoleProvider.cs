@@ -1,7 +1,4 @@
-﻿////
-////
-////
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +11,7 @@ namespace DBService
     {
         public override string[] GetRolesForUser(string username)
         {
-            if (username == "administrator")
+            if (username.CompareTo("administrator") == 0)
             {
                 return new string[] { "administrators", "users" };
             }

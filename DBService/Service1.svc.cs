@@ -44,23 +44,27 @@ namespace DBService
             }
         }
 
-        public List<Entities.Message> ReceiveMessages()//должен возвращать входящие письма для текущего пользователя
+        public List<Entities.Message> ReceiveMessages()
         {
             return null;
         }
 
-        //[PrincipalPermission(SecurityAction.Demand, Role = "administrators")]
+
         public bool GetTrue()
         {
+      
             return true;
-           // throw new NotImplementedException();
+      
         }
 
-
+        [PrincipalPermission(SecurityAction.Demand, Role = "administrators")]
         public Entities.Employee GetNewEmployee()
         {
+            
             return new Entities.Employee(1, "new new new employee");
         }
     }
 }
-     
+
+//[PrincipalPermission(SecurityAction.Demand, Role = "administrators")]
+//проверка по ролям не работает

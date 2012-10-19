@@ -68,6 +68,11 @@ namespace DataSourceLayer
             cmd.Parameters["@delete"].Value = recipient.Delete;
         }
 
+        /// <summary>
+        /// Получает все строки таблицы Recipient с данным адресатом
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public static List<Recipient> SelectRecipient(string username)
         {
             List<Recipient> rows = new List<Recipient>();
@@ -75,7 +80,7 @@ namespace DataSourceLayer
             {
                 using (SqlCommand cmd = new SqlCommand("select_recipient;1", GetConnection(username)))
                 {
-                    PrepareSR(cmd, username);
+                    PrepareSR1(cmd, username);
                     using (var reader = cmd.ExecuteReader())
                         while (reader.Read())
                             rows.Add(CreateRecipient(reader));
@@ -89,6 +94,11 @@ namespace DataSourceLayer
             }
         }
 
+        /// <summary>
+        /// Создает объект типа Recipient
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         private static Recipient CreateRecipient(SqlDataReader reader)
         {
             string a1, a2, a3;
@@ -96,15 +106,46 @@ namespace DataSourceLayer
                 (string) reader["RecipientUsername"],
                 int.Parse(reader["MessageId"].ToString()),
                 bool.Parse(reader["Delete"].ToString()));
-        }
+        }   
 
-   
-
-        private static void PrepareSR(SqlCommand cmd, string username)
+        /// <summary>
+        /// Подготавливает команду для выполнения ХП select_recipient;1 (SR1)
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="username"></param>
+        private static void PrepareSR1(SqlCommand cmd, string username)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.NVarChar, 50));
             cmd.Parameters["@recipientUsername"].Value = username;
-        } 
+        }
+
+        public static List<Recipient> SelectRecipient(int messageId, string username)
+        {
+            List<Recipient> rows = new List<Recipient>();
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("select_recipient;2", GetConnection(username)))
+                {
+                    PrepareSR2(cmd, messageId);
+                    using (var reader = cmd.ExecuteReader())
+                        while (reader.Read())
+                            rows.Add(CreateRecipient(reader));
+                    return rows;
+                }
+            }
+            catch (Exception ex)
+            {
+                new ExceptionHandler().HandleExcepion(ex);
+                return rows;
+            }
+        }
+
+        private static void PrepareSR2(SqlCommand cmd, int messageId)
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
+            cmd.Parameters["@messageId"].Value = messageId;            
+        }
     }
 }

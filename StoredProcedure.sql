@@ -75,7 +75,7 @@ GO
 /*==============================================================*/
 /* Получает все сообщения адресата                          */
 /*==============================================================*/
-ALTER PROCEDURE [dbo].[select_recipient]
+ALTER PROCEDURE [dbo].[select_recipient];1
 	(@recipientUsername nvarchar(50))
 AS
 	SET NOCOUNT ON 

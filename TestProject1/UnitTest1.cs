@@ -14,6 +14,7 @@ namespace TestProject1
         public void TestMethod1()
         {
             var a = RecipientGateway.SelectRecipient("Ivan");
+            var b = RecipientGateway.SelectRecipient(7, "Ivan");
         }
     }
 }

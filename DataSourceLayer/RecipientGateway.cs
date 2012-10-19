@@ -19,11 +19,11 @@ namespace DataSourceLayer
         /// Добавляет нового адресата к письму
         /// </summary>
         /// <param name="recipient"></param>
-        public static void InsertRecipient(Recipient recipient, int userId)
+        public static void InsertRecipient(Recipient recipient, string username)
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("insert_recipient", GetConnection(userId)))
+                using (SqlCommand cmd = new SqlCommand("insert_recipient", GetConnection(username)))
                 {
                     PrepareIR(cmd, recipient);
                     cmd.ExecuteNonQuery();
@@ -53,9 +53,9 @@ namespace DataSourceLayer
         /// <param name="cmd"></param>
         private static void CreateIRParameters(SqlCommand cmd)
         {
-            cmd.Parameters.Add(new SqlParameter("@employeeId", SqlDbType.Int));
+            cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.Int));
             cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
-            cmd.Parameters.Add(new SqlParameter("@deleteByRecipient", SqlDbType.Bit));
+            cmd.Parameters.Add(new SqlParameter("@delete", SqlDbType.Bit));
         }
 
         /// <summary> 
@@ -63,9 +63,9 @@ namespace DataSourceLayer
         /// </summary>
         private static void SetIRParameters(SqlCommand cmd, Recipient recipient)
         {
-            cmd.Parameters["@employeeId"].Value = recipient.EmployeeId;
+            cmd.Parameters["@recipientUsername"].Value = recipient.RecipientUsername;
             cmd.Parameters["@messageId"].Value = recipient.MessageId;
-            cmd.Parameters["@deleteByRecipient"].Value = recipient.DeleteByRecipient;
+            cmd.Parameters["@delete"].Value = recipient.Delete;
         }        
     }
 }

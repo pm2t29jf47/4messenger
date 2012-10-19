@@ -20,12 +20,12 @@ namespace DataSourceLayer
         /// <summary> 
         /// Возвращает коллекцию всех сотрудников
         /// </summary>
-        public static List<Employee> SelectEmployees(int userId)
+        public static List<Employee> SelectEmployees(string username)
         {
             List<Employee> rows = new List<Employee>();
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select_employees", GetConnection(userId)))
+                using (SqlCommand cmd = new SqlCommand("select_employees", GetConnection(username)))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     using (var reader = cmd.ExecuteReader())
@@ -47,9 +47,10 @@ namespace DataSourceLayer
         private static Employee CreateEmployee(SqlDataReader reader)
         {
             return new Employee(
-                int.Parse(reader[0].ToString()),
-                reader[1].ToString()
-            );
+                reader["Username"].ToString(), ///объект в строку
+                reader["FirstName"].ToString(),
+                reader["SecondName"].ToString(),
+                reader["Role"].ToString());                
         }
     }
 }

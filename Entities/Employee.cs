@@ -25,30 +25,40 @@ namespace Entities
         /// </summary>
         /// <param name="EmploeeId"></param>
         /// <param name="Name"></param>
-        public Employee(int EmploeeId, string Name)
+        public Employee(string username, string firstName, string secondName, string role)
         {
-            this.EmployeeId = EmploeeId;
-            this.Name = Name;
+            this.Username = username;
+            this.FirstName = firstName;
+            this.SecondName = secondName;
+            this.Role = role;
         }  
 
         /// <summary>
-        /// Первичный ключ
+        /// Уникальное имя пользователя
         /// </summary>   
         [DataMember]
-        public int EmployeeId
+        public string Username
         {
             get;
-            set;         
+            internal set;         
         }
 
         /// <summary>
         /// Имя сотрудника
         /// </summary>
         [DataMember]
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string FirstName { get; set; }
+
+        /// <summary>
+        /// Фамилия сотрудника
+        /// </summary>
+        [DataMember]
+        public string SecondName { get; set; }
+        
+        /// <summary>
+        /// Роль(и)
+        /// </summary>
+        [DataMember]
+        public string Role { get; set; }
     }
 }

@@ -12,16 +12,16 @@ namespace Entities
         /// <summary>
         /// Основной конструктор
         /// </summary>
-        /// <param name="EmployeeId"></param>
-        /// <param name="MessageId"></param>
-        /// <param name="DeleteByRecipient"></param>
-        public Recipient(int EmployeeId,
-            int MessageId,
-            bool DeleteByRecipient)
+        /// <param name="employeeId"></param>
+        /// <param name="messageId"></param>
+        /// <param name="delete"></param>
+        public Recipient(int recipientUsername,
+            int messageId,
+            bool delete)
         {
-            this.DeleteByRecipient = DeleteByRecipient;
-            this.EmployeeId = EmployeeId;
-            this.MessageId = MessageId;
+            this.Delete = delete;
+            this.RecipientUsername = RecipientUsername;
+            this.MessageId = messageId;
         }
 
         public Recipient() { }
@@ -30,7 +30,7 @@ namespace Entities
         /// Идентификатор сотрудника-получателя
         /// </summary>
         [DataMember]
-        public int EmployeeId
+        public string RecipientUsername
         {
             get;
             set;
@@ -50,7 +50,7 @@ namespace Entities
         /// Флаг для переноса полученых писем в папку удаленных
         /// </summary>
         [DataMember]
-        public bool DeleteByRecipient
+        public bool Delete
         {
             get;
             set;

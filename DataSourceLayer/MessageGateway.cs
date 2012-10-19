@@ -19,11 +19,11 @@ namespace DataSourceLayer
         /// <summary> 
         /// Производит вставку письма в таблицу 
         /// </summary>
-        public static int? InsertMessage(Message message, int userId)
+        public static int? InsertMessage(Message message, string username)
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("insert_message", GetConnection(userId)))
+                using (SqlCommand cmd = new SqlCommand("insert_message", GetConnection(username)))
                 {
                     PrepareIM(cmd, message);                    
                     cmd.ExecuteNonQuery();
@@ -55,20 +55,20 @@ namespace DataSourceLayer
         private static void CreateIMParameters(SqlCommand cmd)
         {
             cmd.Parameters.Add(
-                new SqlParameter("@title", SqlDbType.VarChar, 100));
+                new SqlParameter("@title", SqlDbType.NVarChar, 100));
             cmd.Parameters.Add(
                 new SqlParameter("@date", SqlDbType.Date));
             cmd.Parameters.Add(
-                new SqlParameter("@senderId", SqlDbType.Int));
+                new SqlParameter("@content", SqlDbType.Int));
             cmd.Parameters.Add(
-                new SqlParameter("@content", SqlDbType.VarChar, 1000));
+                new SqlParameter("@username", SqlDbType.NVarChar, 1000));            
+            cmd.Parameters.Add(
+                new SqlParameter("@delete", SqlDbType.Bit));
             cmd.Parameters.Add(
                 new SqlParameter("@id", SqlDbType.Int)
                 {
                     Direction = ParameterDirection.Output
                 });
-            cmd.Parameters.Add(
-                new SqlParameter("@deleteBySender", SqlDbType.Bit));
         }
 
         /// <summary> 
@@ -78,7 +78,7 @@ namespace DataSourceLayer
         {
             cmd.Parameters["@title"].Value = message.Title;
             cmd.Parameters["@date"].Value = message.Date.Date;
-            cmd.Parameters["@senderId"].Value = message.Sender.EmployeeId;
+            cmd.Parameters["@username"].Value = message.SenderUsername.Username;
             cmd.Parameters["@content"].Value = message.Content;
             cmd.Parameters["@deleteBySender"].Value = false;
         }

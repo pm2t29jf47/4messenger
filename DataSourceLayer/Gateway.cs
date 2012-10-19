@@ -11,12 +11,12 @@ namespace DataSourceLayer
        /// <summary>
        /// Пул подключений
        /// </summary>
-       private static Dictionary<int, SqlConnection> CustomConnectionPool
+       private static Dictionary<string, SqlConnection> CustomConnectionPool
        {
            get
            {
                if (CustomConnectionPool == null)
-                   CustomConnectionPool = new Dictionary<int, SqlConnection>();
+                   CustomConnectionPool = new Dictionary<string, SqlConnection>();
                return CustomConnectionPool;
            }
            set { }
@@ -27,22 +27,22 @@ namespace DataSourceLayer
        /// </summary>
        /// <param name="userId"></param>
        /// <returns></returns>
-       public static SqlConnection GetConnection(int userId)
+       public static SqlConnection GetConnection(string username)
        {
            ///Разобраться с многопоточностью!
            ///если подключение закрыли во время использования?
            ///кто закрыает старые подключения?
            lock(obj)
            {
-               if(CustomConnectionPool.ContainsKey(userId)) 
+               if (CustomConnectionPool.ContainsKey(username)) 
                {
-                   if(CustomConnectionPool[userId].State == System.Data.ConnectionState.Open) ///Broken не работает          
-                       return CustomConnectionPool[userId];
-                   CustomConnectionPool.Remove(userId);   
+                   if (CustomConnectionPool[username].State == System.Data.ConnectionState.Open) ///Broken не работает          
+                       return CustomConnectionPool[username];
+                   CustomConnectionPool.Remove(username);   
                }
                var sqlConnection = new SqlConnection();
                sqlConnection.Open();
-               CustomConnectionPool.Add(userId, sqlConnection);
+               CustomConnectionPool.Add(username, sqlConnection);
                return sqlConnection;  
            }
        }

@@ -10,9 +10,9 @@ namespace DBService
     // validator that checks that username == password
     class PasswordValidator : UserNamePasswordValidator
     {
-        public override void Validate(string userName, string password)
+        public override void Validate(string username, string password)
         {
-            if (userName != password)
+            if (username != password)
             {
                 throw new SecurityTokenValidationException();
             }

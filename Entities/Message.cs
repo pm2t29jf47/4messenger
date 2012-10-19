@@ -15,33 +15,33 @@ namespace Entities
         /// <summary>
         /// Основной конструктор
         /// </summary>
-        /// <param name="MessageId"></param>
-        /// <param name="Title"></param>
-        /// <param name="Date"></param>
-        /// <param name="Recipients"></param>
-        /// <param name="Sender"></param>
-        /// <param name="Content"></param>           
+        /// <param name="messageId"></param>
+        /// <param name="title"></param>
+        /// <param name="date"></param>
+        /// <param name="recipients"></param>
+        /// <param name="senderUsername"></param>
+        /// <param name="content"></param>           
         public Message(
-            int MessageId,
-            string Title,
-            DateTime Date,
-            List<Recipient> Recipients,
-            Employee Sender,
-            string Content)
+            int messageId,
+            string title,
+            DateTime date,
+            List<Recipient> recipients,
+            Employee senderUsername,
+            string content)
         {
-            this.MessageId = MessageId;
-            this.Title = Title;
-            this.Date = Date;
-            this.Sender = Sender;
-            this.Content = Content;
-            this.Recipients = Recipients;
+            this.Id = messageId;
+            this.Title = title;
+            this.Date = date;
+            this.SenderUsername = senderUsername;
+            this.Content = content;
+            this.Recipients = recipients;
         }
 
         /// <summary> 
         /// Первичный ключ 
         /// </summary>   
         [DataMember]
-        public int MessageId
+        public int Id
         {
             get;
             internal set;
@@ -81,7 +81,7 @@ namespace Entities
         /// Отпраитель
         /// </summary>
         [DataMember]
-        public Employee Sender
+        public Employee SenderUsername
         {
             get;
             internal set;
@@ -101,7 +101,7 @@ namespace Entities
         /// Флаг для переноса отправленных писем в папку удаленных
         /// </summary>
         [DataMember]
-        public bool DeleteBySender
+        public bool Delete
         {
             get;
             set;

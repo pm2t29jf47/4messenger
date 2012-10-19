@@ -81,7 +81,7 @@ namespace DBService
         public Entities.Employee GetNewEmployee()
         {
             var a = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return new Entities.Employee(1, "new new new employee");
+            return null; // new Entities.Employee(1, "new new new employee");
         }
     }
 }

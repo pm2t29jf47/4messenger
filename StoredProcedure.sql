@@ -71,3 +71,28 @@ BEGIN
 	END
 END
 GO
+
+/*==============================================================*/
+/* Получает все сообщения адресата                          */
+/*==============================================================*/
+ALTER PROCEDURE [dbo].[select_recipient]
+	(@recipientUsername nvarchar(50))
+AS
+	SET NOCOUNT ON 
+	SELECT *
+	FROM Recipient
+	WHERE RecipientUserName = @recipientUsername
+GO
+
+/*==============================================================*/
+/* Получает всех адресатов сообщения                            */
+/*==============================================================*/
+ALTER PROCEDURE [dbo].[select_recipient];2
+	(@messageId int)	
+AS
+	SET NOCOUNT ON
+	SELECT *
+	FROM Recipient
+	WHERE MessageId = @messageId
+GO
+	

@@ -73,7 +73,7 @@ namespace DataSourceLayer
             List<Recipient> rows = new List<Recipient>();
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select_recipient", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("select_recipient;1", GetConnection(username)))
                 {
                     PrepareSR(cmd, username);
                     using (var reader = cmd.ExecuteReader())

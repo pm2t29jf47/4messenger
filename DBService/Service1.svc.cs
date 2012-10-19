@@ -20,14 +20,6 @@ namespace DBService
 {
     public class Service1 : IService1
     {
-        public Service1()
-        {
-            sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString);
-            sqlConnection.Open();
-        }
-
-        SqlConnection sqlConnection;
-
         /// <summary> 
         /// Возвращает коллекцию содержащую всех сотрудников 
         /// </summary>
@@ -43,7 +35,11 @@ namespace DBService
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void SendMessage(Entities.Message message)
         {
+            
             string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            ///нельзя отсылать письма под чужим именем
+            if (string.Compare(username, message.SenderUsername) == 0)
+                return;
             int? insertedMessageId = MessageGateway.InsertMessage(message, username);
             if (insertedMessageId == null) return;
             foreach (var recipient in message.Recipients)
@@ -57,8 +53,10 @@ namespace DBService
         /// Получить письма
         /// </summary>
         /// <returns></returns>
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Entities.Message> ReceiveMessages()
         {
+            string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return null;
         }
     }

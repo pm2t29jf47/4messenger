@@ -66,6 +66,44 @@ namespace DataSourceLayer
             cmd.Parameters["@recipientUsername"].Value = recipient.RecipientUsername;
             cmd.Parameters["@messageId"].Value = recipient.MessageId;
             cmd.Parameters["@delete"].Value = recipient.Delete;
-        }        
+        }
+
+        public static List<Recipient> SelectRecipient(string username)
+        {
+            List<Recipient> rows = new List<Recipient>();
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("select_recipient", GetConnection(username)))
+                {
+                    PrepareSR(cmd, username);
+                    using (var reader = cmd.ExecuteReader())
+                        while (reader.Read())
+                            rows.Add(CreateRecipient(reader));
+                    return rows;
+                }
+            }
+            catch (Exception ex)
+            {
+                new ExceptionHandler().HandleExcepion(ex);
+                return rows;
+            }
+        }
+
+        private static Recipient CreateRecipient(SqlDataReader reader)
+        {
+            return new Recipient(
+                (string) reader["RecipientUsername"],
+                int.Parse((string) reader["MessageId"]),
+                bool.Parse((string) reader["Delete"]));
+        }
+
+   
+
+        private static void PrepareSR(SqlCommand cmd, string username)
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.NVarChar, 50));
+            cmd.Parameters["@recipientUsername"].Value = username;
+        } 
     }
 }

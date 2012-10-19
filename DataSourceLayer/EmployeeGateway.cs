@@ -47,10 +47,10 @@ namespace DataSourceLayer
         private static Employee CreateEmployee(SqlDataReader reader)
         {
             return new Employee(
-                reader["Username"].ToString(), ///объект в строку
-                reader["FirstName"].ToString(),
-                reader["SecondName"].ToString(),
-                reader["Role"].ToString());                
+                (string) reader["Username"], ///объект в строку
+                (string) reader["FirstName"],
+                (string) reader["SecondName"],
+                (string) reader["Role"]);                
         }
     }
 }

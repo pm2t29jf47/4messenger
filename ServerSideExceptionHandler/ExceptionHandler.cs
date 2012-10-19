@@ -9,6 +9,7 @@ namespace ServerSideExceptionHandler
     {
         public void HandleExcepion(Exception ex)
         {
+            int a = 10;
             //trace right line//listener
         }
     }

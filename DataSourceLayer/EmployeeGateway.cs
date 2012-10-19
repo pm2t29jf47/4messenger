@@ -47,7 +47,7 @@ namespace DataSourceLayer
         private static Employee CreateEmployee(SqlDataReader reader)
         {
             return new Employee(
-                (string) reader["Username"], ///объект в строку
+                (string) reader["Username"],
                 (string) reader["FirstName"],
                 (string) reader["SecondName"],
                 (string) reader["Role"]);                

@@ -91,10 +91,11 @@ namespace DataSourceLayer
 
         private static Recipient CreateRecipient(SqlDataReader reader)
         {
+            string a1, a2, a3;
             return new Recipient(
                 (string) reader["RecipientUsername"],
-                int.Parse((string) reader["MessageId"]),
-                bool.Parse((string) reader["Delete"]));
+                int.Parse(reader["MessageId"].ToString()),
+                bool.Parse(reader["Delete"].ToString()));
         }
 
    

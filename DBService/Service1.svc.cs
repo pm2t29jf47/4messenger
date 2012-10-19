@@ -61,27 +61,5 @@ namespace DBService
         {
             return null;
         }
-
-        /// <summary>
-        /// Получить true
-        /// </summary>
-        /// <returns></returns>
-        public bool GetTrue()
-        {      
-            return true;
-        }
-
-    
-        
-        /// <summary>
-        /// получить объект сотруднка
-        /// </summary>
-        /// <returns></returns>
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public Entities.Employee GetNewEmployee()
-        {
-            var a = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return null; // new Entities.Employee(1, "new new new employee");
-        }
     }
 }

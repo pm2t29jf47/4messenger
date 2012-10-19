@@ -24,7 +24,7 @@ namespace TestConsoleClient
                     "заголовок",
                     DateTime.Now,
                     r,
-                    new Entities.Employee("admin", "Админ", "Админ", "users,administrators"),
+                    "admin",
                     "письмо письмо письмо письмо"));             
         
             

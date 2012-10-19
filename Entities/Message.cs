@@ -26,13 +26,13 @@ namespace Entities
             string title,
             DateTime date,
             List<Recipient> recipients,
-            Employee sender,
+            string senderUsername,
             string content)
         {
             this.Id = id;
             this.Title = title;
             this.Date = date;
-            this.Sender = sender;
+            this.SenderUsername = senderUsername;
             this.Content = content;
             this.Recipients = recipients;
         }
@@ -81,7 +81,7 @@ namespace Entities
         /// Отпраитель
         /// </summary>
         [DataMember]
-        public Employee Sender
+        public string SenderUsername
         {
             get;
             internal set;

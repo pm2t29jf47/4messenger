@@ -30,21 +30,5 @@ namespace DBService
         /// <returns></returns>
         [OperationContract]
         List<Entities.Message> ReceiveMessages();
-
-        /// <summary>
-        /// Получить true
-        /// </summary>
-        /// <returns></returns>
-        [OperationContract]
-        bool GetTrue();
-
-        /// <summary>
-        /// получить объект сотруднка
-        /// </summary>
-        /// <returns></returns>
-        [OperationContract]
-        Employee GetNewEmployee();
-
-
     }   
 }

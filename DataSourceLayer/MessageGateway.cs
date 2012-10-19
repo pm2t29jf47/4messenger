@@ -78,7 +78,7 @@ namespace DataSourceLayer
         {
             cmd.Parameters["@title"].Value = message.Title;
             cmd.Parameters["@date"].Value = message.Date.Date;
-            cmd.Parameters["@senderUsername"].Value = message.Sender.Username;
+            cmd.Parameters["@senderUsername"].Value = message.SenderUsername;
             cmd.Parameters["@content"].Value = message.Content;
             cmd.Parameters["@delete"].Value = false;
         }

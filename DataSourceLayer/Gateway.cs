@@ -9,7 +9,7 @@ namespace DataSourceLayer
    public class Gateway
     {
        /// <summary>
-       /// Пу подключений
+       /// Пул подключений
        /// </summary>
        private static Dictionary<int, SqlConnection> CustomConnectionPool
        {
@@ -25,21 +25,28 @@ namespace DataSourceLayer
        /// <summary>
        /// Возвращает подключение из пула
        /// </summary>
-       /// <param name="UserId"></param>
+       /// <param name="userId"></param>
        /// <returns></returns>
-       public static SqlConnection GetConnection(int UserId)
+       public static SqlConnection GetConnection(int userId)
        {
-           if(CustomConnectionPool.ContainsKey(UserId)) 
+           ///Разобраться с многопоточностью!
+           ///если подключение закрыли во время использования?
+           ///кто закрыает старые подключения?
+           lock(obj)
            {
-               var result = CustomConnectionPool[UserId];
-               if(result.State == System.Data.ConnectionState.Open) ///Broken не работает          
-                   return result;
-               CustomConnectionPool.Remove(UserId);   
+               if(CustomConnectionPool.ContainsKey(userId)) 
+               {
+                   if(CustomConnectionPool[userId].State == System.Data.ConnectionState.Open) ///Broken не работает          
+                       return CustomConnectionPool[userId];
+                   CustomConnectionPool.Remove(userId);   
+               }
+               var sqlConnection = new SqlConnection();
+               sqlConnection.Open();
+               CustomConnectionPool.Add(userId, sqlConnection);
+               return sqlConnection;  
            }
-           var sqlConnection = new SqlConnection();
-           sqlConnection.Open();
-           CustomConnectionPool.Add(UserId, sqlConnection);
-           return sqlConnection;           
-       }       
+       }
+
+       private static object obj = new object();
     }
 }

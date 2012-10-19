@@ -11,13 +11,21 @@ namespace DBService
     {
         public override string[] GetRolesForUser(string username)
         {
-            if (username.CompareTo("administrator") == 0)
+            if (string.Compare(username, "administrator") == 0)
             {
                 return new string[] { "administrators", "users" };
             }
-            else
+            else if(string.Compare(username, "user1") == 0)
             {
                 return new string[] { "users" };
+            }
+            else if (string.Compare(username, "user2") == 0)
+            {
+                return new string[] { "users" };
+            }
+            else
+            {
+                return new string [0];
             }
         }
 

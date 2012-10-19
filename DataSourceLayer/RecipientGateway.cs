@@ -19,11 +19,11 @@ namespace DataSourceLayer
         /// Добавляет нового адресата к письму
         /// </summary>
         /// <param name="recipient"></param>
-        public static void InsertRecipient(Recipient recipient, SqlConnection sqlConnection)
+        public static void InsertRecipient(Recipient recipient, int userId)
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("insert_recipient", sqlConnection))
+                using (SqlCommand cmd = new SqlCommand("insert_recipient", GetConnection(userId)))
                 {
                     PrepareIR(cmd, recipient);
                     cmd.ExecuteNonQuery();

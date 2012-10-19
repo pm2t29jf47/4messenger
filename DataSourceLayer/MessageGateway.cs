@@ -13,17 +13,17 @@ namespace DataSourceLayer
     /// <summary> 
     /// Класс для доступа к данным таблицы Message 
     /// </summary>
-    public class MessageGateway
+    public class MessageGateway : Gateway
     {
 
         /// <summary> 
         /// Производит вставку письма в таблицу 
         /// </summary>
-        public static int? InsertMessage(Message message, SqlConnection sqlConnection)
+        public static int? InsertMessage(Message message, int userId)
         {
             try
-            {   
-                using (SqlCommand cmd = new SqlCommand("insert_message", sqlConnection))
+            {
+                using (SqlCommand cmd = new SqlCommand("insert_message", GetConnection(userId)))
                 {
                     PrepareIM(cmd, message);                    
                     cmd.ExecuteNonQuery();

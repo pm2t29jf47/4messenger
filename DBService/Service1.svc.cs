@@ -33,7 +33,8 @@ namespace DBService
         /// </summary>
         public List<Entities.Employee> GetEmployeeList()
         {
-            return EmployeeGateway.SelectEmployees(sqlConnection);
+            //return EmployeeGateway.SelectEmployees(sqlConnection);
+            return null;
         }
 
         /// <summary> 
@@ -41,13 +42,13 @@ namespace DBService
         /// </summary>
         public void SendMessage(Entities.Message message)
         {   
-            int? insertedMessageId = MessageGateway.InsertMessage(message, sqlConnection);
-            if (insertedMessageId == null) return;
-            foreach (var recipient in message.Recipients)
-            {
-                recipient.MessageId = (int)insertedMessageId;
-                RecipientGateway.InsertRecipient(recipient, sqlConnection);
-            }
+            //int? insertedMessageId = MessageGateway.InsertMessage(message, sqlConnection);
+            //if (insertedMessageId == null) return;
+            //foreach (var recipient in message.Recipients)
+            //{
+            //    recipient.MessageId = (int)insertedMessageId;
+            //    RecipientGateway.InsertRecipient(recipient, sqlConnection);
+            //}
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace DBService
         /// <returns></returns>
         public Entities.Employee GetNewEmployee()
         {
-            
+            var a = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return new Entities.Employee(1, "new new new employee");
         }
     }

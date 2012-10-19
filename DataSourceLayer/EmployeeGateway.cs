@@ -14,18 +14,18 @@ namespace DataSourceLayer
     /// <summary> 
     /// Класс для доступа к данным таблицы Employee 
     /// </summary>
-    public class EmployeeGateway
+    public class EmployeeGateway : Gateway
     {
 
         /// <summary> 
         /// Возвращает коллекцию всех сотрудников
         /// </summary>
-        public static List<Employee> SelectEmployees(SqlConnection sqlConnection)
+        public static List<Employee> SelectEmployees(int userId)
         {
             List<Employee> rows = new List<Employee>();
             try
-            {            
-                using (SqlCommand cmd = new SqlCommand("select_employees", sqlConnection))
+            {
+                using (SqlCommand cmd = new SqlCommand("select_employees", GetConnection(userId)))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     using (var reader = cmd.ExecuteReader())

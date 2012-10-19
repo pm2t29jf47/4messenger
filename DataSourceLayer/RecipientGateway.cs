@@ -53,7 +53,7 @@ namespace DataSourceLayer
         /// <param name="cmd"></param>
         private static void CreateIRParameters(SqlCommand cmd)
         {
-            cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.Int));
+            cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.NVarChar, 50));
             cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
             cmd.Parameters.Add(new SqlParameter("@delete", SqlDbType.Bit));
         }

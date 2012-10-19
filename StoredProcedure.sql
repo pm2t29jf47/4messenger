@@ -9,39 +9,31 @@ GO
 /*==============================================================*/
 /* Хп. Добавляет новое письмо в таблицу                         */
 /*==============================================================*/
-ALTER PROCEDURE insert_message
+ALTER procedure insert_message
 (
-	@title	varchar(100),
+	@title	nvarchar(100),
 	@date	datetime,
-	@senderId	int,
-	@content varchar(1000),
-	@deleteBySender bit,
+	@content nvarchar(1000),
+	@senderUsername	nvarchar(50),
+	@delete bit,
 	@id int output	
 )
-AS
-BEGIN
-	INSERT INTO Message 
-	VALUES
-	(
-		@title,
-		@date,
-		@content,
-		@senderId,
-		0
+as
+	insert into Message values(
+	@title,
+	@date,
+	@content,
+	@senderUsername,
+	@delete
 	)
-	
-	--@@SCOPE_I
-	
-	--------------именить----------------
-	SELECT @id = MessageId
-	FROM Message 
-	WHERE Title = @title 
+	select @id = Id
+	from Message 
+	where Title = @title 
 	AND [Date] = @date
-	AND SenderId = @senderId
+	AND SenderUsername = @senderUsername
+	AND [Delete] = @delete
 	AND Content = @content
-	--------------------------------------
-END
-GO  
+
 
 /*==============================================================*/
 /* Хп. Добавляет нового адресата в таблицу                      */

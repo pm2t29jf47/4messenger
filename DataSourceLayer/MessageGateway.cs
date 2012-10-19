@@ -80,7 +80,7 @@ namespace DataSourceLayer
             cmd.Parameters["@date"].Value = message.Date.Date;
             cmd.Parameters["@senderUsername"].Value = message.SenderUsername.Username;
             cmd.Parameters["@content"].Value = message.Content;
-            cmd.Parameters["@deleteBySender"].Value = false;
+            cmd.Parameters["@delete"].Value = false;
         }
     }
 }

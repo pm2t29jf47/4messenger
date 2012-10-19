@@ -19,20 +19,20 @@ namespace Entities
         /// <param name="title"></param>
         /// <param name="date"></param>
         /// <param name="recipients"></param>
-        /// <param name="senderUsername"></param>
+        /// <param name="sender"></param>
         /// <param name="content"></param>           
         public Message(
-            int messageId,
+            int? id,
             string title,
             DateTime date,
             List<Recipient> recipients,
-            Employee senderUsername,
+            Employee sender,
             string content)
         {
-            this.Id = messageId;
+            this.Id = id;
             this.Title = title;
             this.Date = date;
-            this.SenderUsername = senderUsername;
+            this.Sender = sender;
             this.Content = content;
             this.Recipients = recipients;
         }
@@ -41,7 +41,7 @@ namespace Entities
         /// Первичный ключ 
         /// </summary>   
         [DataMember]
-        public int Id
+        public int? Id
         {
             get;
             internal set;
@@ -81,7 +81,7 @@ namespace Entities
         /// Отпраитель
         /// </summary>
         [DataMember]
-        public Employee SenderUsername
+        public Employee Sender
         {
             get;
             internal set;

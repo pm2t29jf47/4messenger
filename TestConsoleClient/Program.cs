@@ -12,21 +12,22 @@ namespace TestConsoleClient
         static void Main(string[] args)
         {
             var factory1 = new ChannelFactory<IService1>("*");
-            factory1.Credentials.UserName.UserName = "administrator";
-            factory1.Credentials.UserName.Password = "administrator";
-
+            factory1.Credentials.UserName.UserName = "Ivan";
+            factory1.Credentials.UserName.Password = "Ivan";
             var proxy = factory1.CreateChannel();
-            var a = proxy.GetTrue();
-            Entities.Employee an;
-            try
-            {
-                 an = proxy.GetNewEmployee();
-            }
-            catch (Exception e)
-            {
-                int ab = 10;
-            }
-            int bd = 11111;
+            var r = new List<Entities.Recipient>();
+            r.Add(new Entities.Recipient("Ivan",null,false));
+            r.Add(new Entities.Recipient("Ivan1",null,false));
+            proxy.SendMessage(
+                new Entities.Message(
+                    null,
+                    "заголовок",
+                    DateTime.Now,
+                    r,
+                    new Entities.Employee("admin", "Админ", "Админ", "users,administrators"),
+                    "письмо письмо письмо письмо"));             
+        
+            
         }
     }
 }

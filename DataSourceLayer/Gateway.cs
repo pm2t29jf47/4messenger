@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace DataSourceLayer
 {
@@ -11,16 +12,7 @@ namespace DataSourceLayer
        /// <summary>
        /// Пул подключений
        /// </summary>
-       private static Dictionary<string, SqlConnection> CustomConnectionPool
-       {
-           get
-           {
-               if (CustomConnectionPool == null)
-                   CustomConnectionPool = new Dictionary<string, SqlConnection>();
-               return CustomConnectionPool;
-           }
-           set { }
-       }
+       private static Dictionary<string, SqlConnection> customConnectionPool = new Dictionary<string, SqlConnection>();
 
        /// <summary>
        /// Возвращает подключение из пула
@@ -32,19 +24,19 @@ namespace DataSourceLayer
            ///Разобраться с многопоточностью!
            ///если подключение закрыли во время использования?
            ///кто закрыает старые подключения?
-           lock(obj)
-           {
-               if (CustomConnectionPool.ContainsKey(username)) 
+          // lock(obj)
+          // {
+               if (customConnectionPool.ContainsKey(username)) 
                {
-                   if (CustomConnectionPool[username].State == System.Data.ConnectionState.Open) ///Broken не работает          
-                       return CustomConnectionPool[username];
-                   CustomConnectionPool.Remove(username);   
+                   if (customConnectionPool[username].State == System.Data.ConnectionState.Open) ///Broken не работает          
+                       return customConnectionPool[username];
+                   customConnectionPool.Remove(username);   
                }
-               var sqlConnection = new SqlConnection();
+               var sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString);
                sqlConnection.Open();
-               CustomConnectionPool.Add(username, sqlConnection);
+               customConnectionPool.Add(username, sqlConnection);
                return sqlConnection;  
-           }
+           //}
        }
 
        private static object obj = new object();

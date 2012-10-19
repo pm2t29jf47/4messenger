@@ -15,12 +15,12 @@ namespace Entities
         /// <param name="employeeId"></param>
         /// <param name="messageId"></param>
         /// <param name="delete"></param>
-        public Recipient(int recipientUsername,
-            int messageId,
+        public Recipient(string recipientUsername,
+            int? messageId,
             bool delete)
         {
             this.Delete = delete;
-            this.RecipientUsername = RecipientUsername;
+            this.RecipientUsername = recipientUsername;
             this.MessageId = messageId;
         }
 
@@ -40,7 +40,7 @@ namespace Entities
         /// Идентификатор сообщения
         /// </summary>
         [DataMember]
-        public int MessageId
+        public int? MessageId
         {
             get;
             set;

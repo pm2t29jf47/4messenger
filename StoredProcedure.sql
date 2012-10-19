@@ -40,9 +40,9 @@ as
 /*==============================================================*/
 ALTER PROCEDURE insert_recipient
 (
-	@employeeId int,
+	@recipientUsername nvarchar(50),
 	@messageId int,
-	@deleteByRecipient bit
+	@delete bit
 )
 AS
 BEGIN
@@ -51,22 +51,22 @@ BEGIN
 		SELECT * 
 		FROM Recipient
 		WHERE 
-			EmployeeId = @employeeId
+			RecipientUsername = @recipientUsername
 			AND MessageId = @messageId
-			AND DeleteByRecipient = @deleteByRecipient
+			AND [Delete] = @delete
 	)
 	BEGIN		
 		INSERT INTO Recipient
 		(
-			EmployeeId,
+			RecipientUsername,
 			MessageId,
-			DeleteByRecipient
+			[Delete]
 		) 
 		VALUES
 		(
-			@employeeId,
+			@recipientUsername,
 			@messageId,
-			@deleteByRecipient
+			@delete
 		)
 	END
 END

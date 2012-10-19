@@ -28,8 +28,8 @@ namespace TestWinFormsClient
         {
            
             ///переделывать под текущую бд
-            var a = new List<Entities.Recipient>();
-            a.Add(new Entities.Recipient(5, 6, true));
+          //  var a = new List<Entities.Recipient>();
+           // a.Add(new Entities.Recipient(5, 6, true));
         //    dbs.SendMessage(
         //        new Entities.Message(
         //            0,

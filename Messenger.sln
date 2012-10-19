@@ -13,6 +13,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Additional", "Additional", "{6E4E3BF3-C8CE-4621-8FAE-43057EF60EB8}"
 	ProjectSection(SolutionItems) = preProject
 		Notes.txt = Notes.txt
+		StoredProcedure.sql = StoredProcedure.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleClient", "TestConsoleClient\TestConsoleClient.csproj", "{D34A5A80-2E36-49DF-8A9F-5735F00BF108}"

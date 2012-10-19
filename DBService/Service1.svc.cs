@@ -40,15 +40,17 @@ namespace DBService
         /// <summary> 
         /// Производит вставку письма в таблицу Message 
         /// </summary>
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void SendMessage(Entities.Message message)
-        {   
-            //int? insertedMessageId = MessageGateway.InsertMessage(message, sqlConnection);
-            //if (insertedMessageId == null) return;
-            //foreach (var recipient in message.Recipients)
-            //{
-            //    recipient.MessageId = (int)insertedMessageId;
-            //    RecipientGateway.InsertRecipient(recipient, sqlConnection);
-            //}
+        {
+            string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            int? insertedMessageId = MessageGateway.InsertMessage(message, username);
+            if (insertedMessageId == null) return;
+            foreach (var recipient in message.Recipients)
+            {
+                recipient.MessageId = (int)insertedMessageId;
+                RecipientGateway.InsertRecipient(recipient, username);
+            }
         }
 
         /// <summary>
@@ -69,15 +71,13 @@ namespace DBService
             return true;
         }
 
-        /// <summary>
-        /// Доступ имеют все зарегистрированные пользователи
-        /// </summary>
-        /// <returns></returns>
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+    
+        
         /// <summary>
         /// получить объект сотруднка
         /// </summary>
         /// <returns></returns>
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public Entities.Employee GetNewEmployee()
         {
             var a = ServiceSecurityContext.Current.PrimaryIdentity.Name;

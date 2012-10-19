@@ -59,9 +59,9 @@ namespace DataSourceLayer
             cmd.Parameters.Add(
                 new SqlParameter("@date", SqlDbType.Date));
             cmd.Parameters.Add(
-                new SqlParameter("@content", SqlDbType.Int));
+                new SqlParameter("@content", SqlDbType.NVarChar, 1000));
             cmd.Parameters.Add(
-                new SqlParameter("@senderUsername", SqlDbType.NVarChar, 1000));            
+                new SqlParameter("@senderUsername", SqlDbType.NVarChar, 50));            
             cmd.Parameters.Add(
                 new SqlParameter("@delete", SqlDbType.Bit));
             cmd.Parameters.Add(
@@ -78,7 +78,7 @@ namespace DataSourceLayer
         {
             cmd.Parameters["@title"].Value = message.Title;
             cmd.Parameters["@date"].Value = message.Date.Date;
-            cmd.Parameters["@senderUsername"].Value = message.SenderUsername.Username;
+            cmd.Parameters["@senderUsername"].Value = message.Sender.Username;
             cmd.Parameters["@content"].Value = message.Content;
             cmd.Parameters["@delete"].Value = false;
         }

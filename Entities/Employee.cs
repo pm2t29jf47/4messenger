@@ -19,6 +19,7 @@ namespace Entities
         /// Конструктор для десериализации
         /// </summary>
         public Employee() { }
+
         /// <summary>
         /// Основной конструктор
         /// </summary>

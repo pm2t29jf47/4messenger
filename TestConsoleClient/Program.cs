@@ -15,26 +15,27 @@ namespace TestConsoleClient
             factory1.Credentials.UserName.UserName = "Ivan";
             factory1.Credentials.UserName.Password = "Ivan";
             var proxy = factory1.CreateChannel();
-            var r = new List<Entities.Recipient>();
-            r.Add(new Entities.Recipient("Ivan",null,false));
-            r.Add(new Entities.Recipient("Ivan1",null,false));
-            proxy.SendMessage(
-                new Entities.Message(
-                    null,
-                    "заголовок",
-                    DateTime.Now,
-                    r,
-                    "admin",
-                    "письмо письмо письмо письмо"));
-            r.RemoveAt(1);
-            proxy.SendMessage(
-                new Entities.Message(
-                    null,
-                    "заголовок2",
-                    DateTime.Now,
-                    r,
-                    "admin",
-                    "письмо письмо письмо только ивану"));
+            //var r = new List<Entities.Recipient>();
+            //r.Add(new Entities.Recipient("Ivan",null,false));
+            //r.Add(new Entities.Recipient("Ivan1",null,false));
+            //proxy.SendMessage(
+            //    new Entities.Message(
+            //        null,
+            //        "заголовок",
+            //        DateTime.Now,
+            //        r,
+            //        "admin",
+            //        "письмо письмо письмо письмо"));
+            //r.RemoveAt(1);
+            //proxy.SendMessage(
+            //    new Entities.Message(
+            //        null,
+            //        "заголовок2",
+            //        DateTime.Now,
+            //        r,
+            //        "admin",
+            //        "письмо письмо письмо только ивану"));
+            var a = proxy.ReceiveMessages();
         
             
         }

@@ -24,8 +24,8 @@ namespace DataSourceLayer
            ///Разобраться с многопоточностью!
            ///если подключение закрыли во время использования?
            ///кто закрыает старые подключения?
-          // lock(obj)
-          // {
+           lock(obj)
+           {
                if (customConnectionPool.ContainsKey(username)) 
                {
                    if (customConnectionPool[username].State == System.Data.ConnectionState.Open) ///Broken не работает    
@@ -39,7 +39,7 @@ namespace DataSourceLayer
                sqlConnection.Open();
                customConnectionPool.Add(username, sqlConnection);
                return sqlConnection;  
-           //}
+           }
        }
 
        private static object obj = new object();

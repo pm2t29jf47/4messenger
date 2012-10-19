@@ -83,24 +83,28 @@ namespace DataSourceLayer
             cmd.Parameters["@delete"].Value = false;
         }
 
+        /// <summary>
+        /// Возвращает сообщение по его идентификатору 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public static Message SelectMessage(int id, string username)
         {          
             try
             {
                 using (SqlCommand cmd = new SqlCommand("select_message;1", GetConnection(username)))
                 {
-                    PrepareSM(cmd, id);
+                    PrepareSM1(cmd, id);
+                    ///будет работать с тем же подключением в пуле, что итекущий метод!
+                    List<Recipient> recipients = RecipientGateway.SelectRecipient(id, username);
+                    ////////////////////////////////////////////////////////////////////////////
                     using (var reader = cmd.ExecuteReader())
                     {
-                        while (reader.Read())
-                        {
-                            ///будет работать с тем же подключением в пуле, что итекущий метод!
-                            List<Recipient> recipients = RecipientGateway.SelectRecipient(id, username);
-                            ////////////////
-                            return CreateMessage(reader, recipients);
-                        }
+                        reader.Read();
+                        return CreateMessage(reader, recipients);
                     }
-                                        
+                                                           
                 }
             }
             catch (Exception ex)
@@ -111,6 +115,12 @@ namespace DataSourceLayer
             return null;
         }
 
+        /// <summary>
+        /// Создает объек типа Message по данным из таблицы 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="recipients"></param>
+        /// <returns></returns>
         private static Message CreateMessage(SqlDataReader reader, List<Recipient> recipients)
         {
             return new Message(
@@ -122,7 +132,12 @@ namespace DataSourceLayer
                 (string) reader["Content"]);            
         }
 
-        private static void PrepareSM(SqlCommand cmd, int messageId)
+        /// <summary>
+        /// Подготавливает команду для выполнения ХП select_message;1 (SM1)
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="messageId"></param>
+        private static void PrepareSM1(SqlCommand cmd, int messageId)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));

@@ -23,6 +23,7 @@ namespace DBService
         /// <summary> 
         /// Возвращает коллекцию содержащую всех сотрудников 
         /// </summary>
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Entities.Employee> GetEmployeeList()
         {
             //return EmployeeGateway.SelectEmployees(sqlConnection);
@@ -38,6 +39,7 @@ namespace DBService
             
             string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             ///нельзя отсылать письма под чужим именем
+            ///вернуть ошибку!!!!
             if (string.Compare(username, message.SenderUsername) == 0)
                 return;
             int? insertedMessageId = MessageGateway.InsertMessage(message, username);
@@ -57,7 +59,12 @@ namespace DBService
         public List<Entities.Message> ReceiveMessages()
         {
             string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return null;
+            List<Entities.Message> messages = new List<Entities.Message>();
+            List<Entities.Recipient> recipients = RecipientGateway.SelectRecipient(username);
+            foreach (var recipient in recipients)
+                ///recipient.MessageId не может быть null, тк берется из базы
+                messages.Add(MessageGateway.SelectMessage((int)recipient.MessageId, username));
+            return messages;
         }
     }
 }

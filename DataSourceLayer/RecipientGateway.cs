@@ -69,7 +69,7 @@ namespace DataSourceLayer
         }
 
         /// <summary>
-        /// Получает все строки таблицы Recipient с данным адресатом
+        /// Возвращает все строки таблицы Recipient с данным адресатом
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
@@ -120,6 +120,12 @@ namespace DataSourceLayer
             cmd.Parameters["@recipientUsername"].Value = username;
         }
 
+        /// <summary>
+        /// Возвращает все строки таблицы Recipient с данным идентификатором сообщения
+        /// </summary>
+        /// <param name="messageId"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public static List<Recipient> SelectRecipient(int messageId, string username)
         {
             List<Recipient> rows = new List<Recipient>();
@@ -141,6 +147,11 @@ namespace DataSourceLayer
             }
         }
 
+        /// <summary>
+        /// Подготавливает команду для выполнения ХП select_recipient;2 (SR2)
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="messageId"></param>
         private static void PrepareSR2(SqlCommand cmd, int messageId)
         {
             cmd.CommandType = CommandType.StoredProcedure;

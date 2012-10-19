@@ -28,8 +28,11 @@ namespace DataSourceLayer
           // {
                if (customConnectionPool.ContainsKey(username)) 
                {
-                   if (customConnectionPool[username].State == System.Data.ConnectionState.Open) ///Broken не работает          
+                   if (customConnectionPool[username].State == System.Data.ConnectionState.Open) ///Broken не работает    
+                   {
+                       //customConnectionPool[username].
                        return customConnectionPool[username];
+                   }
                    customConnectionPool.Remove(username);   
                }
                var sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["DB"].ConnectionString);

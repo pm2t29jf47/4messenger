@@ -25,7 +25,16 @@ namespace TestConsoleClient
                     DateTime.Now,
                     r,
                     "admin",
-                    "письмо письмо письмо письмо"));             
+                    "письмо письмо письмо письмо"));
+            r.RemoveAt(1);
+            proxy.SendMessage(
+                new Entities.Message(
+                    null,
+                    "заголовок2",
+                    DateTime.Now,
+                    r,
+                    "admin",
+                    "письмо письмо письмо только ивану"));
         
             
         }

@@ -1,0 +1,22 @@
+﻿<Window x:Class="WPFClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Messenger" Height="455" Width="917" Name="Messenger">
+    <Grid>
+        <TreeView Margin="0,0,716,0">
+            
+                <TreeViewItem Header="Fruit">
+                    <TreeViewItem Header="Lime"></TreeViewItem>
+                    <TreeViewItem Header="Orange"></TreeViewItem>
+                    <TreeViewItem Header="Apple"></TreeViewItem>
+                </TreeViewItem>
+                <TreeViewItem Header="Colors">
+                    <TreeViewItem Header="Red"></TreeViewItem>
+                    <TreeViewItem Header="Orange"></TreeViewItem>
+                    <TreeViewItem Header="Green"></TreeViewItem>
+                </TreeViewItem>
+            </TreeView>
+        
+        
+    </Grid>
+</Window>

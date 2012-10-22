@@ -55,7 +55,7 @@ namespace DBService
         /// Получить письма
         /// </summary>
         /// <returns></returns>
-        [PrincipalPermission(SecurityAction.Demand, Role = "administrators")]
+        ///[PrincipalPermission(SecurityAction.Demand, Role = "administrators")]
         public List<Entities.Message> ReceiveMessages()
         {
             string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;

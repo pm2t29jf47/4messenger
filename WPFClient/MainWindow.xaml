@@ -1,22 +1,57 @@
 ﻿<Window x:Class="WPFClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Messenger" Height="455" Width="917" Name="Messenger">
-    <Grid>
-        <TreeView Margin="0,0,716,0">
-            
-                <TreeViewItem Header="Fruit">
-                    <TreeViewItem Header="Lime"></TreeViewItem>
-                    <TreeViewItem Header="Orange"></TreeViewItem>
-                    <TreeViewItem Header="Apple"></TreeViewItem>
-                </TreeViewItem>
-                <TreeViewItem Header="Colors">
-                    <TreeViewItem Header="Red"></TreeViewItem>
-                    <TreeViewItem Header="Orange"></TreeViewItem>
-                    <TreeViewItem Header="Green"></TreeViewItem>
-                </TreeViewItem>
-            </TreeView>
-        
-        
+        Title="Messenger" Height="462" Width="917" Name="Messenger">
+    <Grid>        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>           
+        </Grid.ColumnDefinitions>
+        <TreeView Name="Folders" Grid.Column="0" Margin="5">            
+            <TreeViewItem Name="InboxFolder" Header="Inbox" Margin="5"></TreeViewItem>
+            <TreeViewItem Name="SentFolder" Header="Sent" Margin="5"></TreeViewItem>
+            <TreeViewItem Name="DeletedFolder" Header="Deleted" Margin="5"></TreeViewItem>
+            <Button Margin="5">Написать письмо</Button>
+        </TreeView>
+        <TreeView Name="MessageList" Grid.Column="1" Margin="5">
+            <TreeViewItem Name="InboxFolder2" Header="Иванов.А. ivanov"></TreeViewItem>
+            <TreeViewItem Name="SentFolder2" Header="Пупкин.M. ivanovpupukin"></TreeViewItem>
+            <TreeViewItem Name="DeletedFolder2" Header="Иванов.А. ivanov"></TreeViewItem>
+        </TreeView>
+        <Grid Name="Message" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Name="MessageAttributes" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="458*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Name="SenderLable" Grid.Column="0" Grid.Row="0" Margin="5">Отправитель</Label>
+                <Label Name="RecipientLable" Grid.Column="0" Grid.Row="1" Margin="5">Получатель</Label>
+                <Label Name="DateLable" Grid.Column="0" Grid.Row="2" Margin="5">Дата отправления</Label>
+                <Label Name="TitleLable" Grid.Column="0" Grid.Row="3" Margin="5">Дата отправления</Label>
+                <TextBox Name="SenderTextbox" Grid.Column="1" Grid.Row="0" Margin="5" IsReadOnly="True" />
+                <TextBox Name="RecipientTextbox" Grid.Column="1" Grid.Row="1" Margin="5" IsReadOnly="True"/>
+                <TextBox Name="DateTextbox" Grid.Column="1" Grid.Row="2" Margin="5" IsReadOnly="True" />
+                <TextBox Name="TitleTextbox" Grid.Column="1" Grid.Row="3" Margin="5" IsReadOnly="True" />
+            </Grid>
+            <TextBox Name="MessageContent" Grid.Row="1" FontSize="12" Margin="5" IsReadOnly="True" >Здесь будет текст сообшения</TextBox>
+            <StackPanel Grid.Row="2" HorizontalAlignment="Right"
+                       Orientation="Horizontal" MinHeight="40">
+                <Button Margin="5" Padding="5">Reply</Button>
+                <Button Margin="5" Padding="5">Delete</Button>
+                <Button Margin="5" Padding="5" Visibility="Collapsed">Send</Button>
+            </StackPanel>           
+        </Grid>
     </Grid>
 </Window>

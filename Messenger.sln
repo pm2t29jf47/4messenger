@@ -23,12 +23,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0080381D-61CA-4E70-A345-A37CE10E0FED}"
 	ProjectSection(SolutionItems) = preProject
+		Images\folder.png = Images\folder.png
 		Local.testsettings = Local.testsettings
 		Messenger1.vsmdi = Messenger1.vsmdi
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClient", "WPFClient\WPFClient.csproj", "{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClient", "WPFClient\WPFClient.csproj", "{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -113,16 +114,16 @@ Global
 		{34D7A37A-0149-4E6A-B22A-75D2FBDEB00F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{34D7A37A-0149-4E6A-B22A-75D2FBDEB00F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{34D7A37A-0149-4E6A-B22A-75D2FBDEB00F}.Release|x86.ActiveCfg = Release|Any CPU
-		{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}.Debug|x86.ActiveCfg = Debug|x86
-		{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}.Debug|x86.Build.0 = Debug|x86
-		{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}.Release|Any CPU.ActiveCfg = Release|x86
-		{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}.Release|Mixed Platforms.Build.0 = Release|x86
-		{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}.Release|x86.ActiveCfg = Release|x86
-		{19C7EEC0-8F14-4AB9-8EB4-CF7E8BF0FE8F}.Release|x86.Build.0 = Release|x86
+		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Debug|x86.ActiveCfg = Debug|x86
+		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Debug|x86.Build.0 = Debug|x86
+		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Release|Any CPU.ActiveCfg = Release|x86
+		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Release|Mixed Platforms.Build.0 = Release|x86
+		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Release|x86.ActiveCfg = Release|x86
+		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

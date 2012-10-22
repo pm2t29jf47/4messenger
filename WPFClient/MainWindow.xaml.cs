@@ -22,6 +22,12 @@ namespace WPFClient
         public MainWindow()
         {
             InitializeComponent();
+            
         }
+
+   
+    
+    
+
     }
 }

@@ -13,8 +13,8 @@ namespace TestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            var a = MessageGateway.SelectMessage(1, "ivan");
-            var b = MessageGateway.SelectMessage(2, "ivan");
+           //var a  =  EmployeeGateway.SelectSecurityEmployee("Ivan");
+          // var b = EmployeeGateway.SelectSecurityEmployee("Admin");
         }
     }
 }

@@ -12,8 +12,8 @@ namespace TestConsoleClient
         static void Main(string[] args)
         {
             var factory1 = new ChannelFactory<IService1>("*");
-            factory1.Credentials.UserName.UserName = "Ivan";
-            factory1.Credentials.UserName.Password = "Ivan";
+            factory1.Credentials.UserName.UserName = "Admin";
+            factory1.Credentials.UserName.Password = "22h2";
             var proxy = factory1.CreateChannel();
             //var r = new List<Entities.Recipient>();
             //r.Add(new Entities.Recipient("Ivan",null,false));

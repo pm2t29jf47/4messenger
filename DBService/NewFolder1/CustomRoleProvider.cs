@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Security;
+using Entities;
+using DataSourceLayer;
 
 namespace DBService
 {
@@ -11,22 +13,8 @@ namespace DBService
     {
         public override string[] GetRolesForUser(string username)
         {
-            if (string.Compare(username, "admin") == 0)
-            {
-                return new string[] { "administrators", "users" };
-            }
-            else if(string.Compare(username, "Ivan") == 0)
-            {
-                return new string[] { "users" };
-            }
-            else if (string.Compare(username, "Ivan1") == 0)
-            {
-                return new string[] { "users" };
-            }
-            else
-            {
-                return new string [0];
-            }
+            Employee securityEmloyee = EmployeeGateway.SelectSecurityEmployee(username, "Admin");
+            return securityEmloyee.Role.Split(new char [1]{','}, StringSplitOptions.RemoveEmptyEntries);         
         }
 
         public override bool IsUserInRole(string username, string roleName)

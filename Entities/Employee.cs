@@ -25,12 +25,13 @@ namespace Entities
         /// </summary>
         /// <param name="EmploeeId"></param>
         /// <param name="Name"></param>
-        public Employee(string username, string firstName, string secondName, string role)
+        public Employee(string username, string firstName, string secondName, string role, string password)
         {
             this.Username = username;
             this.FirstName = firstName;
             this.SecondName = secondName;
             this.Role = role;
+            this.Password = password;
         }  
 
         /// <summary>
@@ -42,6 +43,12 @@ namespace Entities
             get;
             internal set;         
         }
+
+        /// <summary>
+        /// Пароль
+        /// </summary>
+        [DataMember]
+        public string Password { get; set; }
 
         /// <summary>
         /// Имя сотрудника

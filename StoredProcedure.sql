@@ -1,9 +1,22 @@
 ﻿/*==============================================================*/
 /* Хп. Выводит данные всех работников                           */
 /*==============================================================*/
-CREATE PROCEDURE select_employees
+CREATE PROCEDURE select_employee;1
 AS
-	SELECT * FROM [dbo].[Employee]
+	SELECT *
+	FROM [dbo].[Employee]
+GO
+
+/*==============================================================*/
+/* Хп. Выводит данные работника по ключу                        */
+/*==============================================================*/
+CREATE PROCEDURE select_employee;2
+(@username nvarchar (50))
+AS
+	SELECT * 
+	FROM [dbo].[Employee]
+	WHERE Employee.Username = @username
+	
 GO
 
 /*==============================================================*/

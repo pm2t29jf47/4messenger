@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using DataSourceLayer;
+using Entities;
 
 namespace DBService
 {
@@ -12,10 +14,13 @@ namespace DBService
     {
         public override void Validate(string username, string password)
         {
-            if (username != password)
+            Employee securityEmloyee = EmployeeGateway.SelectSecurityEmployee(username,"Admin");
+            if (securityEmloyee != null)
             {
-                throw new SecurityTokenValidationException();
+                if (string.Compare(securityEmloyee.Password, password) == 0)
+                    return;
             }
+            throw new SecurityTokenValidationException();           
         }
     }
 }

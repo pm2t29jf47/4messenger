@@ -16,11 +16,6 @@ namespace Entities
     public class Employee
     {
         /// <summary>
-        /// Конструктор для десериализации
-        /// </summary>
-        public Employee() { }
-
-        /// <summary>
         /// Основной конструктор
         /// </summary>
         /// <param name="EmploeeId"></param>

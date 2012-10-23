@@ -55,7 +55,7 @@ namespace DBService
         /// Получить письма
         /// </summary>
         /// <returns></returns>
-        ///[PrincipalPermission(SecurityAction.Demand, Role = "administrators")]
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Entities.Message> ReceiveMessages()
         {
             string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
@@ -66,5 +66,11 @@ namespace DBService
                 messages.Add(MessageGateway.SelectMessage((int)recipient.MessageId, username));
             return messages;
         }
+
+        /// <summary>
+        /// Проверяет аутентификационные данные пользователя
+        /// </summary>
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public void CheckUser(){ }
     }
 }

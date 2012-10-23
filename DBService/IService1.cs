@@ -30,5 +30,11 @@ namespace DBService
         /// <returns></returns>
         [OperationContract]
         List<Entities.Message> ReceiveMessages();
+
+        /// <summary>
+        /// Проверяет аутентификационные данные пользователя
+        /// </summary>
+        [OperationContract]
+        void CheckUser();
     }   
 }

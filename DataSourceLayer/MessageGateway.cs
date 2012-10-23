@@ -32,7 +32,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex);
+                new ExceptionHandler().HandleExcepion(ex,"InsertMessage");
                 return null;
             }
         }
@@ -109,10 +109,9 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex);
+                new ExceptionHandler().HandleExcepion(ex,"SelectMessage");
                 return null;
             }
-            return null;
         }
 
         /// <summary>
@@ -123,7 +122,7 @@ namespace DataSourceLayer
         /// <returns></returns>
         private static Message CreateMessage(SqlDataReader reader, List<Recipient> recipients)
         {
-            return new Message(
+            return !reader.HasRows ? null : new Message(
                 int.Parse(reader["Id"].ToString()),
                 (string) reader["Title"],
                 (DateTime.Parse(reader["Date"].ToString())),

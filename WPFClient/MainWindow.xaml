@@ -1,7 +1,8 @@
 ﻿<Window x:Class="WPFClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Messenger" Height="462" Width="917" Name="Messenger">
+        Title="Messenger" Height="462" Width="917" Name="Messenger"
+        xmlns:MyDll ="clr-namespace:Entities;assembly=Entities">
     <Grid>        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -12,12 +13,16 @@
             <TreeViewItem Name="InboxFolder" Header="Inbox" Margin="5"></TreeViewItem>
             <TreeViewItem Name="SentFolder" Header="Sent" Margin="5"></TreeViewItem>
             <TreeViewItem Name="DeletedFolder" Header="Deleted" Margin="5"></TreeViewItem>
-            <Button Margin="5">Написать письмо</Button>
+            <Button Margin="5" Click="NewLatter_Click">Написать письмо</Button>
+            <Button Margin="5" Click="Loguot_Click">Выйти</Button>
         </TreeView>
-        <TreeView Name="MessageList" Grid.Column="1" Margin="5">
-            <TreeViewItem Name="InboxFolder2" Header="Иванов.А. ivanov"></TreeViewItem>
-            <TreeViewItem Name="SentFolder2" Header="Пупкин.M. ivanovpupukin"></TreeViewItem>
-            <TreeViewItem Name="DeletedFolder2" Header="Иванов.А. ivanov"></TreeViewItem>
+        <TreeView Name="MessageList" Grid.Column="1" Margin="5" SelectedItemChanged="MessageList_SelectedItemChanged">            
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type MyDll:Message}">
+                    <TextBlock Text="{Binding Path=Title}" Margin="5">                        
+                    </TextBlock>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>            
         </TreeView>
         <Grid Name="Message" Grid.Column="2">
             <Grid.RowDefinitions>

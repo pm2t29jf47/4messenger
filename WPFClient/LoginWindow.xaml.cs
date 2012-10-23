@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ServiceModel;
 using DBService;
+using System.IdentityModel.Tokens;
 
 namespace WPFClient
 {
@@ -23,16 +24,33 @@ namespace WPFClient
         public LoginWindow()
         {
             InitializeComponent();
+            Button_Click(null, null);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var factory1 = new ChannelFactory<IService1>("*");
-            factory1.Credentials.UserName.UserName = "Admin";
-            factory1.Credentials.UserName.Password = "22h2";
-            var proxy = factory1.CreateChannel();
-            var a = proxy.ReceiveMessages();
-
+            try
+            {
+                UsernameTexbox.Text = "Ivan";
+                PasswordTexbox.Password = "111";
+                var factory1 = new ChannelFactory<IService1>("*");
+                factory1.Credentials.UserName.UserName = UsernameTexbox.Text;
+                factory1.Credentials.UserName.Password = PasswordTexbox.Password;
+                App.Proxy = factory1.CreateChannel();
+                App.Proxy.CheckUser();
+                var mw = new MainWindow();
+                mw.Show();
+                ///После this.Close(); поидее должно закрываться и mw
+                this.Close();
+            }
+            catch (System.ServiceModel.Security.MessageSecurityException ex)
+            {
+                MessageBox.Show("Authentication filed!");
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
         }
     }
 }

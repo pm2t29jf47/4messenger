@@ -31,7 +31,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex);
+                new ExceptionHandler().HandleExcepion(ex, "InsertRecipient");
             }
         }
 
@@ -89,7 +89,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex);
+                new ExceptionHandler().HandleExcepion(ex, "SelectRecipient(string username)");
                 return rows;
             }
         }
@@ -101,8 +101,7 @@ namespace DataSourceLayer
         /// <returns></returns>
         private static Recipient CreateRecipient(SqlDataReader reader)
         {
-            string a1, a2, a3;
-            return new Recipient(
+            return !reader.HasRows ? null : new Recipient(
                 (string) reader["RecipientUsername"],
                 int.Parse(reader["MessageId"].ToString()),
                 bool.Parse(reader["Delete"].ToString()));
@@ -142,7 +141,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex);
+                new ExceptionHandler().HandleExcepion(ex, "SelectRecipient(int messageId, string username)");
                 return rows;
             }
         }

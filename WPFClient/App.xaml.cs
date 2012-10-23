@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using DBService;
 
 namespace WPFClient
 {
@@ -12,5 +13,10 @@ namespace WPFClient
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Хранит прокси класс для обращения к методам сервиса
+        /// </summary>
+        public static IService1 Proxy
+        { get; set; }
     }
 }

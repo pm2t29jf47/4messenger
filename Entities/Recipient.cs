@@ -24,8 +24,6 @@ namespace Entities
             this.MessageId = messageId;
         }
 
-        public Recipient() { }
-
         /// <summary>
         /// Идентификатор сотрудника-получателя
         /// </summary>

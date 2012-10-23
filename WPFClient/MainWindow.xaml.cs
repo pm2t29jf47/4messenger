@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Entities;
 
 namespace WPFClient
 {
@@ -22,12 +23,40 @@ namespace WPFClient
         public MainWindow()
         {
             InitializeComponent();
-            
+            FormLoad();
         }
 
-   
-    
-    
+        private void FormLoad()
+        {
+            var receivedMessages = App.Proxy.ReceiveMessages();
+            MessageList.Items.Add(receivedMessages[0]);
+            MessageList.Items.Add(receivedMessages[1]);
+            //MessageList.
+            
 
+        }
+
+        private void NewLatter_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Loguot_Click(object sender, RoutedEventArgs e)
+        {
+            App.Proxy = null;
+            var lo = new LoginWindow();
+            lo.Show();
+            this.Close();
+        }
+
+        private void SentFolder2_Selected(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MessageList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            int A = 12;
+
+        }
     }
 }

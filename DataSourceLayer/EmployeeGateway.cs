@@ -36,11 +36,17 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex);
+                new ExceptionHandler().HandleExcepion(ex,"SelectAllEmployees");
                 return rows;
             }
         }
 
+        /// <summary>
+        /// Возвращает объект Employee с заполненым полем пароля
+        /// </summary>
+        /// <param name="authenticationUsername"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public static Employee SelectSecurityEmployee(string authenticationUsername, string username)
         {
             try
@@ -57,7 +63,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex);
+                new ExceptionHandler().HandleExcepion(ex,"SelectSecurityEmployee"); 
                 return null;
             }
         }
@@ -67,14 +73,19 @@ namespace DataSourceLayer
         /// </summary>
         private static Employee CreateEmployee(SqlDataReader reader, bool security)
         {
-            return new Employee(
-                (string) reader["Username"],
-                (string) reader["FirstName"],
-                (string) reader["SecondName"],
-                (string) reader["Role"],
-                security ? (string) reader["Password"] : null);                
+            return !reader.HasRows ? null : new Employee(
+                (string)reader["Username"],
+                (string)reader["FirstName"],
+                (string)reader["SecondName"],
+                (string)reader["Role"],
+                security ? (string)reader["Password"] : null);
         }
 
+        /// <summary>
+        /// Подготавливает команду для выполнения ХП select_emloyee;2 (SE2)
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="username"></param>
         private static void PrepareSE2(SqlCommand cmd, string username)
         {
             cmd.CommandType = CommandType.StoredProcedure;

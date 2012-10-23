@@ -12,11 +12,11 @@
         <TreeView Name="Folders" Grid.Column="0" Margin="5">            
             <TreeViewItem Name="InboxFolder" Header="Inbox" Margin="5" Selected="InboxFolder_Selected"></TreeViewItem>
             <TreeViewItem Name="SentFolder" Header="Sent" Margin="5" Selected="SentFolder_Selected"></TreeViewItem>
-            <TreeViewItem Name="DeletedFolder" Header="Deleted" Margin="5"></TreeViewItem>
+            <TreeViewItem Name="DeletedFolder" Header="Deleted" Margin="5" Selected="DeletedFolder_Selected"></TreeViewItem>
             <Button Margin="5">Написать письмо</Button>
             <Button Margin="5" Click="Loguot_Click">Выйти</Button>
         </TreeView>
-        <TreeView Name="MessageList" Grid.Column="1" Margin="5">            
+        <TreeView Name="MessageList" Grid.Column="1" Margin="5" SelectedItemChanged="MessageList_SelectedItemChanged">            
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type MyDll:Message}">
                     <TextBlock Text="{Binding Path=Title}" Margin="5">                        

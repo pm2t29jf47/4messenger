@@ -36,5 +36,20 @@ namespace DBService
         /// </summary>
         [OperationContract]
         void CheckUser();
+
+        /// <summary>
+        /// Возвращает коллекцию отправленных писем
+        /// </summary>
+        [OperationContract]
+        List<Message> SentMessages();
+
+        /// <summary>
+        /// Задает сообщению флаг прочитанности
+        /// </summary>
+        /// <param name="MessageId"></param>
+        void SetMessageViewed(int MessageId);
+
+        List<Message> ReceiveDeletedMessages();
+
     }   
 }

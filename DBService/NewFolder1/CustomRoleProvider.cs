@@ -13,7 +13,7 @@ namespace DBService
     {
         public override string[] GetRolesForUser(string username)
         {
-            Employee securityEmloyee = EmployeeGateway.SelectSecurityEmployee(username, "Admin");
+            Employee securityEmloyee = EmployeeGateway.SelectSecurity(username, "Admin");
             return securityEmloyee.Role.Split(new char [1]{','}, StringSplitOptions.RemoveEmptyEntries);         
         }
 

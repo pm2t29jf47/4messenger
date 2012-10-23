@@ -14,7 +14,7 @@ namespace DBService
     {
         public override void Validate(string username, string password)
         {
-            Employee securityEmloyee = EmployeeGateway.SelectSecurityEmployee(username,"Admin");
+            Employee securityEmloyee = EmployeeGateway.SelectSecurity(username,"Admin");
             if (securityEmloyee != null)
             {
                 if (string.Compare(securityEmloyee.Password, password) == 0)

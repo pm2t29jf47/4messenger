@@ -28,7 +28,7 @@ ALTER procedure insert_message
 	@date	datetime,
 	@content nvarchar(1000),
 	@senderUsername	nvarchar(50),
-	@delete bit,
+	@deleted bit,
 	@id int output	
 )
 as
@@ -37,14 +37,14 @@ as
 	@date,
 	@content,
 	@senderUsername,
-	@delete
+	@deleted
 	)
 	select @id = Id
 	from Message 
 	where Title = @title 
 	AND [Date] = @date
 	AND SenderUsername = @senderUsername
-	AND [Delete] = @delete
+	AND Deleted = @deleted
 	AND Content = @content
 
 
@@ -55,7 +55,7 @@ ALTER PROCEDURE insert_recipient
 (
 	@recipientUsername nvarchar(50),
 	@messageId int,
-	@delete bit
+	@deleted bit
 )
 AS
 BEGIN
@@ -66,20 +66,20 @@ BEGIN
 		WHERE 
 			RecipientUsername = @recipientUsername
 			AND MessageId = @messageId
-			AND [Delete] = @delete
+			AND Deleted = @deleted
 	)
 	BEGIN		
 		INSERT INTO Recipient
 		(
 			RecipientUsername,
 			MessageId,
-			[Delete]
+			Deleted
 		) 
 		VALUES
 		(
 			@recipientUsername,
 			@messageId,
-			@delete
+			@deleted
 		)
 	END
 END
@@ -119,3 +119,29 @@ AS
 	FROM Message
 	WHERE Id = @Id
 GO
+
+/*==============================================================*/
+/* Выводит сообщения по отправителю                             */
+/*==============================================================*/
+CREATE PROCEDURE select_message;2
+(@senderUsername nvarchar(50))
+AS
+	SELECT *
+	FROM Message
+	WHERE SenderUsername = @senderUsername
+GO
+
+/*==============================================================*/
+/* Обновляет поле viewed                                        */
+/*==============================================================*/
+CREATE PROCEDURE update_recipient;1
+(@recipientUsername nvarchar(50),
+@messageId int,
+@viewed bit)
+AS
+	UPDATE Recipient
+	SET Viewed = @viewed
+	WHERE 	RecipientUsername = @recipientUsername
+	AND MessageId = @messageId
+GO
+	

@@ -31,8 +31,9 @@ namespace WPFClient
         {
             try
             {
-                UsernameTexbox.Text = "Ivan";
-                PasswordTexbox.Password = "111";
+                ///quick login
+                UsernameTexbox.Text = "Admin";
+                PasswordTexbox.Password = "222";
                 var factory1 = new ChannelFactory<IService1>("*");
                 factory1.Credentials.UserName.UserName = UsernameTexbox.Text;
                 factory1.Credentials.UserName.Password = PasswordTexbox.Password;
@@ -43,7 +44,7 @@ namespace WPFClient
                 ///После this.Close(); поидее должно закрываться и mw
                 this.Close();
             }
-            catch (System.ServiceModel.Security.MessageSecurityException ex)
+            catch (System.ServiceModel.Security.MessageSecurityException)
             {
                 MessageBox.Show("Authentication filed!");
             }

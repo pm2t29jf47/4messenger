@@ -19,7 +19,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Производит вставку письма в таблицу 
         /// </summary>
-        public static int? InsertMessage(Message message, string username)
+        public static int? Insert(Message message, string username)
         {
             try
             {
@@ -89,22 +89,22 @@ namespace DataSourceLayer
         /// <param name="id"></param>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static Message SelectMessage(int id, string username)
+        public static Message SelectById(int id, string username)
         {          
             try
             {
                 using (SqlCommand cmd = new SqlCommand("select_message;1", GetConnection(username)))
                 {
-                    PrepareSM1(cmd, id);
-                    ///будет работать с тем же подключением в пуле, что итекущий метод!
-                    List<Recipient> recipients = RecipientGateway.SelectRecipient(id, username);
-                    ////////////////////////////////////////////////////////////////////////////
+                    PrepareSM1(cmd, id);           
+                    Message msg;
                     using (var reader = cmd.ExecuteReader())
                     {
                         reader.Read();
-                        return CreateMessage(reader, recipients);
+                        msg = CreateMessage(reader);
                     }
-                                                           
+                    if(msg != null)
+                        msg.Recipients = RecipientGateway.SelectByMessageId(id, username);
+                    return msg;                                                          
                 }
             }
             catch (Exception ex)
@@ -115,18 +115,62 @@ namespace DataSourceLayer
         }
 
         /// <summary>
+        /// Возвращает отправленные сообщения
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public static List<Message> SelectBySenderUsername(string username)
+        {
+            List<Message> rows = new List<Message>();
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("select_message;2", GetConnection(username)))
+                {
+                    PrepareSM2(cmd, username);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            rows.Add(CreateMessage(reader));
+                        }
+                    }
+                    foreach (var row in rows)
+                        row.Recipients = RecipientGateway.SelectByMessageId((int)row.Id, username);
+                    return rows;
+                }
+            }
+            catch (Exception ex)
+            {
+                new ExceptionHandler().HandleExcepion(ex, "SelectMessage");
+                return rows;
+            }
+        }
+
+        /// <summary>
+        /// Подготавливает команду для выполнения ХП select_message;2 (SM2)
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="username"></param>
+        private static void PrepareSM2(SqlCommand cmd, string username)
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@senderUsername", SqlDbType.NVarChar, 50));
+            cmd.Parameters["@senderUsername"].Value = username;
+        }
+
+        /// <summary>
         /// Создает объек типа Message по данным из таблицы 
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="recipients"></param>
         /// <returns></returns>
-        private static Message CreateMessage(SqlDataReader reader, List<Recipient> recipients)
+        private static Message CreateMessage(SqlDataReader reader)
         {
             return !reader.HasRows ? null : new Message(
                 int.Parse(reader["Id"].ToString()),
                 (string) reader["Title"],
                 (DateTime.Parse(reader["Date"].ToString())),
-                recipients,
+                null,
                 (string) reader["SenderUsername"],
                 (string) reader["Content"]);            
         }

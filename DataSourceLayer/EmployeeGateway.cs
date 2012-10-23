@@ -20,7 +20,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Возвращает коллекцию всех сотрудников
         /// </summary>
-        public static List<Employee> SelectAllEmployees(string username)
+        public static List<Employee> SelectAll(string username)
         {
             List<Employee> rows = new List<Employee>();
             try
@@ -47,7 +47,7 @@ namespace DataSourceLayer
         /// <param name="authenticationUsername"></param>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static Employee SelectSecurityEmployee(string authenticationUsername, string username)
+        public static Employee SelectSecurity(string authenticationUsername, string username)
         {
             try
             {

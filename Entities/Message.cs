@@ -94,7 +94,7 @@ namespace Entities
         public List<Recipient> Recipients
         {
             get;
-            internal set;
+            set;
         }
 
         /// <summary> 

@@ -12,6 +12,7 @@ using System.Security.Permissions;
 using System.Threading;
 using System.Security;
 using System.Web.Security;
+using Entities;
 
 
 
@@ -24,7 +25,7 @@ namespace DBService
         /// Возвращает коллекцию содержащую всех сотрудников 
         /// </summary>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Entities.Employee> GetEmployeeList()
+        public List<Employee> GetEmployeeList()
         {
             //return EmployeeGateway.SelectEmployees(sqlConnection);
             return null;
@@ -34,7 +35,7 @@ namespace DBService
         /// Производит вставку письма в таблицу Message 
         /// </summary>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void SendMessage(Entities.Message message)
+        public void SendMessage(Message message)
         {
             
             string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
@@ -42,12 +43,12 @@ namespace DBService
             ///вернуть ошибку!!!!
             if (string.Compare(username, message.SenderUsername) == 0)
                 return;
-            int? insertedMessageId = MessageGateway.InsertMessage(message, username);
+            int? insertedMessageId = MessageGateway.Insert(message, username);
             if (insertedMessageId == null) return;
             foreach (var recipient in message.Recipients)
             {
                 recipient.MessageId = (int)insertedMessageId;
-                RecipientGateway.InsertRecipient(recipient, username);
+                RecipientGateway.Insert(recipient, username);
             }
         }
 
@@ -56,14 +57,14 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Entities.Message> ReceiveMessages()
+        public List<Message> ReceiveMessages()
         {
             string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             List<Entities.Message> messages = new List<Entities.Message>();
-            List<Entities.Recipient> recipients = RecipientGateway.SelectRecipient(username);
+            List<Entities.Recipient> recipients = RecipientGateway.SelectByRecipientUsername(username);
             foreach (var recipient in recipients)
                 ///recipient.MessageId не может быть null, тк берется из базы
-                messages.Add(MessageGateway.SelectMessage((int)recipient.MessageId, username));
+                messages.Add(MessageGateway.SelectById((int)recipient.MessageId, username));
             return messages;
         }
 
@@ -72,5 +73,32 @@ namespace DBService
         /// </summary>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void CheckUser(){ }
+
+        /// <summary>
+        /// Возвращает коллекцию отправленных писем
+        /// </summary>
+        public List<Message> SentMessages()
+        {
+            string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            return MessageGateway.SelectBySenderUsername(username);
+        }
+
+        /// <summary>
+        /// Задает сообщению флаг прочитанности
+        /// </summary>
+        /// <param name="MessageId"></param>
+        public void SetMessageViewed(int messageId)
+        {
+            string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            RecipientGateway.UpdateViewed(username, messageId, true); 
+        }
+
+
+
+
+        public List<Message> ReceiveDeletedMessages()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

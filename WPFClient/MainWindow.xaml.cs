@@ -28,17 +28,13 @@ namespace WPFClient
 
         private void FormLoad()
         {
-            var receivedMessages = App.Proxy.ReceiveMessages();
-            MessageList.Items.Add(receivedMessages[0]);
-            MessageList.Items.Add(receivedMessages[1]);
-            //MessageList.
+            
+
             
 
         }
 
-        private void NewLatter_Click(object sender, RoutedEventArgs e)
-        {
-        }
+
 
         private void Loguot_Click(object sender, RoutedEventArgs e)
         {
@@ -48,15 +44,18 @@ namespace WPFClient
             this.Close();
         }
 
-        private void SentFolder2_Selected(object sender, RoutedEventArgs e)
+        private void InboxFolder_Selected(object sender, RoutedEventArgs e)
         {
+            MessageList.ItemsSource = App.Proxy.ReceiveMessages();
+    
+        }
+
+        private void SentFolder_Selected(object sender, RoutedEventArgs e)
+        {
+            MessageList.ItemsSource = App.Proxy.SentMessages();
 
         }
 
-        private void MessageList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            int A = 12;
 
-        }
     }
 }

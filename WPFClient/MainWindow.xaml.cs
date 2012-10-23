@@ -46,7 +46,7 @@ namespace WPFClient
 
         private void InboxFolder_Selected(object sender, RoutedEventArgs e)
         {
-            MessageList.ItemsSource = App.Proxy.ReceiveMessages();
+            MessageList.ItemsSource = App.Proxy.InboxMessages();
     
         }
 

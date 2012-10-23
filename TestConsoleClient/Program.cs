@@ -35,7 +35,7 @@ namespace TestConsoleClient
             //        r,
             //        "admin",
             //        "письмо письмо письмо только ивану"));
-            var a = proxy.ReceiveMessages();
+            var a = proxy.InboxMessages();
         
             
         }

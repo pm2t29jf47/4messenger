@@ -29,7 +29,7 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Entities.Message> ReceiveMessages();
+        List<Entities.Message> InboxMessages();
 
         /// <summary>
         /// Проверяет аутентификационные данные пользователя
@@ -49,7 +49,11 @@ namespace DBService
         /// <param name="MessageId"></param>
         void SetMessageViewed(int MessageId);
 
-        List<Message> ReceiveDeletedMessages();
+        /// <summary>
+        /// Возвращает письма помеченные удаленными
+        /// </summary>
+        /// <returns></returns>
+        List<Message> DeletedMessages();
 
     }   
 }

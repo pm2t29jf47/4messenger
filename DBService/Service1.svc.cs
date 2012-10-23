@@ -57,11 +57,11 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> ReceiveMessages()
+        public List<Message> InboxMessages()
         {
             string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            List<Entities.Message> messages = new List<Entities.Message>();
-            List<Entities.Recipient> recipients = RecipientGateway.SelectByRecipientUsername(username);
+            List<Message> messages = new List<Message>();
+            List<Recipient> recipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(username,false);
             foreach (var recipient in recipients)
                 ///recipient.MessageId не может быть null, тк берется из базы
                 messages.Add(MessageGateway.SelectById((int)recipient.MessageId, username));
@@ -92,13 +92,17 @@ namespace DBService
             string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             RecipientGateway.UpdateViewed(username, messageId, true); 
         }
-
-
-
-
-        public List<Message> ReceiveDeletedMessages()
+        
+        /// <summary>
+        /// Возвращает письма помеченные удаленными
+        /// </summary>
+        /// <returns></returns>
+        public List<Message> DeletedMessages()
         {
-            throw new NotImplementedException();
+            return null;
+            ///сначала удаленные из отправленных
+            ///удаленные из полученых
+            
         }
     }
 }

@@ -17,9 +17,9 @@ namespace Entities
         /// <param name="delete"></param>
         public Recipient(string recipientUsername,
             int? messageId,
-            bool delete)
+            bool deleted)
         {
-            this.Delete = delete;
+            this.Deleted = deleted;
             this.RecipientUsername = recipientUsername;
             this.MessageId = messageId;
         }
@@ -48,7 +48,7 @@ namespace Entities
         /// Флаг для переноса полученых писем в папку удаленных
         /// </summary>
         [DataMember]
-        public bool Delete
+        public bool Deleted
         {
             get;
             set;

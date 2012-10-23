@@ -174,7 +174,8 @@ namespace DataSourceLayer
                 (DateTime.Parse(reader["Date"].ToString())),
                 null,
                 (string) reader["SenderUsername"],
-                (string) reader["Content"]);            
+                (string) reader["Content"],
+                bool.Parse(reader["Deleted"].ToString()));            
         }
 
         /// <summary>

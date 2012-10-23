@@ -27,7 +27,8 @@ namespace Entities
             DateTime date,
             List<Recipient> recipients,
             string senderUsername,
-            string content)
+            string content,
+            bool deleted)
         {
             this.Id = id;
             this.Title = title;
@@ -35,6 +36,7 @@ namespace Entities
             this.SenderUsername = senderUsername;
             this.Content = content;
             this.Recipients = recipients;
+            this.Deleted = deleted;
         }
 
         /// <summary> 
@@ -101,7 +103,7 @@ namespace Entities
         /// Флаг для переноса отправленных писем в папку удаленных
         /// </summary>
         [DataMember]
-        public bool Delete
+        public bool Deleted
         {
             get;
             set;

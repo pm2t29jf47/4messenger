@@ -14,9 +14,6 @@ using System.Security;
 using System.Web.Security;
 using Entities;
 
-
-
-
 namespace DBService
 {
     public class Service1 : IService1
@@ -77,6 +74,7 @@ namespace DBService
         /// <summary>
         /// Возвращает коллекцию отправленных писем
         /// </summary>
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Message> SentMessages()
         {
             ///добавить проверку на удаленность
@@ -88,6 +86,7 @@ namespace DBService
         /// Задает сообщению флаг прочитанности
         /// </summary>
         /// <param name="MessageId"></param>
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void SetMessageViewed(int messageId)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
@@ -98,6 +97,7 @@ namespace DBService
         /// Возвращает письма помеченные удаленными
         /// </summary>
         /// <returns></returns>
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Message> DeletedMessages()
         {
             string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;

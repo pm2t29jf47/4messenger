@@ -65,7 +65,7 @@ namespace DataSourceLayer
         {
             cmd.Parameters["@recipientUsername"].Value = recipient.RecipientUsername;
             cmd.Parameters["@messageId"].Value = recipient.MessageId;
-            cmd.Parameters["@delete"].Value = recipient.Delete;
+            cmd.Parameters["@delete"].Value = recipient.Deleted;
         }
 
         /// <summary>

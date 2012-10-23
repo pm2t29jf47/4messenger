@@ -47,12 +47,14 @@ namespace DBService
         /// Задает сообщению флаг прочитанности
         /// </summary>
         /// <param name="MessageId"></param>
+        [OperationContract]
         void SetMessageViewed(int MessageId);
 
         /// <summary>
         /// Возвращает письма помеченные удаленными
         /// </summary>
         /// <returns></returns>
+        [OperationContract]
         List<Message> DeletedMessages();
 
     }   

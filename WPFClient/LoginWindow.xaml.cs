@@ -32,8 +32,8 @@ namespace WPFClient
             try
             {
                 ///quick login
-                UsernameTexbox.Text = "Admin";
-                PasswordTexbox.Password = "222";
+                UsernameTexbox.Text = "Ivan1";
+                PasswordTexbox.Password = "111";
                 var factory1 = new ChannelFactory<IService1>("*");
                 factory1.Credentials.UserName.UserName = UsernameTexbox.Text;
                 factory1.Credentials.UserName.Password = PasswordTexbox.Password;

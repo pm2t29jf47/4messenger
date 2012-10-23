@@ -218,7 +218,7 @@ namespace DataSourceLayer
             return !reader.HasRows ? null : new Recipient(
                 (string) reader["RecipientUsername"],
                 int.Parse(reader["MessageId"].ToString()),
-                bool.Parse(reader["Delete"].ToString()));
+                bool.Parse(reader["Deleted"].ToString()));
         }         
     }
 }

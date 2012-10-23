@@ -38,17 +38,17 @@ namespace DBService
         public void SendMessage(Message message)
         {
             
-            string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             ///нельзя отсылать письма под чужим именем
             ///вернуть ошибку!!!!
-            if (string.Compare(username, message.SenderUsername) == 0)
+            if (string.Compare(currentUsername, message.SenderUsername) == 0)
                 return;
-            int? insertedMessageId = MessageGateway.Insert(message, username);
+            int? insertedMessageId = MessageGateway.Insert(message, currentUsername);
             if (insertedMessageId == null) return;
             foreach (var recipient in message.Recipients)
             {
                 recipient.MessageId = (int)insertedMessageId;
-                RecipientGateway.Insert(recipient, username);
+                RecipientGateway.Insert(recipient, currentUsername);
             }
         }
 
@@ -59,12 +59,12 @@ namespace DBService
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Message> InboxMessages()
         {
-            string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             List<Message> messages = new List<Message>();
-            List<Recipient> recipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(username,false);
+            List<Recipient> recipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(currentUsername,false);
             foreach (var recipient in recipients)
                 ///recipient.MessageId не может быть null, тк берется из базы
-                messages.Add(MessageGateway.SelectById((int)recipient.MessageId, username));
+                messages.Add(MessageGateway.SelectById((int)recipient.MessageId, currentUsername));
             return messages;
         }
 
@@ -80,8 +80,8 @@ namespace DBService
         public List<Message> SentMessages()
         {
             ///добавить проверку на удаленность
-            string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return MessageGateway.SelectBy_SenderUsername_Deleted(username,false);
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            return MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername,false);
         }
 
         /// <summary>
@@ -90,8 +90,8 @@ namespace DBService
         /// <param name="MessageId"></param>
         public void SetMessageViewed(int messageId)
         {
-            string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            RecipientGateway.UpdateViewed(username, messageId, true); 
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            RecipientGateway.UpdateViewed(currentUsername, messageId, true); 
         }
         
         /// <summary>
@@ -100,9 +100,20 @@ namespace DBService
         /// <returns></returns>
         public List<Message> DeletedMessages()
         {
-            return null;
-            ///сначала удаленные из отправленных
-            ///удаленные из полученых
+            string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            var deletedMessages = new List<Message>();
+            var userInRecipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(curentUsername, true);
+            foreach (var recipient in userInRecipients)
+            {
+                var receivedMessage = MessageGateway.SelectById((int)recipient.MessageId, curentUsername);
+                ///recipient.MessageId не может быть null, тк берется из базы
+                deletedMessages.Add(receivedMessage);
+            }           
+            var a = MessageGateway.SelectBy_SenderUsername_Deleted(curentUsername,true);
+            var sentMessages = MessageGateway.SelectBy_SenderUsername_Deleted(curentUsername, true);
+            deletedMessages.AddRange(sentMessages);
+            return deletedMessages;
+
             
         }
     }

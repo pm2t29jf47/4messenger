@@ -25,9 +25,11 @@ namespace WPFClient
             InitializeComponent();
             FormLoad();
         }
-
+        
         private void FormLoad()
         {
+            var a = App.Proxy.DeletedMessages();
+            
             
 
             

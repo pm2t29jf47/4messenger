@@ -16,14 +16,18 @@
             <Button Margin="5">Написать письмо</Button>
             <Button Margin="5" Click="Loguot_Click">Выйти</Button>
         </TreeView>
-        <TreeView Name="MessageList" Grid.Column="1" Margin="5" SelectedItemChanged="MessageList_SelectedItemChanged">            
+        <!--Смена контейнера MessageList-->
+        <!--TreeView Name="MessageList" Grid.Column="1" Margin="5" SelectedItemChanged="MessageList_SelectedItemChanged">            
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type MyDll:Message}">
                     <TextBlock Text="{Binding Path=Title}" Margin="5">                        
                     </TextBlock>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>            
-        </TreeView>
+        </TreeView-->
+        <DataGrid Name="MessageList" Grid.Column="1" SelectionChanged="MessageList_SelectionChanged" Margin="5">
+        </DataGrid>
+        <!---->       
         <Grid Name="Message" Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
@@ -33,7 +37,7 @@
             <Grid Name="MessageAttributes" Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
-                    <ColumnDefinition Width="458*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>

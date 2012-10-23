@@ -35,7 +35,8 @@ namespace WPFClient
 
         private void InboxFolder_Selected(object sender, RoutedEventArgs e)
         {
-            MessageList.ItemsSource = App.Proxy.InboxMessages();    
+            MessageList.ItemsSource = App.Proxy.InboxMessages(); 
+            //MessageList.col
         }
 
         private void SentFolder_Selected(object sender, RoutedEventArgs e)
@@ -48,17 +49,22 @@ namespace WPFClient
             MessageList.ItemsSource = App.Proxy.DeletedMessages();
         }
 
-        private void MessageList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void MessageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedMessage = (Message) MessageList.SelectedItem;
+            var selectedMessage = (Message)MessageList.SelectedItem;
             SenderTextbox.Text = selectedMessage.SenderUsername;
             RecipientTextbox.Text = "gjkexfntkb";
             DateTextbox.Text = selectedMessage.Date.ToLongDateString();
             TitleTextbox.Text = selectedMessage.Title;
         }
 
-     
-
-
+        //private void MessageList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        //{
+        //    var selectedMessage = (Message) MessageList.SelectedItem;
+        //    SenderTextbox.Text = selectedMessage.SenderUsername;
+        //    RecipientTextbox.Text = "gjkexfntkb";
+        //    DateTextbox.Text = selectedMessage.Date.ToLongDateString();
+        //    TitleTextbox.Text = selectedMessage.Title;
+        //}
     }
 }

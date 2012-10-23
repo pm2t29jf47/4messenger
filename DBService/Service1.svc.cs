@@ -79,8 +79,9 @@ namespace DBService
         /// </summary>
         public List<Message> SentMessages()
         {
+            ///добавить проверку на удаленность
             string username = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return MessageGateway.SelectBySenderUsername(username);
+            return MessageGateway.SelectBy_SenderUsername_Deleted(username,false);
         }
 
         /// <summary>

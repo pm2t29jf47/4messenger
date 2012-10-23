@@ -119,14 +119,14 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static List<Message> SelectBySenderUsername(string username)
+        public static List<Message> SelectBy_SenderUsername_Deleted(string username, bool deleted)
         {
             List<Message> rows = new List<Message>();
             try
             {
                 using (SqlCommand cmd = new SqlCommand("select_message;2", GetConnection(username)))
                 {
-                    PrepareSM2(cmd, username);
+                    PrepareSM2(cmd, username, deleted);
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -151,11 +151,13 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="username"></param>
-        private static void PrepareSM2(SqlCommand cmd, string username)
+        private static void PrepareSM2(SqlCommand cmd, string username, bool deleted)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@senderUsername", SqlDbType.NVarChar, 50));
+            cmd.Parameters.Add(new SqlParameter("@deleted", SqlDbType.Bit));
             cmd.Parameters["@senderUsername"].Value = username;
+            cmd.Parameters["@deleted"].Value = deleted;
         }
 
         /// <summary>

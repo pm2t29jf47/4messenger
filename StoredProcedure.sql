@@ -89,12 +89,14 @@ GO
 /* Выводит все сообщения адресата                               */
 /*==============================================================*/
 ALTER PROCEDURE [dbo].[select_recipient];1
-	(@recipientUsername nvarchar(50))
+	(@recipientUsername nvarchar(50),
+	@deleted bit)
 AS
 	SET NOCOUNT ON 
 	SELECT *
 	FROM Recipient
 	WHERE RecipientUserName = @recipientUsername
+	AND Deleted = @deleted 
 GO
 
 /*==============================================================*/
@@ -124,11 +126,13 @@ GO
 /* Выводит сообщения по отправителю                             */
 /*==============================================================*/
 CREATE PROCEDURE select_message;2
-(@senderUsername nvarchar(50))
+(@senderUsername nvarchar(50),
+@deleted bit)
 AS
 	SELECT *
 	FROM Message
 	WHERE SenderUsername = @senderUsername
+	AND Deleted = @deleted
 GO
 
 /*==============================================================*/

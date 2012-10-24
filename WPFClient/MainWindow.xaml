@@ -6,28 +6,23 @@
     <Grid>        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition  Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="2*" ></ColumnDefinition>           
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>           
         </Grid.ColumnDefinitions>
         <TreeView Name="Folders" Grid.Column="0" Margin="5">            
             <TreeViewItem Name="InboxFolder" Header="Inbox" Margin="5" Selected="InboxFolder_Selected"></TreeViewItem>
             <TreeViewItem Name="SentFolder" Header="Sent" Margin="5" Selected="SentFolder_Selected"></TreeViewItem>
             <TreeViewItem Name="DeletedFolder" Header="Deleted" Margin="5" Selected="DeletedFolder_Selected"></TreeViewItem>
-            <Button Margin="5">Написать письмо</Button>
-            <Button Margin="5" Click="Loguot_Click">Выйти</Button>
-        </TreeView>
-        <!--Смена контейнера MessageList-->
-        <!--TreeView Name="MessageList" Grid.Column="1" Margin="5" SelectedItemChanged="MessageList_SelectedItemChanged">            
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type MyDll:Message}">
-                    <TextBlock Text="{Binding Path=Title}" Margin="5">                        
-                    </TextBlock>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>            
-        </TreeView-->
-        <DataGrid Name="MessageList" Grid.Column="1" SelectionChanged="MessageList_SelectionChanged" Margin="5">
-        </DataGrid>
-        <!---->       
+            <Button Margin="5">New mail</Button>
+            <Button Margin="5" Click="Loguot_Click">Log out</Button>
+        </TreeView> 
+        <DataGrid Name="MessageList" Grid.Column="1" SelectionChanged="MessageList_SelectionChanged" Margin="5" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=SenderUsername}" Header="SenderUsername" Width="auto"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Date}" Header="Date"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Title}" Header="Title"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>        
         <Grid Name="Message" Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
@@ -45,10 +40,10 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Label Name="SenderLable" Grid.Column="0" Grid.Row="0" Margin="5">Отправитель</Label>
-                <Label Name="RecipientLable" Grid.Column="0" Grid.Row="1" Margin="5">Получатель</Label>
-                <Label Name="DateLable" Grid.Column="0" Grid.Row="2" Margin="5">Дата отправления</Label>
-                <Label Name="TitleLable" Grid.Column="0" Grid.Row="3" Margin="5">Дата отправления</Label>
+                <Label Name="SenderLable" Grid.Column="0" Grid.Row="0" Margin="5">Sender</Label>
+                <Label Name="RecipientLable" Grid.Column="0" Grid.Row="1" Margin="5">Recipient</Label>
+                <Label Name="DateLable" Grid.Column="0" Grid.Row="2" Margin="5">Date</Label>
+                <Label Name="TitleLable" Grid.Column="0" Grid.Row="3" Margin="5">Title</Label>
                 <TextBox Name="SenderTextbox" Grid.Column="1" Grid.Row="0" Margin="5" IsReadOnly="True" />
                 <TextBox Name="RecipientTextbox" Grid.Column="1" Grid.Row="1" Margin="5" IsReadOnly="True"/>
                 <TextBox Name="DateTextbox" Grid.Column="1" Grid.Row="2" Margin="5" IsReadOnly="True" />

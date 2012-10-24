@@ -56,6 +56,7 @@ namespace WPFClient
             RecipientTextbox.Text = "gjkexfntkb";
             DateTextbox.Text = selectedMessage.Date.ToLongDateString();
             TitleTextbox.Text = selectedMessage.Title;
+            //new Message().Date.ToShortTimeString
         }
 
         //private void MessageList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

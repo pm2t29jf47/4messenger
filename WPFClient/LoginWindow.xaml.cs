@@ -23,8 +23,7 @@ namespace WPFClient
     {
         public LoginWindow()
         {
-            InitializeComponent();
-            Button_Click(null, null);
+            InitializeComponent();           
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -34,8 +33,8 @@ namespace WPFClient
                 ///quick login
                 App.Username = "Ivan1";
                 App.Password = "111";
-                UsernameTexbox.Text = "Ivan1";
-                PasswordTexbox.Password = "111";
+                UsernameTexbox.Text = App.Username;
+                PasswordTexbox.Password = App.Password;
                 var factory1 = new ChannelFactory<IService1>("*");
                 factory1.Credentials.UserName.UserName = UsernameTexbox.Text;
                 factory1.Credentials.UserName.Password = PasswordTexbox.Password;
@@ -43,8 +42,7 @@ namespace WPFClient
                 App.Proxy.CheckUser();
                 var mw = new MainWindow();
                 mw.Show();
-                ///После this.Close(); поидее должно закрываться и mw
-                this.Close();
+                this.Hide();
             }
             catch (System.ServiceModel.Security.MessageSecurityException)
             {

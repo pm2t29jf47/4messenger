@@ -15,8 +15,8 @@
             <TreeViewItem Name="DeletedFolder" Header="Deleted" Margin="5" Selected="DeletedFolder_Selected"></TreeViewItem>
             <Button Margin="5">New mail</Button>
             <Button Margin="5" Click="Loguot_Click">Log out</Button>
-        </TreeView> 
-        <DataGrid Name="MessageList" Grid.Column="1" SelectionChanged="MessageList_SelectionChanged" Margin="5" AutoGenerateColumns="False">
+        </TreeView>
+        <DataGrid Name="MessageList" Grid.Column="1" Margin="5" AutoGenerateColumns="False" SelectionChanged="MessageList_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=SenderUsername}" Header="SenderUsername" Width="auto"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Path=Date}" Header="Date"></DataGridTextColumn>

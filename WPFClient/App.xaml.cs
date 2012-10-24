@@ -30,5 +30,8 @@ namespace WPFClient
         /// </summary>
         public static string Password
         { get; set; }
+
+        public static LoginWindow LW;
+        public static MainWindow MW;
     }
 }

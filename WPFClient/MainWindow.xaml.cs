@@ -29,36 +29,29 @@ namespace WPFClient
         {
             App.Proxy = null;
             App.Username = null;
-            App.Password = null;
-            var lo = new LoginWindow();
-            lo.Show();
+            App.Password = null;            
+            App.Current.MainWindow.Show();
             this.Close();
         }
 
         private void InboxFolder_Selected(object sender, RoutedEventArgs e)
         {
+           
             MessageList.ItemsSource = App.Proxy.GetInboxFolder();    
         }
 
         private void SentFolder_Selected(object sender, RoutedEventArgs e)
         {
+           
             MessageList.ItemsSource = App.Proxy.GetSentFolder();
         }
 
         private void DeletedFolder_Selected(object sender, RoutedEventArgs e)
         {
+          
             MessageList.ItemsSource = App.Proxy.GetDeletedFolder();
         }
 
-        private void MessageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var selectedMessage = (Message)MessageList.SelectedItem;
-            SenderTextbox.Text = selectedMessage.SenderUsername;                       
-            DateTextbox.Text = selectedMessage.Date.ToString();
-            TitleTextbox.Text = selectedMessage.Title;
-            MessageContent.Text = selectedMessage.Content;
-            RecipientTextbox.Text = GetRecipientsString();            
-        }
 
         private string GetRecipientsString()
         {
@@ -92,6 +85,17 @@ namespace WPFClient
             SendButton.Visibility = System.Windows.Visibility.Visible;
             DeleteButton.Visibility = System.Windows.Visibility.Collapsed;
             ReplyButton.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        private void MessageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedMessage = (Message)MessageList.SelectedItem;
+            if (selectedMessage == null) return;
+            SenderTextbox.Text = selectedMessage.SenderUsername;
+            DateTextbox.Text = selectedMessage.Date.ToString();
+            TitleTextbox.Text = selectedMessage.Title;
+            MessageContent.Text = selectedMessage.Content;
+            RecipientTextbox.Text = GetRecipientsString(); 
         }
     }
 }

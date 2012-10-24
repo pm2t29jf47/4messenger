@@ -28,6 +28,8 @@ namespace WPFClient
         private void Loguot_Click(object sender, RoutedEventArgs e)
         {
             App.Proxy = null;
+            App.Username = null;
+            App.Password = null;
             var lo = new LoginWindow();
             lo.Show();
             this.Close();
@@ -52,13 +54,13 @@ namespace WPFClient
         {
             var selectedMessage = (Message)MessageList.SelectedItem;
             SenderTextbox.Text = selectedMessage.SenderUsername;                       
-            DateTextbox.Text = selectedMessage.Date.ToLongDateString();
+            DateTextbox.Text = selectedMessage.Date.ToString();
             TitleTextbox.Text = selectedMessage.Title;
             MessageContent.Text = selectedMessage.Content;
-            SetRecipientTextBox();
+            RecipientTextbox.Text = GetRecipientsString();            
         }
 
-        private void SetRecipientTextBox()
+        private string GetRecipientsString()
         {
             var selectedMessage = (Message)MessageList.SelectedItem;
             string recipientsString = string.Empty;
@@ -72,17 +74,24 @@ namespace WPFClient
                     :
                     (recipientEmployee.FirstName + " "
                     + recipientEmployee.SecondName + " <"
-                    + recipientEmployee.Username + ">, " + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
-                    + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
-                    + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
-                    + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
-                    + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
-                    + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
-                    );
+                    + recipientEmployee.Username + ">, ");
             }
             ///Удаляет последнюю запятую
-            recipientsString = recipientsString.Substring(0, recipientsString.Length - 2);
-            RecipientTextbox.Text = recipientsString;
+            return recipientsString.Substring(0, recipientsString.Length - 2);      
+        }
+
+        private void ReplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            RecipientTextbox.Text = SenderTextbox.Text;
+            SenderTextbox.Text = "Me: <" + App.Username + ">";
+            DateTextbox.Text = DateTime.Now.ToString();
+            TitleTextbox.IsReadOnly = false;
+            MessageContent.IsReadOnly = false;
+            TitleTextbox.Text = "re: [" + TitleTextbox.Text + "]";
+            MessageContent.Text = "Введите сообщение";
+            SendButton.Visibility = System.Windows.Visibility.Visible;
+            DeleteButton.Visibility = System.Windows.Visibility.Collapsed;
+            ReplyButton.Visibility = System.Windows.Visibility.Collapsed;
         }
     }
 }

@@ -44,21 +44,21 @@
                 <Label Name="RecipientLable" Grid.Column="0" Grid.Row="1" Margin="5">Recipient</Label>
                 <Label Name="DateLable" Grid.Column="0" Grid.Row="2" Margin="5">Date</Label>
                 <Label Name="TitleLable" Grid.Column="0" Grid.Row="3" Margin="5">Title</Label>
-                <TextBox Name="SenderTextbox" Grid.Column="1" Grid.Row="0" Margin="5" IsReadOnly="True" />          
-                <ScrollViewer Grid.Column="1" Grid.Row="1" MaxHeight="100">
+                <TextBox Name="SenderTextbox" Grid.Column="1" Grid.Row="0" Margin="5" IsReadOnly="True" VerticalScrollBarVisibility="Disabled" />
+                <ScrollViewer Grid.Column="1" Grid.Row="1" Height="50" VerticalScrollBarVisibility="Visible">
                     <TextBox Name="RecipientTextbox" Margin="5" IsReadOnly="True" TextWrapping="Wrap" />
                 </ScrollViewer>      
                 <TextBox Name="DateTextbox" Grid.Column="1" Grid.Row="2" Margin="5" IsReadOnly="True" />
-                <ScrollViewer Grid.Column="1" Grid.Row="3" MaxHeight="100">
-                    <TextBox Name="TitleTextbox" Grid.Column="1" Grid.Row="3" Margin="5" IsReadOnly="True" />
+                <ScrollViewer Grid.Column="1" Grid.Row="3" Height="50" VerticalScrollBarVisibility="Visible">
+                    <TextBox Name="TitleTextbox" Margin="5" IsReadOnly="True" TextWrapping="Wrap" />
                 </ScrollViewer>
             </Grid>
-            <TextBox Name="MessageContent" Grid.Row="1" FontSize="12" Margin="5" IsReadOnly="True" >Здесь будет текст сообшения</TextBox>
+            <TextBox Name="MessageContent" Grid.Row="1" FontSize="12" Margin="5" IsReadOnly="True" VerticalScrollBarVisibility="Visible"  TextWrapping="Wrap">Здесь будет текст сообшения</TextBox>
             <StackPanel Grid.Row="2" HorizontalAlignment="Right"
                        Orientation="Horizontal" MinHeight="40">
-                <Button Margin="5" Padding="5">Reply</Button>
-                <Button Margin="5" Padding="5">Delete</Button>
-                <Button Margin="5" Padding="5" Visibility="Collapsed">Send</Button>
+                <Button Name="ReplyButton" Margin="5" Padding="5" Click="ReplyButton_Click">Reply</Button>
+                <Button Name="DeleteButton" Margin="5" Padding="5">Delete</Button>
+                <Button Name="SendButton" Margin="5" Padding="5" Visibility="Collapsed">Send</Button>
             </StackPanel>           
         </Grid>
     </Grid>

@@ -18,5 +18,17 @@ namespace WPFClient
         /// </summary>
         public static IService1 Proxy
         { get; set; }
+
+        /// <summary>
+        /// Имя пользователя
+        /// </summary>
+        public static string Username
+        { get; set; }
+
+        /// <summary>
+        /// Пароль
+        /// </summary>
+        public static string Password
+        { get; set; }
     }
 }

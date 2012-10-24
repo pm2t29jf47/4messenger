@@ -54,7 +54,7 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> InboxMessages()
+        public List<Message> GetInboxFolder()
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             List<Message> messages = new List<Message>();
@@ -75,7 +75,7 @@ namespace DBService
         /// Возвращает коллекцию отправленных писем
         /// </summary>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> SentMessages()
+        public List<Message> GetSentFolder()
         {
             ///добавить проверку на удаленность
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
@@ -98,7 +98,7 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> DeletedMessages()
+        public List<Message> GetDeletedFolder()
         {
             string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             var deletedMessages = new List<Message>();
@@ -115,6 +115,16 @@ namespace DBService
             return deletedMessages;
 
             
+        }
+
+        /// <summary>
+        /// Возвращает сотрудника по его иднтификатору
+        /// </summary>
+        /// <returns></returns>
+        public Employee GetEmployee(string selectableUsername)
+        {
+            string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            return EmployeeGateway.SelectByUsername(selectableUsername, curentUsername);
         }
     }
 }

@@ -18,6 +18,13 @@ namespace DBService
         [OperationContract]
         List<Employee> GetEmployeeList();
 
+        /// <summary>
+        /// Возвращает сотрудника по его иднтификатору
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        Employee GetEmployee(string username);
+
         /// <summary> 
         /// Производит вставку письма в таблицу Message 
         /// </summary>
@@ -29,7 +36,7 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Entities.Message> InboxMessages();
+        List<Entities.Message> GetInboxFolder();
 
         /// <summary>
         /// Проверяет аутентификационные данные пользователя
@@ -41,7 +48,7 @@ namespace DBService
         /// Возвращает коллекцию отправленных писем
         /// </summary>
         [OperationContract]
-        List<Message> SentMessages();
+        List<Message> GetSentFolder();
 
         /// <summary>
         /// Задает сообщению флаг прочитанности
@@ -55,7 +62,7 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Message> DeletedMessages();
+        List<Message> GetDeletedFolder();
 
     }   
 }

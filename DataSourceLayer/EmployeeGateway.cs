@@ -68,6 +68,33 @@ namespace DataSourceLayer
             }
         }
 
+        /// <summary>
+        /// Возвращает сотрудника по его идентификатору 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public static Employee SelectByUsername(string selectableUsername, string username)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("select_employee;2", GetConnection(username)))
+                {
+                    PrepareSE2(cmd, selectableUsername);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        return CreateEmployee(reader, false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                new ExceptionHandler().HandleExcepion(ex, "SelectSecurityEmployee");
+                return null;
+            }
+        }
+
         /// <summary> 
         /// Создает объек типа Employee по данным из таблицы 
         /// </summary>

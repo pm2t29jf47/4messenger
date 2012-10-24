@@ -35,37 +35,54 @@ namespace WPFClient
 
         private void InboxFolder_Selected(object sender, RoutedEventArgs e)
         {
-            MessageList.ItemsSource = App.Proxy.InboxMessages(); 
-            //MessageList.col
+            MessageList.ItemsSource = App.Proxy.GetInboxFolder();    
         }
 
         private void SentFolder_Selected(object sender, RoutedEventArgs e)
         {
-            MessageList.ItemsSource = App.Proxy.SentMessages();
+            MessageList.ItemsSource = App.Proxy.GetSentFolder();
         }
 
         private void DeletedFolder_Selected(object sender, RoutedEventArgs e)
         {
-            MessageList.ItemsSource = App.Proxy.DeletedMessages();
+            MessageList.ItemsSource = App.Proxy.GetDeletedFolder();
         }
 
         private void MessageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedMessage = (Message)MessageList.SelectedItem;
-            SenderTextbox.Text = selectedMessage.SenderUsername;
-            RecipientTextbox.Text = "gjkexfntkb";
+            SenderTextbox.Text = selectedMessage.SenderUsername;                       
             DateTextbox.Text = selectedMessage.Date.ToLongDateString();
             TitleTextbox.Text = selectedMessage.Title;
-            //new Message().Date.ToShortTimeString
+            MessageContent.Text = selectedMessage.Content;
+            SetRecipientTextBox();
         }
 
-        //private void MessageList_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        //{
-        //    var selectedMessage = (Message) MessageList.SelectedItem;
-        //    SenderTextbox.Text = selectedMessage.SenderUsername;
-        //    RecipientTextbox.Text = "gjkexfntkb";
-        //    DateTextbox.Text = selectedMessage.Date.ToLongDateString();
-        //    TitleTextbox.Text = selectedMessage.Title;
-        //}
+        private void SetRecipientTextBox()
+        {
+            var selectedMessage = (Message)MessageList.SelectedItem;
+            string recipientsString = string.Empty;
+            foreach (var recipient in selectedMessage.Recipients)
+            {
+                var recipientEmployee = App.Proxy.GetEmployee(recipient.RecipientUsername);
+                recipientsString +=
+                    (recipientEmployee == null)
+                    ?
+                    string.Empty
+                    :
+                    (recipientEmployee.FirstName + " "
+                    + recipientEmployee.SecondName + " <"
+                    + recipientEmployee.Username + ">, " + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
+                    + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
+                    + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
+                    + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
+                    + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
+                    + "ooooooooooooooooooooooooooooooodddddddddddddddddddddddddddddddddddddddddddddddddddddddddffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddfff"
+                    );
+            }
+            ///Удаляет последнюю запятую
+            recipientsString = recipientsString.Substring(0, recipientsString.Length - 2);
+            RecipientTextbox.Text = recipientsString;
+        }
     }
 }

@@ -44,9 +44,8 @@ namespace WPFClient
                 factory1.Credentials.UserName.Password = PasswordTexbox.Password;
                 App.Proxy = factory1.CreateChannel();
                 App.Proxy.CheckUser();
-                var mw = new MainWindow();
-                mw.Show();
-                this.Hide();
+                App.Current.MainWindow.Show();               
+                this.Close();
             }
             catch (System.ServiceModel.Security.MessageSecurityException)
             {

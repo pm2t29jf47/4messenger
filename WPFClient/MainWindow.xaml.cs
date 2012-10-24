@@ -23,30 +23,24 @@ namespace WPFClient
         public MainWindow()
         {
             InitializeComponent();
+            this.Hide();
+            var lw = new LoginWindow();
+            lw.Show();
         }
 
-        private void Loguot_Click(object sender, RoutedEventArgs e)
-        {
-            App.Proxy = null;
-            App.Username = null;
-            App.Password = null;            
-            App.Current.MainWindow.Show();
-            this.Close();
-        }
-
-        private void InboxFolder_Selected(object sender, RoutedEventArgs e)
+        private void OnInboxFolderSelected(object sender, RoutedEventArgs e)
         {
            
             MessageList.ItemsSource = App.Proxy.GetInboxFolder();    
         }
 
-        private void SentFolder_Selected(object sender, RoutedEventArgs e)
+        private void OnSentFolderSelected(object sender, RoutedEventArgs e)
         {
            
             MessageList.ItemsSource = App.Proxy.GetSentFolder();
         }
 
-        private void DeletedFolder_Selected(object sender, RoutedEventArgs e)
+        private void OnDeletedFolderSelected(object sender, RoutedEventArgs e)
         {
           
             MessageList.ItemsSource = App.Proxy.GetDeletedFolder();

@@ -10,11 +10,10 @@
             <ColumnDefinition></ColumnDefinition>           
         </Grid.ColumnDefinitions>
         <TreeView Name="Folders" Grid.Column="0" Margin="5">            
-            <TreeViewItem Name="InboxFolder" Header="Inbox" Margin="5" Selected="InboxFolder_Selected"></TreeViewItem>
-            <TreeViewItem Name="SentFolder" Header="Sent" Margin="5" Selected="SentFolder_Selected"></TreeViewItem>
-            <TreeViewItem Name="DeletedFolder" Header="Deleted" Margin="5" Selected="DeletedFolder_Selected"></TreeViewItem>
-            <Button Margin="5">New mail</Button>
-            <Button Margin="5" Click="Loguot_Click">Log out</Button>
+            <TreeViewItem Name="InboxFolder" Header="Inbox" Margin="5" Selected="OnInboxFolderSelected"></TreeViewItem>
+            <TreeViewItem Name="SentFolder" Header="Sent" Margin="5" Selected="OnSentFolderSelected"></TreeViewItem>
+            <TreeViewItem Name="DeletedFolder" Header="Deleted" Margin="5" Selected="OnDeletedFolderSelected"></TreeViewItem>
+            <Button Margin="5">New mail</Button>            
         </TreeView>
         <DataGrid Name="MessageList" Grid.Column="1" Margin="5" AutoGenerateColumns="False" SelectionChanged="MessageList_SelectionChanged">
             <DataGrid.Columns>

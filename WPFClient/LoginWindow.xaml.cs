@@ -23,7 +23,11 @@ namespace WPFClient
     {
         public LoginWindow()
         {
-            InitializeComponent();           
+            InitializeComponent();
+            App.Username = "Ivan1";
+            App.Password = "111";
+            UsernameTexbox.Text = App.Username;
+            PasswordTexbox.Password = App.Password;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

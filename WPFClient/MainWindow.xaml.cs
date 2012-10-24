@@ -26,12 +26,16 @@ namespace WPFClient
             this.Hide();
             var lw = new LoginWindow();
             lw.Show();
+            MessageControl1.ReplyButton.Click += new RoutedEventHandler(ReplyButton_Click);
+            
+          
         }
 
         private void OnInboxFolderSelected(object sender, RoutedEventArgs e)
         {
            
-            MessageList.ItemsSource = App.Proxy.GetInboxFolder();    
+            MessageList.ItemsSource = App.Proxy.GetInboxFolder();
+            
         }
 
         private void OnSentFolderSelected(object sender, RoutedEventArgs e)
@@ -67,29 +71,35 @@ namespace WPFClient
             return recipientsString.Substring(0, recipientsString.Length - 2);      
         }
 
+
         private void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
-            RecipientTextbox.Text = SenderTextbox.Text;
-            SenderTextbox.Text = "Me: <" + App.Username + ">";
-            DateTextbox.Text = DateTime.Now.ToString();
-            TitleTextbox.IsReadOnly = false;
-            MessageContent.IsReadOnly = false;
-            TitleTextbox.Text = "re: [" + TitleTextbox.Text + "]";
-            MessageContent.Text = "Введите сообщение";
-            SendButton.Visibility = System.Windows.Visibility.Visible;
-            DeleteButton.Visibility = System.Windows.Visibility.Collapsed;
-            ReplyButton.Visibility = System.Windows.Visibility.Collapsed;
+            MessageControl1.RecipientTextbox.Text = MessageControl1.SenderTextbox.Text;
+            MessageControl1.SenderTextbox.Text = "Me: <" + App.Username + ">";
+            MessageControl1.DateTextbox.Text = DateTime.Now.ToString();
+            MessageControl1.TitleTextbox.IsReadOnly = false;
+            MessageControl1.MessageContent.IsReadOnly = false;
+            MessageControl1.TitleTextbox.Text = "re: [" + MessageControl1.TitleTextbox.Text + "]";
+            MessageControl1.MessageContent.Text = "Введите сообщение";
+            MessageControl1.SendButton.Visibility = System.Windows.Visibility.Visible;
+            MessageControl1.DeleteButton.Visibility = System.Windows.Visibility.Collapsed;
+            MessageControl1.ReplyButton.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private void MessageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedMessage = (Message)MessageList.SelectedItem;
             if (selectedMessage == null) return;
-            SenderTextbox.Text = selectedMessage.SenderUsername;
-            DateTextbox.Text = selectedMessage.Date.ToString();
-            TitleTextbox.Text = selectedMessage.Title;
-            MessageContent.Text = selectedMessage.Content;
-            RecipientTextbox.Text = GetRecipientsString(); 
+            MessageControl1.SenderTextbox.Text = selectedMessage.SenderUsername;
+            MessageControl1.DateTextbox.Text = selectedMessage.Date.ToString();
+            MessageControl1.TitleTextbox.Text = selectedMessage.Title;
+            MessageControl1.MessageContent.Text = selectedMessage.Content;
+            MessageControl1.RecipientTextbox.Text = GetRecipientsString();
+        }
+
+        private void MessageControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

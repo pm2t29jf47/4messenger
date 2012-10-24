@@ -23,5 +23,7 @@ namespace WPFClient
         {
             InitializeComponent();
         }
+
+        
     }
 }

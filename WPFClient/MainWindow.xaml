@@ -9,7 +9,7 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>   
-        <local:ToolbarControl Grid.Row="0" BorderBrush="{x:Null}" ForceCursor="False" OpacityMask="{x:Null}" Background="LightGray"></local:ToolbarControl>        
+        <local:ToolbarControl Grid.Row="0" Background="LightGray"></local:ToolbarControl>        
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>          
                 <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -19,7 +19,7 @@
             <local:SidebarControl Grid.Column="0"/>
             <DataGrid Name="MessageList" Grid.Column="1" Margin="5" AutoGenerateColumns="False" SelectionChanged="MessageList_SelectionChanged">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Path=SenderUsername}" Header="{x:Static res:Resources.SenderUsernameColumn}" Width="auto"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Path=SenderUsername}" Header="{x:Static res:Resources.SenderUsernameColumn}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Path=Date}" Header="{x:Static res:Resources.DateColumn}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Path=Title}" Header="{x:Static res:Resources.TitleColumn}"></DataGridTextColumn>
                 </DataGrid.Columns>

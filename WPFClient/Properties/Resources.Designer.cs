@@ -60,6 +60,13 @@ namespace WPFClient.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap alarm {
+            get {
+                object obj = ResourceManager.GetObject("alarm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>

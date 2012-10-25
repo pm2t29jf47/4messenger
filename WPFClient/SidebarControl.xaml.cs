@@ -22,6 +22,7 @@ namespace WPFClient
         public SidebarControl()
         {
             InitializeComponent();
+           // ololo.Source = BitmapFrame.Create(new Uri("pack://application:,,,/" + "WPFClient" + ";component/" + "qqq", UriKind.RelativeOrAbsolute));
         }
     }
 }

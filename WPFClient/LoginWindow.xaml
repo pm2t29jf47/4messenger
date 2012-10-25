@@ -1,7 +1,8 @@
 ﻿<Window x:Class="WPFClient.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Log In" Height="143" Width="300" ResizeMode="NoResize">
+        Title="Log In" Height="143" Width="300" ResizeMode="NoResize"
+        xmlns:res="clr-namespace:WPFClient.Properties">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -11,9 +12,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>    
-        <Label Name="UsernameLable" Grid.Column="0" Grid.Row="0" Margin="5">Username</Label>
-        <Label Name="PasswordLable" Grid.Column="0" Grid.Row="1" Margin="5">Password</Label>
+        </Grid.ColumnDefinitions>
+        <Label Name="UsernameLable" Grid.Column="0" Grid.Row="0" Margin="5" Content="{x:Static res:Resources.UsernameLabel}"/>
+        <Label Name="PasswordLable" Grid.Column="0" Grid.Row="1" Margin="5" Content="{x:Static res:Resources.PasswordLabel}"/>
         <TextBox Name="UsernameTexbox" Grid.Column="1" Grid.Row="0" Margin="5"></TextBox>
         <PasswordBox Name="PasswordTexbox" Grid.Column="1" Grid.Row="1" Margin="5"></PasswordBox>
         <Button Grid.Column="1" Grid.Row="2" Padding="5" Margin="5" Click="Button_Click">Log In</Button>       

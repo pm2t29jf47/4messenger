@@ -117,7 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ololo" xml:space="preserve">
-    <value>ololovalue</value>
+  <data name="DateColumn" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="DateLable" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="RecipientLable" xml:space="preserve">
+    <value>Recipient</value>
+  </data>
+  <data name="SenderLable" xml:space="preserve">
+    <value>Sender</value>
+  </data>
+  <data name="SenderUsernameColumn" xml:space="preserve">
+    <value>SenderUsername</value>
+  </data>
+  <data name="TitleColumn" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="TitleLable" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="UsernameLabel" xml:space="preserve">
+    <value>Username</value>
   </data>
 </root>

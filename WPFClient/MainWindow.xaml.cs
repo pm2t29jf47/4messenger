@@ -22,30 +22,26 @@ namespace WPFClient
     {
         public MainWindow()
         {
+            ///Выбирает локаль
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
             InitializeComponent();
             this.Hide();
-            var lw = new LoginWindow();
-            lw.Show();
-            var a = Properties.Resources.ololo;
-            
+            var loginWindow = new LoginWindow();
+            loginWindow.Show();          
         }
 
         private void OnInboxFolderSelected(object sender, RoutedEventArgs e)
-        {
-           
-            MessageList.ItemsSource = App.Proxy.GetInboxFolder();
-            
+        {           
+            MessageList.ItemsSource = App.Proxy.GetInboxFolder();            
         }
 
         private void OnSentFolderSelected(object sender, RoutedEventArgs e)
-        {
-           
+        {           
             MessageList.ItemsSource = App.Proxy.GetSentFolder();
         }
 
         private void OnDeletedFolderSelected(object sender, RoutedEventArgs e)
-        {
-          
+        {          
             MessageList.ItemsSource = App.Proxy.GetDeletedFolder();
         }
 
@@ -70,7 +66,6 @@ namespace WPFClient
             return recipientsString.Substring(0, recipientsString.Length - 2);      
         }
 
-
         private void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
             //MessageControl1.RecipientTextbox.Text = MessageControl1.SenderTextbox.Text;
@@ -94,11 +89,6 @@ namespace WPFClient
             //MessageControl1.TitleTextbox.Text = selectedMessage.Title;
             //MessageControl1.MessageContent.Text = selectedMessage.Content;
             //MessageControl1.RecipientTextbox.Text = GetRecipientsString();
-        }
-
-        private void MessageControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

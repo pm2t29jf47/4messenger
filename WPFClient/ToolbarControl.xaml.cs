@@ -15,13 +15,14 @@ using System.Windows.Shapes;
 namespace WPFClient
 {
     /// <summary>
-    /// Interaction logic for MessageControl.xaml
+    /// Interaction logic for ToolbarControl.xaml
     /// </summary>
-    public partial class MessageControl : UserControl
+    public partial class ToolbarControl : UserControl
     {
-        public MessageControl()
+        public ToolbarControl()
         {
             InitializeComponent();
+           
         }
     }
 }

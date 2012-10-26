@@ -33,7 +33,8 @@ namespace WPFClient
 
         void SetHandlers()
         {
-            ToolbarControl1.CreateMessageButton.Click += new RoutedEventHandler(OnNewMailButtonClick);
+            ToolbarControl1.CreateMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
+            ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnReplyMessageButtonClick);
         }
 
         private void PrepareWindow()
@@ -116,6 +117,9 @@ namespace WPFClient
             MessageControl1.TitleTextbox.Text = selectedMessage.Title;
             MessageControl1.MessageContent.Text = selectedMessage.Content;
             MessageControl1.RecipientTextbox.Text = GetRecipientsString();
+            MessageControl1.Visibility = System.Windows.Visibility.Visible;
+            ToolbarControl1.ReplyMessageButton.Visibility = System.Windows.Visibility.Visible;
+            ToolbarControl1.DeleteMessageButton.Visibility = System.Windows.Visibility.Visible;
         }
 
         /// <summary>
@@ -159,7 +163,14 @@ namespace WPFClient
             MessageList.ItemsSource = App.Proxy.GetInboxFolder();
         }
 
-        public void OnNewMailButtonClick(object sender, RoutedEventArgs e) 
+        public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
+        {
+            MessageCreator newMessage = new MessageCreator();
+            newMessage.Title = Properties.Resources.MessageCreatorTitle;
+            newMessage.Show();
+        }
+
+        public void OnReplyMessageButtonClick(object sender, RoutedEventArgs e)
         {
             MessageCreator newMessage = new MessageCreator();
             newMessage.Title = Properties.Resources.MessageCreatorTitle;

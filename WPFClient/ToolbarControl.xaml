@@ -8,11 +8,23 @@
              xmlns:res="clr-namespace:WPFClient.Properties">
     <Grid Background="LightGray">
         <ToolBar >
-            <Button Name="NewMailButton" Content="New Mail"></Button>
-            <Button Name="ReplyButton" Content="Reply"></Button>
+            <Button Name="NewMailButton">
+                <StackPanel>
+                    <Image Source="Images\mail.png"></Image>
+                    <Label Content="{x:Static res:Resources.NewMessageLable}"></Label>
+                </StackPanel>
+            </Button>
+            <Separator></Separator>
+            <Button Name="ReplyButton">
+                <StackPanel>
+                    <Image Source="Images\mail_forward.png"></Image>
+                    <Label Content="{x:Static res:Resources.ReplyMessageLable}"></Label>
+                </StackPanel>
+            </Button>
             <Button>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Delete"></Label>
+                <StackPanel>
+                    <Image Source="Images\mail_delete.png"></Image>
+                    <Label Content="{x:Static res:Resources.DeleteMessageLable}"></Label>
                 </StackPanel>
             </Button>
         </ToolBar>

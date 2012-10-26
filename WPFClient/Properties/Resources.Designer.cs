@@ -60,13 +60,6 @@ namespace WPFClient.Properties {
             }
         }
         
-        public static System.Drawing.Bitmap alarm {
-            get {
-                object obj = ResourceManager.GetObject("alarm", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
@@ -82,6 +75,42 @@ namespace WPFClient.Properties {
         public static string DateLable {
             get {
                 return ResourceManager.GetString("DateLable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted.
+        /// </summary>
+        public static string DeletedFolderLable {
+            get {
+                return ResourceManager.GetString("DeletedFolderLable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string DeleteMessageLable {
+            get {
+                return ResourceManager.GetString("DeleteMessageLable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inbox.
+        /// </summary>
+        public static string InboxFolderLable {
+            get {
+                return ResourceManager.GetString("InboxFolderLable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string NewMessageLable {
+            get {
+                return ResourceManager.GetString("NewMessageLable", resourceCulture);
             }
         }
         
@@ -104,6 +133,15 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reply.
+        /// </summary>
+        public static string ReplyMessageLable {
+            get {
+                return ResourceManager.GetString("ReplyMessageLable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sender.
         /// </summary>
         public static string SenderLable {
@@ -118,6 +156,15 @@ namespace WPFClient.Properties {
         public static string SenderUsernameColumn {
             get {
                 return ResourceManager.GetString("SenderUsernameColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sent.
+        /// </summary>
+        public static string SentFolderLable {
+            get {
+                return ResourceManager.GetString("SentFolderLable", resourceCulture);
             }
         }
         

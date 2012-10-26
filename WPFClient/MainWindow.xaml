@@ -15,8 +15,8 @@
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>     
-            <local:SidebarControl Grid.Column="0"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Name="Sidebar" Grid.Column="0"/>
             <DataGrid Name="MessageList" Grid.Column="1" Margin="5" AutoGenerateColumns="False" SelectionChanged="MessageList_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Path=SenderUsername}" Header="{x:Static res:Resources.SenderUsernameColumn}"></DataGridTextColumn>

@@ -64,9 +64,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.ru.resx</DependentUpon>
     </Compile>
-    <Compile Include="SidebarControl.xaml.cs">
-      <DependentUpon>SidebarControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="SidebarFolder.cs" />
     <Compile Include="ToolbarControl.xaml.cs">
       <DependentUpon>ToolbarControl.xaml</DependentUpon>
     </Compile>
@@ -90,10 +88,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MessageControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SidebarControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -149,10 +143,16 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\alarm.png" />
+    <Resource Include="Images\mail.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="NewFolder1\brickwall.png" />
+    <Resource Include="Images\mail_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\mail_forward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\folder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -20,31 +20,53 @@ namespace WPFClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<SidebarFolder> folders = new List<SidebarFolder>();
+
         public MainWindow()
         {
             ///Выбирает локаль
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
             InitializeComponent();
+            PrepareWindow();
+            ShowLoginWindow();    
+        }
+
+        private void PrepareWindow()
+        {
+            FillFoldersNames();
+            SetSidebar();
+        }
+
+        private void SetSidebar()
+        {
+            foreach (var folder in folders)
+            {
+                Button folderButton = new Button();
+                StackPanel folderStackPanel = new StackPanel();
+                Uri uri = new Uri("pack://application:,,,/Images/folder.png");
+                BitmapImage source = new BitmapImage(uri);
+                folderStackPanel.Children.Add(new Image { Source = source });
+                folderStackPanel.Children.Add(new Label { Content = folder.FolderName });
+                folderButton.Content = folderStackPanel;
+                folderButton.Click += new RoutedEventHandler(OnFolderClick);
+                folderButton.Name = folder.FolderName;
+                Sidebar.Children.Add(folderButton);
+            }            
+        }
+
+        private void FillFoldersNames()
+        {
+            folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLable));
+            folders.Add(new SidebarFolder(Properties.Resources.SentFolderLable));
+            folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLable));
+        }
+
+        private void ShowLoginWindow()
+        {
             this.Hide();
             var loginWindow = new LoginWindow();
-            loginWindow.Show();          
+            loginWindow.Show();
         }
-
-        private void OnInboxFolderSelected(object sender, RoutedEventArgs e)
-        {           
-            MessageList.ItemsSource = App.Proxy.GetInboxFolder();            
-        }
-
-        private void OnSentFolderSelected(object sender, RoutedEventArgs e)
-        {           
-            MessageList.ItemsSource = App.Proxy.GetSentFolder();
-        }
-
-        private void OnDeletedFolderSelected(object sender, RoutedEventArgs e)
-        {          
-            MessageList.ItemsSource = App.Proxy.GetDeletedFolder();
-        }
-
 
         private string GetRecipientsString()
         {
@@ -89,6 +111,47 @@ namespace WPFClient
             //MessageControl1.TitleTextbox.Text = selectedMessage.Title;
             //MessageControl1.MessageContent.Text = selectedMessage.Content;
             //MessageControl1.RecipientTextbox.Text = GetRecipientsString();
+        }
+
+        /// <summary>
+        /// Общий обработчик для нажатий на папки в Sidebar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void OnFolderClick(object sender, RoutedEventArgs e)
+        {
+            var selecteFolder = (Button)sender;
+            ///Папки с одинаковыми названиями будут отображать одинаковое содержимое 
+            if (string.Compare(selecteFolder.Name, Properties.Resources.DeletedFolderLable) == 0)
+                OnDeletedFolderClick();
+            else if (string.Compare(selecteFolder.Name, Properties.Resources.InboxFolderLable) == 0)
+                OnInboxFolderClick();
+            else if (string.Compare(selecteFolder.Name, Properties.Resources.SentFolderLable) == 0)
+                OnSentFolderClick();
+            else UserFolderClick();
+        }
+
+        /// <summary>
+        /// Обработка нажатия на пользовательскую папку
+        /// </summary>
+        private void UserFolderClick()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnDeletedFolderClick()
+        {
+            MessageList.ItemsSource = App.Proxy.GetDeletedFolder();
+        }
+
+        private void OnSentFolderClick()
+        {
+            MessageList.ItemsSource = App.Proxy.GetSentFolder();
+        }
+
+        private void OnInboxFolderClick()
+        {
+            MessageList.ItemsSource = App.Proxy.GetInboxFolder();
         }
     }
 }

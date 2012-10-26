@@ -31,24 +31,29 @@ namespace WPFClient
             ShowLoginWindow(); 
         }
 
+        private void PrepareWindow()
+        {
+            SetHandlers();
+            SetSidebar();
+            SetMessageList(System.Windows.Visibility.Collapsed);
+            HideMessageControl();
+        }
+
+        private void HideMessageControl()
+        {
+            MessageControl1Column.Width = GridLength.Auto;
+            MessageControl1.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        private void SetMessageList(System.Windows.Visibility Visisbility)
+        {
+            MessageList.Visibility = Visisbility;
+        }
+
         void SetHandlers()
         {
             ToolbarControl1.CreateMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
-            ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnReplyMessageButtonClick);
-        }
-
-        private void PrepareWindow()
-        {            
-            SetSidebar();
-            SetHandlers();     
-            PrepareMessageContrl1();
-        }
-
-        void PrepareMessageContrl1()
-        {
-       
-            MessageList.Visibility = System.Windows.Visibility.Collapsed;
-            HideMessageControl();
+            ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
         }
 
         private void SetSidebar()
@@ -154,7 +159,7 @@ namespace WPFClient
         /// </summary>
         private void UserFolderClick()
         {
-            MessageList.Visibility = System.Windows.Visibility.Visible;
+            SetMessageList(System.Windows.Visibility.Visible);
             HideMessageControl();
             throw new NotImplementedException();
         }
@@ -163,39 +168,40 @@ namespace WPFClient
         {
             MessageList.ItemsSource = App.Proxy.GetDeletedFolder();
             HideMessageControl();
-            MessageList.Visibility = System.Windows.Visibility.Visible;
+            SetMessageList(System.Windows.Visibility.Visible); 
         }
 
         private void OnSentFolderClick()
         {
             MessageList.ItemsSource = App.Proxy.GetSentFolder();
             HideMessageControl();
-            MessageList.Visibility = System.Windows.Visibility.Visible;
+            SetMessageList(System.Windows.Visibility.Visible);
         }
 
         private void OnInboxFolderClick()
         {
             MessageList.ItemsSource = App.Proxy.GetInboxFolder();
             HideMessageControl();
-            MessageList.Visibility = System.Windows.Visibility.Visible;
-        }
-
-        private void HideMessageControl()
-        {
-            MessageControl1Column.Width = GridLength.Auto;
-            MessageControl1.Visibility = System.Windows.Visibility.Collapsed;
+            SetMessageList(System.Windows.Visibility.Visible);
         }
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
         {
-            MessageCreator newMessage = new MessageCreator();
+            MessageCreator newMessage = new MessageCreator("Me: <" + App.Username + ">", "", "");
             newMessage.Title = Properties.Resources.MessageCreatorTitle;
-            newMessage.Show();
+            newMessage.Show();            
         }
 
         public void OnReplyMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            MessageCreator newMessage = new MessageCreator();
+            var selectedMessage = (Message)MessageList.SelectedItem;
+            var recipientEmployee = App.Proxy.GetEmployee(selectedMessage.SenderUsername);
+            string recipientString = recipientEmployee.FirstName + " "
+                    + recipientEmployee.SecondName + " <"
+                    + recipientEmployee.Username + ">, ";
+            string senderString = "Me: <" + App.Username + ">";
+            string titleString = "re: [" + selectedMessage.Title + "]";
+            MessageCreator newMessage = new MessageCreator(senderString, recipientString, titleString);
             newMessage.Title = Properties.Resources.MessageCreatorTitle;
             newMessage.Show();
         }

@@ -18,33 +18,27 @@ namespace WPFClient
     /// </summary>
     public partial class MessageCreator : Window
     {
-        string recipientUsername = string.Empty;
-        string title = string.Empty;
-        string senderUsername = string.Empty;
+        string recipientTextboxText;
+        string titleTextboxText;
+        string senderTextboxText;
 
-        public MessageCreator()
+        public MessageCreator(string senderTextboxText, string recipientTextboxText, string titleTextboxText)
         {
-            InitializeComponent();
-            PrepareWindow();
-        }
-
-        public MessageCreator(string senderUsername, string recipientUsername, string title)
-        {
-            this.senderUsername = senderUsername;
-            this.recipientUsername = recipientUsername;
-            this.title = title;
+            this.senderTextboxText = senderTextboxText;
+            this.recipientTextboxText = recipientTextboxText;
+            this.titleTextboxText = titleTextboxText;
             InitializeComponent();
             PrepareWindow();
         }
 
         private void PrepareWindow()
         {
-            MessageControl1.SenderTextbox.Text = senderUsername;
+            MessageControl1.SenderTextbox.Text = senderTextboxText;
             MessageControl1.RecipientTextbox.IsReadOnly = false;
-            MessageControl1.RecipientTextbox.Text = recipientUsername;
+            MessageControl1.RecipientTextbox.Text = recipientTextboxText;
             MessageControl1.DateTextbox.Text = DateTime.Now.ToString();
             MessageControl1.TitleTextbox.IsReadOnly = false;
-            MessageControl1.TitleTextbox.Text = title;
+            MessageControl1.TitleTextbox.Text = titleTextboxText;
             MessageControl1.MessageContent.IsReadOnly = false;
         }
 

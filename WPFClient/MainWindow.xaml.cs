@@ -40,7 +40,15 @@ namespace WPFClient
         private void PrepareWindow()
         {            
             SetSidebar();
-            SetHandlers();
+            SetHandlers();     
+            PrepareMessageContrl1();
+        }
+
+        void PrepareMessageContrl1()
+        {
+       
+            MessageList.Visibility = System.Windows.Visibility.Collapsed;
+            HideMessageControl();
         }
 
         private void SetSidebar()
@@ -108,8 +116,9 @@ namespace WPFClient
             MessageControl1.MessageContent.Text = "Введите сообщение";
         }
 
-        private void MessageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            MessageControl1Column.Width = new GridLength(1, GridUnitType.Star);
             var selectedMessage = (Message)MessageList.SelectedItem;
             if (selectedMessage == null) return;
             MessageControl1.SenderTextbox.Text = selectedMessage.SenderUsername;
@@ -145,22 +154,36 @@ namespace WPFClient
         /// </summary>
         private void UserFolderClick()
         {
+            MessageList.Visibility = System.Windows.Visibility.Visible;
+            HideMessageControl();
             throw new NotImplementedException();
         }
 
         private void OnDeletedFolderClick()
         {
             MessageList.ItemsSource = App.Proxy.GetDeletedFolder();
+            HideMessageControl();
+            MessageList.Visibility = System.Windows.Visibility.Visible;
         }
 
         private void OnSentFolderClick()
         {
             MessageList.ItemsSource = App.Proxy.GetSentFolder();
+            HideMessageControl();
+            MessageList.Visibility = System.Windows.Visibility.Visible;
         }
 
         private void OnInboxFolderClick()
         {
             MessageList.ItemsSource = App.Proxy.GetInboxFolder();
+            HideMessageControl();
+            MessageList.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        private void HideMessageControl()
+        {
+            MessageControl1Column.Width = GridLength.Auto;
+            MessageControl1.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 

@@ -28,17 +28,23 @@ namespace WPFClient
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
             InitializeComponent();
             PrepareWindow();
-            ShowLoginWindow();    
+            ShowLoginWindow(); 
+        }
+
+        void SetHandlers()
+        {
+            ToolbarControl1.CreateMessageButton.Click += new RoutedEventHandler(OnNewMailButtonClick);
         }
 
         private void PrepareWindow()
-        {
-            FillFoldersNames();
+        {            
             SetSidebar();
+            SetHandlers();
         }
 
         private void SetSidebar()
         {
+            FillFoldersNames();
             foreach (var folder in folders)
             {
                 Button folderButton = new Button();
@@ -50,6 +56,8 @@ namespace WPFClient
                 folderButton.Content = folderStackPanel;
                 folderButton.Click += new RoutedEventHandler(OnFolderClick);
                 folderButton.Name = folder.FolderName;
+                Thickness a = new Thickness(5.0);
+                folderButton.Margin = a;
                 Sidebar.Children.Add(folderButton);
             }            
         }
@@ -90,27 +98,24 @@ namespace WPFClient
 
         private void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
-            //MessageControl1.RecipientTextbox.Text = MessageControl1.SenderTextbox.Text;
-            //MessageControl1.SenderTextbox.Text = "Me: <" + App.Username + ">";
-            //MessageControl1.DateTextbox.Text = DateTime.Now.ToString();
-            //MessageControl1.TitleTextbox.IsReadOnly = false;
-            //MessageControl1.MessageContent.IsReadOnly = false;
-            //MessageControl1.TitleTextbox.Text = "re: [" + MessageControl1.TitleTextbox.Text + "]";
-            //MessageControl1.MessageContent.Text = "Введите сообщение";
-            //MessageControl1.SendButton.Visibility = System.Windows.Visibility.Visible;
-            //MessageControl1.DeleteButton.Visibility = System.Windows.Visibility.Collapsed;
-            //MessageControl1.ReplyButton.Visibility = System.Windows.Visibility.Collapsed;
+            MessageControl1.RecipientTextbox.Text = MessageControl1.SenderTextbox.Text;
+            MessageControl1.SenderTextbox.Text = "Me: <" + App.Username + ">";
+            MessageControl1.DateTextbox.Text = DateTime.Now.ToString();
+            MessageControl1.TitleTextbox.IsReadOnly = false;
+            MessageControl1.MessageContent.IsReadOnly = false;
+            MessageControl1.TitleTextbox.Text = "re: [" + MessageControl1.TitleTextbox.Text + "]";
+            MessageControl1.MessageContent.Text = "Введите сообщение";
         }
 
         private void MessageList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //var selectedMessage = (Message)MessageList.SelectedItem;
-            //if (selectedMessage == null) return;
-            //MessageControl1.SenderTextbox.Text = selectedMessage.SenderUsername;
-            //MessageControl1.DateTextbox.Text = selectedMessage.Date.ToString();
-            //MessageControl1.TitleTextbox.Text = selectedMessage.Title;
-            //MessageControl1.MessageContent.Text = selectedMessage.Content;
-            //MessageControl1.RecipientTextbox.Text = GetRecipientsString();
+            var selectedMessage = (Message)MessageList.SelectedItem;
+            if (selectedMessage == null) return;
+            MessageControl1.SenderTextbox.Text = selectedMessage.SenderUsername;
+            MessageControl1.DateTextbox.Text = selectedMessage.Date.ToString();
+            MessageControl1.TitleTextbox.Text = selectedMessage.Title;
+            MessageControl1.MessageContent.Text = selectedMessage.Content;
+            MessageControl1.RecipientTextbox.Text = GetRecipientsString();
         }
 
         /// <summary>
@@ -152,6 +157,13 @@ namespace WPFClient
         private void OnInboxFolderClick()
         {
             MessageList.ItemsSource = App.Proxy.GetInboxFolder();
+        }
+
+        public void OnNewMailButtonClick(object sender, RoutedEventArgs e) 
+        {
+            MessageCreator newMessage = new MessageCreator();
+            newMessage.Title = Properties.Resources.MessageCreatorTitle;
+            newMessage.Show();
         }
     }
 }

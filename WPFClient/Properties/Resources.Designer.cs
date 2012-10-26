@@ -106,6 +106,15 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message creator.
+        /// </summary>
+        public static string MessageCreatorTitle {
+            get {
+                return ResourceManager.GetString("MessageCreatorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         public static string NewMessageLable {
@@ -151,11 +160,20 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SenderUsername.
+        ///   Looks up a localized string similar to Sender username.
         /// </summary>
         public static string SenderUsernameColumn {
             get {
                 return ResourceManager.GetString("SenderUsernameColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        public static string SendMessageLable {
+            get {
+                return ResourceManager.GetString("SendMessageLable", resourceCulture);
             }
         }
         

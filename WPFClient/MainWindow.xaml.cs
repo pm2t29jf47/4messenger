@@ -34,10 +34,16 @@ namespace WPFClient
         private void PrepareWindow()
         {
             SetHandlers();
-            SetSidebar();
+            PreareSidebar();
+            PrepareMessageControl1();
             HideMessageControl1(true);
             HideToolbarControl1Buttons(true);
             HideMessageList(true);
+        }
+
+        void PrepareMessageControl1()
+        {
+            MessageControl1.RecipientCombobox.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         private void HideMessageList(bool state)
@@ -71,9 +77,11 @@ namespace WPFClient
         {
             ToolbarControl1.CreateMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
             ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
+            MessageControl1.RecipientCombobox.SelectionChanged +=new SelectionChangedEventHandler(OnRecipientComboboxSelectionChanged);
+        
         }
 
-        private void SetSidebar()
+        private void PreareSidebar()
         {
             FillFoldersNames();
             foreach (var folder in folders)
@@ -197,8 +205,13 @@ namespace WPFClient
             string senderString = "Me: <" + App.Username + ">";
             string titleString = "re: [" + selectedMessage.Title + "]";
             MessageCreator newMessage = new MessageCreator(senderString, recipientString, titleString);
-            newMessage.Title = Properties.Resources.MessageCreatorTitle;
             newMessage.Show();
+        }
+
+
+        public void OnRecipientComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //MessageControl1.RecipientCombobox.
         }
     }
 }

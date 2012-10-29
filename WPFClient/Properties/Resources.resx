@@ -168,4 +168,10 @@
   <data name="SendMessageLable" xml:space="preserve">
     <value>Send</value>
   </data>
+  <data name="AddRecipientLabel" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ChoiceResipientTitle" xml:space="preserve">
+    <value>Choice resipient</value>
+  </data>
 </root>

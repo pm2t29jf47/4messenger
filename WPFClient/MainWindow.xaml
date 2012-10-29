@@ -24,7 +24,7 @@
                     <DataGridTextColumn Binding="{Binding Path=Title}" Header="{x:Static res:Resources.TitleColumn}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>        
-            <local:MessageControl x:Name="MessageControl1" Grid.Column="2"/>
+            <local:MessageControl x:Name="MessageControl1" Grid.Column="2" />
         </Grid>
     </Grid>
 </Window>

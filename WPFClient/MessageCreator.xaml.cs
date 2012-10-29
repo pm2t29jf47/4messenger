@@ -45,6 +45,9 @@ namespace WPFClient
         private void SendMessageClick(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("aaaa");
+            
         }
+
+        ///Проверять введенных адресатов
     }
 }

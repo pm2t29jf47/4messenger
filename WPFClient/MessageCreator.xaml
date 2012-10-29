@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WPFClient.MessageCreator"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Message creator" Height="462" Width="634"
+        Title="{x:Static res:Resources.MessageCreatorTitle}" Height="462" Width="634"
         xmlns:local="clr-namespace:WPFClient"
         xmlns:res="clr-namespace:WPFClient.Properties">
     <Grid>

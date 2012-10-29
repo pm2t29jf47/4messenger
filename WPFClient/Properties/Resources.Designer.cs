@@ -61,6 +61,24 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string AddRecipientLabel {
+            get {
+                return ResourceManager.GetString("AddRecipientLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choice resipient.
+        /// </summary>
+        public static string ChoiceResipientTitle {
+            get {
+                return ResourceManager.GetString("ChoiceResipientTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string DateColumn {

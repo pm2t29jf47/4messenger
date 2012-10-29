@@ -35,19 +35,36 @@ namespace WPFClient
         {
             SetHandlers();
             SetSidebar();
-            SetMessageList(System.Windows.Visibility.Collapsed);
-            HideMessageControl();
+            HideMessageControl1(true);
+            HideToolbarControl1Buttons(true);
+            HideMessageList(true);
         }
 
-        private void HideMessageControl()
+        private void HideMessageList(bool state)
         {
-            MessageControl1Column.Width = GridLength.Auto;
-            MessageControl1.Visibility = System.Windows.Visibility.Collapsed;
+            MessageList.Visibility = state ? Visibility.Collapsed : Visibility.Visible;
+            
         }
 
-        private void SetMessageList(System.Windows.Visibility Visisbility)
+        private void HideToolbarControl1Buttons(bool state)
         {
-            MessageList.Visibility = Visisbility;
+            ToolbarControl1.ReplyMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible;
+            ToolbarControl1.DeleteMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible; 
+        }
+
+        private void HideMessageControl1(bool state)
+        {
+            if (state)
+            {
+                MessageControl1Column.Width = GridLength.Auto;
+                MessageControl1.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
+                MessageControl1Column.Width = new GridLength(1, GridUnitType.Star);
+                MessageControl1.Visibility = System.Windows.Visibility.Visible;                
+            }
+
         }
 
         void SetHandlers()
@@ -123,17 +140,16 @@ namespace WPFClient
 
         private void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageControl1Column.Width = new GridLength(1, GridUnitType.Star);
+            
             var selectedMessage = (Message)MessageList.SelectedItem;
-            if (selectedMessage == null) return;
+            if (selectedMessage == null) return;    ///Ложные срабатывания
             MessageControl1.SenderTextbox.Text = selectedMessage.SenderUsername;
             MessageControl1.DateTextbox.Text = selectedMessage.Date.ToString();
             MessageControl1.TitleTextbox.Text = selectedMessage.Title;
             MessageControl1.MessageContent.Text = selectedMessage.Content;
             MessageControl1.RecipientTextbox.Text = GetRecipientsString();
-            MessageControl1.Visibility = System.Windows.Visibility.Visible;
-            ToolbarControl1.ReplyMessageButton.Visibility = System.Windows.Visibility.Visible;
-            ToolbarControl1.DeleteMessageButton.Visibility = System.Windows.Visibility.Visible;
+            HideToolbarControl1Buttons(false);
+            HideMessageControl1(false);        
         }
 
         /// <summary>
@@ -144,45 +160,24 @@ namespace WPFClient
         public void OnFolderClick(object sender, RoutedEventArgs e)
         {
             var selecteFolder = (Button)sender;
-            ///Папки с одинаковыми названиями будут отображать одинаковое содержимое 
+            HideToolbarControl1Buttons(true);
+            HideMessageControl1(true);
+            HideMessageList(false);
             if (string.Compare(selecteFolder.Name, Properties.Resources.DeletedFolderLable) == 0)
-                OnDeletedFolderClick();
+                MessageList.ItemsSource = App.Proxy.GetDeletedFolder();   
             else if (string.Compare(selecteFolder.Name, Properties.Resources.InboxFolderLable) == 0)
-                OnInboxFolderClick();
+                MessageList.ItemsSource = App.Proxy.GetInboxFolder();
             else if (string.Compare(selecteFolder.Name, Properties.Resources.SentFolderLable) == 0)
-                OnSentFolderClick();
-            else UserFolderClick();
+                MessageList.ItemsSource = App.Proxy.GetSentFolder();
+            else OnUserFolderClick();
         }
 
         /// <summary>
         /// Обработка нажатия на пользовательскую папку
         /// </summary>
-        private void UserFolderClick()
+        private void OnUserFolderClick()
         {
-            SetMessageList(System.Windows.Visibility.Visible);
-            HideMessageControl();
             throw new NotImplementedException();
-        }
-
-        private void OnDeletedFolderClick()
-        {
-            MessageList.ItemsSource = App.Proxy.GetDeletedFolder();
-            HideMessageControl();
-            SetMessageList(System.Windows.Visibility.Visible); 
-        }
-
-        private void OnSentFolderClick()
-        {
-            MessageList.ItemsSource = App.Proxy.GetSentFolder();
-            HideMessageControl();
-            SetMessageList(System.Windows.Visibility.Visible);
-        }
-
-        private void OnInboxFolderClick()
-        {
-            MessageList.ItemsSource = App.Proxy.GetInboxFolder();
-            HideMessageControl();
-            SetMessageList(System.Windows.Visibility.Visible);
         }
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 

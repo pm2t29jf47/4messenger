@@ -15,13 +15,13 @@
                 </StackPanel>
             </Button>
             <Separator></Separator>
-            <Button Name="ReplyMessageButton" Margin="5" Visibility="Collapsed">
+            <Button Name="ReplyMessageButton" Margin="5">
                 <StackPanel>
                     <Image Source="Images\mail_forward.png"></Image>
                     <Label Content="{x:Static res:Resources.ReplyMessageLable}"></Label>
                 </StackPanel>
             </Button>
-            <Button Name="DeleteMessageButton" Margin="5" Visibility="Collapsed">
+            <Button Name="DeleteMessageButton" Margin="5">
                 <StackPanel>
                     <Image Source="Images\mail_delete.png"></Image>
                     <Label Content="{x:Static res:Resources.DeleteMessageLable}"></Label>

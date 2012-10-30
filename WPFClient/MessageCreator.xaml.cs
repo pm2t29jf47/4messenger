@@ -50,6 +50,7 @@ namespace WPFClient
             MessageControl1.TitleTextbox.IsReadOnly = false;
             MessageControl1.TitleTextbox.Text = titleTextboxText;
             MessageControl1.MessageContent.IsReadOnly = false;
+            SendMessageButton.IsEnabled = false;
             MessageControl1.RecipientCombobox.SelectionChanged += new SelectionChangedEventHandler(OnRecipientComboboxSelectionChanged);
             MessageControl1.RecipientTextbox.LostFocus +=new RoutedEventHandler(OnRecipientTextboxLostFocus);
         }
@@ -64,147 +65,107 @@ namespace WPFClient
             Employee selectedEmployee = (Employee)MessageControl1.RecipientCombobox.SelectedItem;
             if (string.Compare(MessageControl1.RecipientTextbox.Text, string.Empty) != 0)
                 MessageControl1.RecipientTextbox.Text += ";";
-            MessageControl1.RecipientTextbox.Text +=
-                selectedEmployee.FirstName
-                + " "
-                + selectedEmployee.SecondName
-                + " <"
-                + selectedEmployee.Username
-                + ">";
+            MessageControl1.RecipientTextbox.Text += EmployeeToString(selectedEmployee);
         }
 
         private void OnRecipientTextboxLostFocus(object sender, RoutedEventArgs e)
         {
-            ///Имя Фамилия <username>
-            ///Имя Фамилия
-            ///username
-            ///Проверить данные поля получателя
-            string[] recipientsStringArray = MessageControl1.RecipientTextbox.Text.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            RecipientsEmployees.Clear();
-            foreach(var recipientString in recipientsStringArray)
+            string errorMessage;
+            if (CheckRecipientString(out errorMessage))
             {
-                bool searhedByFirsrtname = false,
-                    searchedBySecondName = false,
-                    searchedByUsername = false;
-                List<Employee> intersectionEmplyees = null;                
-                string[] recipientFields = recipientString.Split(new char[3] { '<','>',' ' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var field in recipientFields)
-                {
-                    ////////////////////////////////////////
-                    List<Employee> buf = new List<Employee>();
-                    if (!searhedByFirsrtname)
-                    {
-                        searhedByFirsrtname = SearchEmployeesByFirstName(field, buf);
-                        if (!searchedBySecondName & searhedByFirsrtname)
-                        {
-                            searchedBySecondName = SearchEmployeesBySecondName(field, buf);
-                            if (!searchedByUsername)
-                            {
-                                searchedByUsername = SearchEmployeesByUsername(field, buf);
-                            }
-                        }
-                    }              
-                    if (intersectionEmplyees == null)                    
-                        intersectionEmplyees = buf;                    
-                    else
-                        intersectionEmplyees = CalcEmployeesIntersection(intersectionEmplyees, buf);
-                    if (intersectionEmplyees.Count == 0) 
-                        break;
-                }
-                if (intersectionEmplyees.Count == 1)
-                {
-                    RecipientsEmployees.AddRange(intersectionEmplyees);
-                    SendMessageButton.IsEnabled = true;
-                    MessageControl1.RecipientTextbox.Text = CreateResipientString();
+                MessageControl1.RecipientTextbox.Text = string.Empty;
+                foreach (var employee in RecipientsEmployees)
+                    MessageControl1.RecipientTextbox.Text += EmployeeToString(employee) + ";";
+                MessageControl1.RecipientTextbox.Text = MessageControl1.RecipientTextbox.Text.Substring(0, MessageControl1.RecipientTextbox.Text.Length - 1);
+                SendMessageButton.IsEnabled = true;
+            }
+            else
+            {
+                MessageBox.Show(errorMessage);
+                SendMessageButton.IsEnabled = false;
+            }
+        }
 
-                }
-                else
+        private bool CheckRecipientString(out string errorMessage )
+        {
+            RecipientsEmployees.Clear();
+            string[] recipientsStringArray = MessageControl1.RecipientTextbox.Text.Split(new char[1] {';'}, StringSplitOptions.RemoveEmptyEntries);
+            if (recipientsStringArray.Length == 0)
+            {
+                errorMessage = Properties.Resources.RecipientsStringNotBeEmpty;
+                return false;
+            }
+            foreach (var recipientString in recipientsStringArray)
+            {
+                string[] recipientFields = recipientString.Split(new char[1]{' '}, StringSplitOptions.RemoveEmptyEntries);
+                switch (recipientFields.Length)
                 {
-                    ///ошибка
-                    SendMessageButton.IsEnabled = false;
-                    ///привязвть к валидации
+                    case 1:
+                        {
+                            Employee foundEmployee = SearchEmployeesByUsername(recipientString, out errorMessage);
+                            if (foundEmployee != null)
+                                RecipientsEmployees.Add(foundEmployee);
+                            else
+                                return false;
+                            break;
+                        }
+                    case 3:
+                        {
+                            string username;
+                            if (ContainUsername(recipientString, out errorMessage, out username))
+                            {
+                                Employee foundEmployee = SearchEmployeesByUsername(username, out errorMessage);
+                                if (foundEmployee != null)
+                                    RecipientsEmployees.Add(foundEmployee);
+                                else
+                                    return false;
+                            }
+                            else
+                                return false;
+                            break;
+                        }
+                    default:
+                        {
+                            errorMessage = Properties.Resources.InvalidRecipientString + recipientString;
+                            break;
+                        }
                 }
-            }        
+            }
+            errorMessage = string.Empty;
+            return true;
         }
         
-        /////////////////////////////////////////////////////////////////////////что записать в результат?
-        private void RemoveEqualEmployees(List<Employee> Employees)
+        private string EmployeeToString(Employee employee)
         {
-            for (int i = 0; i < Employees.Count; i++)
+            return employee.FirstName + " "
+                    + employee.SecondName + " <"
+                    + employee.Username + ">";           
+        }
+
+        private Employee SearchEmployeesByUsername(string username, out string errorMessage)
+        {
+            var FoundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
+            if (FoundEmployee == null)     
+                errorMessage = username + " " + Properties.Resources.NotFound;  
+            else
+                errorMessage = null;
+            return FoundEmployee;            
+        }
+
+        private bool ContainUsername(string recipientString ,out string errorMessage, out string username)
+        {
+            int begin = recipientString.IndexOf('<'),
+                            end = recipientString.IndexOf('>');
+            if (begin == -1 || end == -1)
             {
-                ///ищем только вниз, чтобы убрать уже проверенные элементы
-                for (int j = i + 1; j < Employees.Count; )
-                {
-                    if (string.Compare(Employees[i].FirstName, Employees[j].FirstName) == 0
-                        && string.Compare(Employees[i].SecondName, Employees[j].SecondName) == 0
-                        && string.Compare(Employees[i].Username, Employees[j].Username) == 0)
-                        Employees.RemoveAt(j);
-                    else
-                        j++;
-                }
+                errorMessage = Properties.Resources.InvalidRecipientString + recipientString;
+                username = null;
+                return false;
             }
+            begin += 1;
+            username = recipientString.Substring(begin, end - begin);
+            errorMessage = null;
+            return true;
         }
-
-        private string CreateResipientString()
-        {
-            string recipientsString = string.Empty;
-            foreach(var item in RecipientsEmployees)
-                recipientsString +=
-                    item.FirstName + " "
-                    + item.SecondName + " <"
-                    + item.Username + ">;";
-            return recipientsString.Substring(0, recipientsString.Length - 1);
-        }
-
-        private List<Employee> CalcEmployeesIntersection(List<Employee> employeeSet1, List<Employee> employeeSet2)
-        {
-            List<Employee> result = new List<Employee>();
-            foreach(var item1 in employeeSet1)
-            {
-                foreach (var item2 in employeeSet2)
-                {
-                    if( string.Compare(item1.FirstName, item2.FirstName) == 0
-                        && string.Compare(item1.SecondName, item2.SecondName) == 0
-                        && string.Compare(item1.Username, item2.Username) == 0)
-                        result.Add(item1);                    
-                }
-            }
-            return result;
-        }
-
-        private bool SearchEmployeesByFirstName(string firstName, List<Employee> FoundEmployees)
-        {
-            var queryResult = AllEmployees.Where(i => (string.Compare(i.FirstName, firstName) == 0)).ToList();
-            if (queryResult != null)
-            {
-                FoundEmployees.AddRange(queryResult);
-                return (queryResult.Count == 0) ? false : true;
-            }
-            return false;     
-        }
-
-        private bool SearchEmployeesBySecondName(string secondName, List<Employee> FoundEmployees)
-        {
-            var queryResult = AllEmployees.Where(i => (string.Compare(i.SecondName, secondName) == 0)).ToList();
-            if (queryResult != null)
-            {
-                FoundEmployees.AddRange(queryResult);
-                return (queryResult.Count == 0) ? false : true;
-            }
-            return false;
-        }
-
-        private bool SearchEmployeesByUsername(string username, List<Employee> FoundEmployees)
-        {
-            var queryResult = AllEmployees.Where(i => (string.Compare(i.Username, username) == 0)).ToList();
-            if (queryResult != null)
-            {
-                FoundEmployees.AddRange(queryResult);
-                return (queryResult.Count == 0) ? false : true;
-            }
-            return false;
-        }
-
-
     }
 }

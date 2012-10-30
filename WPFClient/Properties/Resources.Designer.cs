@@ -124,6 +124,15 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to invalid recipient string: .
+        /// </summary>
+        public static string InvalidRecipientString {
+            get {
+                return ResourceManager.GetString("InvalidRecipientString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Message creator.
         /// </summary>
         public static string MessageCreatorTitle {
@@ -142,6 +151,15 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to not found.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string PasswordLabel {
@@ -156,6 +174,15 @@ namespace WPFClient.Properties {
         public static string RecipientLable {
             get {
                 return ResourceManager.GetString("RecipientLable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to recipients string not be empty.
+        /// </summary>
+        public static string RecipientsStringNotBeEmpty {
+            get {
+                return ResourceManager.GetString("RecipientsStringNotBeEmpty", resourceCulture);
             }
         }
         

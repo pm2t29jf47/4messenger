@@ -174,4 +174,13 @@
   <data name="ChoiceResipientTitle" xml:space="preserve">
     <value>Choice resipient</value>
   </data>
+  <data name="InvalidRecipientString" xml:space="preserve">
+    <value>invalid recipient string: </value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>not found</value>
+  </data>
+  <data name="RecipientsStringNotBeEmpty" xml:space="preserve">
+    <value>recipients string not be empty</value>
+  </data>
 </root>

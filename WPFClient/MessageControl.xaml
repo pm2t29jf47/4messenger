@@ -30,8 +30,22 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>               
-                <ComboBox Name="RecipientCombobox" Grid.Row="0" Height="23" Margin="5" />
+                </Grid.RowDefinitions>
+                <ComboBox Name="RecipientCombobox" Grid.Row="0" Height="23" Margin="5" >
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock DataContext="{Binding}">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1} &lt;{2}&gt;">
+                                        <Binding Path="FirstName" />
+                                        <Binding Path="SecondName" />
+                                        <Binding Path="Username" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <TextBox Name="RecipientTextbox" Grid.Row="1" Margin="5" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"/>
             </Grid>      
             <TextBox Name="DateTextbox" Grid.Column="1" Grid.Row="2" Margin="5" IsReadOnly="True" IsEnabled="False"/>

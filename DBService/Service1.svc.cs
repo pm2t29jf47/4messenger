@@ -24,8 +24,8 @@ namespace DBService
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Employee> GetEmployeeList()
         {
-            //return EmployeeGateway.SelectEmployees(sqlConnection);
-            return null;
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            return EmployeeGateway.SelectAll(currentUsername);
         }
 
         /// <summary> 

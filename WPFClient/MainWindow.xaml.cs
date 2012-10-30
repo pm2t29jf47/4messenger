@@ -76,9 +76,7 @@ namespace WPFClient
         void SetHandlers()
         {
             ToolbarControl1.CreateMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
-            ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
-            MessageControl1.RecipientCombobox.SelectionChanged +=new SelectionChangedEventHandler(OnRecipientComboboxSelectionChanged);
-        
+            ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);        
         }
 
         private void PreareSidebar()
@@ -129,10 +127,10 @@ namespace WPFClient
                     :
                     (recipientEmployee.FirstName + " "
                     + recipientEmployee.SecondName + " <"
-                    + recipientEmployee.Username + ">, ");
+                    + recipientEmployee.Username + ">;");
             }
             ///Удаляет последнюю запятую
-            return recipientsString.Substring(0, recipientsString.Length - 2);      
+            return recipientsString.Substring(0, recipientsString.Length - 1);      
         }
 
         private void ReplyButton_Click(object sender, RoutedEventArgs e)
@@ -206,12 +204,6 @@ namespace WPFClient
             string titleString = "re: [" + selectedMessage.Title + "]";
             MessageCreator newMessage = new MessageCreator(senderString, recipientString, titleString);
             newMessage.Show();
-        }
-
-
-        public void OnRecipientComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //MessageControl1.RecipientCombobox.
         }
     }
 }

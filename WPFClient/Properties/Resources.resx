@@ -135,8 +135,8 @@
   <data name="PasswordLabel" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="RecipientLable" xml:space="preserve">
-    <value>Recipient</value>
+  <data name="RecipientsLable" xml:space="preserve">
+    <value>Recipients</value>
   </data>
   <data name="ReplyMessageLable" xml:space="preserve">
     <value>Reply</value>

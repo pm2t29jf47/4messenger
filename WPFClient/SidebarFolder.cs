@@ -7,14 +7,13 @@ namespace WPFClient
 {
     class SidebarFolder
     {
-        public SidebarFolder() : this("NewFolder"){ }
+        public SidebarFolder() : this("NewFolder") { }
 
-        public SidebarFolder(string folderName)
-            {
-                if (folderName == null) return;
-                FolderName = folderName;
-            }
+        public SidebarFolder(string folderLabel)
+        {
+            FolderLabel = folderLabel;
+        }
 
-        public string FolderName { set; get; }
+        public string FolderLabel { set; get; }
     }
 }

@@ -55,7 +55,8 @@ namespace DataSourceLayer
         {
             cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.NVarChar, 50));
             cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
-            cmd.Parameters.Add(new SqlParameter("@delete", SqlDbType.Bit));
+            cmd.Parameters.Add(new SqlParameter("@deleted", SqlDbType.Bit));
+            cmd.Parameters.Add(new SqlParameter("@viewed", SqlDbType.Bit));
         }
 
         /// <summary> 
@@ -65,7 +66,8 @@ namespace DataSourceLayer
         {
             cmd.Parameters["@recipientUsername"].Value = recipient.RecipientUsername;
             cmd.Parameters["@messageId"].Value = recipient.MessageId;
-            cmd.Parameters["@delete"].Value = recipient.Deleted;
+            cmd.Parameters["@deleted"].Value = recipient.Deleted;
+            cmd.Parameters["@viewed"].Value = recipient.Viewed;
         }
 
         /// <summary>
@@ -218,7 +220,8 @@ namespace DataSourceLayer
             return !reader.HasRows ? null : new Recipient(
                 (string) reader["RecipientUsername"],
                 int.Parse(reader["MessageId"].ToString()),
-                bool.Parse(reader["Deleted"].ToString()));
+                bool.Parse(reader["Deleted"].ToString()),
+                bool.Parse(reader["Viewed"].ToString()));
         }         
     }
 }

@@ -38,7 +38,7 @@ namespace DBService
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             ///нельзя отсылать письма под чужим именем
             ///вернуть ошибку!!!!
-            if (string.Compare(currentUsername, message.SenderUsername) == 0)
+            if (string.Compare(currentUsername, message.SenderUsername) != 0)
                 return;
             int? insertedMessageId = MessageGateway.Insert(message, currentUsername);
             if (insertedMessageId == null) return;
@@ -112,9 +112,7 @@ namespace DBService
             var a = MessageGateway.SelectBy_SenderUsername_Deleted(curentUsername,true);
             var sentMessages = MessageGateway.SelectBy_SenderUsername_Deleted(curentUsername, true);
             deletedMessages.AddRange(sentMessages);
-            return deletedMessages;
-
-            
+            return deletedMessages;      
         }
 
         /// <summary>
@@ -125,6 +123,12 @@ namespace DBService
         {
             string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return EmployeeGateway.SelectByUsername(selectableUsername, curentUsername);
+        }
+
+
+        public void SetMessageDeleted(int MessageId)
+        {
+            
         }
     }
 }

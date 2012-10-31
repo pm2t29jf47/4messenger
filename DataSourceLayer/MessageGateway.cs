@@ -63,7 +63,7 @@ namespace DataSourceLayer
             cmd.Parameters.Add(
                 new SqlParameter("@senderUsername", SqlDbType.NVarChar, 50));            
             cmd.Parameters.Add(
-                new SqlParameter("@delete", SqlDbType.Bit));
+                new SqlParameter("@deleted", SqlDbType.Bit));
             cmd.Parameters.Add(
                 new SqlParameter("@id", SqlDbType.Int)
                 {
@@ -80,7 +80,7 @@ namespace DataSourceLayer
             cmd.Parameters["@date"].Value = message.Date.Date;
             cmd.Parameters["@senderUsername"].Value = message.SenderUsername;
             cmd.Parameters["@content"].Value = message.Content;
-            cmd.Parameters["@delete"].Value = false;
+            cmd.Parameters["@deleted"].Value = false;
         }
 
         /// <summary>

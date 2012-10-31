@@ -55,7 +55,8 @@ ALTER PROCEDURE insert_recipient
 (
 	@recipientUsername nvarchar(50),
 	@messageId int,
-	@deleted bit
+	@deleted bit,
+	@viewed bit
 )
 AS
 BEGIN
@@ -66,20 +67,21 @@ BEGIN
 		WHERE 
 			RecipientUsername = @recipientUsername
 			AND MessageId = @messageId
-			AND Deleted = @deleted
 	)
 	BEGIN		
 		INSERT INTO Recipient
 		(
 			RecipientUsername,
 			MessageId,
-			Deleted
+			Deleted,
+			Viewed
 		) 
 		VALUES
 		(
 			@recipientUsername,
 			@messageId,
-			@deleted
+			@deleted,
+			@viewed
 		)
 	END
 END

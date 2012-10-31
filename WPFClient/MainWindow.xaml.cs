@@ -35,48 +35,20 @@ namespace WPFClient
         {
             SetHandlers();
             PreareSidebar();
-            PrepareMessageControl1();
-            HideMessageControl1(true);
             HideToolbarControl1Buttons(true);
-            HideMessageList(true);
         }
-
-        void PrepareMessageControl1()
-        {
-            MessageControl1.RecipientCombobox.Visibility = System.Windows.Visibility.Collapsed;
-        }
-
-        private void HideMessageList(bool state)
-        {
-            MessageList.Visibility = state ? Visibility.Collapsed : Visibility.Visible;
-            
-        }
-
+        
         private void HideToolbarControl1Buttons(bool state)
         {
             ToolbarControl1.ReplyMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible;
             ToolbarControl1.DeleteMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible; 
         }
 
-        private void HideMessageControl1(bool state)
-        {
-            if (state)
-            {
-                MessageControl1Column.Width = GridLength.Auto;
-                MessageControl1.Visibility = System.Windows.Visibility.Collapsed;
-            }
-            else
-            {
-                MessageControl1Column.Width = new GridLength(1, GridUnitType.Star);
-                MessageControl1.Visibility = System.Windows.Visibility.Visible;                
-            }
-
-        }
-
         void SetHandlers()
         {
             ToolbarControl1.CreateMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
-            ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);        
+            ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);  
+            ToolbarControl1.DeleteMessageButton.Click += new RoutedEventHandler(OnDeleteMessageButtonClick);
         }
 
         private void PreareSidebar()
@@ -89,10 +61,10 @@ namespace WPFClient
                 Uri uri = new Uri("pack://application:,,,/Images/folder.png");
                 BitmapImage source = new BitmapImage(uri);
                 folderStackPanel.Children.Add(new Image { Source = source });
-                folderStackPanel.Children.Add(new Label { Content = folder.FolderName });
+                folderStackPanel.Children.Add(new Label { Content = folder.FolderLabel });
                 folderButton.Content = folderStackPanel;
                 folderButton.Click += new RoutedEventHandler(OnFolderClick);
-                folderButton.Name = folder.FolderName;
+                folderButton.Name = folder.FolderLabel;
                 Thickness a = new Thickness(5.0);
                 folderButton.Margin = a;
                 Sidebar.Children.Add(folderButton);
@@ -140,7 +112,7 @@ namespace WPFClient
             MessageControl1.DateTextbox.Text = DateTime.Now.ToString();
             MessageControl1.TitleTextbox.IsReadOnly = false;
             MessageControl1.MessageContent.IsReadOnly = false;
-            MessageControl1.TitleTextbox.Text = "re: [" + MessageControl1.TitleTextbox.Text + "]";
+            MessageControl1.TitleTextbox.Text = "re: [" + MessageList.SelectedItem + "]";
             MessageControl1.MessageContent.Text = "Введите сообщение";
         }
 
@@ -154,8 +126,7 @@ namespace WPFClient
             MessageControl1.TitleTextbox.Text = selectedMessage.Title;
             MessageControl1.MessageContent.Text = selectedMessage.Content;
             MessageControl1.RecipientTextbox.Text = GetRecipientsString();
-            HideToolbarControl1Buttons(false);
-            HideMessageControl1(false);        
+            HideToolbarControl1Buttons(false);       
         }
 
         /// <summary>
@@ -165,17 +136,16 @@ namespace WPFClient
         /// <param name="e"></param>
         public void OnFolderClick(object sender, RoutedEventArgs e)
         {
-            var selecteFolder = (Button)sender;
+            var selectedFolder = (Button)sender;
             HideToolbarControl1Buttons(true);
-            HideMessageControl1(true);
-            HideMessageList(false);
-            if (string.Compare(selecteFolder.Name, Properties.Resources.DeletedFolderLable) == 0)
-                MessageList.ItemsSource = App.Proxy.GetDeletedFolder();   
-            else if (string.Compare(selecteFolder.Name, Properties.Resources.InboxFolderLable) == 0)
-                MessageList.ItemsSource = App.Proxy.GetInboxFolder();
-            else if (string.Compare(selecteFolder.Name, Properties.Resources.SentFolderLable) == 0)
-                MessageList.ItemsSource = App.Proxy.GetSentFolder();
-            else OnUserFolderClick();
+            if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLable) == 0)          
+                MessageList.ItemsSource = App.Proxy.GetDeletedFolder();            
+            else if (string.Compare(selectedFolder.Name, Properties.Resources.InboxFolderLable) == 0)   
+                MessageList.ItemsSource = App.Proxy.GetInboxFolder();           
+            else if (string.Compare(selectedFolder.Name, Properties.Resources.SentFolderLable) == 0)     
+                MessageList.ItemsSource = App.Proxy.GetSentFolder();            
+            else 
+                OnUserFolderClick();
         }
 
         /// <summary>
@@ -205,5 +175,37 @@ namespace WPFClient
             MessageCreator newMessage = new MessageCreator(senderString, recipientString, titleString);
             newMessage.Show();
         }
+
+        public void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
+        {
+            var selectedMessage = (Message)MessageList.SelectedItem;
+
+        }
+
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        //private void ClearFoldersPressedStatus()
+        //{
+        //    foreach (var item in folders)
+        //        item.IsPressed = false;
+        //}
+
+        //private void SetFolderPressed(string folderLable)
+        //{
+        //    foreach (var item in folders)
+        //        if (string.Compare(item.FolderLable, folderLable) == 0)
+        //            item.IsPressed = true;
+        //}
+
+        //private string GetPressedFolder()
+        //{
+        //    foreach (var item in folders)
+        //        if (item.IsPressed)
+        //            return item.FolderLable;
+        //    return string.Empty;
+        //}
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }

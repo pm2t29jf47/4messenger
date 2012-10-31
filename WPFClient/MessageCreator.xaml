@@ -10,7 +10,7 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <local:MessageControl x:Name="MessageControl1" Grid.Row="0"></local:MessageControl>
-        <Button Name="SendMessageButton" Grid.Row="1" HorizontalAlignment="Right" Margin="5" Click="SendMessageClick">
+        <Button Name="SendMessageButton" Grid.Row="1" HorizontalAlignment="Right" Margin="5" Click="OnSendMessageButtonClick">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Images\mail_delete.png"></Image>
                 <Label Content="{x:Static res:Resources.SendMessageLable}"></Label>

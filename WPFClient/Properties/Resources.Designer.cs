@@ -160,11 +160,11 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recipient.
+        ///   Looks up a localized string similar to Recipients.
         /// </summary>
-        public static string RecipientLable {
+        public static string RecipientsLable {
             get {
-                return ResourceManager.GetString("RecipientLable", resourceCulture);
+                return ResourceManager.GetString("RecipientsLable", resourceCulture);
             }
         }
         

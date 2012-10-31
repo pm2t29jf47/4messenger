@@ -17,11 +17,13 @@ namespace Entities
         /// <param name="delete"></param>
         public Recipient(string recipientUsername,
             int? messageId,
-            bool deleted)
+            bool deleted,
+            bool viewed)
         {
             this.Deleted = deleted;
             this.RecipientUsername = recipientUsername;
             this.MessageId = messageId;
+            this.Viewed = viewed;
         }
 
         /// <summary>
@@ -49,6 +51,16 @@ namespace Entities
         /// </summary>
         [DataMember]
         public bool Deleted
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Флаг прочтенности письма получателем
+        /// </summary>
+        [DataMember]
+        public bool Viewed
         {
             get;
             set;

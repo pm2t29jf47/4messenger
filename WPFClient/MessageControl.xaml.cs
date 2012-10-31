@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Entities;
 
 namespace WPFClient
 {
@@ -23,5 +24,11 @@ namespace WPFClient
         {
             InitializeComponent();
         }
+        public string Sender { get; set; }
+        public string Resipients { get; set; }
+        public DateTime Date { get; set; }
+        public string Title { get; set; }
+        public Message Message { get; set; }
+
     }
 }

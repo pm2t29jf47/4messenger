@@ -14,7 +14,7 @@
             <Grid.ColumnDefinitions>          
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Name="MessageControl1Column"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel Name="Sidebar" Grid.Column="0"/>
             <DataGrid Name="MessageList" Grid.Column="1" Margin="5" AutoGenerateColumns="False" SelectionChanged="OnMessageListSelectionChanged" IsReadOnly="True">

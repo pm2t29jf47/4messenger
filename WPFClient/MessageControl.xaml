@@ -22,7 +22,7 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Label Name="SenderLable" Grid.Column="0" Grid.Row="0" Margin="5" Content="{x:Static res:Resources.SenderLable}"/>
-            <Label Name="RecipientLable" Grid.Column="0" Grid.Row="1" Margin="5" Content="{x:Static res:Resources.RecipientLable}"/>
+            <Label Name="RecipientLable" Grid.Column="0" Grid.Row="1" Margin="5" Content="{x:Static res:Resources.RecipientsLable}"/>
             <Label Name="DateLable" Grid.Column="0" Grid.Row="2" Margin="5" Content="{x:Static res:Resources.DateLable}"/>
             <Label Name="TitleLable" Grid.Column="0" Grid.Row="3" Margin="5" Content="{x:Static res:Resources.TitleLable}"/>
             <TextBox Name="SenderTextbox" Grid.Column="1" Grid.Row="0" Margin="5" IsReadOnly="True" IsEnabled="False"></TextBox>

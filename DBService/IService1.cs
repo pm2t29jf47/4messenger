@@ -58,6 +58,13 @@ namespace DBService
         void SetMessageViewed(int MessageId);
 
         /// <summary>
+        /// Задает флаг удаления
+        /// </summary>
+        /// <param name="MessageId"></param>
+        [OperationContract]
+        void SetMessageDeleted(int MessageId);
+
+        /// <summary>
         /// Возвращает письма помеченные удаленными
         /// </summary>
         /// <returns></returns>

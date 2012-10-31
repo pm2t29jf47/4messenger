@@ -62,9 +62,8 @@ namespace WPFClient
             MessageControl1.TitleTextbox.IsReadOnly = false;
             MessageControl1.TitleTextbox.Text = titleTextboxText;
             MessageControl1.MessageContent.IsReadOnly = false;
-            SendMessageButton.IsEnabled = false;
             MessageControl1.RecipientCombobox.SelectionChanged += new SelectionChangedEventHandler(OnRecipientComboboxSelectionChanged);
-            MessageControl1.RecipientTextbox.LostFocus +=new RoutedEventHandler(OnRecipientTextboxLostFocus);
+            MessageControl1.RecipientTextbox.TextChanged += new TextChangedEventHandler(OnRecipientTextboxTextChanged);
         }
 
         /// <summary>
@@ -72,9 +71,19 @@ namespace WPFClient
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SendMessageClick(object sender, RoutedEventArgs e)
+        private void OnSendMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("aaaa");
+            string errorMessage;
+            if (CheckRecipientTextbox(out errorMessage))
+            {
+                SendMessage();
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show(errorMessage);
+                SendMessageButton.IsEnabled = false;
+            }
         }
 
         /// <summary>
@@ -85,8 +94,10 @@ namespace WPFClient
         public void OnRecipientComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Employee selectedEmployee = (Employee)MessageControl1.RecipientCombobox.SelectedItem;
+
             if (string.Compare(MessageControl1.RecipientTextbox.Text, string.Empty) != 0)
                 MessageControl1.RecipientTextbox.Text += ";";
+
             MessageControl1.RecipientTextbox.Text += EmployeeToString(selectedEmployee);
         }
 
@@ -95,20 +106,22 @@ namespace WPFClient
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnRecipientTextboxLostFocus(object sender, RoutedEventArgs e)
+        private void OnRecipientTextboxTextChanged(object sender, TextChangedEventArgs e)
         {
             string errorMessage;
             if (CheckRecipientTextbox(out errorMessage))
             {
-                MessageControl1.RecipientTextbox.Text = string.Empty;
+                string result = string.Empty;
                 foreach (var employee in RecipientsEmployees)
-                    MessageControl1.RecipientTextbox.Text += EmployeeToString(employee) + ";";
-                MessageControl1.RecipientTextbox.Text = MessageControl1.RecipientTextbox.Text.Substring(0, MessageControl1.RecipientTextbox.Text.Length - 1);
+                    result += EmployeeToString(employee) + ";";
+
+                result = result.Substring(0, result.Length - 1);
+                MessageControl1.RecipientTextbox.Text = result;
                 SendMessageButton.IsEnabled = true;
             }
             else
             {
-                MessageBox.Show(errorMessage);
+                //MessageBox.Show(errorMessage);
                 SendMessageButton.IsEnabled = false;
             }
         }
@@ -122,6 +135,7 @@ namespace WPFClient
         {
             RecipientsEmployees.Clear();
             string[] recipientsStringArray = MessageControl1.RecipientTextbox.Text.Split(new char[1] {';'}, StringSplitOptions.RemoveEmptyEntries);
+
             if (recipientsStringArray.Length == 0)
             {
                 errorMessage = Properties.Resources.RecipientsStringNotBeEmpty;
@@ -191,13 +205,43 @@ namespace WPFClient
         {
             int begin = recipientString.IndexOf('<'),
                 end = recipientString.IndexOf('>');
+
             if (begin == -1 || end == -1)
+            {
                 return recipientString;
+            }
             else
             {
                 begin += 1;
                 return recipientString.Substring(begin, end - begin);
             }
+        }
+
+        private void SendMessage()
+        {
+            var recipients = CreateRecipientsList(RecipientsEmployees);
+            App.Proxy.SendMessage(
+                new Message(
+                    null,
+                    MessageControl1.TitleTextbox.Text,
+                    DateTime.Parse(MessageControl1.DateTextbox.Text),
+                    recipients,
+                    App.Username,
+                    MessageControl1.MessageContent.Text,
+                    false));
+
+        }
+
+        private List<Recipient> CreateRecipientsList(List<Employee> employees)
+        {
+            List<Recipient> recipietns = new List<Recipient>();
+            foreach (var item in employees)
+            {
+                recipietns.Add(
+                    new Recipient(item.Username, null, false, false));
+            }
+            
+            return recipietns;
         }
     }
 }

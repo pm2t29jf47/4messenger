@@ -124,15 +124,6 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to invalid recipient string: .
-        /// </summary>
-        public static string InvalidRecipientString {
-            get {
-                return ResourceManager.GetString("InvalidRecipientString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Message creator.
         /// </summary>
         public static string MessageCreatorTitle {

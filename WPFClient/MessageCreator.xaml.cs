@@ -25,6 +25,12 @@ namespace WPFClient
         List<Employee> RecipientsEmployees = new List<Employee>();
         List<Employee> AllEmployees = new List<Employee>();
 
+        /// <summary>
+        /// Конструктор с параметрами
+        /// </summary>
+        /// <param name="senderTextboxText"></param>
+        /// <param name="recipientTextboxText"></param>
+        /// <param name="titleTextboxText"></param>
         public MessageCreator(string senderTextboxText, string recipientTextboxText, string titleTextboxText)
         {
             this.senderTextboxText = senderTextboxText;
@@ -35,12 +41,18 @@ namespace WPFClient
             PrepareRecipientCombobox();
         }
 
+        /// <summary>
+        /// Подготавливает combobox с получателями
+        /// </summary>
         private void PrepareRecipientCombobox()
         {
             AllEmployees = App.Proxy.GetEmployeeList();
             MessageControl1.RecipientCombobox.ItemsSource = AllEmployees;
         }
 
+        /// <summary>
+        /// Подготавливает все окно
+        /// </summary>
         private void PrepareWindow()
         {
             MessageControl1.SenderTextbox.Text = senderTextboxText;
@@ -55,11 +67,21 @@ namespace WPFClient
             MessageControl1.RecipientTextbox.LostFocus +=new RoutedEventHandler(OnRecipientTextboxLostFocus);
         }
 
+        /// <summary>
+        /// Обработчик нажатия кнопки "Send"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SendMessageClick(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("aaaa");
         }
 
+        /// <summary>
+        /// Добавляет выбраного получателя в список рассылки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnRecipientComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Employee selectedEmployee = (Employee)MessageControl1.RecipientCombobox.SelectedItem;
@@ -68,6 +90,11 @@ namespace WPFClient
             MessageControl1.RecipientTextbox.Text += EmployeeToString(selectedEmployee);
         }
 
+        /// <summary>
+        /// Запускает проверку списка рассылки после завершения ввода
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnRecipientTextboxLostFocus(object sender, RoutedEventArgs e)
         {
             string errorMessage;
@@ -86,6 +113,11 @@ namespace WPFClient
             }
         }
 
+        /// <summary>
+        /// Производит проверку списка рассылки
+        /// </summary>
+        /// <param name="errorMessage"></param>
+        /// <returns></returns>
         private bool CheckRecipientTextbox(out string errorMessage )
         {
             RecipientsEmployees.Clear();
@@ -95,73 +127,54 @@ namespace WPFClient
                 errorMessage = Properties.Resources.RecipientsStringNotBeEmpty;
                 return false;
             }
+            return CheckRecipientStringArray(recipientsStringArray, out errorMessage);   
+        }
+
+        /// <summary>
+        /// Проверяет список рассылки построчно
+        /// </summary>
+        /// <param name="recipientsStringArray"></param>
+        /// <param name="errorMessage"></param>
+        /// <returns></returns>
+        private bool CheckRecipientStringArray(string[] recipientsStringArray, out string errorMessage)
+        {
             foreach (var recipientString in recipientsStringArray)
             {
-                if (!CheckRecipientString(recipientString, out errorMessage))
-                    return false;
+                if (!ProcessRecipietnString(recipientString, out errorMessage))
+                    return false;                
             }
             errorMessage = string.Empty;
-            return true;
+            return true;           
         }
 
-        private bool CheckRecipientString(string recipientString, out string errorMessage)
+        /// <summary>
+        /// Обрабатывает одну строку из списка рассылки
+        /// </summary>
+        /// <param name="recipientString"></param>
+        /// <param name="errorMessage"></param>
+        /// <returns></returns>
+        private bool ProcessRecipietnString(string recipientString, out string errorMessage)
         {
-            string[] recipientFields = recipientString.Split(new char[1] {' '}, StringSplitOptions.RemoveEmptyEntries);
-            switch (recipientFields.Length)
-            {
-                case 1:
-                    return ProcessOneWordRecipientString(recipientString, out errorMessage);                    
-                case 3:
-                    return ProcessThreeWordRecipientString(recipientString, out errorMessage);
-                default:
-                        errorMessage = Properties.Resources.InvalidRecipientString + recipientString;
-                        return false;
-            }
-        }
-
-        private bool ProcessOneWordRecipientString(string recipientString, out string errorMessage)
-        {
-            string[] substrings = recipientString.Split(new char[2] { '<', '>' }, StringSplitOptions.RemoveEmptyEntries);
-            recipientString = substrings[0];
-            Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, recipientString) == 0));
+            string username = ParseUsername(recipientString);            
+            Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
             if (foundEmployee != null)
             {
                 RecipientsEmployees.Add(foundEmployee);
-                errorMessage = null;
+                errorMessage = string.Empty;
                 return true;
             }
             else
             {
-                errorMessage = recipientString + " " + Properties.Resources.NotFound;
-                return false;
-            }
-        }
-
-        private bool ProcessThreeWordRecipientString(string recipientString, out string errorMessage)
-        {
-            string username;
-            if (ParseUsername(recipientString, out username))
-            {
-                Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
-                if (foundEmployee != null)
-                {
-                    RecipientsEmployees.Add(foundEmployee);
-                    errorMessage = null;
-                    return true;
-                }
-                else
-                {
-                    errorMessage = username + " " + Properties.Resources.NotFound;
-                    return false;
-                }
-            }
-            else
-            {
-                errorMessage = Properties.Resources.InvalidRecipientString + recipientString;
+                errorMessage = username + " " + Properties.Resources.NotFound;
                 return false;
             }
         }
         
+        /// <summary>
+        /// Преобразует поля класса Employee в строку
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         private string EmployeeToString(Employee employee)
         {
             return employee.FirstName + " "
@@ -169,18 +182,22 @@ namespace WPFClient
                     + employee.Username + ">";           
         }
 
-        private bool ParseUsername(string recipientString , out string username)
+        /// <summary>
+        /// Проверяет строку содержащую <username>
+        /// </summary>
+        /// <param name="recipientString"></param>
+        /// <returns></returns>
+        private string ParseUsername(string recipientString)
         {
             int begin = recipientString.IndexOf('<'),
-                            end = recipientString.IndexOf('>');
+                end = recipientString.IndexOf('>');
             if (begin == -1 || end == -1)
+                return recipientString;
+            else
             {
-                username = null;
-                return false;
+                begin += 1;
+                return recipientString.Substring(begin, end - begin);
             }
-            begin += 1;
-            username = recipientString.Substring(begin, end - begin);
-            return true;
         }
     }
 }

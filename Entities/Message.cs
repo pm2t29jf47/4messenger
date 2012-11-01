@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace Entities
 {
@@ -43,70 +44,42 @@ namespace Entities
         /// Первичный ключ 
         /// </summary>   
         [DataMember]
-        public int? Id
-        {
-            get;
-            internal set;
-        }
+        public int? Id { get; internal set; }
 
         /// <summary> 
         /// Название письма 
         /// </summary>
         [DataMember]
-        public string Title
-        {
-            get;
-            set;
-        }
+        public string Title { get; set; }
 
         /// <summary> 
         /// Дата отправления 
         /// </summary>
         [DataMember]
-        public DateTime Date
-        {
-            get;
-            set;
-        }
+        public DateTime Date { get; set; }
 
         /// <summary> 
         /// Содержимое 
         /// </summary>
         [DataMember]
-        public string Content
-        {
-            get;
-            set;
-        }
+        public string Content { get; set; }
 
         /// <summary> 
         /// Отпраитель
         /// </summary>
         [DataMember]
-        public string SenderUsername
-        {
-            get;
-            internal set;
-        }
+        public string SenderUsername { get; internal set; }
 
         /// <summary> 
         /// Получатели
         /// </summary>
         [DataMember]
-        public List<Recipient> Recipients
-        {
-            get;
-            set;
-        }
+        public List<Recipient> Recipients { get; set; }
 
         /// <summary> 
         /// Флаг для переноса отправленных писем в папку удаленных
         /// </summary>
         [DataMember]
-        public bool Deleted
-        {
-            get;
-            set;
-        }
+        public bool Deleted { get; set; }
     }
 }

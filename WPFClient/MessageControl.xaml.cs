@@ -21,14 +21,45 @@ namespace WPFClient
     public partial class MessageControl : UserControl
     {
         public MessageControl()
-        {
-            InitializeComponent();
+        {     
+            InitializeComponent();      
         }
-        public string Sender { get; set; }
-        public string Resipients { get; set; }
-        public DateTime Date { get; set; }
-        public string Title { get; set; }
-        public Message Message { get; set; }
+
+        public Message Message 
+        { 
+            get
+            {
+                return (Message) this.DataContext;
+            }
+            set
+            {
+                this.DataContext = value;
+            }
+        }     
+
+        public bool DateIsVisible
+        {
+            get
+            {
+                return (DateTextbox.Visibility == System.Windows.Visibility.Visible);
+            }
+            set
+            {
+                DateTextbox.Visibility = value ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            }
+        }
+
+        public bool TitleIsReadOnly
+        {
+            get
+            {
+                return TitleTextbox.IsReadOnly;
+            }
+            set
+            {
+                TitleTextbox.IsReadOnly = value;
+            }
+        }
 
     }
 }

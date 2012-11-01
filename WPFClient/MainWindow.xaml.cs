@@ -28,7 +28,7 @@ namespace WPFClient
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
             InitializeComponent();
             PrepareWindow();
-            ShowLoginWindow(); 
+            ShowLoginWindow();           
         }
 
         private void PrepareWindow()
@@ -105,28 +105,17 @@ namespace WPFClient
             return recipientsString.Substring(0, recipientsString.Length - 1);      
         }
 
-        private void ReplyButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageControl1.RecipientTextbox.Text = MessageControl1.SenderTextbox.Text;
-            MessageControl1.SenderTextbox.Text = "Me: <" + App.Username + ">";
-            MessageControl1.DateTextbox.Text = DateTime.Now.ToString();
-            MessageControl1.TitleTextbox.IsReadOnly = false;
-            MessageControl1.MessageContent.IsReadOnly = false;
-            MessageControl1.TitleTextbox.Text = "re: [" + MessageList.SelectedItem + "]";
-            MessageControl1.MessageContent.Text = "Введите сообщение";
-        }
-
         private void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             
-            var selectedMessage = (Message)MessageList.SelectedItem;
-            if (selectedMessage == null) return;    ///Ложные срабатывания
-            MessageControl1.SenderTextbox.Text = selectedMessage.SenderUsername;
-            MessageControl1.DateTextbox.Text = selectedMessage.Date.ToString();
-            MessageControl1.TitleTextbox.Text = selectedMessage.Title;
-            MessageControl1.MessageContent.Text = selectedMessage.Content;
-            MessageControl1.RecipientTextbox.Text = GetRecipientsString();
-            HideToolbarControl1Buttons(false);       
+            //var selectedMessage = (Message)MessageList.SelectedItem;
+            //if (selectedMessage == null) return;    ///Ложные срабатывания
+            //MessageControl.SenderTextbox.Text = selectedMessage.SenderUsername;
+            //MessageControl.DateTextbox.Text = selectedMessage.Date.ToString();
+            //MessageControl.TitleTextbox.Text = selectedMessage.Title;
+            //MessageControl.MessageContentTextBox.Text = selectedMessage.Content;
+            //MessageControl.RecipientTextbox.Text = GetRecipientsString();
+            //HideToolbarControl1Buttons(false);       
         }
 
         /// <summary>
@@ -178,34 +167,7 @@ namespace WPFClient
 
         public void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            var selectedMessage = (Message)MessageList.SelectedItem;
-
+           // var selectedMessage = (Message)MessageList.SelectedItem;
         }
-
-        
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        //private void ClearFoldersPressedStatus()
-        //{
-        //    foreach (var item in folders)
-        //        item.IsPressed = false;
-        //}
-
-        //private void SetFolderPressed(string folderLable)
-        //{
-        //    foreach (var item in folders)
-        //        if (string.Compare(item.FolderLable, folderLable) == 0)
-        //            item.IsPressed = true;
-        //}
-
-        //private string GetPressedFolder()
-        //{
-        //    foreach (var item in folders)
-        //        if (item.IsPressed)
-        //            return item.FolderLable;
-        //    return string.Empty;
-        //}
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }

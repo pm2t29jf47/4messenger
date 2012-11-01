@@ -67,6 +67,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.ru.resx</DependentUpon>
     </Compile>
+    <Compile Include="RecipientsControl.xaml.cs">
+      <DependentUpon>RecipientsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RecipientsEditor.xaml.cs">
+      <DependentUpon>RecipientsEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RecipientsString.cs" />
     <Compile Include="SidebarFolder.cs" />
     <Compile Include="ToolbarControl.xaml.cs">
       <DependentUpon>ToolbarControl.xaml</DependentUpon>
@@ -95,6 +102,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MessageCreator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecipientsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecipientsEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

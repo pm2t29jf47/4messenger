@@ -19,12 +19,12 @@
             <StackPanel Name="Sidebar" Grid.Column="0"/>
             <DataGrid Name="MessageList" Grid.Column="1" Margin="5" AutoGenerateColumns="False" SelectionChanged="OnMessageListSelectionChanged" IsReadOnly="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Path=SenderUsername}" Header="{x:Static res:Resources.SenderUsernameColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Path=SenderUsername, Mode=OneWay}" Header="{x:Static res:Resources.SenderUsernameColumn}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Path=Date}" Header="{x:Static res:Resources.DateColumn}"></DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Path=Title}" Header="{x:Static res:Resources.TitleColumn}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>        
-            <local:MessageControl x:Name="MessageControl1" Grid.Column="2" />
+            <local:MessageControl x:Name="MessageControl" Grid.Column="2" />
         </Grid>
     </Grid>
 </Window>

@@ -24,6 +24,7 @@ namespace WPFClient
         string senderTextboxText;
         List<Employee> RecipientsEmployees = new List<Employee>();
         List<Employee> AllEmployees = new List<Employee>();
+        
 
         /// <summary>
         /// Конструктор с параметрами
@@ -33,37 +34,37 @@ namespace WPFClient
         /// <param name="titleTextboxText"></param>
         public MessageCreator(string senderTextboxText, string recipientTextboxText, string titleTextboxText)
         {
-            this.senderTextboxText = senderTextboxText;
-            this.recipientTextboxText = recipientTextboxText;
-            this.titleTextboxText = titleTextboxText;
+            //this.senderTextboxText = senderTextboxText;
+            //this.recipientTextboxText = recipientTextboxText;
+            //this.titleTextboxText = titleTextboxText;
             InitializeComponent();
-            PrepareWindow();
-            PrepareRecipientCombobox();
+            //PrepareWindow();
+            //PrepareRecipientCombobox();
         }
 
         /// <summary>
         /// Подготавливает combobox с получателями
         /// </summary>
-        private void PrepareRecipientCombobox()
-        {
-            AllEmployees = App.Proxy.GetEmployeeList();
-            MessageControl1.RecipientCombobox.ItemsSource = AllEmployees;
-        }
+        //private void PrepareRecipientCombobox()
+        //{
+        //    AllEmployees = App.Proxy.GetEmployeeList();
+        //    MessageControl.RecipientCombobox.ItemsSource = AllEmployees;
+        //}
 
         /// <summary>
         /// Подготавливает все окно
         /// </summary>
         private void PrepareWindow()
         {
-            MessageControl1.SenderTextbox.Text = senderTextboxText;
-            MessageControl1.RecipientTextbox.IsReadOnly = false;
-            MessageControl1.RecipientTextbox.Text = recipientTextboxText;
-            MessageControl1.DateTextbox.Text = DateTime.Now.ToString();
-            MessageControl1.TitleTextbox.IsReadOnly = false;
-            MessageControl1.TitleTextbox.Text = titleTextboxText;
-            MessageControl1.MessageContent.IsReadOnly = false;
-            MessageControl1.RecipientCombobox.SelectionChanged += new SelectionChangedEventHandler(OnRecipientComboboxSelectionChanged);
-            MessageControl1.RecipientTextbox.TextChanged += new TextChangedEventHandler(OnRecipientTextboxTextChanged);
+            //MessageControl.SenderTextbox.Text = senderTextboxText;
+            //MessageControl.RecipientTextbox.IsReadOnly = false;
+            //MessageControl.RecipientTextbox.Text = recipientTextboxText;
+            //MessageControl.DateTextbox.Text = DateTime.Now.ToString();
+            //MessageControl.TitleTextbox.IsReadOnly = false;
+            //MessageControl.TitleTextbox.Text = titleTextboxText;
+            //MessageControl.MessageContentTextBox.IsReadOnly = false;
+            //MessageControl.RecipientCombobox.SelectionChanged += new SelectionChangedEventHandler(OnRecipientComboboxSelectionChanged);
+            //MessageControl.RecipientTextbox.TextChanged += new TextChangedEventHandler(OnRecipientTextboxTextChanged);
         }
 
         /// <summary>
@@ -73,17 +74,17 @@ namespace WPFClient
         /// <param name="e"></param>
         private void OnSendMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            string errorMessage;
-            if (CheckRecipientTextbox(out errorMessage))
-            {
-                SendMessage();
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show(errorMessage);
-                SendMessageButton.IsEnabled = false;
-            }
+            //string errorMessage;
+            //if (CheckRecipientTextbox(out errorMessage))
+            //{
+            //    SendMessage();
+            //    this.Close();
+            //}
+            //else
+            //{
+            //    MessageBox.Show(errorMessage);
+            //    SendMessageButton.IsEnabled = false;
+            //}
         }
 
         /// <summary>
@@ -93,12 +94,12 @@ namespace WPFClient
         /// <param name="e"></param>
         public void OnRecipientComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Employee selectedEmployee = (Employee)MessageControl1.RecipientCombobox.SelectedItem;
+            //Employee selectedEmployee = (Employee)MessageControl.RecipientCombobox.SelectedItem;
 
-            if (string.Compare(MessageControl1.RecipientTextbox.Text, string.Empty) != 0)
-                MessageControl1.RecipientTextbox.Text += ";";
+            //if (string.Compare(MessageControl.RecipientTextbox.Text, string.Empty) != 0)
+            //    MessageControl.RecipientTextbox.Text += ";";
 
-            MessageControl1.RecipientTextbox.Text += EmployeeToString(selectedEmployee);
+            //MessageControl.RecipientTextbox.Text += EmployeeToString(selectedEmployee);
         }
 
         /// <summary>
@@ -108,22 +109,21 @@ namespace WPFClient
         /// <param name="e"></param>
         private void OnRecipientTextboxTextChanged(object sender, TextChangedEventArgs e)
         {
-            string errorMessage;
-            if (CheckRecipientTextbox(out errorMessage))
-            {
-                string result = string.Empty;
-                foreach (var employee in RecipientsEmployees)
-                    result += EmployeeToString(employee) + ";";
+            //string errorMessage;
+            //if (CheckRecipientTextbox(out errorMessage))
+            //{
+            //    string result = string.Empty;
+            //    foreach (var employee in RecipientsEmployees)
+            //        result += EmployeeToString(employee) + ";";
 
-                result = result.Substring(0, result.Length - 1);
-                MessageControl1.RecipientTextbox.Text = result;
-                SendMessageButton.IsEnabled = true;
-            }
-            else
-            {
-                //MessageBox.Show(errorMessage);
-                SendMessageButton.IsEnabled = false;
-            }
+            //    result = result.Substring(0, result.Length - 1);
+            //    MessageControl.RecipientTextbox.Text = result;
+            //    SendMessageButton.IsEnabled = true;
+            //}
+            //else
+            //{
+            //    SendMessageButton.IsEnabled = false;
+            //}
         }
 
         /// <summary>
@@ -131,18 +131,18 @@ namespace WPFClient
         /// </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        private bool CheckRecipientTextbox(out string errorMessage )
-        {
-            RecipientsEmployees.Clear();
-            string[] recipientsStringArray = MessageControl1.RecipientTextbox.Text.Split(new char[1] {';'}, StringSplitOptions.RemoveEmptyEntries);
+        //private bool CheckRecipientTextbox(out string errorMessage )
+        //{
+        //    RecipientsEmployees.Clear();
+        //    string[] recipientsStringArray = MessageControl.RecipientTextbox.Text.Split(new char[1] {';'});
 
-            if (recipientsStringArray.Length == 0)
-            {
-                errorMessage = Properties.Resources.RecipientsStringNotBeEmpty;
-                return false;
-            }
-            return CheckRecipientStringArray(recipientsStringArray, out errorMessage);   
-        }
+        //    if (recipientsStringArray.Length == 0)
+        //    {
+        //        errorMessage = Properties.Resources.RecipientsStringNotBeEmpty;
+        //        return false;
+        //    }
+        //    return CheckRecipientStringArray(recipientsStringArray, out errorMessage);   
+        //}
 
         /// <summary>
         /// Проверяет список рассылки построчно
@@ -223,11 +223,11 @@ namespace WPFClient
             App.Proxy.SendMessage(
                 new Message(
                     null,
-                    MessageControl1.TitleTextbox.Text,
-                    DateTime.Parse(MessageControl1.DateTextbox.Text),
+                    MessageControl.TitleTextbox.Text,
+                    DateTime.Parse(MessageControl.DateTextbox.Text),
                     recipients,
                     App.Username,
-                    MessageControl1.MessageContent.Text,
+                    MessageControl.MessageContentTextBox.Text,
                     false));
 
         }

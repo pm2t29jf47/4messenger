@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="WPFClient.RecipientsEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="373" d:DesignWidth="353">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ListBox Name="AllEmployeesListBox" Grid.Column="0" SelectionChanged="OnAllEmployeesListBoxSelectionChanged" ItemsSource="{Binding Path=Username}">
+        </ListBox>  
+        <Grid Grid.Column="1">
+            <StackPanel VerticalAlignment="Center">
+                <Button Name="AddToSelectedButton" Visibility="Hidden" Click="AddToSelectedButton_Click">
+                    <Image Source="Images\Add.png" Height="38" Width="35"></Image>
+                </Button>
+                <Button Name="RemoveFromSelectedButton" Visibility="Hidden">
+                    <Image Source="Images\Add.png" Height="30" Width="47"></Image>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <ListBox Name="SelectedEmployeesListBox" Grid.Column="2">
+            <TextBlock>jjjj</TextBlock>
+            <TextBlock>jjjj</TextBlock>
+            <TextBlock>jjjj</TextBlock>
+        </ListBox>
+    </Grid>
+</UserControl>

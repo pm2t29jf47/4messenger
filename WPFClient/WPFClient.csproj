@@ -73,6 +73,9 @@
     <Compile Include="RecipientsEditor.xaml.cs">
       <DependentUpon>RecipientsEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RecipientsEditorControl.xaml.cs">
+      <DependentUpon>RecipientsEditorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RecipientsString.cs" />
     <Compile Include="SidebarFolder.cs" />
     <Compile Include="ToolbarControl.xaml.cs">
@@ -110,6 +113,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RecipientsEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RecipientsEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

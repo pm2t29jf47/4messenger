@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Entities;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace WPFClient
 {
@@ -20,28 +21,32 @@ namespace WPFClient
     /// </summary>
     public partial class RecipientsEditor : Window
     {
-        public RecipientsEditor()
+        public RecipientsEditor(List<Employee> allEmployees)
         {
             InitializeComponent();
-            var a = new List<Employee>();
-            a.Add(new Employee("Admin", "Admin", "Админ", "", ""));
-            a.Add(new Employee("u2", "f2", "s2", "", ""));
-            a.Add(new Employee("u3", "f3", "s3", "", ""));
-            var b = new ObservableCollection<Employee>();
-            foreach (var item in a)
-                b.Add(item);
+            RecipientsEditorControl.AllEmployeesList = new ObservableCollection<Employee>();
+            RecipientsEditorControl.SelectedEmployeesList = new ObservableCollection<Employee>();
+            foreach (var item in allEmployees)
+                RecipientsEditorControl.AllEmployeesList.Add(item);   
 
-            ctrl.AllEmployeesList = b;
-            var c = new List<Employee>();
-            c.Add(new Employee("Admin", "Admin", "Админ", "", ""));
-            c.Add(new Employee("u2", "f2", "s2", "", ""));
-     
-            var d = new ObservableCollection<Employee>();
-            foreach (var item in c)
-                d.Add(item);
-            
-            ctrl.SelectedEmployeesList = d;
-           
+            this.Closing +=new System.ComponentModel.CancelEventHandler(OnRecipientsEditorClosing);
+            RecipientsEmployees = new List<Employee>();
+        }
+
+        /// <summary>
+        /// Коллекция получателей
+        /// </summary>
+        public List<Employee> RecipientsEmployees { get; set; }
+
+        /// <summary>
+        /// Заполняет коллекцию выбранных получателей
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void OnRecipientsEditorClosing(object sender, CancelEventArgs e)
+        {
+            foreach (var item in RecipientsEditorControl.SelectedEmployeesList)
+                RecipientsEmployees.Add(item);
         }
     }
 }

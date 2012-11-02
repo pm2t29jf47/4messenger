@@ -18,13 +18,9 @@ namespace WPFClient
     /// Interaction logic for MessageCreator.xaml
     /// </summary>
     public partial class MessageCreator : Window
-    {
-        string recipientTextboxText;
-        string titleTextboxText;
-        string senderTextboxText;
+    {   
         List<Employee> RecipientsEmployees = new List<Employee>();
-        List<Employee> AllEmployees = new List<Employee>();
-        
+        List<Employee> AllEmployees = new List<Employee>();        
 
         /// <summary>
         /// Конструктор с параметрами

@@ -22,7 +22,8 @@ namespace WPFClient
     {
         public MessageControl()
         {     
-            InitializeComponent();      
+            InitializeComponent();
+            RecipientControl.AllEmployees = AllEmployees;
         }
 
         public Message Message 
@@ -35,31 +36,51 @@ namespace WPFClient
             {
                 this.DataContext = value;
             }
-        }     
+        }
 
-        public bool DateIsVisible
+        public List<Employee> AllEmployees 
         {
             get
             {
-                return (DateTextbox.Visibility == System.Windows.Visibility.Visible);
+                return RecipientControl.AllEmployees;
             }
             set
             {
-                DateTextbox.Visibility = value ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+                RecipientControl.AllEmployees = value;
             }
         }
 
-        public bool TitleIsReadOnly
+        public enum state { IsReadOnly, IsEditable }
+
+        state controlState;
+
+        public state ControlState
         {
             get
             {
-                return TitleTextbox.IsReadOnly;
+                return controlState;
             }
             set
             {
-                TitleTextbox.IsReadOnly = value;
+                controlState = value;
+                PrepareControl();
             }
         }
 
+        void PrepareControl()
+        {
+            if (controlState == state.IsReadOnly)
+            {
+                RecipientControl.ControlState = RecipientsControl.state.IsReadOnly;
+                DateLable.Visibility = System.Windows.Visibility.Visible;
+                DateTextbox.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                RecipientControl.ControlState = RecipientsControl.state.IsEditable;
+                DateLable.Visibility = System.Windows.Visibility.Collapsed;
+                DateTextbox.Visibility = System.Windows.Visibility.Collapsed;
+            }
+        }
     }
 }

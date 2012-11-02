@@ -186,4 +186,7 @@
   <data name="SelectedEmployees" xml:space="preserve">
     <value>Selected employees</value>
   </data>
+  <data name="Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
 </root>

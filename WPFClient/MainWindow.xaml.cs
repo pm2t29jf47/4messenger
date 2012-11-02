@@ -28,7 +28,9 @@ namespace WPFClient
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
             InitializeComponent();
             PrepareWindow();
-            ShowLoginWindow();           
+            ShowLoginWindow();
+            MessageControl.ControlState = WPFClient.MessageControl.state.IsEditable;
+            MessageControl.AllEmployees = new List<Employee>();
         }
 
         private void PrepareWindow()
@@ -40,19 +42,20 @@ namespace WPFClient
         
         private void HideToolbarControl1Buttons(bool state)
         {
-            ToolbarControl1.ReplyMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible;
-            ToolbarControl1.DeleteMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible; 
+            //ToolbarControl1.ReplyMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible;
+            //ToolbarControl1.DeleteMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible; 
         }
 
         void SetHandlers()
         {
-            ToolbarControl1.CreateMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
-            ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);  
-            ToolbarControl1.DeleteMessageButton.Click += new RoutedEventHandler(OnDeleteMessageButtonClick);
+            //ToolbarControl1.CreateMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
+            //ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);  
+            //ToolbarControl1.DeleteMessageButton.Click += new RoutedEventHandler(OnDeleteMessageButtonClick);
         }
 
         private void PreareSidebar()
         {
+            ///переделать под шаблоны
             FillFoldersNames();
             foreach (var folder in folders)
             {
@@ -125,6 +128,7 @@ namespace WPFClient
         /// <param name="e"></param>
         public void OnFolderClick(object sender, RoutedEventArgs e)
         {
+            MessageControl.AllEmployees = App.Proxy.GetEmployeeList();
             var selectedFolder = (Button)sender;
             HideToolbarControl1Buttons(true);
             if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLable) == 0)          

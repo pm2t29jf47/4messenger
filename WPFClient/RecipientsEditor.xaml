@@ -4,6 +4,6 @@
         xmlns:local="clr-namespace:WPFClient"
         Title="RecipientsEditor" Height="300" Width="500" MinWidth="500" MinHeight="300">
     <Grid>
-        <local:RecipientsEditorControl x:Name="ctrl"></local:RecipientsEditorControl>
+        <local:RecipientsEditorControl x:Name="RecipientsEditorControl"></local:RecipientsEditorControl>
     </Grid>
 </Window>

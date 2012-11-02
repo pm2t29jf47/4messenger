@@ -34,7 +34,7 @@ namespace WPFClient
             }
             set
             {                
-                this.AllEmployeesListBox.ItemsSource = value;
+                this.AllEmployeesListBox.ItemsSource = value; //перенести в конструктор
             }
         }
 

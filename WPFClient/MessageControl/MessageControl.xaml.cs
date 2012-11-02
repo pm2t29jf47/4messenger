@@ -22,8 +22,7 @@ namespace WPFClient
     {
         public MessageControl()
         {     
-            InitializeComponent();
-            RecipientControl.AllEmployees = AllEmployees;
+            InitializeComponent();          
         }
 
         public Message Message 
@@ -38,7 +37,7 @@ namespace WPFClient
             }
         }
 
-        public List<Employee> AllEmployees 
+        public List<Employee> AllEmployees
         {
             get
             {

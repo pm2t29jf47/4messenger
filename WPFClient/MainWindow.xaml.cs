@@ -30,7 +30,7 @@ namespace WPFClient
             PrepareWindow();
             ShowLoginWindow();
             MessageControl.ControlState = WPFClient.MessageControl.state.IsEditable;
-            MessageControl.AllEmployees = new List<Employee>();
+          //  MessageControl.AllEmployees = new List<Employee>();
         }
 
         private void PrepareWindow()

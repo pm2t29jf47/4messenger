@@ -27,26 +27,21 @@ namespace WPFClient
             RecipientsEditorControl.AllEmployeesList = new ObservableCollection<Employee>();
             RecipientsEditorControl.SelectedEmployeesList = new ObservableCollection<Employee>();
             foreach (var item in allEmployees)
-                RecipientsEditorControl.AllEmployeesList.Add(item);   
-
-            this.Closing +=new System.ComponentModel.CancelEventHandler(OnRecipientsEditorClosing);
-            RecipientsEmployees = new List<Employee>();
+                RecipientsEditorControl.AllEmployeesList.Add(item);
         }
 
         /// <summary>
         /// Коллекция получателей
         /// </summary>
-        public List<Employee> RecipientsEmployees { get; set; }
-
-        /// <summary>
-        /// Заполняет коллекцию выбранных получателей
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void OnRecipientsEditorClosing(object sender, CancelEventArgs e)
+        public List<Employee> RecipientsEmployees
         {
-            foreach (var item in RecipientsEditorControl.SelectedEmployeesList)
-                RecipientsEmployees.Add(item);
+            get
+            {
+                List<Employee> result = new List<Employee>();
+                foreach (var item in RecipientsEditorControl.SelectedEmployeesList)
+                    result.Add(item);
+                return result;
+            }
         }
     }
 }

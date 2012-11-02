@@ -70,6 +70,15 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All employees.
+        /// </summary>
+        public static string AllEmployees {
+            get {
+                return ResourceManager.GetString("AllEmployees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choice resipient.
         /// </summary>
         public static string ChoiceResipientTitle {
@@ -183,6 +192,15 @@ namespace WPFClient.Properties {
         public static string ReplyMessageLable {
             get {
                 return ResourceManager.GetString("ReplyMessageLable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected employees.
+        /// </summary>
+        public static string SelectedEmployees {
+            get {
+                return ResourceManager.GetString("SelectedEmployees", resourceCulture);
             }
         }
         

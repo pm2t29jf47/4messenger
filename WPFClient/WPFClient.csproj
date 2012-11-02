@@ -67,17 +67,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.ru.resx</DependentUpon>
     </Compile>
-    <Compile Include="RecipientsControl.xaml.cs">
+    <Compile Include="RecipientsControl\RecipientsControl.xaml.cs">
       <DependentUpon>RecipientsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="RecipientsEditor.xaml.cs">
       <DependentUpon>RecipientsEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RecipientsEditorControl.xaml.cs">
+    <Compile Include="RecipientEditorControl\RecipientsEditorControl.xaml.cs">
       <DependentUpon>RecipientsEditorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RecipientsString.cs" />
-    <Compile Include="SidebarFolder.cs" />
+    <Compile Include="Additional\RecipientsString.cs" />
+    <Compile Include="Additional\SidebarFolder.cs" />
     <Compile Include="ToolbarControl.xaml.cs">
       <DependentUpon>ToolbarControl.xaml</DependentUpon>
     </Compile>
@@ -100,7 +100,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MessageControl.xaml">
+    <Page Include="MessageControl\MessageControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -108,7 +108,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RecipientsControl.xaml">
+    <Page Include="RecipientsControl\RecipientsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,7 +116,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RecipientsEditorControl.xaml">
+    <Page Include="RecipientEditorControl\RecipientsEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -126,7 +126,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MessageControl.xaml.cs">
+    <Compile Include="MessageControl\MessageControl.xaml.cs">
       <DependentUpon>MessageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -184,7 +184,16 @@
     <Resource Include="Images\folder.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\add.png" />
+    <Resource Include="RecipientsControl\Images\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RecipientEditorControl\Images\arrow_left_green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RecipientEditorControl\Images\arrow_right_green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MessageControl\Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

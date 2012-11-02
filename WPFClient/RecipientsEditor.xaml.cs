@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Entities;
+using System.Collections.ObjectModel;
 
 namespace WPFClient
 {
@@ -23,10 +24,24 @@ namespace WPFClient
         {
             InitializeComponent();
             var a = new List<Employee>();
-            a.Add(new Employee("u1", "f1", "s1", "", ""));
+            a.Add(new Employee("Admin", "Admin", "Админ", "", ""));
             a.Add(new Employee("u2", "f2", "s2", "", ""));
             a.Add(new Employee("u3", "f3", "s3", "", ""));
-            ctrl.AllEmployeesList = a;
+            var b = new ObservableCollection<Employee>();
+            foreach (var item in a)
+                b.Add(item);
+
+            ctrl.AllEmployeesList = b;
+            var c = new List<Employee>();
+            c.Add(new Employee("Admin", "Admin", "Админ", "", ""));
+            c.Add(new Employee("u2", "f2", "s2", "", ""));
+     
+            var d = new ObservableCollection<Employee>();
+            foreach (var item in c)
+                d.Add(item);
+            
+            ctrl.SelectedEmployeesList = d;
+           
         }
     }
 }

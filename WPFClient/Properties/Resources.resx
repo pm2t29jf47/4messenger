@@ -180,4 +180,10 @@
   <data name="RecipientsStringNotBeEmpty" xml:space="preserve">
     <value>recipients string not be empty</value>
   </data>
+  <data name="AllEmployees" xml:space="preserve">
+    <value>All employees</value>
+  </data>
+  <data name="SelectedEmployees" xml:space="preserve">
+    <value>Selected employees</value>
+  </data>
 </root>

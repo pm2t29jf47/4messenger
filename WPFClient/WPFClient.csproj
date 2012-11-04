@@ -70,10 +70,10 @@
     <Compile Include="RecipientsControl\RecipientsControl.xaml.cs">
       <DependentUpon>RecipientsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RecipientsEditor.xaml.cs">
+    <Compile Include="RecipientEditor\RecipientsEditor.xaml.cs">
       <DependentUpon>RecipientsEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RecipientEditorControl\RecipientsEditorControl.xaml.cs">
+    <Compile Include="RecipientEditor\RecipientsEditorControl.xaml.cs">
       <DependentUpon>RecipientsEditorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Additional\RecipientsString.cs" />
@@ -109,11 +109,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RecipientsEditor.xaml">
+    <Page Include="RecipientEditor\RecipientsEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RecipientEditorControl\RecipientsEditorControl.xaml">
+    <Page Include="RecipientEditor\RecipientsEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,10 +180,10 @@
     <Resource Include="RecipientsControl\Images\add.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="RecipientEditorControl\Images\arrow_left_green.png" />
+    <Resource Include="RecipientEditor\Images\arrow_left_green.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="RecipientEditorControl\Images\arrow_right_green.png" />
+    <Resource Include="RecipientEditor\Images\arrow_right_green.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MessageControl\Images\" />

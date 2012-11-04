@@ -71,7 +71,8 @@ namespace WPFClient
 
         void OnAddButtonClick(object sender, RoutedEventArgs e)
         {
-            RecipientsEditor recipientsEditor = new RecipientsEditor(AllEmployees);
+            RecipientsEditor recipientsEditor = new RecipientsEditor();
+            recipientsEditor.AllEmployees = AllEmployees;
             recipientsEditor.Show();
             recipientsEditor.Closing +=new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
         }
@@ -84,17 +85,17 @@ namespace WPFClient
         void OnrecipientsEditorClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             var recipientsEditor = (RecipientsEditor)sender;
-            RecipientsEmployees = recipientsEditor.RecipientsEmployees;
             string recipients = string.Empty;
+            this.RecipientsEmployees = recipientsEditor.RecipientsEmployees;
+            if (RecipientsEmployees.Count == 0) return;            
             foreach(var item in RecipientsEmployees)
                 recipients += EmployeeToString(item) + ";";
 
             recipients = recipients.Substring(0, recipients.Length - 1);
-            RecipientsTextBox.Text = recipients;
-            
+            this.RecipientsTextBox.Text = recipients;            
         }
 
-        private void OnRecipientsTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        void OnRecipientsTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             string errorMessage;
             if (CheckRecipientTextbox(out errorMessage))
@@ -104,7 +105,7 @@ namespace WPFClient
                     result += EmployeeToString(employee) + ";";
 
                 result = result.Substring(0, result.Length - 1);
-                RecipientsTextBox.Text = result;
+                this.RecipientsTextBox.Text = result;
                /// SendMessageButton.IsEnabled = true;
                /// Событие валидации
             }
@@ -119,10 +120,10 @@ namespace WPFClient
         /// </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        private bool CheckRecipientTextbox(out string errorMessage)
+        bool CheckRecipientTextbox(out string errorMessage)
         {
-            RecipientsEmployees.Clear();
-            string[] recipientsStringArray = RecipientsTextBox.Text.Split(new char[1] { ';' });
+            this.RecipientsEmployees.Clear();
+            string[] recipientsStringArray = this.RecipientsTextBox.Text.Split(new char[1] { ';' });
 
             if (recipientsStringArray.Length == 0)
             {
@@ -138,7 +139,7 @@ namespace WPFClient
         /// <param name="recipientsStringArray"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        private bool CheckRecipientStringArray(string[] recipientsStringArray, out string errorMessage)
+        bool CheckRecipientStringArray(string[] recipientsStringArray, out string errorMessage)
         {
             foreach (var recipientString in recipientsStringArray)
             {
@@ -155,13 +156,13 @@ namespace WPFClient
         /// <param name="recipientString"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        private bool ProcessRecipietnString(string recipientString, out string errorMessage)
+        bool ProcessRecipietnString(string recipientString, out string errorMessage)
         {
             string username = ParseUsername(recipientString);
-            Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
+            Employee foundEmployee = this.AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
             if (foundEmployee != null)
             {
-                RecipientsEmployees.Add(foundEmployee);
+                this.RecipientsEmployees.Add(foundEmployee);
                 errorMessage = string.Empty;
                 return true;
             }
@@ -177,7 +178,7 @@ namespace WPFClient
         /// </summary>
         /// <param name="recipientString"></param>
         /// <returns></returns>
-        private string ParseUsername(string recipientString)
+        string ParseUsername(string recipientString)
         {
             int begin = recipientString.IndexOf('<'),
                 end = recipientString.IndexOf('>');
@@ -198,7 +199,7 @@ namespace WPFClient
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        private string EmployeeToString(Employee employee)
+        string EmployeeToString(Employee employee)
         {
             return employee.FirstName + " "
                     + employee.SecondName + " <"

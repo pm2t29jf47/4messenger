@@ -57,7 +57,7 @@ namespace WPFClient
         {
             ///переделать под шаблоны
             FillFoldersNames();
-            foreach (var folder in folders)
+            foreach (var folder in this.folders)
             {
                 Button folderButton = new Button();
                 StackPanel folderStackPanel = new StackPanel();
@@ -76,9 +76,9 @@ namespace WPFClient
 
         private void FillFoldersNames()
         {
-            folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLable));
-            folders.Add(new SidebarFolder(Properties.Resources.SentFolderLable));
-            folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLable));
+            this.folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLable));
+            this.folders.Add(new SidebarFolder(Properties.Resources.SentFolderLable));
+            this.folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLable));
         }
 
         private void ShowLoginWindow()

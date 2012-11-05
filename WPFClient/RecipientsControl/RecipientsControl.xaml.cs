@@ -25,6 +25,12 @@ namespace WPFClient
             InitializeComponent();
         }
 
+        string leftUsernameStopper = " <",
+            rightUsernameStopper = ">",
+            usernameDevider = ";",
+            space = " ";
+
+
         public enum state { IsReadOnly, IsEditable }
 
         List<Employee> allEmployees;
@@ -129,15 +135,7 @@ namespace WPFClient
         {
             var recipientsEditor = (RecipientsEditor)sender;            
             this.RecipientsEmployees = recipientsEditor.RecipientsEmployees;
-            string result = string.Empty;
-            if (RecipientsEmployees.Count == 0) 
-                return;            
-
-            foreach(var item in RecipientsEmployees)
-                result += EmployeeToString(item) + ";";
-
-            result = result.Substring(0, result.Length - 1);
-            this.RecipientsTextBox.Text = result;            
+            this.RecipientsTextBox.Text = EmployeesToString(this.RecipientsEmployees);            
         }
 
         void OnRecipientsTextBoxTextChanged(object sender, TextChangedEventArgs e)
@@ -145,12 +143,7 @@ namespace WPFClient
             string errorMessage;
             if (CheckRecipientTextbox(out errorMessage))
             {
-                string result = string.Empty;
-                foreach (var employee in RecipientsEmployees)
-                    result += EmployeeToString(employee) + ";";
-
-                result = result.Substring(0, result.Length - 1);
-                this.RecipientsTextBox.Text = result;
+                this.RecipientsTextBox.Text = EmployeesToString(this.RecipientsEmployees);
                /// SendMessageButton.IsEnabled = true;
                /// Событие валидации
             }
@@ -168,7 +161,7 @@ namespace WPFClient
         bool CheckRecipientTextbox(out string errorMessage)
         {
            this.RecipientsEmployees.Clear();
-            string[] recipientsStringArray = this.RecipientsTextBox.Text.Split(new char[1] { ';' });
+            string[] recipientsStringArray = this.RecipientsTextBox.Text.Split(this.usernameDevider.ToCharArray());
 
             if (recipientsStringArray.Length == 0)
             {
@@ -215,7 +208,7 @@ namespace WPFClient
             }
             else
             {
-                errorMessage = username + " " + Properties.Resources.NotFound;
+                errorMessage = username + this.space + Properties.Resources.NotFound;
                 return false;
             }
         }
@@ -251,9 +244,9 @@ namespace WPFClient
             string result = string.Empty;
             if (employee != null)
             {
-                result = employee.FirstName + " " 
-                    + employee.SecondName + " <"
-                    + employee.Username + ">";
+                result = employee.FirstName + this.space
+                    + employee.SecondName + this.leftUsernameStopper
+                    + employee.Username + this.rightUsernameStopper;
             }
             return result;
         }
@@ -265,7 +258,7 @@ namespace WPFClient
                 && Employees.Count != 0)
             {
                 foreach (var item in Employees)
-                    result += EmployeeToString(item) + ";";
+                    result += EmployeeToString(item) + this.usernameDevider;
 
                 result = result.Substring(0, result.Length - 1);
             }

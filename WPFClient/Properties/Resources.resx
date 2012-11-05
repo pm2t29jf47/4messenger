@@ -189,4 +189,10 @@
   <data name="Content" xml:space="preserve">
     <value>Content</value>
   </data>
+  <data name="Me" xml:space="preserve">
+    <value>me:</value>
+  </data>
+  <data name="Re" xml:space="preserve">
+    <value>re:</value>
+  </data>
 </root>

@@ -20,27 +20,36 @@ namespace WPFClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<SidebarFolder> folders = new List<SidebarFolder>();
+        List<SidebarFolder> folders = new List<SidebarFolder>();
+
+        string leftUsernameStopper = " <",
+            rightUsernameStopper = ">",
+            usernameDevider = ";",
+            space = " ",
+            leftTitleStopper = "[",
+            rightTitleStopper  ="]",
+            SenderPrefix = Properties.Resources.Me,
+            titlePrefix = Properties.Resources.Re;
 
         public MainWindow()
         {
             ///Выбирает локаль
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
-            InitializeComponent();
-            PrepareWindow();
+            InitializeComponent();            
             ShowLoginWindow();
-            MessageControl.ControlState = WPFClient.MessageControl.state.IsEditable;
+            
           //  MessageControl.AllEmployees = new List<Employee>();
         }
 
-        private void PrepareWindow()
+        public void PrepareWindow()
         {
             SetHandlers();
             PreareSidebar();
             HideToolbarControl1Buttons(true);
+            MessageControl.ControlState = WPFClient.MessageControl.state.IsEditable;
         }
         
-        private void HideToolbarControl1Buttons(bool state)
+        void HideToolbarControl1Buttons(bool state)
         {
             //ToolbarControl1.ReplyMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible;
             //ToolbarControl1.DeleteMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible; 
@@ -53,7 +62,7 @@ namespace WPFClient
             //ToolbarControl1.DeleteMessageButton.Click += new RoutedEventHandler(OnDeleteMessageButtonClick);
         }
 
-        private void PreareSidebar()
+        void PreareSidebar()
         {
             ///переделать под шаблоны
             FillFoldersNames();
@@ -74,41 +83,31 @@ namespace WPFClient
             }            
         }
 
-        private void FillFoldersNames()
+        void FillFoldersNames()
         {
             this.folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLable));
             this.folders.Add(new SidebarFolder(Properties.Resources.SentFolderLable));
             this.folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLable));
         }
 
-        private void ShowLoginWindow()
+        void ShowLoginWindow()
         {
             this.Hide();
             var loginWindow = new LoginWindow();
             loginWindow.Show();
         }
 
-        private string GetRecipientsString()
+        string GetRecipientsString()
         {
             var selectedMessage = (Message)MessageList.SelectedItem;
-            string recipientsString = string.Empty;
+            List<Employee> recipientsEmployees = new List<Employee>();
             foreach (var recipient in selectedMessage.Recipients)
-            {
-                var recipientEmployee = App.Proxy.GetEmployee(recipient.RecipientUsername);
-                recipientsString +=
-                    (recipientEmployee == null)
-                    ?
-                    string.Empty
-                    :
-                    (recipientEmployee.FirstName + " "
-                    + recipientEmployee.SecondName + " <"
-                    + recipientEmployee.Username + ">;");
-            }
-            ///Удаляет последнюю запятую
-            return recipientsString.Substring(0, recipientsString.Length - 1);      
+                recipientsEmployees.Add(App.Proxy.GetEmployee(recipient.RecipientUsername));
+
+            return EmployeesToString(recipientsEmployees); 
         }
 
-        private void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
+        void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             
             //var selectedMessage = (Message)MessageList.SelectedItem;
@@ -144,14 +143,20 @@ namespace WPFClient
         /// <summary>
         /// Обработка нажатия на пользовательскую папку
         /// </summary>
-        private void OnUserFolderClick()
+        void OnUserFolderClick()
         {
             throw new NotImplementedException();
         }
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
         {
-            MessageCreator newMessage = new MessageCreator("Me: <" + App.Username + ">", "", "");
+            string senderString = this.SenderPrefix
+                + this.space
+                + this.leftUsernameStopper
+                + App.Username
+                + this.rightUsernameStopper;
+
+            MessageCreator newMessage = new MessageCreator(senderString, string.Empty, string.Empty);
             newMessage.Title = Properties.Resources.MessageCreatorTitle;
             newMessage.Show();            
         }
@@ -160,11 +165,22 @@ namespace WPFClient
         {
             var selectedMessage = (Message)MessageList.SelectedItem;
             var recipientEmployee = App.Proxy.GetEmployee(selectedMessage.SenderUsername);
-            string recipientString = recipientEmployee.FirstName + " "
-                    + recipientEmployee.SecondName + " <"
-                    + recipientEmployee.Username + ">, ";
-            string senderString = "Me: <" + App.Username + ">";
-            string titleString = "re: [" + selectedMessage.Title + "]";
+            string recipientString = recipientEmployee.FirstName + this.space
+                    + recipientEmployee.SecondName + this.leftUsernameStopper
+                    + recipientEmployee.Username + this.rightUsernameStopper;
+
+            string senderString = this.SenderPrefix
+                + this.space
+                + this.leftUsernameStopper 
+                + App.Username 
+                + this.rightUsernameStopper;
+
+            string titleString = this.titlePrefix
+                + this.space
+                + this.leftTitleStopper
+                + selectedMessage.Title
+                + this.rightUsernameStopper;
+
             MessageCreator newMessage = new MessageCreator(senderString, recipientString, titleString);
             newMessage.Show();
         }
@@ -172,6 +188,37 @@ namespace WPFClient
         public void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
         {
            // var selectedMessage = (Message)MessageList.SelectedItem;
+        }
+
+        /// <summary>
+        /// Преобразует поля класса Employee в строку
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
+        string EmployeeToString(Employee employee)
+        {
+            string result = string.Empty;
+            if (employee != null)
+            {
+                result = employee.FirstName + this.space
+                    + employee.SecondName + this.leftUsernameStopper
+                    + employee.Username + this.rightUsernameStopper;
+            }
+            return result;
+        }
+
+        string EmployeesToString(List<Employee> Employees)
+        {
+            string result = string.Empty;
+            if (Employees != null
+                && Employees.Count != 0)
+            {
+                foreach (var item in Employees)
+                    result += EmployeeToString(item) + this.usernameDevider;
+
+                result = result.Substring(0, result.Length - 1);
+            }
+            return result;
         }
     }
 }

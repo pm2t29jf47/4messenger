@@ -27,9 +27,39 @@ namespace WPFClient
 
         public enum state { IsReadOnly, IsEditable }
 
-        public List<Employee> AllEmployees { get; set; }
+        List<Employee> allEmployees;
 
-        List<Employee> RecipientsEmployees { get; set; }
+        public List<Employee> AllEmployees 
+        {
+            get
+            {
+                if (allEmployees == null)
+                    allEmployees = new List<Employee>();
+
+                return allEmployees;
+            }
+            set
+            {
+                allEmployees = value;
+            }
+        }
+
+        List<Employee> recipientsEmployees;
+
+        List<Employee> RecipientsEmployees 
+        {
+            get
+            {
+                if (recipientsEmployees == null)
+                recipientsEmployees = new List<Employee>();
+
+                return recipientsEmployees;
+            }
+            set
+            {
+                recipientsEmployees = value;
+            }
+        }
 
         public List<Recipient> Recipients { get; set; }
 
@@ -71,10 +101,23 @@ namespace WPFClient
 
         void OnAddButtonClick(object sender, RoutedEventArgs e)
         {
+            List<Employee> residueEmployees = ResidueEmployees();        
             RecipientsEditor recipientsEditor = new RecipientsEditor();
-            recipientsEditor.AllEmployees = AllEmployees;
+            recipientsEditor.AllEmployees = residueEmployees;
             recipientsEditor.Show();
             recipientsEditor.Closing +=new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
+        }
+
+        List<Employee> ResidueEmployees()
+        {
+            List<Employee> residue = new List<Employee>();
+            foreach (var item in this.AllEmployees)
+                residue.Add(item);
+
+            foreach (var item in this.RecipientsEmployees)
+                residue.Remove(item);
+
+            return residue;
         }
 
         /// <summary>
@@ -84,15 +127,17 @@ namespace WPFClient
         /// <param name="e"></param>
         void OnrecipientsEditorClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var recipientsEditor = (RecipientsEditor)sender;
-            string recipients = string.Empty;
+            var recipientsEditor = (RecipientsEditor)sender;            
             this.RecipientsEmployees = recipientsEditor.RecipientsEmployees;
-            if (RecipientsEmployees.Count == 0) return;            
-            foreach(var item in RecipientsEmployees)
-                recipients += EmployeeToString(item) + ";";
+            string result = string.Empty;
+            if (RecipientsEmployees.Count == 0) 
+                return;            
 
-            recipients = recipients.Substring(0, recipients.Length - 1);
-            this.RecipientsTextBox.Text = recipients;            
+            foreach(var item in RecipientsEmployees)
+                result += EmployeeToString(item) + ";";
+
+            result = result.Substring(0, result.Length - 1);
+            this.RecipientsTextBox.Text = result;            
         }
 
         void OnRecipientsTextBoxTextChanged(object sender, TextChangedEventArgs e)
@@ -122,7 +167,7 @@ namespace WPFClient
         /// <returns></returns>
         bool CheckRecipientTextbox(out string errorMessage)
         {
-            this.RecipientsEmployees.Clear();
+           this.RecipientsEmployees.Clear();
             string[] recipientsStringArray = this.RecipientsTextBox.Text.Split(new char[1] { ';' });
 
             if (recipientsStringArray.Length == 0)
@@ -162,8 +207,10 @@ namespace WPFClient
             Employee foundEmployee = this.AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
             if (foundEmployee != null)
             {
-                this.RecipientsEmployees.Add(foundEmployee);
-                errorMessage = string.Empty;
+               // if (!this.RecipientsEmployees.Contains(foundEmployee))                
+                    this.RecipientsEmployees.Add(foundEmployee);
+                      
+                errorMessage = string.Empty; 
                 return true;
             }
             else
@@ -201,9 +248,28 @@ namespace WPFClient
         /// <returns></returns>
         string EmployeeToString(Employee employee)
         {
-            return employee.FirstName + " "
+            string result = string.Empty;
+            if (employee != null)
+            {
+                result = employee.FirstName + " " 
                     + employee.SecondName + " <"
                     + employee.Username + ">";
+            }
+            return result;
+        }
+
+        string EmployeesToString(List<Employee> Employees)
+        {
+            string result = string.Empty;
+            if (Employees != null
+                && Employees.Count != 0)
+            {
+                foreach (var item in Employees)
+                    result += EmployeeToString(item) + ";";
+
+                result = result.Substring(0, result.Length - 1);
+            }
+            return result;           
         }
     }
 }

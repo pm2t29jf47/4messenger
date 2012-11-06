@@ -9,11 +9,20 @@ namespace WPFClient
 {
     public class RecipientsControlData : INotifyPropertyChanged
     {
+
+        public RecipientsControlData()
+        {
+            IsValidated = true;
+        }
+
         string leftUsernameStopper = " <",
             rightUsernameStopper = ">",
             userDataDevider = ";",
             space = " ";
 
+        /// <summary>
+        /// Событие изменения строки с получателями
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(PropertyChangedEventArgs e)
         {
@@ -31,6 +40,9 @@ namespace WPFClient
         /// </summary>
         public List<Employee> RecipientsEmployees = new List<Employee>();
 
+        /// <summary>
+        /// Оставшиеся сотрудники (AllEmployees - RecipientsEmployees)
+        /// </summary>
         public List<Employee> AllResidueEmployees
         {
             get
@@ -75,6 +87,9 @@ namespace WPFClient
             }
         }
 
+        /// <summary>
+        /// Результат проверки введенных пользователем данных
+        /// </summary>
         public bool IsValidated { get; set; }
 
         /// <summary>
@@ -93,6 +108,7 @@ namespace WPFClient
             }
             set
             {
+                
                 if (string.Compare(recipientsString, value) != 0)
                 {
                     IsValidated = true;                    
@@ -256,6 +272,12 @@ namespace WPFClient
             RecipientsString += buf;
         }
 
+        /// <summary>
+        /// Добавляет описание новой ошибки к строке ошибок
+        /// </summary>
+        /// <param name="errorMessage"></param>
+        /// <param name="aditionalErrorMessage"></param>
+        /// <returns></returns>
         string joinToErrorMessage(string errorMessage, string aditionalErrorMessage)
         {
             return (errorMessage.Length == 0) 

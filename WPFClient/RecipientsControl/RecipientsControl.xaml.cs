@@ -76,7 +76,7 @@ namespace WPFClient
             if (controlState == state.IsReadOnly)
             {
                 AddButton.Visibility = System.Windows.Visibility.Collapsed;
-                RecipientsTextBox.IsReadOnly = true;
+                RecipientsTextBox.IsReadOnly = true;  
             }
             else
             {

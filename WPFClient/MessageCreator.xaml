@@ -4,13 +4,24 @@
         Title="{x:Static res:Resources.MessageCreatorTitle}" Height="462" Width="634"
         xmlns:local="clr-namespace:WPFClient"
         xmlns:res="clr-namespace:WPFClient.Properties">
+    <Window.Resources>
+        <Style x:Key="ololo">
+            <Style.Triggers>
+                <!--Не работает-->
+                <DataTrigger Binding="{Binding Path=MessageControl.RecipientControl.Data.IsValidated}" Value="true">
+                    <Setter Property="Control.IsEnabled" Value="false"></Setter>
+                </DataTrigger>
+                <!---->
+            </Style.Triggers>            
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <local:MessageControl x:Name="MessageControl" Grid.Row="0"></local:MessageControl>
-        <Button Name="SendMessageButton" Grid.Row="1" HorizontalAlignment="Right" Margin="5" Click="OnSendMessageButtonClick">
+        <Button Name="SendMessageButton" Grid.Row="1" HorizontalAlignment="Right" Margin="5" Click="OnSendMessageButtonClick" Style="{StaticResource ololo}">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Images\mail_delete.png"></Image>
                 <Label Content="{x:Static res:Resources.SendMessageLable}"></Label>

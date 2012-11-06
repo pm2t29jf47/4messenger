@@ -10,7 +10,11 @@
         <Style x:Key="ValidationStyle">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=IsValidated}" Value="false">
-                    <Setter Property="Control.Foreground" Value="DarkRed"></Setter>
+                    <!--BorderBrush пропадает при наведении курсора-->
+                    <!--                    
+                    <Setter Property="TextBox.BorderBrush" Value="Red"></Setter>        
+                    -->
+                    <Setter Property="TextBox.Background" Value="#25FF0000"></Setter>
                 </DataTrigger> 
             </Style.Triggers>
         </Style>
@@ -25,9 +29,10 @@
             VerticalScrollBarVisibility="Visible" 
             Margin="0,0,5,0" 
             TextWrapping="WrapWithOverflow"
-            Text="{Binding Path=RecipientsString, Mode=TwoWay}" Style="{StaticResource ValidationStyle}">         
-        </TextBox>
-        <Button Name="AddButton" Grid.Column="1" Width="auto" Click="OnAddButtonClick">
+            Text="{Binding Path=RecipientsString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ValidationStyle}"></TextBox>
+        <Button Name="AddButton" Grid.Column="1" 
+                Width="auto" 
+                Click="OnAddButtonClick">
             <StackPanel Orientation="Vertical">
                 <Image Source="Images\add.png"/>
                 <TextBlock Text="{x:Static res:Resources.AddRecipientLabel}"/>

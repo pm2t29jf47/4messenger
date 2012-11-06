@@ -36,8 +36,7 @@ namespace DBService
         {
             
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            ///нельзя отсылать письма под чужим именем
-            ///вернуть ошибку!!!!
+            ///нельзя отсылать письма под чужим именем   
             if (string.Compare(currentUsername, message.SenderUsername) != 0)
                 return;
 

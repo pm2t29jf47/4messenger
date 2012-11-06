@@ -95,23 +95,9 @@ namespace WPFClient
             {
                 if (string.Compare(recipientsString, value) != 0)
                 {
-                    
+                    IsValidated = true;                    
                     recipientsString = OnRecipientsStringChanged(value);
-                    try
-                    {
-
-                        if (!IsValidated)
-                            throw new ArgumentException("");
-                    }
-                    catch(Exception e)
-                    {
-                        throw e;                        
-                    }
-                    finally
-                    {
-                        OnPropertyChanged(new PropertyChangedEventArgs(""));////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    }
-                    
+                    OnPropertyChanged(new PropertyChangedEventArgs(""));       
                 }
             }
         }
@@ -188,6 +174,7 @@ namespace WPFClient
                     username 
                     + space 
                     + Properties.Resources.NotFound);
+                IsValidated = false;
                 return recipientString;
             }
         }

@@ -6,19 +6,26 @@
              mc:Ignorable="d" 
              d:DesignHeight="107" d:DesignWidth="300"
              xmlns:res="clr-namespace:WPFClient.Properties">
+    <Control.Resources>
+        <Style x:Key="ValidationStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsValidated}" Value="false">
+                    <Setter Property="Control.Foreground" Value="DarkRed"></Setter>
+                </DataTrigger> 
+            </Style.Triggers>
+        </Style>
+    </Control.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <TextBox Name="RecipientsTextBox" Grid.Column ="0" VerticalScrollBarVisibility="Visible" Margin="0,0,5,0" TextWrapping="WrapWithOverflow">
-            <TextBox.Text>
-                <Binding Path="RecipientsString" Mode="TwoWay">
-                    <Binding.ValidationRules>
-                        <ExceptionValidationRule></ExceptionValidationRule>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
+        <TextBox Name="RecipientsTextBox" 
+            Grid.Column ="0" 
+            VerticalScrollBarVisibility="Visible" 
+            Margin="0,0,5,0" 
+            TextWrapping="WrapWithOverflow"
+            Text="{Binding Path=RecipientsString, Mode=TwoWay}" Style="{StaticResource ValidationStyle}">         
         </TextBox>
         <Button Name="AddButton" Grid.Column="1" Width="auto" Click="OnAddButtonClick">
             <StackPanel Orientation="Vertical">

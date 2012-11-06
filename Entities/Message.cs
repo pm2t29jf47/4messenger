@@ -31,13 +31,13 @@ namespace Entities
             string content,
             bool deleted)
         {
-            this.Id = id;
-            this.Title = title;
-            this.Date = date;
-            this.SenderUsername = senderUsername;
-            this.Content = content;
-            this.Recipients = recipients;
-            this.Deleted = deleted;
+            Id = id;
+            Title = title;
+            Date = date;
+            SenderUsername = senderUsername;
+            Content = content;
+            Recipients = recipients;
+            Deleted = deleted;
         }
 
         /// <summary> 

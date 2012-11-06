@@ -26,8 +26,11 @@ namespace WPFClient
             InitializeComponent();            
         }
 
+        /// <summary>
+        /// Коллекция содержащая всех возможных для выбора сотрудников
+        /// </summary>
         public ObservableCollection<Employee> AllEmployees
-        {///ObservableCollection реализует уведомление прицепленых контролов об изменениях
+        {
             get
             {
                 if (this.AllEmployeesListBox.ItemsSource == null)
@@ -41,6 +44,9 @@ namespace WPFClient
             }
         }
 
+        /// <summary>
+        /// Коллекция содержащая выбраных пользователем сотрудников
+        /// </summary>
         public ObservableCollection<Employee> SelectedEmployees
         {
             get
@@ -56,38 +62,61 @@ namespace WPFClient
             }
         }
 
+        /// <summary>
+        /// Обработчик события нажатия кнопки переноса сотрудника в коллекцию выбраных
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnAddToSelectedButtonClick(object sender, RoutedEventArgs e)
         {
             Employee selectedItem = (Employee)AllEmployeesListBox.SelectedItem;
-            this.SelectedEmployees.Add(selectedItem);
-            this.AllEmployees.Remove(selectedItem);
+            SelectedEmployees.Add(selectedItem);
+            AllEmployees.Remove(selectedItem);
             CheckAddDeleteButtonsEnabled();
         }
    
+        /// <summary>
+        /// Проверяет и зидиет возможность отображения кнопок активными
+        /// </summary>
         void CheckAddDeleteButtonsEnabled()
         {
-            AddToSelectedButton.IsEnabled = ((this.AllEmployees != null)
-                && (this.AllEmployees.Count != 0)
-                && (this.AllEmployeesListBox.IsMouseCaptured));
+            AddToSelectedButton.IsEnabled = ((AllEmployees != null)
+                && (AllEmployees.Count != 0)
+                && (AllEmployeesListBox.IsMouseCaptured));
 
-            RemoveFromSelectedButton.IsEnabled = ((this.SelectedEmployees != null)
-                && (this.SelectedEmployees.Count != 0)
-                && (this.SelectedEmployeesListBox.IsMouseCaptured));
+            RemoveFromSelectedButton.IsEnabled = ((SelectedEmployees != null)
+                && (SelectedEmployees.Count != 0)
+                && (SelectedEmployeesListBox.IsMouseCaptured));
         }
 
+        /// <summary>
+        /// Обработчик события нажатия кнопки переноса сотрудника в коллекцию всех возможных для выбора сотрудников
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnRemoveFromSelectedButtonClick(object sender, RoutedEventArgs e)
         {
             Employee selectedItem = (Employee)SelectedEmployeesListBox.SelectedItem;
-            this.SelectedEmployees.Remove(selectedItem);
-            this.AllEmployees.Add(selectedItem);
+            SelectedEmployees.Remove(selectedItem);
+            AllEmployees.Add(selectedItem);
             CheckAddDeleteButtonsEnabled();
         }
 
+        /// <summary>
+        /// Обработчик события клика по SelectedEmployeesListBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnSelectedEmployeesListBoxGotMouseCapture(object sender, MouseEventArgs e)
         {
             CheckAddDeleteButtonsEnabled();
         }
 
+        /// <summary>
+        /// Обработчик события клика по AllEmployeesListBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnAllEmployeesListBoxGotMouseCapture(object sender, MouseEventArgs e)
         {
             CheckAddDeleteButtonsEnabled();

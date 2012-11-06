@@ -35,38 +35,28 @@ namespace WPFClient
         {
             ///Выбирает локаль
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
-            InitializeComponent();            
-            ShowLoginWindow();
-            
-          //  MessageControl.AllEmployees = new List<Employee>();
+            InitializeComponent();
+            PrepareWindow();
+            ShowLoginWindow();  
         }
 
         public void PrepareWindow()
         {
-            SetHandlers();
             PreareSidebar();
-            HideToolbarControl1Buttons(true);
-            MessageControl.ControlState = WPFClient.MessageControl.state.IsEditable;
+            HideToolbarButtons(true);
+            MessageControl.ControlState = WPFClient.MessageControl.state.IsReadOnly;
         }
         
-        void HideToolbarControl1Buttons(bool state)
+        void HideToolbarButtons(bool state)
         {
-            //ToolbarControl1.ReplyMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible;
-            //ToolbarControl1.DeleteMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible; 
-        }
-
-        void SetHandlers()
-        {
-            //ToolbarControl1.CreateMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);
-            //ToolbarControl1.ReplyMessageButton.Click += new RoutedEventHandler(OnCreateMessageButtonClick);  
-            //ToolbarControl1.DeleteMessageButton.Click += new RoutedEventHandler(OnDeleteMessageButtonClick);
+            this.ReplyMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible;
+            this.DeleteMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible; 
         }
 
         void PreareSidebar()
-        {
-            ///переделать под шаблоны
+        {            
             FillFoldersNames();
-            foreach (var folder in this.folders)
+            foreach (var folder in folders)
             {
                 Button folderButton = new Button();
                 StackPanel folderStackPanel = new StackPanel();
@@ -85,9 +75,9 @@ namespace WPFClient
 
         void FillFoldersNames()
         {
-            this.folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLable));
-            this.folders.Add(new SidebarFolder(Properties.Resources.SentFolderLable));
-            this.folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLable));
+            folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLable));
+            folders.Add(new SidebarFolder(Properties.Resources.SentFolderLable));
+            folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLable));
         }
 
         void ShowLoginWindow()
@@ -109,15 +99,8 @@ namespace WPFClient
 
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-            //var selectedMessage = (Message)MessageList.SelectedItem;
-            //if (selectedMessage == null) return;    ///Ложные срабатывания
-            //MessageControl.SenderTextbox.Text = selectedMessage.SenderUsername;
-            //MessageControl.DateTextbox.Text = selectedMessage.Date.ToString();
-            //MessageControl.TitleTextbox.Text = selectedMessage.Title;
-            //MessageControl.MessageContentTextBox.Text = selectedMessage.Content;
-            //MessageControl.RecipientTextbox.Text = GetRecipientsString();
-            //HideToolbarControl1Buttons(false);       
+            MessageControl.Message = (Message)MessageList.SelectedItem;
+            HideToolbarButtons(false);       
         }
 
         /// <summary>
@@ -129,7 +112,7 @@ namespace WPFClient
         {
             MessageControl.AllEmployees = App.Proxy.GetEmployeeList();
             var selectedFolder = (Button)sender;
-            HideToolbarControl1Buttons(true);
+            HideToolbarButtons(true);
             if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLable) == 0)          
                 MessageList.ItemsSource = App.Proxy.GetDeletedFolder();            
             else if (string.Compare(selectedFolder.Name, Properties.Resources.InboxFolderLable) == 0)   
@@ -150,11 +133,11 @@ namespace WPFClient
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
         {
-            string senderString = this.SenderPrefix
-                + this.space
-                + this.leftUsernameStopper
+            string senderString = SenderPrefix
+                + space
+                + leftUsernameStopper
                 + App.Username
-                + this.rightUsernameStopper;
+                + rightUsernameStopper;
 
             MessageCreator newMessage = new MessageCreator(senderString, string.Empty, string.Empty);
             newMessage.Title = Properties.Resources.MessageCreatorTitle;
@@ -166,20 +149,20 @@ namespace WPFClient
             var selectedMessage = (Message)MessageList.SelectedItem;
             var recipientEmployee = App.Proxy.GetEmployee(selectedMessage.SenderUsername);
             string recipientString = recipientEmployee.FirstName + this.space
-                    + recipientEmployee.SecondName + this.leftUsernameStopper
-                    + recipientEmployee.Username + this.rightUsernameStopper;
+                    + recipientEmployee.SecondName + leftUsernameStopper
+                    + recipientEmployee.Username + rightUsernameStopper;
 
-            string senderString = this.SenderPrefix
-                + this.space
-                + this.leftUsernameStopper 
+            string senderString = SenderPrefix
+                + space
+                + leftUsernameStopper 
                 + App.Username 
-                + this.rightUsernameStopper;
+                + rightUsernameStopper;
 
-            string titleString = this.titlePrefix
-                + this.space
-                + this.leftTitleStopper
+            string titleString = titlePrefix
+                + space
+                + leftTitleStopper
                 + selectedMessage.Title
-                + this.rightUsernameStopper;
+                + rightTitleStopper;
 
             MessageCreator newMessage = new MessageCreator(senderString, recipientString, titleString);
             newMessage.Show();
@@ -200,9 +183,9 @@ namespace WPFClient
             string result = string.Empty;
             if (employee != null)
             {
-                result = employee.FirstName + this.space
-                    + employee.SecondName + this.leftUsernameStopper
-                    + employee.Username + this.rightUsernameStopper;
+                result = employee.FirstName + space
+                    + employee.SecondName + leftUsernameStopper
+                    + employee.Username + rightUsernameStopper;
             }
             return result;
         }
@@ -214,7 +197,7 @@ namespace WPFClient
                 && Employees.Count != 0)
             {
                 foreach (var item in Employees)
-                    result += EmployeeToString(item) + this.usernameDevider;
+                    result += EmployeeToString(item) + usernameDevider;
 
                 result = result.Substring(0, result.Length - 1);
             }

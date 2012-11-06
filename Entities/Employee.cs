@@ -22,11 +22,11 @@ namespace Entities
         /// <param name="Name"></param>
         public Employee(string username, string firstName, string secondName, string role, string password)
         {
-            this.Username = username;
-            this.FirstName = firstName;
-            this.SecondName = secondName;
-            this.Role = role;
-            this.Password = password;
+            Username = username;
+            FirstName = firstName;
+            SecondName = secondName;
+            Role = role;
+            Password = password;
         }  
 
         /// <summary>

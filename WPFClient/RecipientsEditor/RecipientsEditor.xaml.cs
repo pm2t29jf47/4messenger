@@ -26,21 +26,23 @@ namespace WPFClient
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Коллекция содержащая всех возможных для выбора сотрудников
+        /// </summary>
         public List<Employee> AllEmployees
         {
             set                
-            {
-                var input = value;
+            {              
                 if (value == null) 
-                    return;               
+                    return;
 
-                foreach (var item in input)
+                foreach (var item in value)
                     this.RecipientsEditorControl.AllEmployees.Add(item);                    
             }
         }
 
         /// <summary>
-        /// Коллекция получателей
+        /// Коллекция содержащая выбраных пользователем сотрудников
         /// </summary>
         public List<Employee> RecipientsEmployees
         {

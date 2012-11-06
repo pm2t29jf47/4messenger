@@ -30,49 +30,18 @@ namespace WPFClient
             usernameDevider = ";",
             space = " ";
 
-
+        /// <summary>
+        /// Два состояния отображения контрола
+        /// </summary>
         public enum state { IsReadOnly, IsEditable }
 
-        List<Employee> allEmployees;
-
-        public List<Employee> AllEmployees 
-        {
-            get
-            {
-                if (allEmployees == null)
-                    allEmployees = new List<Employee>();
-
-                return allEmployees;
-            }
-            set
-            {
-                allEmployees = value;
-            }
-        }
-
-        List<Employee> recipientsEmployees;
-
-        List<Employee> RecipientsEmployees 
-        {
-            get
-            {
-                if (recipientsEmployees == null)
-                recipientsEmployees = new List<Employee>();
-
-                return recipientsEmployees;
-            }
-            set
-            {
-                recipientsEmployees = value;
-            }
-        }
-
-        public List<Recipient> Recipients { get; set; }
-
+        /// <summary>
+        /// Определяет вариант отображения контрола
+        /// </summary>
         state controlState;
 
         /// <summary>
-        /// Вариант отображения контрола
+        /// Определяет вариант отображения контрола
         /// </summary>
         public state ControlState
         {
@@ -88,42 +57,81 @@ namespace WPFClient
         }
 
         /// <summary>
-        /// Подготавливает контрол для разных вариантов использования
+        /// Все сотрудники
         /// </summary>
-        void PrepareControl()
-        {
-            if (controlState == state.IsReadOnly)
-            {
-                AddButton.Visibility = System.Windows.Visibility.Collapsed;
-                RecipientsTextBox.IsReadOnly = true;
+        List<Employee> allEmployees;
 
-            }
-            else
+        /// <summary>
+        /// Все сотрудники
+        /// </summary>
+        public List<Employee> AllEmployees 
+        {
+            get
             {
-                AddButton.Visibility = System.Windows.Visibility.Visible;
-                RecipientsTextBox.IsReadOnly = false;
+                if (allEmployees == null)
+                    allEmployees = new List<Employee>();
+
+                return allEmployees;
+            }
+            set
+            {
+                allEmployees = value;
             }
         }
 
-        void OnAddButtonClick(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Сотрудники получатели
+        /// </summary>
+        List<Employee> recipientsEmployees;
+
+        /// <summary>
+        /// Сотрудники получатели
+        /// </summary>
+        List<Employee> RecipientsEmployees 
         {
-            List<Employee> residueEmployees = ResidueEmployees();        
-            RecipientsEditor recipientsEditor = new RecipientsEditor();
-            recipientsEditor.AllEmployees = residueEmployees;
-            recipientsEditor.Show();
-            recipientsEditor.Closing +=new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
+            get
+            {
+                if (recipientsEmployees == null)
+                    recipientsEmployees = new List<Employee>();
+
+                return recipientsEmployees;
+            }
+            set
+            {
+                recipientsEmployees = value;               
+            }
         }
 
-        List<Employee> ResidueEmployees()
-        {
-            List<Employee> residue = new List<Employee>();
-            foreach (var item in this.AllEmployees)
-                residue.Add(item);
+        /// <summary>
+        /// Получатели
+        /// </summary>
+        List<Recipient> recipients;
 
-            foreach (var item in this.RecipientsEmployees)
-                residue.Remove(item);
+        /// <summary>
+        /// Получатели
+        /// </summary>
+        public List<Recipient> Recipients 
+        { 
+            get
+            {
+                return recipients;
+               
+            }
+            set
+            {
+                if (value == null)
+                    return;
 
-            return residue;
+                recipients = value;
+                RecipientsEmployees.Clear();
+                foreach (var item in value)
+                {
+                    Employee employee = AllEmployees.FirstOrDefault(row => (string.Compare(row.Username,item.RecipientUsername) == 0));
+                    if(employee != null)
+                        RecipientsEmployees.Add(employee);                   
+                }
+                ShowRecipientsEmployees();    
+            }
         }
 
         /// <summary>
@@ -133,17 +141,22 @@ namespace WPFClient
         /// <param name="e"></param>
         void OnrecipientsEditorClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var recipientsEditor = (RecipientsEditor)sender;            
-            this.RecipientsEmployees = recipientsEditor.RecipientsEmployees;
-            this.RecipientsTextBox.Text = EmployeesToString(this.RecipientsEmployees);            
+            RecipientsEditor recipientsEditor = (RecipientsEditor)sender;
+            RecipientsEmployees.AddRange(recipientsEditor.RecipientsEmployees);
+            this.RecipientsTextBox.Text = EmployeesToString(RecipientsEmployees);            
         }
 
+        /// <summary>
+        /// Обработчик события изменения RecipientsTextBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnRecipientsTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             string errorMessage;
             if (CheckRecipientTextbox(out errorMessage))
             {
-                this.RecipientsTextBox.Text = EmployeesToString(this.RecipientsEmployees);
+                this.RecipientsTextBox.Text = EmployeesToString(RecipientsEmployees);
                /// SendMessageButton.IsEnabled = true;
                /// Событие валидации
             }
@@ -160,8 +173,8 @@ namespace WPFClient
         /// <returns></returns>
         bool CheckRecipientTextbox(out string errorMessage)
         {
-           this.RecipientsEmployees.Clear();
-            string[] recipientsStringArray = this.RecipientsTextBox.Text.Split(this.usernameDevider.ToCharArray());
+           RecipientsEmployees.Clear();
+            string[] recipientsStringArray = this.RecipientsTextBox.Text.Split(usernameDevider.ToCharArray());
 
             if (recipientsStringArray.Length == 0)
             {
@@ -197,18 +210,18 @@ namespace WPFClient
         bool ProcessRecipietnString(string recipientString, out string errorMessage)
         {
             string username = ParseUsername(recipientString);
-            Employee foundEmployee = this.AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
+            Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
             if (foundEmployee != null)
             {
                // if (!this.RecipientsEmployees.Contains(foundEmployee))                
-                    this.RecipientsEmployees.Add(foundEmployee);
+                    RecipientsEmployees.Add(foundEmployee);
                       
                 errorMessage = string.Empty; 
                 return true;
             }
             else
             {
-                errorMessage = username + this.space + Properties.Resources.NotFound;
+                errorMessage = username + space + Properties.Resources.NotFound;
                 return false;
             }
         }
@@ -244,13 +257,18 @@ namespace WPFClient
             string result = string.Empty;
             if (employee != null)
             {
-                result = employee.FirstName + this.space
-                    + employee.SecondName + this.leftUsernameStopper
-                    + employee.Username + this.rightUsernameStopper;
+                result = employee.FirstName + space
+                    + employee.SecondName + leftUsernameStopper
+                    + employee.Username + rightUsernameStopper;
             }
             return result;
         }
 
+        /// <summary>
+        /// Преобразует коллекцию объектов Employee в строку
+        /// </summary>
+        /// <param name="Employees"></param>
+        /// <returns></returns>
         string EmployeesToString(List<Employee> Employees)
         {
             string result = string.Empty;
@@ -258,11 +276,67 @@ namespace WPFClient
                 && Employees.Count != 0)
             {
                 foreach (var item in Employees)
-                    result += EmployeeToString(item) + this.usernameDevider;
+                    result += EmployeeToString(item) + usernameDevider;
 
                 result = result.Substring(0, result.Length - 1);
             }
             return result;           
+        }
+
+        /// <summary>
+        /// Отображает коллекция получателей в RecipientsTextBox
+        /// </summary>
+        void ShowRecipientsEmployees()
+        {
+            this.RecipientsTextBox.Text = EmployeesToString(RecipientsEmployees);
+        }
+
+        /// <summary>
+        /// Подготавливает контрол для различных вариантов использования
+        /// </summary>
+        void PrepareControl()
+        {
+            if (controlState == state.IsReadOnly)
+            {
+                AddButton.Visibility = System.Windows.Visibility.Collapsed;
+                RecipientsTextBox.IsReadOnly = true;
+
+            }
+            else
+            {
+                AddButton.Visibility = System.Windows.Visibility.Visible;
+                RecipientsTextBox.IsReadOnly = false;
+            }
+        }
+
+        /// <summary>
+        /// Обработчик кнопки добавления полуателей
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void OnAddButtonClick(object sender, RoutedEventArgs e)
+        {
+            List<Employee> residueEmployees = CalcResidueEmployees();
+            RecipientsEditor recipientsEditor = new RecipientsEditor();
+            recipientsEditor.AllEmployees = residueEmployees;
+            recipientsEditor.Show();
+            recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
+        }
+
+        /// <summary>
+        /// Рассчитывает оставшихся для возмоного добавления сотрудников
+        /// </summary>
+        /// <returns></returns>
+        List<Employee> CalcResidueEmployees()
+        {
+            List<Employee> residue = new List<Employee>();
+            foreach (var item in AllEmployees)
+                residue.Add(item);
+
+            foreach (var item in RecipientsEmployees)
+                residue.Remove(item);
+
+            return residue;
         }
     }
 }

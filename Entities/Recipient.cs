@@ -20,10 +20,10 @@ namespace Entities
             bool deleted,
             bool viewed)
         {
-            this.Deleted = deleted;
-            this.RecipientUsername = recipientUsername;
-            this.MessageId = messageId;
-            this.Viewed = viewed;
+            Deleted = deleted;
+            RecipientUsername = recipientUsername;
+            MessageId = messageId;
+            Viewed = viewed;
         }
 
         /// <summary>

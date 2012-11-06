@@ -25,6 +25,9 @@ namespace WPFClient
             InitializeComponent();          
         }
 
+        /// <summary>
+        /// Объект сообщния для отображения или изменения
+        /// </summary>
         public Message Message 
         { 
             get
@@ -33,10 +36,16 @@ namespace WPFClient
             }
             set
             {
+                if (value == null)
+                    return;
                 this.DataContext = value;
+                this.RecipientControl.Recipients = value.Recipients;
             }
         }
 
+        /// <summary>
+        /// Коллекция содержащая всех возможных для выбора сотрудников
+        /// </summary>
         public List<Employee> AllEmployees
         {
             get
@@ -49,10 +58,19 @@ namespace WPFClient
             }
         }
 
+        /// <summary>
+        /// Два состояния отображения контрола
+        /// </summary>
         public enum state { IsReadOnly, IsEditable }
 
+        /// <summary>
+        /// Определяет вариант отображения контрола
+        /// </summary>
         state controlState;
 
+        /// <summary>
+        /// Определяет вариант отображения контрола
+        /// </summary>
         public state ControlState
         {
             get
@@ -66,19 +84,27 @@ namespace WPFClient
             }
         }
 
+        /// <summary>
+        /// Подготавливает контрол для различных вариантов использования
+        /// </summary>
         void PrepareControl()
         {
             if (controlState == state.IsReadOnly)
             {
-                RecipientControl.ControlState = RecipientsControl.state.IsReadOnly;
-                DateLable.Visibility = System.Windows.Visibility.Visible;
-                DateTextbox.Visibility = System.Windows.Visibility.Visible;
+                this.RecipientControl.ControlState = RecipientsControl.state.IsReadOnly;
+                this.DateLable.Visibility = System.Windows.Visibility.Visible;
+                this.DateTextbox.Visibility = System.Windows.Visibility.Visible;
+                this.TitleTextbox.IsReadOnly = true;
+                this.MessageContentTextBox.IsReadOnly = true;
+              
             }
             else
             {
-                RecipientControl.ControlState = RecipientsControl.state.IsEditable;
-                DateLable.Visibility = System.Windows.Visibility.Collapsed;
-                DateTextbox.Visibility = System.Windows.Visibility.Collapsed;
+                this.RecipientControl.ControlState = RecipientsControl.state.IsEditable;
+                this.DateLable.Visibility = System.Windows.Visibility.Collapsed;
+                this.DateTextbox.Visibility = System.Windows.Visibility.Collapsed;
+                this.TitleTextbox.IsReadOnly = false;
+                this.MessageContentTextBox.IsReadOnly = false;
             }
         }
     }

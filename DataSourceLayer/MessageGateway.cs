@@ -77,7 +77,7 @@ namespace DataSourceLayer
         private static void SetIMParameters(SqlCommand cmd, Message message)
         {
             cmd.Parameters["@title"].Value = message.Title;
-            cmd.Parameters["@date"].Value = message.Date.Date;
+            cmd.Parameters["@date"].Value = message.Date;
             cmd.Parameters["@senderUsername"].Value = message.SenderUsername;
             cmd.Parameters["@content"].Value = message.Content;
             cmd.Parameters["@deleted"].Value = false;

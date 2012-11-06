@@ -24,11 +24,10 @@ namespace WPFClient
 
         string leftUsernameStopper = " <",
             rightUsernameStopper = ">",
-            usernameDevider = ";",
+            userDataDevider = ";",
             space = " ",
             leftTitleStopper = "[",
             rightTitleStopper  ="]",
-            SenderPrefix = Properties.Resources.Me,
             titlePrefix = Properties.Resources.Re;
 
         public MainWindow()
@@ -133,15 +132,10 @@ namespace WPFClient
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
         {
-            string senderString = SenderPrefix
-                + space
-                + leftUsernameStopper
-                + App.Username
-                + rightUsernameStopper;
-
-            MessageCreator newMessage = new MessageCreator(senderString, string.Empty, string.Empty);
-            newMessage.Title = Properties.Resources.MessageCreatorTitle;
-            newMessage.Show();            
+            Message message = new Message(null, string.Empty, new DateTime(), new List<Recipient>(), App.Username, string.Empty, false);
+            MessageCreator messageCreator = new MessageCreator(message,App.Proxy.GetEmployeeList());
+            messageCreator.Title = Properties.Resources.MessageCreatorTitle;
+            messageCreator.Show();            
         }
 
         public void OnReplyMessageButtonClick(object sender, RoutedEventArgs e)
@@ -152,11 +146,11 @@ namespace WPFClient
                     + recipientEmployee.SecondName + leftUsernameStopper
                     + recipientEmployee.Username + rightUsernameStopper;
 
-            string senderString = SenderPrefix
-                + space
-                + leftUsernameStopper 
-                + App.Username 
-                + rightUsernameStopper;
+            //string senderString = SenderPrefix
+            //    + space
+            //    + leftUsernameStopper 
+            //    + App.Username 
+            //    + rightUsernameStopper;
 
             string titleString = titlePrefix
                 + space
@@ -164,8 +158,8 @@ namespace WPFClient
                 + selectedMessage.Title
                 + rightTitleStopper;
 
-            MessageCreator newMessage = new MessageCreator(senderString, recipientString, titleString);
-            newMessage.Show();
+          // MessageCreator newMessage = new MessageCreator(senderString, recipientString, titleString);
+         //   newMessage.Show();
         }
 
         public void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
@@ -197,7 +191,7 @@ namespace WPFClient
                 && Employees.Count != 0)
             {
                 foreach (var item in Employees)
-                    result += EmployeeToString(item) + usernameDevider;
+                    result += EmployeeToString(item) + userDataDevider;
 
                 result = result.Substring(0, result.Length - 1);
             }

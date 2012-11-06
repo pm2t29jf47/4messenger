@@ -32,14 +32,16 @@ namespace WPFClient
         { 
             get
             {
-                return (Message) this.DataContext;
+                Message message = (Message)this.DataContext;
+                message.Recipients = RecipientControl.Data.Recipients;
+                return message;       
             }
             set
             {
                 if (value == null)
                     return;
                 this.DataContext = value;
-                this.RecipientControl.Recipients = value.Recipients;
+                this.RecipientControl.Data.Recipients = value.Recipients;
             }
         }
 
@@ -50,11 +52,11 @@ namespace WPFClient
         {
             get
             {
-                return RecipientControl.AllEmployees;
+                return RecipientControl.Data.AllEmployees;
             }
             set
             {
-                RecipientControl.AllEmployees = value;
+                RecipientControl.Data.AllEmployees = value;
             }
         }
 

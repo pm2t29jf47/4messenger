@@ -40,6 +40,8 @@ namespace DBService
             ///вернуть ошибку!!!!
             if (string.Compare(currentUsername, message.SenderUsername) != 0)
                 return;
+
+            message.Date = DateTime.Now;
             int? insertedMessageId = MessageGateway.Insert(message, currentUsername);
             if (insertedMessageId == null) return;
             foreach (var recipient in message.Recipients)
@@ -119,16 +121,16 @@ namespace DBService
         /// Возвращает сотрудника по его иднтификатору
         /// </summary>
         /// <returns></returns>
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public Employee GetEmployee(string selectableUsername)
         {
             string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return EmployeeGateway.SelectByUsername(selectableUsername, curentUsername);
         }
-
-
+        
         public void SetMessageDeleted(int MessageId)
         {
-            
+            throw new NotImplementedException();
         }
     }
 }

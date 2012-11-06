@@ -11,20 +11,20 @@
         </Grid.RowDefinitions>
         <Grid Background="LightGray">
             <ToolBar>
-                <Button Name="CreateMessageButton" Margin="5">
+                <Button Name="CreateMessageButton" Margin="5" Click="OnCreateMessageButtonClick">
                     <StackPanel>
                         <Image Source="Images\mail.png"></Image>
                         <Label Content="{x:Static res:Resources.NewMessageLable}"></Label>
                     </StackPanel>
                 </Button>
                 <Separator></Separator>
-                <Button Name="ReplyMessageButton" Margin="5">
+                <Button Name="ReplyMessageButton" Margin="5" Click="OnReplyMessageButtonClick">
                     <StackPanel>
                         <Image Source="Images\mail_forward.png"></Image>
                         <Label Content="{x:Static res:Resources.ReplyMessageLable}"></Label>
                     </StackPanel>
                 </Button>
-                <Button Name="DeleteMessageButton" Margin="5">
+                <Button Name="DeleteMessageButton" Margin="5" Click="OnDeleteMessageButtonClick">
                     <StackPanel>
                         <Image Source="Images\mail_delete.png"></Image>
                         <Label Content="{x:Static res:Resources.DeleteMessageLable}"></Label>

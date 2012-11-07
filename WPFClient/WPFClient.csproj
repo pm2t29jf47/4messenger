@@ -152,6 +152,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClientSideExceptionHandler\ClientSideExceptionHandler.csproj">
+      <Project>{D64F05FA-768F-4092-86BD-59F754CEA632}</Project>
+      <Name>ClientSideExceptionHandler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DBService\DBService.csproj">
       <Project>{4846A902-46B6-4F66-8ECB-CF8D899EBCA0}</Project>
       <Name>DBService</Name>
@@ -159,6 +163,10 @@
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{AC3D427A-B2F7-4973-B975-6BCF522358B3}</Project>
       <Name>Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InformatonTips\InformatonTips.csproj">
+      <Project>{739F2E4F-96EB-488B-866A-E35648A0FE9B}</Project>
+      <Name>InformatonTips</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

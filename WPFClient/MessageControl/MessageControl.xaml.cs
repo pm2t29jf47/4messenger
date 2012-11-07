@@ -33,7 +33,7 @@ namespace WPFClient
             get
             {
                 Message message = (Message)this.DataContext;
-                message.Recipients = RecipientControl.Data.Recipients;
+                message.Recipients = RecipientsControl.Data.Recipients;
                 return message;       
             }
             set
@@ -41,7 +41,7 @@ namespace WPFClient
                 if (value == null)
                     return;
                 this.DataContext = value;
-                this.RecipientControl.Data.Recipients = value.Recipients;
+                this.RecipientsControl.Data.Recipients = value.Recipients;
             }
         }
 
@@ -52,11 +52,11 @@ namespace WPFClient
         {
             get
             {
-                return RecipientControl.Data.AllEmployees;
+                return RecipientsControl.Data.AllEmployees;
             }
             set
             {
-                RecipientControl.Data.AllEmployees = value;
+                RecipientsControl.Data.AllEmployees = value;
             }
         }
 
@@ -93,7 +93,7 @@ namespace WPFClient
         {
             if (controlState == state.IsReadOnly)
             {
-                this.RecipientControl.ControlState = RecipientsControl.state.IsReadOnly;
+                this.RecipientsControl.ControlState = RecipientsControl.state.IsReadOnly;
                 this.DateLable.Visibility = System.Windows.Visibility.Visible;
                 this.DateTextbox.Visibility = System.Windows.Visibility.Visible;
                 this.TitleTextbox.IsReadOnly = true;
@@ -102,7 +102,7 @@ namespace WPFClient
             }
             else
             {
-                this.RecipientControl.ControlState = RecipientsControl.state.IsEditable;
+                this.RecipientsControl.ControlState = RecipientsControl.state.IsEditable;
                 this.DateLable.Visibility = System.Windows.Visibility.Collapsed;
                 this.DateTextbox.Visibility = System.Windows.Visibility.Collapsed;
                 this.TitleTextbox.IsReadOnly = false;

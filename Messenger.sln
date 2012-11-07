@@ -28,6 +28,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClient", "WPFClient\WPFClient.csproj", "{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientSideExceptionHandler", "ClientSideExceptionHandler\ClientSideExceptionHandler.csproj", "{D64F05FA-768F-4092-86BD-59F754CEA632}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InformatonTips", "InformatonTips\InformatonTips.csproj", "{739F2E4F-96EB-488B-866A-E35648A0FE9B}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Messenger1.vsmdi
@@ -111,6 +115,26 @@ Global
 		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Release|Mixed Platforms.Build.0 = Release|x86
 		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Release|x86.ActiveCfg = Release|x86
 		{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}.Release|x86.Build.0 = Release|x86
+		{D64F05FA-768F-4092-86BD-59F754CEA632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D64F05FA-768F-4092-86BD-59F754CEA632}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D64F05FA-768F-4092-86BD-59F754CEA632}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D64F05FA-768F-4092-86BD-59F754CEA632}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D64F05FA-768F-4092-86BD-59F754CEA632}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D64F05FA-768F-4092-86BD-59F754CEA632}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D64F05FA-768F-4092-86BD-59F754CEA632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D64F05FA-768F-4092-86BD-59F754CEA632}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D64F05FA-768F-4092-86BD-59F754CEA632}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D64F05FA-768F-4092-86BD-59F754CEA632}.Release|x86.ActiveCfg = Release|Any CPU
+		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -179,9 +179,21 @@ namespace WPFClient
             Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
             if (foundEmployee != null)
             {
-                // if (!this.RecipientsEmployees.Contains(foundEmployee)) //проверка уникальности            
-                RecipientsEmployees.Add(foundEmployee);                
-                return EmployeeToString(foundEmployee);
+                if (!this.RecipientsEmployees.Contains(foundEmployee))
+                {
+                    RecipientsEmployees.Add(foundEmployee);
+                    return EmployeeToString(foundEmployee);
+                }
+                else
+                {
+                    errorMessage = joinToErrorMessage(
+                    errorMessage,
+                    Properties.Resources.UnuniqueUsername 
+                    + space 
+                    + username);
+                    IsValidated = false;
+                    return recipientString;
+                }
             }
             else
             {

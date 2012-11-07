@@ -36,7 +36,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex,"SelectAllEmployees");
+                new ExceptionHandler().HandleExcepion(ex, "public static List<Employee> SelectAll(string username)");
                 return rows;
             }
         }
@@ -63,7 +63,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex,"SelectSecurityEmployee"); 
+                new ExceptionHandler().HandleExcepion(ex, "public static Employee SelectSecurity(string authenticationUsername, string username)"); 
                 return null;
             }
         }
@@ -90,7 +90,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex, "SelectSecurityEmployee");
+                new ExceptionHandler().HandleExcepion(ex, "public static Employee SelectByUsername(string selectableUsername, string username)");
                 return null;
             }
         }

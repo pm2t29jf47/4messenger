@@ -4,6 +4,11 @@
         Title="Messenger" Height="500" Width="876" Name="Messenger"
         xmlns:local="clr-namespace:WPFClient"
         xmlns:res="clr-namespace:WPFClient.Properties" MinWidth="640" MinHeight="450">
+    <Window.Resources>
+        <Style x:Key="MarginStyle">
+            <Setter Property="Control.Margin" Value="5"></Setter>
+        </Style>
+    </Window.Resources>
     <Grid Background="LightGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -11,23 +16,29 @@
         </Grid.RowDefinitions>
         <Grid Background="LightGray">
             <ToolBar>
-                <Button Name="CreateMessageButton" Margin="5" Click="OnCreateMessageButtonClick">
+                <Button Name="CreateMessageButton" 
+                        Click="OnCreateMessageButtonClick"
+                        Style="{StaticResource MarginStyle}">
                     <StackPanel>
                         <Image Source="Images\mail.png"></Image>
-                        <Label Content="{x:Static res:Resources.NewMessageLable}"></Label>
+                        <Label Content="{x:Static res:Resources.NewMessageLabel}"></Label>
                     </StackPanel>
                 </Button>
                 <Separator></Separator>
-                <Button Name="ReplyMessageButton" Margin="5" Click="OnReplyMessageButtonClick">
+                <Button Name="ReplyMessageButton"
+                        Click="OnReplyMessageButtonClick"
+                        Style="{StaticResource MarginStyle}">      
                     <StackPanel>
                         <Image Source="Images\mail_forward.png"></Image>
-                        <Label Content="{x:Static res:Resources.ReplyMessageLable}"></Label>
+                        <Label Content="{x:Static res:Resources.ReplyMessageLabel}"></Label>
                     </StackPanel>
                 </Button>
-                <Button Name="DeleteMessageButton" Margin="5" Click="OnDeleteMessageButtonClick">
+                <Button Name="DeleteMessageButton" 
+                        Click="OnDeleteMessageButtonClick"
+                        Style="{StaticResource MarginStyle}">
                     <StackPanel>
                         <Image Source="Images\mail_delete.png"></Image>
-                        <Label Content="{x:Static res:Resources.DeleteMessageLable}"></Label>
+                        <Label Content="{x:Static res:Resources.DeleteMessageLabel}"></Label>
                     </StackPanel>
                 </Button>
             </ToolBar>
@@ -39,14 +50,26 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel Name="Sidebar" Grid.Column="0"/>
-            <DataGrid Name="MessageList" Grid.Column="1" Margin="5" AutoGenerateColumns="False" SelectionChanged="OnMessageListSelectionChanged" IsReadOnly="True">
+            <DataGrid Name="MessageList" 
+                      Grid.Column="1" 
+                      AutoGenerateColumns="False" 
+                      SelectionChanged="OnMessageListSelectionChanged" 
+                      IsReadOnly="True"
+                      Style="{StaticResource MarginStyle}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Path=SenderUsername, Mode=OneWay}" Header="{x:Static res:Resources.SenderUsernameColumn}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Path=Date}" Header="{x:Static res:Resources.DateColumn}"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Path=Title}" Header="{x:Static res:Resources.TitleColumn}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Path=SenderUsername, Mode=OneWay}" 
+                                        Header="{x:Static res:Resources.SenderUsernameColumn}"
+                                        Width="1*"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Path=Date}" 
+                                        Header="{x:Static res:Resources.DateColumn}"
+                                        Width="1*"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Path=Title}" 
+                                        Header="{x:Static res:Resources.TitleColumn}"
+                                        Width="1*"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>        
-            <local:MessageControl x:Name="MessageControl" Grid.Column="2" />
+            <local:MessageControl x:Name="MessageControl" 
+                                  Grid.Column="2" />
         </Grid>
     </Grid>
 </Window>

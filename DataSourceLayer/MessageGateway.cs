@@ -32,7 +32,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex,"InsertMessage");
+                new ExceptionHandler().HandleExcepion(ex, "public static int? Insert(Message message, string username)");
                 return null;
             }
         }
@@ -109,7 +109,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex,"SelectMessage");
+                new ExceptionHandler().HandleExcepion(ex, "public static Message SelectById(int id, string username)");
                 return null;
             }
         }
@@ -141,7 +141,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex, "SelectMessage");
+                new ExceptionHandler().HandleExcepion(ex, "public static List<Message> SelectBy_SenderUsername_Deleted(string username, bool deleted)");
                 return rows;
             }
         }

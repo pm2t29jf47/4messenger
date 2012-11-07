@@ -31,7 +31,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex, "InsertRecipient");
+                new ExceptionHandler().HandleExcepion(ex, "public static void Insert(Recipient recipient, string username)");
             }
         }
 
@@ -91,7 +91,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex, "SelectRecipient(string username)");
+                new ExceptionHandler().HandleExcepion(ex, "public static List<Recipient> SelectBy_RecipientUsername_Deleted(string username,bool deleted)");
                 return rows;
             }
         }
@@ -132,7 +132,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex, "SelectRecipient(int messageId, string username)");
+                new ExceptionHandler().HandleExcepion(ex, "public static List<Recipient> SelectByMessageId(int messageId, string username)");
                 return rows;
             }
         }
@@ -167,7 +167,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                new ExceptionHandler().HandleExcepion(ex, "SelectRecipient(string username)");
+                new ExceptionHandler().HandleExcepion(ex, "public static void UpdateViewed(string username, int messageId, bool viewed)");
             }
         }
 

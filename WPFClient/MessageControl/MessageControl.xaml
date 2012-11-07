@@ -32,24 +32,24 @@
             <RowDefinition Height="auto"/>
             <RowDefinition></RowDefinition>
     </Grid.RowDefinitions>
-        <Label Name="SenderLable" 
+        <Label Name="SenderLabel" 
                Grid.Column="0" 
                Grid.Row="0" 
                Style="{StaticResource MarginStyle}" 
-               Content="{x:Static res:Resources.SenderLable}"/>
+               Content="{x:Static res:Resources.SenderLabel}"/>
         <Label Name="RecipientLable" 
                Grid.Row="1"                
                Margin="5,4,5,6" 
-               Content="{x:Static res:Resources.RecipientsLable}"/>
+               Content="{x:Static res:Resources.RecipientsLabel}"/>
         <Label Name="DateLable" 
                Grid.Column="0" 
                Grid.Row="2" 
                Style="{StaticResource MarginStyle}" 
-               Content="{x:Static res:Resources.DateLable}"/>
+               Content="{x:Static res:Resources.DateLabel}"/>
         <Label Name="TitleLable" 
                Grid.Column="0" 
                Grid.Row="3"                
-               Content="{x:Static res:Resources.TitleLable}"
+               Content="{x:Static res:Resources.TitleLabel}"
                Style="{StaticResource MarginStyle}"/>
         <Label Name="MessageContentLable" 
                Grid.Column="0" 
@@ -62,7 +62,7 @@
                  IsReadOnly="True" 
                  Text="{Binding Path=SenderUsername, Mode=OneWay}" 
                  Style="{StaticResource OneRowTextBoxStyle}"/>
-        <local:RecipientsControl x:Name="RecipientControl" 
+        <local:RecipientsControl x:Name="RecipientsControl" 
                                  Grid.Column="1" 
                                  Grid.Row="1"              
                                  Style="{StaticResource RecipientsControlStyle}"/>        

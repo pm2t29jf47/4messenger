@@ -3,6 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Log In" Height="143" Width="300" ResizeMode="NoResize"
         xmlns:res="clr-namespace:WPFClient.Properties">
+    <Window.Resources>
+        <Style x:Key="MarginStyle">
+            <Setter Property="Control.Margin" Value="5"></Setter>
+        </Style>
+        <Style x:Key="ButtonStyle" BasedOn="{StaticResource MarginStyle}">
+            <Setter Property="Control.Padding"
+                    Value="5"></Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -13,10 +22,27 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Name="UsernameLable" Grid.Column="0" Grid.Row="0" Margin="5" Content="{x:Static res:Resources.UsernameLabel}"/>
-        <Label Name="PasswordLable" Grid.Column="0" Grid.Row="1" Margin="5" Content="{x:Static res:Resources.PasswordLabel}"/>
-        <TextBox Name="UsernameTexbox" Grid.Column="1" Grid.Row="0" Margin="5"></TextBox>
-        <PasswordBox Name="PasswordTexbox" Grid.Column="1" Grid.Row="1" Margin="5"></PasswordBox>
-        <Button Grid.Column="1" Grid.Row="2" Padding="5" Margin="5" Click="Button_Click">Log In</Button>       
+        <Label Name="UsernameLable" 
+               Grid.Column="0" 
+               Grid.Row="0" 
+               Content="{x:Static res:Resources.UsernameLabel}"
+               Style="{StaticResource MarginStyle}"/>
+        <Label Name="PasswordLable" 
+               Grid.Column="0" 
+               Grid.Row="1"
+               Content="{x:Static res:Resources.PasswordLabel}"
+               Style="{StaticResource MarginStyle}"/>
+        <TextBox Name="UsernameTexbox" 
+                 Grid.Column="1" 
+                 Grid.Row="0" 
+                 Style="{StaticResource MarginStyle}"></TextBox>
+        <PasswordBox Name="PasswordTexbox" 
+                     Grid.Column="1" 
+                     Grid.Row="1"
+                     Style="{StaticResource MarginStyle}"></PasswordBox>
+        <Button Grid.Column="1" 
+                Grid.Row="2" 
+                Click="Button_Click"
+                Style="{StaticResource ButtonStyle}">Log In</Button>       
     </Grid>
 </Window>

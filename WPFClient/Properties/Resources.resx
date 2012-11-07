@@ -117,40 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DateLable" xml:space="preserve">
+  <data name="DateLabel" xml:space="preserve">
     <value>Date</value>
   </data>
-  <data name="DeletedFolderLable" xml:space="preserve">
+  <data name="DeletedFolderLabel" xml:space="preserve">
     <value>Deleted</value>
   </data>
-  <data name="DeleteMessageLable" xml:space="preserve">
+  <data name="DeleteMessageLabel" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="InboxFolderLable" xml:space="preserve">
+  <data name="InboxFolderLabel" xml:space="preserve">
     <value>Inbox</value>
   </data>
-  <data name="NewMessageLable" xml:space="preserve">
+  <data name="NewMessageLabel" xml:space="preserve">
     <value>New</value>
   </data>
   <data name="PasswordLabel" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="RecipientsLable" xml:space="preserve">
+  <data name="RecipientsLabel" xml:space="preserve">
     <value>Recipients</value>
   </data>
-  <data name="ReplyMessageLable" xml:space="preserve">
+  <data name="ReplyMessageLabel" xml:space="preserve">
     <value>Reply</value>
   </data>
-  <data name="SenderLable" xml:space="preserve">
+  <data name="SenderLabel" xml:space="preserve">
     <value>Sender</value>
   </data>
-  <data name="SentFolderLable" xml:space="preserve">
+  <data name="SentFolderLabel" xml:space="preserve">
     <value>Sent</value>
   </data>
   <data name="TitleColumn" xml:space="preserve">
     <value>Title</value>
   </data>
-  <data name="TitleLable" xml:space="preserve">
+  <data name="TitleLabel" xml:space="preserve">
     <value>Title</value>
   </data>
   <data name="UsernameLabel" xml:space="preserve">
@@ -165,7 +165,7 @@
   <data name="SenderUsernameColumn" xml:space="preserve">
     <value>Sender username</value>
   </data>
-  <data name="SendMessageLable" xml:space="preserve">
+  <data name="SendMessageLabel" xml:space="preserve">
     <value>Send</value>
   </data>
   <data name="AddRecipientLabel" xml:space="preserve">
@@ -194,5 +194,8 @@
   </data>
   <data name="Re" xml:space="preserve">
     <value>re:</value>
+  </data>
+  <data name="UnuniqueUsername" xml:space="preserve">
+    <value>Ununique username:</value>
   </data>
 </root>

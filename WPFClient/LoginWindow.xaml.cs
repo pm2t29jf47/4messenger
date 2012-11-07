@@ -13,6 +13,8 @@ using System.Windows.Shapes;
 using System.ServiceModel;
 using DBService;
 using System.IdentityModel.Tokens;
+using InformatonTips;
+
 
 namespace WPFClient
 {
@@ -47,13 +49,15 @@ namespace WPFClient
                 App.Current.MainWindow.Show();               
                 this.Close();
             }
-            catch (System.ServiceModel.Security.MessageSecurityException)
+            catch (System.ServiceModel.Security.MessageSecurityException ex1)
             {
-                MessageBox.Show("Authentication filed!");
+                LoginFiled.Show("Authentication filed!");
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1,"private void Button_Click(object sender, RoutedEventArgs e)");
             }
             catch (Exception ex2)
             {
-                MessageBox.Show(ex2.Message);
+                LoginFiled.Show(ex2.Message);
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex2, "private void Button_Click(object sender, RoutedEventArgs e)");
             }
         }
     }

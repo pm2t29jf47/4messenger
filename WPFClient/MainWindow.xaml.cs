@@ -74,9 +74,9 @@ namespace WPFClient
 
         void FillFoldersNames()
         {
-            folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLable));
-            folders.Add(new SidebarFolder(Properties.Resources.SentFolderLable));
-            folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLable));
+            folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLabel));
+            folders.Add(new SidebarFolder(Properties.Resources.SentFolderLabel));
+            folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLabel));
         }
 
         void ShowLoginWindow()
@@ -112,11 +112,11 @@ namespace WPFClient
             MessageControl.AllEmployees = App.Proxy.GetEmployeeList();
             var selectedFolder = (Button)sender;
             HideToolbarButtons(true);
-            if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLable) == 0)          
+            if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLabel) == 0)          
                 MessageList.ItemsSource = App.Proxy.GetDeletedFolder();            
-            else if (string.Compare(selectedFolder.Name, Properties.Resources.InboxFolderLable) == 0)   
+            else if (string.Compare(selectedFolder.Name, Properties.Resources.InboxFolderLabel) == 0)   
                 MessageList.ItemsSource = App.Proxy.GetInboxFolder();           
-            else if (string.Compare(selectedFolder.Name, Properties.Resources.SentFolderLable) == 0)     
+            else if (string.Compare(selectedFolder.Name, Properties.Resources.SentFolderLabel) == 0)     
                 MessageList.ItemsSource = App.Proxy.GetSentFolder();            
             else 
                 OnUserFolderClick();

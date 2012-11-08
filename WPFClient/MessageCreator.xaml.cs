@@ -37,7 +37,7 @@ namespace WPFClient
                 AllEmployees = allEmployees, 
                 Message = message 
             };
-            MessageControl.ControlState = WPFClient.MessageControl.state.IsEditable;
+            MessageControl.ControlState = WPFClient.UserControls.MessageControl.state.IsEditable;
         }
         
         /// <summary>

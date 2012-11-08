@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Entities;
 using WPFClient.Models;
+using WPFClient.UserControls;
 
 namespace WPFClient
 {
@@ -45,7 +46,7 @@ namespace WPFClient
         {
             PreareSidebar();
             HideToolbarButtons(true);
-            MessageControl.ControlState = WPFClient.MessageControl.state.IsReadOnly;
+            MessageControl.ControlState = MessageControl.state.IsReadOnly;
         }
         
         void HideToolbarButtons(bool state)

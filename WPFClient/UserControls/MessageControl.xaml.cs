@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using Entities;
 using WPFClient.Models;
 
-namespace WPFClient
+namespace WPFClient.UserControls
 {
     /// <summary>
     /// Interaction logic for MessageControl.xaml

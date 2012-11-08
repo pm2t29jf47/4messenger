@@ -16,9 +16,6 @@ using System.Collections.ObjectModel;
 
 namespace WPFClient.UserControls
 {
-    /// <summary>
-    /// Interaction logic for RecipientsEditor.xaml
-    /// </summary>
     public partial class RecipientsEditorControl : UserControl
     {
         public RecipientsEditorControl()

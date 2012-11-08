@@ -6,7 +6,7 @@ using Entities;
 
 namespace WPFClient.Models
 {
-    class RecipientEditorModel
+    class RecipientsEditorModel
     {
         /// <summary>
         /// Коллекция содержащая всех возможных для выбора сотрудников

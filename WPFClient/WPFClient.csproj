@@ -63,8 +63,8 @@
     <Compile Include="MessageCreator.xaml.cs">
       <DependentUpon>MessageCreator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\RecipientEditorControlModel.cs" />
-    <Compile Include="Models\RecipientEditorModel.cs" />
+    <Compile Include="Models\RecipientsEditorControlModel.cs" />
+    <Compile Include="Models\RecipientsEditorModel.cs" />
     <Compile Include="Models\RecipientsControlModel.cs" />
     <Compile Include="Properties\Resources.ru.Designer.cs">
       <AutoGen>True</AutoGen>

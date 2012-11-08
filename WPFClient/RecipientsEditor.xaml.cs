@@ -29,29 +29,33 @@ namespace WPFClient
             this.Closing +=new CancelEventHandler(OnRecipientsEditorClosing);
         }
 
-        RecipientEditorModel RecipientEditorModel
+        RecipientsEditorModel RecipientsEditorModel
         {
             get
             {
-                return (RecipientEditorModel)this.DataContext;
+                return (RecipientsEditorModel)this.DataContext;
             }
         }
 
         void OnRecipientsEditorClosing(object sender, CancelEventArgs e)
-        {
-
-            RecipientEditorModel.RecipientsEmployees = new List<Employee>();
-            RecipientEditorControlModel recm = (RecipientEditorControlModel)this.RecipientsEditorControl.DataContext;
-            foreach (var item in recm.SelectedEmployees)
-                RecipientEditorModel.RecipientsEmployees.Add(item);
-            
+        {            
+            RecipientsEditorControlModel recm = (RecipientsEditorControlModel)this.RecipientsEditorControl.DataContext;
+            if (recm.SelectedEmployees != null)
+            {
+                RecipientsEditorModel.RecipientsEmployees = new List<Employee>();
+                foreach (var item in recm.SelectedEmployees)
+                    RecipientsEditorModel.RecipientsEmployees.Add(item);
+            }
         }
 
         void OnRecipientsEditorDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            RecipientEditorControlModel recm = new RecipientEditorControlModel();
-            foreach (var item in RecipientEditorModel.AllEmployees)
-                recm.AllEmployees.Add(item);
+            RecipientsEditorControlModel recm = new RecipientsEditorControlModel();
+            if (RecipientsEditorModel.AllEmployees != null)
+            {
+                foreach (var item in RecipientsEditorModel.AllEmployees)
+                    recm.AllEmployees.Add(item);
+            }
             RecipientsEditorControl.DataContext = recm;
         }
 

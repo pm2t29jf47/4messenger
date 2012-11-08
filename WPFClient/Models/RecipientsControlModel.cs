@@ -12,7 +12,7 @@ namespace WPFClient.Models
 
         public RecipientsControlModel()
         {
-            IsValidated = true;
+            IsValidated = true;          
         }
 
         string leftUsernameStopper = " <",
@@ -38,7 +38,7 @@ namespace WPFClient.Models
         /// <summary>
         /// Сотрудники получатели
         /// </summary>
-        public List<Employee> RecipientsEmployees = new List<Employee>();
+        List<Employee> RecipientsEmployees = new List<Employee>();
 
         /// <summary>
         /// Оставшиеся сотрудники (AllEmployees - RecipientsEmployees)
@@ -60,46 +60,36 @@ namespace WPFClient.Models
 
         /// <summary>
         /// Получатели
-        /// </summary>
+        /// </summary>  
+        private List<Recipient> recipients = new List<Recipient>();
         public List<Recipient> Recipients
         {
-            get
-            {
-                List<Recipient> recipients = new List<Recipient>();
-                foreach (var item in RecipientsEmployees)
-                    recipients.Add(new Recipient(item.Username, null, false, false));
-
-                return recipients;
-            }
             set
             {
-                if (value == null)
-                    return;
-
-                RecipientsEmployees.Clear();
-                foreach (var item in value)
+                if (value != null)
                 {
-                    Employee employee = AllEmployees.FirstOrDefault(row => (string.Compare(row.Username, item.RecipientUsername) == 0));
-                    if (employee != null)
-                        RecipientsEmployees.Add(employee);
+                    recipients = value;
+                    RecipientsEmployees.Clear();
+                    foreach (var item in value)
+                    {
+                        Employee employee = AllEmployees.FirstOrDefault(row => (string.Compare(row.Username, item.RecipientUsername) == 0));
+                        if (employee != null)
+                            RecipientsEmployees.Add(employee);
+                    }
+                    UpdteRecipientsStringFromRecipientsEmployees();          
                 }
-                UpdteRecipientsStringFromRecipientsEmployees();
             }
         }
 
         /// <summary>
         /// Результат проверки введенных пользователем данных
         /// </summary>
-        public bool IsValidated { get; set; }
+        public bool IsValidated { get; private set; }
 
         /// <summary>
         /// Строка пользовательского ввода получателей
         /// </summary>
-        string recipientsString = string.Empty;
-
-        /// <summary>
-        /// Строка пользовательского ввода получателей
-        /// </summary>
+        string recipientsString;
         public string RecipientsString
         {
             get
@@ -107,15 +97,16 @@ namespace WPFClient.Models
                 return recipientsString;
             }
             set
-            {
-                
-                if (string.Compare(recipientsString, value) != 0)
-                {
-                    IsValidated = true;                    
-                    recipientsString = OnRecipientsStringChanged(value);
-                    OnPropertyChanged(new PropertyChangedEventArgs(""));       
-                }
+            {             
+                IsValidated = true;                    
+                recipientsString = OnRecipientsStringChanged(value);
+                OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString"));               
             }
+        }
+
+        void UpdateRecipientsByRecipientsEmployees()
+        {
+
         }
 
         /// <summary>
@@ -143,8 +134,7 @@ namespace WPFClient.Models
             {
                 errorMessage = joinToErrorMessage(errorMessage, Properties.Resources.RecipientsStringNotBeEmpty);  
                 IsValidated = false;
-            }
-            
+            }            
             return CheckRecipientStringArray(recipientsStringArray, ref errorMessage);
         }
 
@@ -296,8 +286,7 @@ namespace WPFClient.Models
                 ? aditionalErrorMessage 
                 : (errorMessage + userDataDevider + space + aditionalErrorMessage);
         }
-
-
+        
         public string Error
         {
             get { throw new NotImplementedException(); }
@@ -311,13 +300,16 @@ namespace WPFClient.Models
                 switch (property)
                 {
                     case "RecipientsString":
-                        if (!IsValidated)
-                            msg = "Start date must be in the past.";
-                        break;                  
+                        {
+                            if (!IsValidated)
+                                msg = "Start date must be in the past.";
 
+                            break;
+                        }
                     default:
-                        throw new ArgumentException(
-                            "Unrecognized property: " + property);
+                        {
+                            throw new ArgumentException("Unrecognized property: " + property);
+                        }
                 }
                 return msg;
             }

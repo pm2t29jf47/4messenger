@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using Entities;
 using System.Collections.ObjectModel;
 
-namespace WPFClient
+namespace WPFClient.UserControls
 {
     /// <summary>
     /// Interaction logic for RecipientsEditor.xaml

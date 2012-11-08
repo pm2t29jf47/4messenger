@@ -7,29 +7,30 @@
              d:DesignHeight="107" d:DesignWidth="300"
              xmlns:res="clr-namespace:WPFClient.Properties">
     <Control.Resources>
-        <Style x:Key="ValidationStyle">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=IsValidated}" Value="false">
-                    <!--BorderBrush пропадает при наведении курсора-->
-                    <!--                    
-                    <Setter Property="TextBox.BorderBrush" Value="Red"></Setter>        
-                    -->
-                    <Setter Property="TextBox.Background" Value="#25FF0000"></Setter>
-                </DataTrigger> 
-            </Style.Triggers>
-        </Style>
+    
     </Control.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <TextBox Name="RecipientsTextBox" 
+        <!--TextBox Name="RecipientsTextBox" 
             Grid.Column ="0" 
             VerticalScrollBarVisibility="Visible" 
             Margin="0,0,5,0" 
             TextWrapping="WrapWithOverflow"
-            Text="{Binding Path=RecipientsString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ValidationStyle}"></TextBox>
+            Text="{Binding Path=RecipientsString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+            Style="{StaticResource ValidationStyle}"></TextBox-->
+        <TextBox Grid.Column ="0"
+                 Name="RecipientsTextBox" >
+            <TextBox.Text>
+                <Binding Path="RecipientsString" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>                        
+                        <DataErrorValidationRule />
+                    </Binding.ValidationRules>                   
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <Button Name="AddButton" Grid.Column="1" 
                 Width="auto" 
                 Click="OnAddButtonClick">

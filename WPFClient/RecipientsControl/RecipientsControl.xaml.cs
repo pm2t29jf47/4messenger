@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Entities;
+using WPFClient.Models;
 
 namespace WPFClient
 {
@@ -23,7 +24,20 @@ namespace WPFClient
         public RecipientsControl()
         {
             InitializeComponent();
-            this.DataContext = this.Data;
+            DataContextChanged += new DependencyPropertyChangedEventHandler(OnRecipientsControlDataContextChanged);
+        }
+
+        RecipientsControlModel RecipientsControlModel
+        {
+            get
+            {
+                return (RecipientsControlModel)this.DataContext;
+            }
+        }
+
+        void OnRecipientsControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+           
         }
 
         /// <summary>
@@ -53,11 +67,6 @@ namespace WPFClient
         }        
 
         /// <summary>
-        /// Объект храняший информацию для контрола
-        /// </summary>
-        public RecipientsControlData Data = new RecipientsControlData();
-
-        /// <summary>
         /// Отлов события закрытия окна RecipientsEditor
         /// </summary>
         /// <param name="sender"></param>
@@ -65,9 +74,11 @@ namespace WPFClient
         void OnrecipientsEditorClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             RecipientsEditor recipientsEditor = (RecipientsEditor)sender;
-            Data.AddRecipientsEmplyeesToRecipientsString(recipientsEditor.RecipientsEmployees);  
+            RecipientEditorModel rem = (RecipientEditorModel)recipientsEditor.DataContext;
+            RecipientsControlModel.AddEmplyeesToRecipientsString(rem.RecipientsEmployees);
+            
         }       
-
+        
         /// <summary>
         /// Подготавливает контрол для различных вариантов использования
         /// </summary>
@@ -93,7 +104,12 @@ namespace WPFClient
         void OnAddButtonClick(object sender, RoutedEventArgs e)
         {          
             RecipientsEditor recipientsEditor = new RecipientsEditor();
-            recipientsEditor.AllEmployees = Data.AllResidueEmployees;
+
+            RecipientEditorModel rem = new RecipientEditorModel()
+            {
+                AllEmployees = RecipientsControlModel.AllEmployees
+            };
+            recipientsEditor.DataContext = rem;
             recipientsEditor.Show();
             recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
         }

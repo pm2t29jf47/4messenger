@@ -60,7 +60,7 @@
                  Grid.Column="1" 
                  Grid.Row="0"                  
                  IsReadOnly="True" 
-                 Text="{Binding Path=SenderUsername, Mode=OneWay}" 
+                 Text="{Binding Path=Message.SenderUsername, Mode=OneWay}" 
                  Style="{StaticResource OneRowTextBoxStyle}"/>
         <local:RecipientsControl x:Name="RecipientsControl" 
                                  Grid.Column="1" 
@@ -71,21 +71,21 @@
                  Grid.Column="1" 
                  Grid.Row="2"                  
                  IsReadOnly="True" 
-                 Text="{Binding Path=Date, Mode=OneWay}" 
+                 Text="{Binding Path=Message.Date, Mode=OneWay}" 
                  Style="{StaticResource OneRowTextBoxStyle}"/>
         <TextBox Name="TitleTextbox" 
                  Grid.Column="1" 
                  Grid.Row="3" 
                  VerticalScrollBarVisibility="Visible"                  
                  TextWrapping="Wrap" 
-                 Text="{Binding Path=Title, Mode=TwoWay}"
+                 Text="{Binding Path=Message.Title, Mode=TwoWay}"
                  Style="{StaticResource OneRowTextBoxStyle}"/>
         <TextBox Name="MessageContentTextBox" 
                  Grid.Column="1" 
                  Grid.Row="4" 
                  VerticalScrollBarVisibility="Visible"                  
                  TextWrapping="Wrap" 
-                 Text="{Binding Path=Content, Mode=TwoWay}"
+                 Text="{Binding Path=Message.Content, Mode=TwoWay}"
                  Style="{StaticResource MarginStyle}"/>
     </Grid>    
 </UserControl>

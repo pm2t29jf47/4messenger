@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Entities;
+using WPFClient.Models;
 
 namespace WPFClient
 {
@@ -22,42 +23,18 @@ namespace WPFClient
     {
         public MessageControl()
         {     
-            InitializeComponent();          
+            InitializeComponent();   
+            DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageControlDataContextChanged);
         }
 
-        /// <summary>
-        /// Объект сообщния для отображения или изменения
-        /// </summary>
-        public Message Message 
-        { 
-            get
-            {
-                Message message = (Message)this.DataContext;
-                message.Recipients = RecipientsControl.Data.Recipients;
-                return message;       
-            }
-            set
-            {
-                if (value == null)
-                    return;
-                this.DataContext = value;
-                this.RecipientsControl.Data.Recipients = value.Recipients;
-            }
-        }
-
-        /// <summary>
-        /// Коллекция содержащая всех возможных для выбора сотрудников
-        /// </summary>
-        public List<Employee> AllEmployees
+        void OnMessageControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            get
+            MessageControlModel mcm = (MessageControlModel) this.DataContext;
+            RecipientsControl.DataContext = new RecipientsControlModel()
             {
-                return RecipientsControl.Data.AllEmployees;
-            }
-            set
-            {
-                RecipientsControl.Data.AllEmployees = value;
-            }
+                AllEmployees = mcm.AllEmployees,
+                Recipients = mcm.Message.Recipients
+            };          
         }
 
         /// <summary>
@@ -65,10 +42,7 @@ namespace WPFClient
         /// </summary>
         public enum state { IsReadOnly, IsEditable }
 
-        /// <summary>
-        /// Определяет вариант отображения контрола
-        /// </summary>
-        state controlState;
+        private state controlState;
 
         /// <summary>
         /// Определяет вариант отображения контрола

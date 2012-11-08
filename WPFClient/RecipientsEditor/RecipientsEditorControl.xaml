@@ -39,8 +39,14 @@
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBlock Style="{StaticResource MarginStyle}" Text="{x:Static res:Resources.AllEmployees}" HorizontalAlignment="Center"></TextBlock>
-            <ListBox Name="AllEmployeesListBox" Grid.Row="1" Style="{StaticResource ListBoxStyle}" GotMouseCapture="OnAllEmployeesListBoxGotMouseCapture">            
+            <TextBlock Style="{StaticResource MarginStyle}" 
+                       Text="{x:Static res:Resources.AllEmployees}" 
+                       HorizontalAlignment="Center"></TextBlock>
+            <ListBox Name="AllEmployeesListBox" 
+                     Grid.Row="1" 
+                     Style="{StaticResource ListBoxStyle}" 
+                     GotMouseCapture="OnAllEmployeesListBoxGotMouseCapture" 
+                     ItemsSource="{Binding Path=AllEmployees }">            
                 <ListBox.ItemTemplate>  
                     <DataTemplate>
                         <TextBlock Style="{StaticResource ListBoxItemStyle}">

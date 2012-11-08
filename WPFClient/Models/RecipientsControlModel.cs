@@ -5,12 +5,12 @@ using System.Text;
 using Entities;
 using System.ComponentModel;
 
-namespace WPFClient
+namespace WPFClient.Models
 {
-    public class RecipientsControlData : INotifyPropertyChanged
-    {
+    class RecipientsControlModel : INotifyPropertyChanged, IDataErrorInfo
+        {
 
-        public RecipientsControlData()
+        public RecipientsControlModel()
         {
             IsValidated = true;
         }
@@ -83,7 +83,7 @@ namespace WPFClient
                     if (employee != null)
                         RecipientsEmployees.Add(employee);
                 }
-                ShowRecipientsEmployees();
+                UpdteRecipientsStringFromRecipientsEmployees();
             }
         }
 
@@ -267,7 +267,7 @@ namespace WPFClient
         /// <summary>
         /// Отображает коллекция получателей в RecipientsTextBox
         /// </summary>
-        void ShowRecipientsEmployees()
+        void UpdteRecipientsStringFromRecipientsEmployees()
         {
             RecipientsString = EmployeesToString(RecipientsEmployees);
         }
@@ -276,7 +276,7 @@ namespace WPFClient
         /// Обновляет строку адресатов
         /// </summary>
         /// <returns></returns>
-        public void AddRecipientsEmplyeesToRecipientsString(List<Employee> recipientsEmployees)
+        public void AddEmplyeesToRecipientsString(List<Employee> recipientsEmployees)
         {
             string buf = EmployeesToString(recipientsEmployees);
             if ((RecipientsString.Length != 0) && (buf.Length != 0))
@@ -296,6 +296,31 @@ namespace WPFClient
                 ? aditionalErrorMessage 
                 : (errorMessage + userDataDevider + space + aditionalErrorMessage);
         }
-        
+
+
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string this[string property]
+        {
+            get
+            {
+                string msg = null;
+                switch (property)
+                {
+                    case "RecipientsString":
+                        if (!IsValidated)
+                            msg = "Start date must be in the past.";
+                        break;                  
+
+                    default:
+                        throw new ArgumentException(
+                            "Unrecognized property: " + property);
+                }
+                return msg;
+            }
+        }
     }
 }

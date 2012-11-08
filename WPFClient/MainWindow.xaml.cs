@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Entities;
+using WPFClient.Models;
 
 namespace WPFClient
 {
@@ -36,7 +37,8 @@ namespace WPFClient
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
             InitializeComponent();
             PrepareWindow();
-            ShowLoginWindow();  
+            ShowLoginWindow();         
+
         }
 
         public void PrepareWindow()
@@ -98,7 +100,14 @@ namespace WPFClient
 
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageControl.Message = (Message)MessageList.SelectedItem;
+            if (MessageList.SelectedItem == null)
+                return;
+            MessageControlModel mcm = new MessageControlModel()
+            {
+                AllEmployees = App.Proxy.GetEmployeeList(),
+                Message = (Message)MessageList.SelectedItem
+            };
+            MessageControl.DataContext = mcm;
             HideToolbarButtons(false);       
         }
 
@@ -108,8 +117,7 @@ namespace WPFClient
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void OnFolderClick(object sender, RoutedEventArgs e)
-        {
-            MessageControl.AllEmployees = App.Proxy.GetEmployeeList();
+        {            
             var selectedFolder = (Button)sender;
             HideToolbarButtons(true);
             if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLabel) == 0)          

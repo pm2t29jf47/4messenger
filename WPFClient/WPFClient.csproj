@@ -59,9 +59,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\MessageControlModel.cs" />
     <Compile Include="MessageCreator.xaml.cs">
       <DependentUpon>MessageCreator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\RecipientEditorControlModel.cs" />
+    <Compile Include="Models\RecipientEditorModel.cs" />
+    <Compile Include="Models\RecipientsControlModel.cs" />
     <Compile Include="Properties\Resources.ru.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -76,7 +80,6 @@
     <Compile Include="RecipientsEditor\RecipientsEditorControl.xaml.cs">
       <DependentUpon>RecipientsEditorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RecipientsControl\RecipientsControlData.cs" />
     <Compile Include="Additional\SidebarFolder.cs" />
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>

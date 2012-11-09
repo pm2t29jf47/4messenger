@@ -12,6 +12,7 @@
             <Setter Property="Control.Margin" 
                     Value="5"></Setter>
         </Style>
+        <!--Расцветка всего окна-->
         <Style x:Key="MainGridStyle">
             <Setter Property="Control.Background" 
                     Value="LightGray"></Setter>
@@ -31,6 +32,7 @@
             <Setter Property="Button.IsEnabled" 
                     Value="false"></Setter>
         </Style>
+        <!--Стиль изображений на кнопке AddToSelected и его смена по состояниям-->
         <Style x:Key="AddToSelectedButtonImageStyle">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding ElementName=AddToSelectedButton, Path=IsEnabled}" 
@@ -45,6 +47,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <!--Стиль изображений на кнопке RemoveFromSelected и его смена по состояниям-->
         <Style x:Key="RemoveFromSelectedButtonImageStyle">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding ElementName=RemoveFromSelectedButton, Path=IsEnabled}" 

@@ -25,6 +25,7 @@ namespace WPFClient.UserControls
         {     
             InitializeComponent();   
             DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageControlDataContextChanged);
+
         }
 
         private MessageControlModel MessageControlModel

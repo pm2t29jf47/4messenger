@@ -7,9 +7,13 @@
              d:DesignHeight="107" d:DesignWidth="300"
              xmlns:res="clr-namespace:WPFClient.Properties">
     <Control.Resources>
+        
     
+
+
     </Control.Resources>
     <Grid>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="auto"/>
@@ -22,7 +26,8 @@
             Text="{Binding Path=RecipientsString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
             Style="{StaticResource ValidationStyle}"></TextBox-->
         <TextBox Grid.Column ="0"
-                 Name="RecipientsTextBox" >
+                 Name="RecipientsTextBox" 
+                GotMouseCapture="RecipientsTextBox_GotMouseCapture">
             <TextBox.Text>
                 <Binding Path="RecipientsString" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>                        

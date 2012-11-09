@@ -98,7 +98,7 @@ namespace WPFClient.Models
         /// <summary>
         /// Результат проверки введенных пользователем данных
         /// </summary>
-        public bool IsValidated { get; private set; }
+        public bool IsValid { get; private set; }
 
         /// <summary>
         /// Строка пользовательского ввода получателей
@@ -112,7 +112,7 @@ namespace WPFClient.Models
             }
             set
             {             
-                IsValidated = true;                    
+                IsValid = true;                    
                 recipientsString = OnRecipientsStringChanged(value);
                 OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString"));               
             }
@@ -141,7 +141,7 @@ namespace WPFClient.Models
             if (recipientsStringArray.Length == 0)     
             {
                 errorMessage = joinToErrorMessage(errorMessage, Properties.Resources.RecipientsStringNotBeEmpty);  
-                IsValidated = false;
+                IsValid = false;
             }            
             return CheckRecipientStringArray(recipientsStringArray, ref errorMessage);
         }
@@ -189,7 +189,7 @@ namespace WPFClient.Models
                     Properties.Resources.UnuniqueUsername 
                     + space 
                     + username);
-                    IsValidated = false;
+                    IsValid = false;
                     return recipientString;
                 }
             }
@@ -200,7 +200,7 @@ namespace WPFClient.Models
                     username 
                     + space 
                     + Properties.Resources.NotFound);
-                IsValidated = false;
+                IsValid = false;
                 return recipientString;
             }
         }
@@ -315,7 +315,7 @@ namespace WPFClient.Models
                 {
                     case "RecipientsString":
                         {
-                            if (!IsValidated)
+                            if (!IsValid)
                                 msg = "Start date must be in the past.";
 
                             break;

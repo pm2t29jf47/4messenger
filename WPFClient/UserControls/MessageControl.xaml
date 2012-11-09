@@ -22,11 +22,11 @@
     </UserControl.Resources>
     <Grid Name="MessageAttributes">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -65,7 +65,7 @@
         <local:RecipientsControl x:Name="RecipientsControl" 
                                  Grid.Column="1" 
                                  Grid.Row="1"              
-                                 Style="{StaticResource RecipientsControlStyle}"/>        
+                                 Style="{StaticResource RecipientsControlStyle}" CurrentNumber="200"/>        
         
         <TextBox Name="DateTextbox" 
                  Grid.Column="1" 
@@ -87,6 +87,7 @@
                  TextWrapping="Wrap" 
                  Text="{Binding Path=Message.Content, Mode=TwoWay}"
                  Style="{StaticResource MarginStyle}"/>
+        <TextBlock Grid.Column="1" Grid.Row="4" Height="23" HorizontalAlignment="Left" Margin="183,90,0,0" Name="textBlock1" Text="{Binding ElementName=RecipientsControl, Path=CurrentNumber}" VerticalAlignment="Top" />
     </Grid>    
 </UserControl>
 

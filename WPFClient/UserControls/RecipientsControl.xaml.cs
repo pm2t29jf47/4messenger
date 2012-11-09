@@ -23,7 +23,8 @@ namespace WPFClient
     {
         public RecipientsControl()
         {
-            InitializeComponent();      
+            InitializeComponent();     
+            
         }
 
         RecipientsControlModel RecipientsControlModel
@@ -104,6 +105,39 @@ namespace WPFClient
             recipientsEditor.Show();
             recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
         }
+
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        public int CurrentNumber
+        {
+            get { return (int)GetValue(CurrentNumberProperty); }
+            set { SetValue(CurrentNumberProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CurrentNumber.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CurrentNumberProperty =
+            DependencyProperty.Register("CurrentNumber", typeof(int),
+            typeof(RecipientsControl), new UIPropertyMetadata(100),
+            new ValidateValueCallback(ValidateCurrentNumber));
+
+
+        public static bool ValidateCurrentNumber(object value)
+        {
+            if (Convert.ToInt32(value) >= 0 && Convert.ToInt32(value) <= 500)
+                return true;
+            else
+                return false;
+        }
+
+        private void RecipientsTextBox_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            CurrentNumber = 120;
+        }
+
+
+
+
     }
 }
 

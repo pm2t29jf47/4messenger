@@ -12,11 +12,55 @@ namespace WPFClient.Models
         /// <summary>
         /// Коллекция содержащая всех возможных для выбора сотрудников
         /// </summary>
-        public ObservableCollection<Employee> AllEmployees { get; set; }
+        ObservableCollection<Employee> allEmployees = new ObservableCollection<Employee>();
+        public ObservableCollection<Employee> AllEmployees 
+        {
+            get
+            {
+                return allEmployees;
+            }
+            set
+            {
+                allEmployees = value;
+            }
+        }
     
         /// <summary>
         /// Коллекция содержащая выбраных пользователем сотрудников
         /// </summary>
-        public ObservableCollection<Employee> SelectedEmployees { get; set; }
+        ObservableCollection<Employee> selectedEmployees = new ObservableCollection<Employee>();
+        public ObservableCollection<Employee> SelectedEmployees 
+        {
+            get
+            {
+                return selectedEmployees;
+            }
+            set
+            {
+                selectedEmployees = value;
+            }
+        }
+
+        c A = new c();
+
+        public c a
+        {
+            get
+            {
+                return A;
+            }
+        }
+       
+    }
+
+    public class c
+    {
+        public bool b
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 }

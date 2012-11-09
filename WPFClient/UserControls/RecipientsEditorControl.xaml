@@ -9,21 +9,35 @@
 
     <Control.Resources>   
         <Style x:Key="MarginStyle">
-            <Setter Property="Control.Margin" Value="5"></Setter>
+            <Setter Property="Control.Margin" 
+                    Value="5"></Setter>
         </Style>
         <Style x:Key="MainGridStyle">
-            <Setter Property="Control.Background" Value="LightGray"></Setter>
+            <Setter Property="Control.Background" 
+                    Value="LightGray"></Setter>
         </Style>
         <Style x:Key="ListBoxStyle">
-            <Setter Property="Control.Background" Value="White"></Setter>
-            <Setter Property="Control.Margin" Value="5"></Setter>
+            <Setter Property="Control.Background" 
+                    Value="White"></Setter>
+            <Setter Property="Control.Margin" 
+                    Value="5"></Setter>
         </Style>
         <Style x:Key="ListBoxItemStyle">
-            <Setter Property="Control.Margin" Value="2"></Setter>
+            <Setter Property="Control.Margin" 
+                    Value="2"></Setter>
         </Style>
         <Style x:Key="ButtonsStyle">
-            <Setter Property="Control.Margin" Value="5"></Setter>
-            <Setter Property="Control.IsEnabled" Value="false"></Setter>
+            <Setter Property="Control.Margin" 
+                    Value="5"></Setter>
+            <Setter Property="Control.IsEnabled" 
+                    Value="false"></Setter>
+        </Style>
+        <Style x:Key="VisibilityStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=a.b}" Value="false">
+                    <Setter Property="Control.Background" Value="Green"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </Control.Resources>
 
@@ -34,6 +48,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        <!--Левая колонка-->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
@@ -52,9 +67,12 @@
                         <TextBlock Style="{StaticResource ListBoxItemStyle}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0} {1} &lt;{2}&gt;">
-                                    <Binding Path="FirstName" Mode="OneWay"/>
-                                    <Binding Path="SecondName" Mode="OneWay"/>
-                                    <Binding Path="Username" Mode="OneWay"/>
+                                    <Binding Path="FirstName" 
+                                             Mode="OneWay"/>
+                                    <Binding Path="SecondName" 
+                                             Mode="OneWay"/>
+                                    <Binding Path="Username" 
+                                             Mode="OneWay"/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
@@ -63,32 +81,49 @@
             </ListBox>
         </Grid>
 
-        <Grid Grid.Column="1" Style="{StaticResource MarginStyle}">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Button Name="AddToSelectedButton" Click="OnAddToSelectedButtonClick" Style="{StaticResource ButtonsStyle}">
+        <!--Центральная колонка-->
+        <Grid Grid.Column="1" 
+              Style="{StaticResource MarginStyle}">
+            <StackPanel VerticalAlignment="Center" 
+                        HorizontalAlignment="Center">
+                <Button Name="AddToSelectedButton" 
+                        Click="OnAddToSelectedButtonClick" 
+                        Style="{StaticResource VisibilityStyle}">
                     <Image Source="Images\arrow_right_green.png"></Image>                  
                 </Button>
-                <Button Name="RemoveFromSelectedButton" Click="OnRemoveFromSelectedButtonClick" Style="{StaticResource ButtonsStyle}">
+                <Button Name="RemoveFromSelectedButton" 
+                        Click="OnRemoveFromSelectedButtonClick" 
+                        Style="{StaticResource ButtonsStyle}">
                     <Image Source="Images\arrow_left_green.png"></Image>
                 </Button>
             </StackPanel>
         </Grid>
         
+        <!--Правая колонка-->
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBlock Style="{StaticResource MarginStyle}" Text="{x:Static res:Resources.SelectedEmployees}" HorizontalAlignment="Center"></TextBlock>
-            <ListBox Name="SelectedEmployeesListBox" Grid.Row="1" Style="{StaticResource ListBoxStyle}" GotMouseCapture="OnSelectedEmployeesListBoxGotMouseCapture">
+            <TextBlock Style="{StaticResource MarginStyle}" 
+                       Text="{x:Static res:Resources.SelectedEmployees}" 
+                       HorizontalAlignment="Center"></TextBlock>
+            <ListBox Name="SelectedEmployeesListBox" 
+                     Grid.Row="1" 
+                     Style="{StaticResource ListBoxStyle}" 
+                     GotMouseCapture="OnSelectedEmployeesListBoxGotMouseCapture"
+                     ItemsSource="{Binding Path=SelectedEmployees }">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Style="{StaticResource ListBoxItemStyle}">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} {1} &lt;{2}&gt;">
-                                <Binding Path="FirstName" Mode="OneWay"/>
-                                <Binding Path="SecondName" Mode="OneWay"/>
-                                <Binding Path="Username" Mode="OneWay"/>
+                                <Binding Path="FirstName" 
+                                         Mode="OneWay"/>
+                                <Binding Path="SecondName"
+                                         Mode="OneWay"/>
+                                <Binding Path="Username" 
+                                         Mode="OneWay"/>
                             </MultiBinding>
                         </TextBlock.Text>
                         </TextBlock>

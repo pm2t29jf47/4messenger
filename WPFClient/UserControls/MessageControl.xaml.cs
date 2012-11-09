@@ -27,26 +27,35 @@ namespace WPFClient.UserControls
             DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageControlDataContextChanged);
         }
 
+        private MessageControlModel MessageControlModel
+        {
+            get
+            {
+                if (this.DataContext == null)
+                    this.DataContext = new MessageControlModel();
+
+                return (MessageControlModel)this.DataContext;
+            }
+        }
+
         void OnMessageControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            MessageControlModel mcm = (MessageControlModel) this.DataContext;
             RecipientsControl.DataContext = new RecipientsControlModel()
             {
-                AllEmployees = mcm.AllEmployees,
-                Recipients = mcm.Message.Recipients
+                AllEmployees = MessageControlModel.AllEmployees,
+                Recipients = MessageControlModel.Message.Recipients
             };          
         }
 
         /// <summary>
         /// Два состояния отображения контрола
         /// </summary>
-        public enum state { IsReadOnly, IsEditable }
-
-        private state controlState;
+        public enum state { IsReadOnly, IsEditable }        
 
         /// <summary>
         /// Определяет вариант отображения контрола
         /// </summary>
+        private state controlState;
         public state ControlState
         {
             get

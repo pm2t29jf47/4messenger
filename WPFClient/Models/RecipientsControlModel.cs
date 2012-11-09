@@ -8,11 +8,10 @@ using System.ComponentModel;
 namespace WPFClient.Models
 {
     class RecipientsControlModel : INotifyPropertyChanged, IDataErrorInfo
-        {
+    {
 
         public RecipientsControlModel()
-        {
-            IsValidated = true;          
+        {                     
         }
 
         string leftUsernameStopper = " <",
@@ -33,7 +32,18 @@ namespace WPFClient.Models
         /// <summary>
         /// Все сотрудники
         /// </summary>
-        public List<Employee> AllEmployees = new List<Employee>();
+        List<Employee> allEmployees = new List<Employee>();
+        public List<Employee> AllEmployees
+        {
+            get
+            {
+                return allEmployees;
+            }
+            set
+            {
+                allEmployees = value;
+            }
+        }
 
         /// <summary>
         /// Сотрудники получатели
@@ -43,31 +53,36 @@ namespace WPFClient.Models
         /// <summary>
         /// Оставшиеся сотрудники (AllEmployees - RecipientsEmployees)
         /// </summary>
+        List<Employee> allResidueEmployees = new List<Employee>();
         public List<Employee> AllResidueEmployees
         {
             get
             {
-                List<Employee> residue = new List<Employee>();
+                allResidueEmployees.Clear();
                 foreach (var item in AllEmployees)
-                    residue.Add(item);
+                    allResidueEmployees.Add(item);
 
                 foreach (var item in RecipientsEmployees)
-                    residue.Remove(item);
+                    allResidueEmployees.Remove(item);
 
-                return residue;
+                return allResidueEmployees;
             }
         }
 
         /// <summary>
         /// Получатели
         /// </summary>  
-        private List<Recipient> recipients = new List<Recipient>();
+        List<Recipient> recipients = new List<Recipient>();
         public List<Recipient> Recipients
         {
             set
             {
-                if (value != null)
+                if (value == null)
                 {
+                   return;
+                }
+                else
+                {           
                     recipients = value;
                     RecipientsEmployees.Clear();
                     foreach (var item in value)
@@ -76,7 +91,6 @@ namespace WPFClient.Models
                         if (employee != null)
                             RecipientsEmployees.Add(employee);
                     }
-                    UpdteRecipientsStringFromRecipientsEmployees();          
                 }
             }
         }
@@ -89,7 +103,7 @@ namespace WPFClient.Models
         /// <summary>
         /// Строка пользовательского ввода получателей
         /// </summary>
-        string recipientsString;
+        string recipientsString = string.Empty;
         public string RecipientsString
         {
             get
@@ -104,11 +118,6 @@ namespace WPFClient.Models
             }
         }
 
-        void UpdateRecipientsByRecipientsEmployees()
-        {
-
-        }
-
         /// <summary>
         /// Обработчик события изменения RecipientsTextBox
         /// </summary>
@@ -117,8 +126,7 @@ namespace WPFClient.Models
         string OnRecipientsStringChanged(string recipientsString)
         {
             string errorMessage = string.Empty;
-            string result = CheckRecipientString(ref errorMessage, recipientsString);            
-            return result;
+            return CheckRecipientString(ref errorMessage, recipientsString);            
         } 
 
         /// <summary>
@@ -253,22 +261,14 @@ namespace WPFClient.Models
             }
             return result;
         }
-
-        /// <summary>
-        /// Отображает коллекция получателей в RecipientsTextBox
-        /// </summary>
-        void UpdteRecipientsStringFromRecipientsEmployees()
-        {
-            RecipientsString = EmployeesToString(RecipientsEmployees);
-        }
-
+    
         /// <summary>
         /// Обновляет строку адресатов
         /// </summary>
         /// <returns></returns>
-        public void AddEmplyeesToRecipientsString(List<Employee> recipientsEmployees)
+        public void AddEmployeesToRecipientsString(List<Employee> Employees)
         {
-            string buf = EmployeesToString(recipientsEmployees);
+            string buf = EmployeesToString(Employees);
             if ((RecipientsString.Length != 0) && (buf.Length != 0))
                 buf = userDataDevider + buf;
             RecipientsString += buf;
@@ -285,6 +285,20 @@ namespace WPFClient.Models
             return (errorMessage.Length == 0) 
                 ? aditionalErrorMessage 
                 : (errorMessage + userDataDevider + space + aditionalErrorMessage);
+        }
+
+        public void UpdateRecipients()
+        {
+            recipients.Clear();
+            foreach (var item in RecipientsEmployees)
+            {
+                recipients.Add(
+                    new Recipient(
+                        item.Username,
+                        null,
+                        false,
+                        false));
+            }
         }
         
         public string Error

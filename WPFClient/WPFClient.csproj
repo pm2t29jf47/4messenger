@@ -196,7 +196,10 @@
   <ItemGroup>
     <Resource Include="UserControls\Images\arrow_right_green.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="UserControls\Images\arrow_left_green_disabled.png" />
+    <Resource Include="UserControls\Images\arrow_right_green_disabled.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

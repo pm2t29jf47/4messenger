@@ -23,21 +23,18 @@ namespace WPFClient
     {
         public RecipientsControl()
         {
-            InitializeComponent();
-            DataContextChanged += new DependencyPropertyChangedEventHandler(OnRecipientsControlDataContextChanged);
+            InitializeComponent();      
         }
 
         RecipientsControlModel RecipientsControlModel
         {
             get
             {
+                if (this.DataContext == null)
+                    this.DataContext = new RecipientsControlModel();
+                
                 return (RecipientsControlModel)this.DataContext;
             }
-        }
-
-        void OnRecipientsControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-           
         }
 
         /// <summary>
@@ -49,10 +46,6 @@ namespace WPFClient
         /// Определяет вариант отображения контрола
         /// </summary>
         state controlState;
-
-        /// <summary>
-        /// Определяет вариант отображения контрола
-        /// </summary>
         public state ControlState
         {
             get
@@ -75,10 +68,8 @@ namespace WPFClient
         {
             RecipientsEditor recipientsEditor = (RecipientsEditor)sender;
             RecipientsEditorModel rem = (RecipientsEditorModel)recipientsEditor.DataContext;
-            if (rem.RecipientsEmployees != null)
-            {
-                RecipientsControlModel.AddEmplyeesToRecipientsString(rem.RecipientsEmployees);
-            }            
+            RecipientsControlModel.AddEmployeesToRecipientsString(rem.RecipientsEmployees);
+            RecipientsControlModel.UpdateRecipients();         
         }       
         
         /// <summary>
@@ -104,14 +95,12 @@ namespace WPFClient
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void OnAddButtonClick(object sender, RoutedEventArgs e)
-        {          
-            RecipientsEditor recipientsEditor = new RecipientsEditor();
-
-            RecipientsEditorModel rem = new RecipientsEditorModel()
+        {           
+            RecipientsEditor recipientsEditor = new RecipientsEditor();            
+            recipientsEditor.DataContext = new RecipientsEditorModel()
             {
                 AllEmployees = RecipientsControlModel.AllResidueEmployees
             };
-            recipientsEditor.DataContext = rem;
             recipientsEditor.Show();
             recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
         }

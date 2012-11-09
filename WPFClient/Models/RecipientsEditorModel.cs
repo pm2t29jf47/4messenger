@@ -11,12 +11,39 @@ namespace WPFClient.Models
         /// <summary>
         /// Коллекция содержащая всех возможных для выбора сотрудников
         /// </summary>
-        public List<Employee> AllEmployees { get; set; }
+        List<Employee> allEmployees = new List<Employee>();
+        public List<Employee> AllEmployees 
+        {
+            get
+            {
+                return allEmployees;
+            }
+            set
+            {
+                allEmployees = value;
+            }
+        }
 
         /// <summary>
         /// Коллекция содержащая выбраных пользователем сотрудников
         /// </summary>
-        public List<Employee> RecipientsEmployees { get; set; }    
+        List<Employee> recipientsEmployees = new List<Employee>();
+        public List<Employee> RecipientsEmployees 
+        {
+            get
+            {
+                return recipientsEmployees;
+            }
+            set
+            {
+                recipientsEmployees = value;
+            }
+        }
     }
 }
+
+            
+        
+  
+
 

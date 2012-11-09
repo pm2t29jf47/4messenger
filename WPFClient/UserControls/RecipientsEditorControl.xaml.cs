@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Entities;
 using System.Collections.ObjectModel;
+using WPFClient.Models;
 
 namespace WPFClient.UserControls
 {
@@ -23,41 +24,16 @@ namespace WPFClient.UserControls
             InitializeComponent();            
         }
 
-        /// <summary>
-        /// Коллекция содержащая всех возможных для выбора сотрудников
-        /// </summary>
-        //public ObservableCollection<Employee> AllEmployees
-        //{
-        //    get
-        //    {
-        //        if (this.AllEmployeesListBox.ItemsSource == null)
-        //            this.AllEmployeesListBox.ItemsSource = new ObservableCollection<Employee>();
+        RecipientsEditorControlModel RecipientsEditorControlModel
+        {
+            get
+            {
+                if (this.DataContext == null)
+                    this.DataContext = new RecipientsEditorControlModel();
 
-        //        return (ObservableCollection<Employee>)this.AllEmployeesListBox.ItemsSource;
-        //    }
-        //    set
-        //    {                
-        //        this.AllEmployeesListBox.ItemsSource = value;
-        //    }
-        //}
-
-        /// <summary>
-        /// Коллекция содержащая выбраных пользователем сотрудников
-        /// </summary>
-        //public ObservableCollection<Employee> SelectedEmployees
-        //{
-        //    get
-        //    {
-        //        if (this.SelectedEmployeesListBox.ItemsSource == null)
-        //            this.SelectedEmployeesListBox.ItemsSource = new ObservableCollection<Employee>();
-
-        //        return (ObservableCollection<Employee>)this.SelectedEmployeesListBox.ItemsSource;
-        //    }
-        //    set
-        //    {
-        //        this.SelectedEmployeesListBox.ItemsSource = value;
-        //    }
-        //}
+                return (RecipientsEditorControlModel)this.DataContext;
+            }
+        }
 
         /// <summary>
         /// Обработчик события нажатия кнопки переноса сотрудника в коллекцию выбраных
@@ -67,8 +43,8 @@ namespace WPFClient.UserControls
         void OnAddToSelectedButtonClick(object sender, RoutedEventArgs e)
         {
             Employee selectedItem = (Employee)AllEmployeesListBox.SelectedItem;
-            //SelectedEmployees.Add(selectedItem);
-            //AllEmployees.Remove(selectedItem);
+            RecipientsEditorControlModel.SelectedEmployees.Add(selectedItem);
+            RecipientsEditorControlModel.AllEmployees.Remove(selectedItem);
             CheckAddDeleteButtonsEnabled();
         }
    
@@ -77,13 +53,13 @@ namespace WPFClient.UserControls
         /// </summary>
         void CheckAddDeleteButtonsEnabled()
         {
-            //AddToSelectedButton.IsEnabled = ((AllEmployees != null)
-            //    && (AllEmployees.Count != 0)
-            //    && (AllEmployeesListBox.IsMouseCaptured));
+            AddToSelectedButton.IsEnabled = ((RecipientsEditorControlModel.AllEmployees != null)
+                && (RecipientsEditorControlModel.AllEmployees.Count != 0)
+                && (AllEmployeesListBox.IsMouseCaptured));
 
-            //RemoveFromSelectedButton.IsEnabled = ((SelectedEmployees != null)
-            //    && (SelectedEmployees.Count != 0)
-            //    && (SelectedEmployeesListBox.IsMouseCaptured));
+            RemoveFromSelectedButton.IsEnabled = ((RecipientsEditorControlModel.SelectedEmployees != null)
+                && (RecipientsEditorControlModel.SelectedEmployees.Count != 0)
+                && (SelectedEmployeesListBox.IsMouseCaptured));
         }
 
         /// <summary>
@@ -93,10 +69,10 @@ namespace WPFClient.UserControls
         /// <param name="e"></param>
         void OnRemoveFromSelectedButtonClick(object sender, RoutedEventArgs e)
         {
-            //Employee selectedItem = (Employee)SelectedEmployeesListBox.SelectedItem;
-            //SelectedEmployees.Remove(selectedItem);
-            //AllEmployees.Add(selectedItem);
-            //CheckAddDeleteButtonsEnabled();
+            Employee selectedItem = (Employee)SelectedEmployeesListBox.SelectedItem;
+            RecipientsEditorControlModel.SelectedEmployees.Remove(selectedItem);
+            RecipientsEditorControlModel.AllEmployees.Add(selectedItem);
+            CheckAddDeleteButtonsEnabled();
         }
 
         /// <summary>
@@ -119,4 +95,6 @@ namespace WPFClient.UserControls
             CheckAddDeleteButtonsEnabled();
         }
     }
+
+
 }

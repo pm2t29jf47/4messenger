@@ -21,7 +21,8 @@ namespace WPFClient.UserControls
     {
         public RecipientsEditorControl()
         {
-            InitializeComponent();            
+            InitializeComponent();
+
         }
 
         RecipientsEditorControlModel RecipientsEditorControlModel
@@ -45,21 +46,7 @@ namespace WPFClient.UserControls
             Employee selectedItem = (Employee)AllEmployeesListBox.SelectedItem;
             RecipientsEditorControlModel.SelectedEmployees.Add(selectedItem);
             RecipientsEditorControlModel.AllEmployees.Remove(selectedItem);
-            CheckAddDeleteButtonsEnabled();
-        }
-   
-        /// <summary>
-        /// Проверяет и зидиет возможность отображения кнопок активными
-        /// </summary>
-        void CheckAddDeleteButtonsEnabled()
-        {
-            AddToSelectedButton.IsEnabled = ((RecipientsEditorControlModel.AllEmployees != null)
-                && (RecipientsEditorControlModel.AllEmployees.Count != 0)
-                && (AllEmployeesListBox.IsMouseCaptured));
-
-            RemoveFromSelectedButton.IsEnabled = ((RecipientsEditorControlModel.SelectedEmployees != null)
-                && (RecipientsEditorControlModel.SelectedEmployees.Count != 0)
-                && (SelectedEmployeesListBox.IsMouseCaptured));
+            AddToSelectedButton.IsEnabled = false;
         }
 
         /// <summary>
@@ -72,29 +59,19 @@ namespace WPFClient.UserControls
             Employee selectedItem = (Employee)SelectedEmployeesListBox.SelectedItem;
             RecipientsEditorControlModel.SelectedEmployees.Remove(selectedItem);
             RecipientsEditorControlModel.AllEmployees.Add(selectedItem);
-            CheckAddDeleteButtonsEnabled();
+            RemoveFromSelectedButton.IsEnabled = false;
         }
 
-        /// <summary>
-        /// Обработчик события клика по SelectedEmployeesListBox
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void OnSelectedEmployeesListBoxGotMouseCapture(object sender, MouseEventArgs e)
+        private void OnAllEmployeesListBoxIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            CheckAddDeleteButtonsEnabled();
+            AddToSelectedButton.IsEnabled = true;
+            RemoveFromSelectedButton.IsEnabled = false;
         }
 
-        /// <summary>
-        /// Обработчик события клика по AllEmployeesListBox
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void OnAllEmployeesListBoxGotMouseCapture(object sender, MouseEventArgs e)
+        private void OnSelectedEmployeesListBoxIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            CheckAddDeleteButtonsEnabled();
-        }
+            AddToSelectedButton.IsEnabled = false;
+            RemoveFromSelectedButton.IsEnabled = true;
+        }       
     }
-
-
 }

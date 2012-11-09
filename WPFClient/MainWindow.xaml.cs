@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Entities;
 using WPFClient.Models;
 using WPFClient.UserControls;
+using WPFClient.Additional;
 
 namespace WPFClient
 {

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="221" d:DesignWidth="533">
 
-    <Control.Resources>   
+    <Control.Resources>
         <Style x:Key="MarginStyle">
             <Setter Property="Control.Margin" 
                     Value="5"></Setter>
@@ -25,21 +25,41 @@
         <Style x:Key="ListBoxItemStyle">
             <Setter Property="Control.Margin" 
                     Value="2"></Setter>
-        </Style>
-        <Style x:Key="ButtonsStyle">
-            <Setter Property="Control.Margin" 
-                    Value="5"></Setter>
-            <Setter Property="Control.IsEnabled" 
+        </Style> 
+        <Style x:Key="ButtonsStyle" 
+               BasedOn="{StaticResource MarginStyle}">
+            <Setter Property="Button.IsEnabled" 
                     Value="false"></Setter>
         </Style>
-        <Style x:Key="VisibilityStyle">
+        <Style x:Key="AddToSelectedButtonImageStyle">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=a.b}" Value="false">
-                    <Setter Property="Control.Background" Value="Green"></Setter>
+                <DataTrigger Binding="{Binding ElementName=AddToSelectedButton, Path=IsEnabled}" 
+                             Value="false">                    
+                    <Setter Property="Image.Source" 
+                            Value="Images\arrow_right_green_disabled.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=AddToSelectedButton, Path=IsEnabled}" 
+                             Value="true">
+                    <Setter Property="Image.Source" 
+                            Value="Images\arrow_right_green.png"></Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-    </Control.Resources>
+        <Style x:Key="RemoveFromSelectedButtonImageStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=RemoveFromSelectedButton, Path=IsEnabled}" 
+                             Value="false">
+                    <Setter Property="Image.Source" 
+                            Value="Images\arrow_left_green_disabled.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=RemoveFromSelectedButton, Path=IsEnabled}" 
+                             Value="true">
+                    <Setter Property="Image.Source" 
+                            Value="Images\arrow_left_green.png"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Control.Resources>    
 
     <Grid Style="{StaticResource MainGridStyle}">
         <Grid.ColumnDefinitions>
@@ -47,7 +67,7 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
+        
         <!--Левая колонка-->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
@@ -60,8 +80,8 @@
             <ListBox Name="AllEmployeesListBox" 
                      Grid.Row="1" 
                      Style="{StaticResource ListBoxStyle}" 
-                     GotMouseCapture="OnAllEmployeesListBoxGotMouseCapture" 
-                     ItemsSource="{Binding Path=AllEmployees }">            
+                     ItemsSource="{Binding Path=AllEmployees }"
+                     IsKeyboardFocusWithinChanged="OnAllEmployeesListBoxIsKeyboardFocusWithinChanged">                           
                 <ListBox.ItemTemplate>  
                     <DataTemplate>
                         <TextBlock Style="{StaticResource ListBoxItemStyle}">
@@ -87,14 +107,14 @@
             <StackPanel VerticalAlignment="Center" 
                         HorizontalAlignment="Center">
                 <Button Name="AddToSelectedButton" 
-                        Click="OnAddToSelectedButtonClick" 
-                        Style="{StaticResource VisibilityStyle}">
-                    <Image Source="Images\arrow_right_green.png"></Image>                  
+                        Click="OnAddToSelectedButtonClick"
+                        Style="{StaticResource ButtonsStyle}">
+                    <Image Style="{StaticResource AddToSelectedButtonImageStyle}"></Image>                  
                 </Button>
                 <Button Name="RemoveFromSelectedButton" 
                         Click="OnRemoveFromSelectedButtonClick" 
                         Style="{StaticResource ButtonsStyle}">
-                    <Image Source="Images\arrow_left_green.png"></Image>
+                    <Image Style="{StaticResource RemoveFromSelectedButtonImageStyle}"></Image>
                 </Button>
             </StackPanel>
         </Grid>
@@ -111,8 +131,8 @@
             <ListBox Name="SelectedEmployeesListBox" 
                      Grid.Row="1" 
                      Style="{StaticResource ListBoxStyle}" 
-                     GotMouseCapture="OnSelectedEmployeesListBoxGotMouseCapture"
-                     ItemsSource="{Binding Path=SelectedEmployees }">
+                     ItemsSource="{Binding Path=SelectedEmployees }"
+                     IsKeyboardFocusWithinChanged="OnSelectedEmployeesListBoxIsKeyboardFocusWithinChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Style="{StaticResource ListBoxItemStyle}">

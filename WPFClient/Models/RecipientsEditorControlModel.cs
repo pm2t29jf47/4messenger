@@ -40,27 +40,5 @@ namespace WPFClient.Models
                 selectedEmployees = value;
             }
         }
-
-        c A = new c();
-
-        public c a
-        {
-            get
-            {
-                return A;
-            }
-        }
-       
-    }
-
-    public class c
-    {
-        public bool b
-        {
-            get
-            {
-                return false;
-            }
-        }
     }
 }

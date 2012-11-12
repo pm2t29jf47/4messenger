@@ -44,7 +44,7 @@ namespace WPFClient.UserControls
             {
                 AllEmployees = MessageControlModel.AllEmployees,
                 Recipients = MessageControlModel.Message.Recipients
-            };           
+            };    
         }
 
         /// <summary>

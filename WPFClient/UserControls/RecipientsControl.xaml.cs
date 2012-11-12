@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Entities;
 using WPFClient.Models;
+using System.ComponentModel;
 
 namespace WPFClient
 {
@@ -23,8 +24,8 @@ namespace WPFClient
     {
         public RecipientsControl()
         {
-            InitializeComponent();      
-            DataContextChanged +=new DependencyPropertyChangedEventHandler(OnRecipientsControlDataContextChanged);
+            InitializeComponent();  
+         
         }
 
         RecipientsControlModel RecipientsControlModel
@@ -106,10 +107,12 @@ namespace WPFClient
             recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
         }
 
-        void OnRecipientsControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void OnRecipientsTextBoxGotMouseCapture(object sender, MouseEventArgs e)
         {
-            RecipientsStringRule.AllEmployees = RecipientsControlModel.AllEmployees;
+
         }
+
+        
     }
 }
 

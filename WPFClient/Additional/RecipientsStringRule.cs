@@ -5,6 +5,8 @@ using System.Text;
 using System.Windows.Controls;
 using Entities;
 using System.Windows;
+using System.Windows.Data;
+using WPFClient.Models;
 
 namespace WPFClient.Additional
 {
@@ -22,10 +24,16 @@ namespace WPFClient.Additional
 
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
-            string errorMessage = CheckRecipientString((string)value);
-            return string.Compare(errorMessage, string.Empty) == 0 ?
-                new ValidationResult(true, null):
-                new ValidationResult(false, errorMessage);   
+            var errorMessage = (RecipientsControlModel)((BindingExpression)value).DataItem;
+
+            if (errorMessage.IsValid)
+            {
+                return new ValidationResult(true, null);
+            }
+            else
+            {
+                return new ValidationResult(false, "");
+            }
         }
 
 
@@ -40,12 +48,12 @@ namespace WPFClient.Additional
             string[] recipientsStringArray = recipientsString.Split(userDataDevider.ToCharArray());
             if (recipientsStringArray.Length == 0)
                 return Properties.Resources.RecipientsStringNotBeEmpty;
-            string errorMessage = string.Empty;
-            string result;
-            ///перевести массив recipientsStringArray в массив username-ов
-            foreach (var recipientString in recipientsStringArray)
+            string[] usernameArray = ParseToUsernames(recipientsStringArray);
+            string errorMessage = string.Empty,
+                result;
+            foreach (var recipientString in usernameArray)
             {
-                result = ProcessRecipietnString(recipientString, recipientsStringArray);
+                result = ProcessUsername(recipientString, usernameArray);
                 errorMessage = JoinToErrorMessage(errorMessage, result);
             }
             return errorMessage;
@@ -57,9 +65,8 @@ namespace WPFClient.Additional
         /// <param name="recipientString"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        string ProcessRecipietnString(string recipientString, string[] recipientsStringArray)
-        {
-            string username = ParseUsername(recipientString);
+        string ProcessUsername(string username, string[] usernameArray)
+        {           
             Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
             if(foundEmployee == null)
             {
@@ -67,7 +74,7 @@ namespace WPFClient.Additional
                     + space
                     + Properties.Resources.NotFound;
             }
-            else if(recipientsStringArray.Count(row => string.Compare(row, recipientString) == 0) > 1)
+            else if (usernameArray.Count(row => string.Compare(row, username) == 0) > 1)
             {
                 return Properties.Resources.UnuniqueUsername
                                     + space
@@ -123,6 +130,15 @@ namespace WPFClient.Additional
                     + space 
                     + additionalErrorMessage;
             }
+        }
+
+        string[] ParseToUsernames(string[] array)
+        {
+            string[] result = new string[array.Count()];
+            for (int i = 0; i < array.Count(); i++)
+                result[i] = ParseUsername(array[i]);
+
+            return result;
         }
 
     }

@@ -7,17 +7,12 @@ using System.ComponentModel;
 
 namespace WPFClient.Models
 {
-    class RecipientsControlModel : INotifyPropertyChanged
+    public class RecipientsControlModel : INotifyPropertyChanged
     {
-
-        public RecipientsControlModel()
-        {               
-        }
-
-        string leftUsernameStopper = " <",
-            rightUsernameStopper = ">",
-            userDataDevider = ";",
-            space = " ";
+        char leftUsernameStopper = '<',
+            rightUsernameStopper = '>',
+            userDataDevider = ';',
+            space = ' ';
 
         /// <summary>
         /// Событие изменения строки с получателями
@@ -100,6 +95,19 @@ namespace WPFClient.Models
         /// </summary>
         public bool IsValid { get; private set; }
 
+        private string validationErrorMessage = string.Empty;
+        public string ValidationErrorMessage 
+        {
+            get
+            {
+                return validationErrorMessage;
+            }
+            set
+            {
+                validationErrorMessage = value;
+            }
+        }
+
         /// <summary>
         /// Строка пользовательского ввода получателей
         /// </summary>
@@ -111,10 +119,10 @@ namespace WPFClient.Models
                 return recipientsString;
             }
             set
-            {             
-                IsValid = true;                    
+            {
+                IsValid = true;                
                 recipientsString = OnRecipientsStringChanged(value);
-                OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString"));               
+                OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString"));             
             }
         }
 
@@ -125,8 +133,8 @@ namespace WPFClient.Models
         /// <param name="e"></param>
         string OnRecipientsStringChanged(string recipientsString)
         {
-            string errorMessage = string.Empty;
-            return CheckRecipientString(ref errorMessage, recipientsString);            
+            ValidationErrorMessage = string.Empty;
+            return CheckRecipientsString(ref validationErrorMessage, recipientsString);            
         } 
 
         /// <summary>
@@ -134,16 +142,16 @@ namespace WPFClient.Models
         /// </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        string CheckRecipientString(ref string errorMessage, string recipientsString)
+        string CheckRecipientsString(ref string errorMessage, string recipientsString)
         {
             RecipientsEmployees.Clear();
-            string[] recipientsStringArray = recipientsString.Split(userDataDevider.ToCharArray());  
+            string[] recipientsStringArray = recipientsString.Split(userDataDevider);  
             if (recipientsStringArray.Length == 0)     
             {
-                errorMessage = joinToErrorMessage(errorMessage, Properties.Resources.RecipientsStringNotBeEmpty);  
+                errorMessage = joinToString(errorMessage, Properties.Resources.RecipientsStringNotBeEmpty);  
                 IsValid = false;
             }            
-            return CheckRecipientStringArray(recipientsStringArray, ref errorMessage);
+            return CheckRecipientsSubstrings(recipientsStringArray, ref errorMessage);
         }
 
         /// <summary>
@@ -152,16 +160,17 @@ namespace WPFClient.Models
         /// <param name="recipientsStringArray"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        string CheckRecipientStringArray(string[] recipientsStringArray, ref string errorMessage)
+        string CheckRecipientsSubstrings(string[] recipientsSubstrings, ref string errorMessage)
         {
-            string result = string.Empty;
-            foreach (var recipientString in recipientsStringArray)
+            string result = string.Empty,
+                processedEmployee;
+            string[] usernames = ParseToUsernames(recipientsSubstrings);
+            foreach (var username in usernames)
             {
-                result += ProcessRecipietnString(recipientString, ref errorMessage) + userDataDevider;                                 
+                processedEmployee = ProcessUsername(username, ref errorMessage);
+                result = joinToString(result, processedEmployee);
             }
-            if (result.Length != 0)
-                result = result.Substring(0, result.Length - 1);
-    
+
             return result;
         }
 
@@ -171,9 +180,8 @@ namespace WPFClient.Models
         /// <param name="recipientString"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        string ProcessRecipietnString(string recipientString, ref string errorMessage)
-        {
-            string username = ParseUsername(recipientString);
+        string ProcessUsername(string username, ref string errorMessage)
+        {          
             Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
             if (foundEmployee != null)
             {
@@ -184,24 +192,24 @@ namespace WPFClient.Models
                 }
                 else
                 {
-                    errorMessage = joinToErrorMessage(
+                    errorMessage = joinToString(
                     errorMessage,
                     Properties.Resources.UnuniqueUsername 
                     + space 
                     + username);
                     IsValid = false;
-                    return recipientString;
+                    return username;
                 }
             }
             else
             {
-                errorMessage = joinToErrorMessage(
+                errorMessage = joinToString(
                     errorMessage,
                     username 
                     + space 
                     + Properties.Resources.NotFound);
                 IsValid = false;
-                return recipientString;
+                return username;
             }
         }
 
@@ -212,8 +220,8 @@ namespace WPFClient.Models
         /// <returns></returns>
         string ParseUsername(string recipientString)
         {
-            int begin = recipientString.IndexOf('<'),
-                end = recipientString.IndexOf('>');
+            int begin = recipientString.IndexOf(leftUsernameStopper),////////////////////////////
+                end = recipientString.IndexOf(rightUsernameStopper);
 
             if (begin == -1 || end == -1)
             {
@@ -236,9 +244,13 @@ namespace WPFClient.Models
             string result = string.Empty;
             if (employee != null)
             {
-                result = employee.FirstName + space
-                    + employee.SecondName + leftUsernameStopper
-                    + employee.Username + rightUsernameStopper;
+                result = employee.FirstName 
+                    + space
+                    + employee.SecondName 
+                    + space 
+                    + leftUsernameStopper
+                    + employee.Username 
+                    + rightUsernameStopper;
             }
             return result;
         }
@@ -280,12 +292,14 @@ namespace WPFClient.Models
         /// <param name="errorMessage"></param>
         /// <param name="aditionalErrorMessage"></param>
         /// <returns></returns>
-        string joinToErrorMessage(string errorMessage, string aditionalErrorMessage)
+        string joinToString(string baseString, string aditionalString)
         {
-            return (errorMessage.Length == 0) 
-                ? aditionalErrorMessage 
-                : (errorMessage + userDataDevider + space + aditionalErrorMessage);
+            return (baseString.Length == 0)
+                ? aditionalString
+                : (baseString + userDataDevider + aditionalString);
         }
+
+        
 
         public void UpdateRecipients()
         {
@@ -299,6 +313,15 @@ namespace WPFClient.Models
                         false,
                         false));
             }
+        }
+
+        string[] ParseToUsernames(string[] array)
+        {
+            string[] result = new string[array.Count()];
+            for (int i = 0; i < array.Count(); i++)
+                result[i] = ParseUsername(array[i]);
+
+            return result;
         }
      
     }

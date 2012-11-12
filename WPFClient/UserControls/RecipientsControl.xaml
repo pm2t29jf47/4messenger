@@ -18,12 +18,12 @@
                  Name="RecipientsTextBox" 
                  VerticalScrollBarVisibility="Visible"
                  Margin="0,0,5,0"
-                 TextWrapping="WrapWithOverflow">
-            <TextBox.Text>
+                 TextWrapping="WrapWithOverflow" GotMouseCapture="OnRecipientsTextBoxGotMouseCapture">
+            <TextBox.Text> 
                 <Binding Path="RecipientsString" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <additional:RecipientsStringRule x:Name="RecipientsStringRule" />
-                    </Binding.ValidationRules>                   
+                    <!--Binding.ValidationRules>
+                        <additional:RecipientsStringRule x:Name="RecipientsStringRule" ValidationStep="UpdatedValue"/>
+                    </Binding.ValidationRules-->                   
                 </Binding>
             </TextBox.Text>
         </TextBox>
@@ -35,5 +35,6 @@
                 <TextBlock Text="{x:Static res:Resources.AddRecipientLabel}"/>
             </StackPanel>
         </Button>
+        <Label Content="{Binding Path=RecipientsString, Mode=TwoWay}" Height="28" HorizontalAlignment="Left" Margin="55,44,0,0" Name="label1" VerticalAlignment="Top" Width="148" />
     </Grid>
 </UserControl>

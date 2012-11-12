@@ -25,7 +25,7 @@ namespace WPFClient
     {
         List<SidebarFolder> folders = new List<SidebarFolder>();
 
-        string leftUsernameStopper = " <",
+        string leftUsernameStopper = "<",
             rightUsernameStopper = ">",
             userDataDevider = ";",
             space = " ",
@@ -153,7 +153,7 @@ namespace WPFClient
             var selectedMessage = (Message)MessageList.SelectedItem;
             var recipientEmployee = App.Proxy.GetEmployee(selectedMessage.SenderUsername);
             string recipientString = recipientEmployee.FirstName + this.space
-                    + recipientEmployee.SecondName + leftUsernameStopper
+                    + recipientEmployee.SecondName + space + leftUsernameStopper
                     + recipientEmployee.Username + rightUsernameStopper;
 
             //string senderString = SenderPrefix
@@ -187,9 +187,13 @@ namespace WPFClient
             string result = string.Empty;
             if (employee != null)
             {
-                result = employee.FirstName + space
-                    + employee.SecondName + leftUsernameStopper
-                    + employee.Username + rightUsernameStopper;
+                result = employee.FirstName 
+                    + space
+                    + employee.SecondName 
+                    + space 
+                    + leftUsernameStopper
+                    + employee.Username 
+                    + rightUsernameStopper;
             }
             return result;
         }

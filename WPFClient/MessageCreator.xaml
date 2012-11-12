@@ -7,16 +7,7 @@
     <Window.Resources>
         <Style x:Key="ButtonStyle">
             <Setter Property="Button.Margin" 
-                    Value="5"/>
-            <Style.Triggers>
-                <!--Не работает-->
-                <DataTrigger Binding="{Binding Path=MessageControl.RecipientControl.Data.IsValidated}" 
-                             Value="true">
-                    <Setter Property="Control.IsEnabled" 
-                            Value="false"></Setter>
-                </DataTrigger>
-                <!---->
-            </Style.Triggers>            
+                    Value="5"/>                   
         </Style>
     </Window.Resources>
     <Grid>
@@ -35,6 +26,6 @@
                 <Image Source="Images\mail_delete.png"></Image>
                 <Label Content="{x:Static res:Resources.SendMessageLabel}"></Label>
             </StackPanel>
-        </Button><TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="170,17,0,0" Name="textBox1" VerticalAlignment="Top" Width="120" Text="{Binding ElementName=MessageControl, Path=CurrentNumber, Mode=TwoWay}"/>
+        </Button>
     </Grid>
 </Window>

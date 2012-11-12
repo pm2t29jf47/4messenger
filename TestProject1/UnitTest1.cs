@@ -14,6 +14,8 @@ namespace TestProject1
         [TestMethod]
         public void TestMethod1()
         {
+            string[] a = {"111","222","333","111" };
+            int c = a.Count(s => s == "333");
     
  
             

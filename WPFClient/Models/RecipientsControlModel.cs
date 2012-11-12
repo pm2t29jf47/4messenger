@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace WPFClient.Models
 {
-    class RecipientsControlModel : INotifyPropertyChanged, IDataErrorInfo
+    class RecipientsControlModel : INotifyPropertyChanged
     {
 
         public RecipientsControlModel()
@@ -300,33 +300,6 @@ namespace WPFClient.Models
                         false));
             }
         }
-        
-        public string Error
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string this[string property]
-        {
-            get
-            {
-                string msg = null;
-                switch (property)
-                {
-                    case "RecipientsString":
-                        {
-                            if (!IsValid)
-                                msg = "Start date must be in the past.";
-
-                            break;
-                        }
-                    default:
-                        {
-                            throw new ArgumentException("Unrecognized property: " + property);
-                        }
-                }
-                return msg;
-            }
-        }
+     
     }
 }

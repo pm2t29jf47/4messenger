@@ -23,7 +23,8 @@ namespace WPFClient
     {
         public RecipientsControl()
         {
-            InitializeComponent();            
+            InitializeComponent();      
+            DataContextChanged +=new DependencyPropertyChangedEventHandler(OnRecipientsControlDataContextChanged);
         }
 
         RecipientsControlModel RecipientsControlModel
@@ -103,6 +104,11 @@ namespace WPFClient
             };
             recipientsEditor.Show();
             recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
+        }
+
+        void OnRecipientsControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            RecipientsStringRule.AllEmployees = RecipientsControlModel.AllEmployees;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace ClientSideExceptionHandler
         public static void HandleExcepion(Exception ex, string caller)
         {
             int a = 10;
+            a--;
             //trace right line//listener
         }
     }

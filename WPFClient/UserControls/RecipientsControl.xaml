@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="107" d:DesignWidth="300"
-             xmlns:res="clr-namespace:WPFClient.Properties">
+             xmlns:res="clr-namespace:WPFClient.Properties"
+             xmlns:additional="clr-namespace:WPFClient.Additional">
     <Control.Resources>        
     </Control.Resources>
     <Grid>        
@@ -20,8 +21,8 @@
                  TextWrapping="WrapWithOverflow">
             <TextBox.Text>
                 <Binding Path="RecipientsString" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>                        
-                        <DataErrorValidationRule />
+                    <Binding.ValidationRules>
+                        <additional:RecipientsStringRule x:Name="RecipientsStringRule" />
                     </Binding.ValidationRules>                   
                 </Binding>
             </TextBox.Text>

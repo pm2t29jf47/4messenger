@@ -6,3 +6,4 @@
 - обработка исключений
 - переделать тулбар под шаблоны
 - MessageControl.xaml - стиль кнопки по полю IsValidate
+- dispetcher

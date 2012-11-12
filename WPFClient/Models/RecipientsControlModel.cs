@@ -122,7 +122,9 @@ namespace WPFClient.Models
             {
                 IsValid = true;                
                 recipientsString = OnRecipientsStringChanged(value);
-                OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString"));             
+                App.Current.Dispatcher.BeginInvoke( new delegate = {
+                OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString")) ; }, null
+                    );             
             }
         }
 

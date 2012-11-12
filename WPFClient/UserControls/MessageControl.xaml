@@ -65,8 +65,7 @@
         <local:RecipientsControl x:Name="RecipientsControl" 
                                  Grid.Column="1" 
                                  Grid.Row="1"              
-                                 Style="{StaticResource RecipientsControlStyle}" CurrentNumber="200"/>        
-        
+                                 Style="{StaticResource RecipientsControlStyle}"/>          
         <TextBox Name="DateTextbox" 
                  Grid.Column="1" 
                  Grid.Row="2"                  
@@ -87,7 +86,6 @@
                  TextWrapping="Wrap" 
                  Text="{Binding Path=Message.Content, Mode=TwoWay}"
                  Style="{StaticResource MarginStyle}"/>
-        <TextBlock Grid.Column="1" Grid.Row="4" Height="23" HorizontalAlignment="Left" Margin="183,90,0,0" Name="textBlock1" Text="{Binding ElementName=RecipientsControl, Path=CurrentNumber}" VerticalAlignment="Top" />
     </Grid>    
 </UserControl>
 

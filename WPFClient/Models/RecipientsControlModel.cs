@@ -11,7 +11,7 @@ namespace WPFClient.Models
     {
 
         public RecipientsControlModel()
-        {                     
+        {               
         }
 
         string leftUsernameStopper = " <",

@@ -6,28 +6,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="107" d:DesignWidth="300"
              xmlns:res="clr-namespace:WPFClient.Properties">
-    <Control.Resources>
-        
-    
-
-
+    <Control.Resources>        
     </Control.Resources>
-    <Grid>
-        
+    <Grid>        
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <!--TextBox Name="RecipientsTextBox" 
-            Grid.Column ="0" 
-            VerticalScrollBarVisibility="Visible" 
-            Margin="0,0,5,0" 
-            TextWrapping="WrapWithOverflow"
-            Text="{Binding Path=RecipientsString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-            Style="{StaticResource ValidationStyle}"></TextBox-->
         <TextBox Grid.Column ="0"
                  Name="RecipientsTextBox" 
-                GotMouseCapture="RecipientsTextBox_GotMouseCapture">
+                 VerticalScrollBarVisibility="Visible"
+                 Margin="0,0,5,0"
+                 TextWrapping="WrapWithOverflow">
             <TextBox.Text>
                 <Binding Path="RecipientsString" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>                        

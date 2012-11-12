@@ -24,8 +24,7 @@ namespace WPFClient.UserControls
         public MessageControl()
         {     
             InitializeComponent();   
-            DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageControlDataContextChanged);
-
+            DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageControlDataContextChanged);           
         }
 
         private MessageControlModel MessageControlModel
@@ -45,7 +44,7 @@ namespace WPFClient.UserControls
             {
                 AllEmployees = MessageControlModel.AllEmployees,
                 Recipients = MessageControlModel.Message.Recipients
-            };          
+            };           
         }
 
         /// <summary>

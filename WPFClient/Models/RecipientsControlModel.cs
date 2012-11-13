@@ -120,11 +120,14 @@ namespace WPFClient.Models
             }
             set
             {
-                IsValid = true;                
-                recipientsString = OnRecipientsStringChanged(value);
-                App.Current.Dispatcher.BeginInvoke( new delegate = {
-                OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString")) ; }, null
-                    );             
+                IsValid = true;
+                recipientsString = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString"));
+
+                                           
+                //App.Current.Dispatcher.BeginInvoke( new delegate = {
+                //OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString")) ; }, null
+                //);             
             }
         }
 
@@ -133,7 +136,7 @@ namespace WPFClient.Models
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        string OnRecipientsStringChanged(string recipientsString)
+        public string OnRecipientsStringChanged()
         {
             ValidationErrorMessage = string.Empty;
             return CheckRecipientsString(ref validationErrorMessage, recipientsString);            
@@ -300,9 +303,10 @@ namespace WPFClient.Models
                 ? aditionalString
                 : (baseString + userDataDevider + aditionalString);
         }
-
         
-
+        /// <summary>
+        /// Заполнякт Recipients по коллекции RecipientsEmployees
+        /// </summary>
         public void UpdateRecipients()
         {
             recipients.Clear();
@@ -317,6 +321,11 @@ namespace WPFClient.Models
             }
         }
 
+        /// <summary>
+        /// Преобразует в массив username-ов
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
         string[] ParseToUsernames(string[] array)
         {
             string[] result = new string[array.Count()];

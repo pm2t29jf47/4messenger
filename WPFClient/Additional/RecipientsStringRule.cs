@@ -10,29 +10,37 @@ using WPFClient.Models;
 
 namespace WPFClient.Additional
 {
-    public class RecipientsStringRule : ValidationRule
+    /// <summary>
+    /// Производит валидацию строки получателей в соответсвии с коллекцией всех сотрудников
+    /// </summary>
+    class RecipientsStringRule : ValidationRule
     {
         public RecipientsStringRule()
         {
             AllEmployees = new List<Employee>();
         }
 
-        string userDataDevider = ";",
-            space = " ";  
+        char userDataDevider = ';',
+            space = ' ';  
 
         public List<Employee> AllEmployees { get; set; }
 
+        /// <summary>
+        /// Производит валидацию
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="cultureInfo"></param>
+        /// <returns></returns>
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
-            var errorMessage = (RecipientsControlModel)((BindingExpression)value).DataItem;
-
-            if (errorMessage.IsValid)
+            string resut = CheckRecipientString((string)value);
+            if (string.Compare(resut,string.Empty) == 0)
             {
                 return new ValidationResult(true, null);
             }
             else
             {
-                return new ValidationResult(false, "");
+                return new ValidationResult(false, resut);
             }
         }
 
@@ -45,16 +53,18 @@ namespace WPFClient.Additional
         /// <returns></returns>
         string CheckRecipientString(string recipientsString)
         {
-            string[] recipientsStringArray = recipientsString.Split(userDataDevider.ToCharArray());
-            if (recipientsStringArray.Length == 0)
-                return Properties.Resources.RecipientsStringNotBeEmpty;
-            string[] usernameArray = ParseToUsernames(recipientsStringArray);
+            string[] recipients = recipientsString.Split(userDataDevider);
             string errorMessage = string.Empty,
                 result;
-            foreach (var recipientString in usernameArray)
+
+            if (recipients.Length == 0)
+                return Properties.Resources.RecipientsStringNotBeEmpty;
+
+            string[] usernames = ParseToUsernames(recipients);
+            foreach (var username in usernames)
             {
-                result = ProcessUsername(recipientString, usernameArray);
-                errorMessage = JoinToErrorMessage(errorMessage, result);
+                result = ProcessUsername(username, usernames);
+                errorMessage = JoinToString(errorMessage, result);
             }
             return errorMessage;
         }
@@ -65,7 +75,7 @@ namespace WPFClient.Additional
         /// <param name="recipientString"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        string ProcessUsername(string username, string[] usernameArray)
+        string ProcessUsername(string username, string[] usernames)
         {           
             Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
             if(foundEmployee == null)
@@ -74,7 +84,7 @@ namespace WPFClient.Additional
                     + space
                     + Properties.Resources.NotFound;
             }
-            else if (usernameArray.Count(row => string.Compare(row, username) == 0) > 1)
+            else if (usernames.Count(row => string.Compare(row, username) == 0) > 1)
             {
                 return Properties.Resources.UnuniqueUsername
                                     + space
@@ -92,19 +102,19 @@ namespace WPFClient.Additional
         /// </summary>
         /// <param name="recipientString"></param>
         /// <returns></returns>
-        string ParseUsername(string recipientString)
+        string ParseUsername(string recipient)
         {
-            int begin = recipientString.IndexOf('<'),
-                end = recipientString.IndexOf('>');
+            int begin = recipient.IndexOf('<'),
+                end = recipient.IndexOf('>');
 
             if (begin == -1 || end == -1)
             {
-                return recipientString;
+                return recipient;
             }
             else
             {
                 begin += 1;
-                return recipientString.Substring(begin, end - begin);
+                return recipient.Substring(begin, end - begin);
             }
         }
 
@@ -114,24 +124,28 @@ namespace WPFClient.Additional
         /// <param name="errorMessage"></param>
         /// <param name="aditionalErrorMessage"></param>
         /// <returns></returns>
-        string JoinToErrorMessage(string errorMessage, string additionalErrorMessage)
+        string JoinToString(string baseString, string additionalString)
         {
-            if (string.Compare(additionalErrorMessage, string.Empty) == 0)
-                return errorMessage;
+            if (string.Compare(additionalString, string.Empty) == 0)
+                return baseString;
 
-            if(errorMessage.Length == 0)
+            if (baseString.Length == 0)
             {
-                return additionalErrorMessage;
+                return additionalString;
             }
             else
             {
-                return errorMessage 
+                return baseString 
                     + userDataDevider 
-                    + space 
-                    + additionalErrorMessage;
+                    + additionalString;
             }
         }
 
+        /// <summary>
+        /// Преобразует в массив username-ов
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
         string[] ParseToUsernames(string[] array)
         {
             string[] result = new string[array.Count()];

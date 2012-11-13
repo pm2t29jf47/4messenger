@@ -13,18 +13,18 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <TextBox Grid.Column ="0"
                  Name="RecipientsTextBox" 
                  VerticalScrollBarVisibility="Visible"
                  Margin="0,0,5,0"
-                 TextWrapping="WrapWithOverflow" GotMouseCapture="OnRecipientsTextBoxGotMouseCapture">
+                 TextWrapping="Wrap"
+                 TextChanged="OnRecipientsTextBoxTextChanged">
             <TextBox.Text> 
                 <Binding Path="RecipientsString" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                    <!--Binding.ValidationRules>
-                        <additional:RecipientsStringRule x:Name="RecipientsStringRule" ValidationStep="UpdatedValue"/>
-                    </Binding.ValidationRules-->                   
+                    <Binding.ValidationRules>
+                        <additional:RecipientsStringRule x:Name="RecipientsStringRule"/>
+                    </Binding.ValidationRules>                  
                 </Binding>
             </TextBox.Text>
         </TextBox>
@@ -35,19 +35,6 @@
                 <Image Source="Images\add.png"/>
                 <TextBlock Text="{x:Static res:Resources.AddRecipientLabel}"/>
             </StackPanel>
-        </Button>
-        <TextBox Grid.Column ="2"
-                 
-                 VerticalScrollBarVisibility="Visible"
-                 Margin="0,0,5,0"
-                 TextWrapping="WrapWithOverflow" GotMouseCapture="OnRecipientsTextBoxGotMouseCapture">
-            <TextBox.Text>
-                <Binding Path="RecipientsString" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                    <!--Binding.ValidationRules>
-                        <additional:RecipientsStringRule x:Name="RecipientsStringRule" ValidationStep="UpdatedValue"/>
-                    </Binding.ValidationRules-->
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
+        </Button>        
     </Grid>
 </UserControl>

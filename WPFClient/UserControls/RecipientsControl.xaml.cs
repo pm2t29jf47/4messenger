@@ -24,8 +24,8 @@ namespace WPFClient
     {
         public RecipientsControl()
         {
-            InitializeComponent();  
-         
+            InitializeComponent();            
+            DataContextChanged +=new DependencyPropertyChangedEventHandler(OnRecipientsControlDataContextChanged);         
         }
 
         RecipientsControlModel RecipientsControlModel
@@ -107,9 +107,15 @@ namespace WPFClient
             recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
         }
 
-        private void OnRecipientsTextBoxGotMouseCapture(object sender, MouseEventArgs e)
+        void OnRecipientsTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
+            int a = 10;
+            a++;
+        }
 
+        void OnRecipientsControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            RecipientsStringRule.AllEmployees = RecipientsControlModel.AllEmployees;
         }
 
         

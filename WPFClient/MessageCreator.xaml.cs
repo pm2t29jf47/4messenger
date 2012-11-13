@@ -47,6 +47,7 @@ namespace WPFClient
         /// <param name="e"></param>
         private void OnSendMessageButtonClick(object sender, RoutedEventArgs e)
         {
+            bool a = Validation.GetHasError(MessageControl);
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
             App.Proxy.SendMessage(mcm.Message);
             this.Close();

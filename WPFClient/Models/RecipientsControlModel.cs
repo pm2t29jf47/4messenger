@@ -88,25 +88,7 @@ namespace WPFClient.Models
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Результат проверки введенных пользователем данных
-        /// </summary>
-        public bool IsValid { get; private set; }
-
-        private string validationErrorMessage = string.Empty;
-        public string ValidationErrorMessage 
-        {
-            get
-            {
-                return validationErrorMessage;
-            }
-            set
-            {
-                validationErrorMessage = value;
-            }
-        }
+        }        
 
         /// <summary>
         /// Строка пользовательского ввода получателей
@@ -122,8 +104,7 @@ namespace WPFClient.Models
             {
                 if (string.Compare(recipientsString, value) == 0)
                     return;
-
-                IsValid = true;
+                
                 recipientsString = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString"));
 
@@ -139,10 +120,9 @@ namespace WPFClient.Models
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public string OnRecipientsStringChanged(string s)
-        {
-            ValidationErrorMessage = string.Empty;
-            return CheckRecipientsString(ref validationErrorMessage, s);            
+        public void RemakeRecipientsString()
+        {            
+            RecipientsString = CheckRecipientsString( RecipientsString);            
         } 
 
         /// <summary>
@@ -150,16 +130,11 @@ namespace WPFClient.Models
         /// </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        string CheckRecipientsString(ref string errorMessage, string recipientsString)
+        string CheckRecipientsString(string recipientsString)
         {
             RecipientsEmployees.Clear();
-            string[] recipientsStringArray = recipientsString.Split(userDataDevider);  
-            if (recipientsStringArray.Length == 0)     
-            {
-                errorMessage = joinToString(errorMessage, Properties.Resources.RecipientsStringNotBeEmpty);  
-                IsValid = false;
-            }            
-            return CheckRecipientsSubstrings(recipientsStringArray, ref errorMessage);
+            string[] recipientsStringArray = recipientsString.Split(userDataDevider);                     
+            return CheckRecipientsSubstrings(recipientsStringArray);
         }
 
         /// <summary>
@@ -168,15 +143,15 @@ namespace WPFClient.Models
         /// <param name="recipientsStringArray"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        string CheckRecipientsSubstrings(string[] recipientsSubstrings, ref string errorMessage)
-        {
+        string CheckRecipientsSubstrings(string[] recipientsSubstrings)
+        {           
             string result = string.Empty,
                 processedEmployee;
             string[] usernames = ParseToUsernames(recipientsSubstrings);
             foreach (var username in usernames)
             {
-                processedEmployee = ProcessUsername(username, ref errorMessage);
-                result = joinToString(result, processedEmployee);
+                processedEmployee = ProcessUsername(username);
+                result = JoinToString(result, processedEmployee);
             }
 
             return result;
@@ -188,8 +163,9 @@ namespace WPFClient.Models
         /// <param name="recipientString"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        string ProcessUsername(string username, ref string errorMessage)
-        {          
+        string ProcessUsername(string username)
+        {
+            string result = string.Empty;
             Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
             if (foundEmployee != null)
             {
@@ -197,28 +173,9 @@ namespace WPFClient.Models
                 {
                     RecipientsEmployees.Add(foundEmployee);
                     return EmployeeToString(foundEmployee);
-                }
-                else
-                {
-                    errorMessage = joinToString(
-                    errorMessage,
-                    Properties.Resources.UnuniqueUsername 
-                    + space 
-                    + username);
-                    IsValid = false;
-                    return username;
-                }
-            }
-            else
-            {
-                errorMessage = joinToString(
-                    errorMessage,
-                    username 
-                    + space 
-                    + Properties.Resources.NotFound);
-                IsValid = false;
-                return username;
-            }
+                }                
+            }           
+            return result;
         }
 
         /// <summary>
@@ -300,11 +257,32 @@ namespace WPFClient.Models
         /// <param name="errorMessage"></param>
         /// <param name="aditionalErrorMessage"></param>
         /// <returns></returns>
-        string joinToString(string baseString, string aditionalString)
+        string JoinToString(string baseString, string additionalString)
         {
-            return (baseString.Length == 0)
-                ? aditionalString
-                : (baseString + userDataDevider + aditionalString);
+            if(baseString.Length != 0)
+            {
+                if(additionalString.Length != 0)
+                {
+                    return baseString
+                        + userDataDevider
+                        + additionalString;
+                }
+                else
+                {
+                    return baseString;
+                }
+            }
+            else
+            {
+                if(additionalString.Length != 0)
+                {
+                    return additionalString;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }                    
         }
         
         /// <summary>

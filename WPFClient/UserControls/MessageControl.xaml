@@ -65,7 +65,8 @@
         <local:RecipientsControl x:Name="RecipientsControl" 
                                  Grid.Column="1" 
                                  Grid.Row="1"              
-                                 Style="{StaticResource RecipientsControlStyle}"/>          
+                                 Style="{StaticResource RecipientsControlStyle}">
+        </local:RecipientsControl>         
         <TextBox Name="DateTextbox" 
                  Grid.Column="1" 
                  Grid.Row="2"                  

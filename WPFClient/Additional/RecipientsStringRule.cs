@@ -11,8 +11,11 @@ using WPFClient.Models;
 namespace WPFClient.Additional
 {
     /// <summary>
-    /// Производит валидацию строки получателей в соответсвии с коллекцией всех сотрудников
+    /// Производит валидацию строки получателей в соответсвии с коллекцией всех сотрудников.
     /// </summary>
+    /// <remarks>
+    /// !!!Вызывается только при вводе ч-з GUI, не вызывается при программном изменении RecipientsString!!!
+    /// </remarks>
     class RecipientsStringRule : ValidationRule
     {
         public RecipientsStringRule()
@@ -50,7 +53,9 @@ namespace WPFClient.Additional
         /// </summary>
         /// <param name="recipientsStringArray"></param>
         /// <param name="errorMessage"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// Строка содержащяя все найденные ошибки, если строка пустая - ошибок нет!
+        /// </returns>
         string CheckRecipientString(string recipientsString)
         {
             string[] recipients = recipientsString.Split(userDataDevider);

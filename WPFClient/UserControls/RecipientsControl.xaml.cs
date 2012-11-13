@@ -109,8 +109,8 @@ namespace WPFClient
 
         void OnRecipientsTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            if(!Validation.GetHasError(RecipientsTextBox))
-                RecipientsControlModel.RecipientsString = RecipientsControlModel.OnRecipientsStringChanged(RecipientsControlModel.RecipientsString);           
+            if (!Validation.GetHasError(RecipientsTextBox))
+                RecipientsControlModel.RemakeRecipientsString();          
         }
 
         void OnRecipientsControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

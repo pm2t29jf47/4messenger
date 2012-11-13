@@ -7,7 +7,7 @@
     <Window.Resources>
         <Style x:Key="ButtonStyle">
             <Setter Property="Button.Margin" 
-                    Value="5"/>                   
+                    Value="5"/>    
         </Style>
     </Window.Resources>
     <Grid>

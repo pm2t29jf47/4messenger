@@ -7,7 +7,14 @@
              d:DesignHeight="106" d:DesignWidth="300"
              xmlns:res="clr-namespace:WPFClient.Properties"
              xmlns:additional="clr-namespace:WPFClient.Additional">
-    <Control.Resources>        
+    <Control.Resources>    
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Control.Resources>
     <Grid>        
         <Grid.ColumnDefinitions>
@@ -19,11 +26,16 @@
                  VerticalScrollBarVisibility="Visible"
                  Margin="0,0,5,0"
                  TextWrapping="Wrap"
-                 TextChanged="OnRecipientsTextBoxTextChanged">
+                 TextChanged="OnRecipientsTextBoxTextChanged"
+                 Validation.Error="OnRecipientsTextBoxError">
             <TextBox.Text> 
-                <Binding Path="RecipientsString" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                <Binding Path="RecipientsString" 
+                         Mode="TwoWay" 
+                         UpdateSourceTrigger="PropertyChanged" 
+                         NotifyOnValidationError="True">
                     <Binding.ValidationRules>
-                        <additional:RecipientsStringRule x:Name="RecipientsStringRule"/>
+                        <additional:RecipientsStringRule x:Name="RecipientsStringRule" 
+                                                         ValidationStep="UpdatedValue"/>
                     </Binding.ValidationRules>                  
                 </Binding>
             </TextBox.Text>

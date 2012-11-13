@@ -33,7 +33,8 @@ namespace WPFClient.Additional
         /// <returns></returns>
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
-            string resut = CheckRecipientString((string)value);
+            RecipientsControlModel  updatedModel = (RecipientsControlModel)((BindingExpression)value).DataItem;
+            string resut = CheckRecipientString(updatedModel.RecipientsString);
             if (string.Compare(resut,string.Empty) == 0)
             {
                 return new ValidationResult(true, null);
@@ -43,8 +44,7 @@ namespace WPFClient.Additional
                 return new ValidationResult(false, resut);
             }
         }
-
-
+        
         /// <summary>
         /// Проверяет список рассылки построчно
         /// </summary>

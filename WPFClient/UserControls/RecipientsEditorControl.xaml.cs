@@ -22,7 +22,6 @@ namespace WPFClient.UserControls
         public RecipientsEditorControl()
         {
             InitializeComponent();
-
         }
 
         RecipientsEditorControlModel RecipientsEditorControlModel

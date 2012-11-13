@@ -25,7 +25,7 @@ namespace WPFClient
         public RecipientsControl()
         {
             InitializeComponent();            
-            DataContextChanged +=new DependencyPropertyChangedEventHandler(OnRecipientsControlDataContextChanged);         
+            DataContextChanged +=new DependencyPropertyChangedEventHandler(OnRecipientsControlDataContextChanged);   
         }
 
         RecipientsControlModel RecipientsControlModel
@@ -97,7 +97,7 @@ namespace WPFClient
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void OnAddButtonClick(object sender, RoutedEventArgs e)
-        {           
+        {
             RecipientsEditor recipientsEditor = new RecipientsEditor();            
             recipientsEditor.DataContext = new RecipientsEditorModel()
             {
@@ -109,8 +109,8 @@ namespace WPFClient
 
         void OnRecipientsTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            int a = 10;
-            a++;
+            if(!Validation.GetHasError(RecipientsTextBox))
+                RecipientsControlModel.RecipientsString = RecipientsControlModel.OnRecipientsStringChanged(RecipientsControlModel.RecipientsString);           
         }
 
         void OnRecipientsControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -118,7 +118,15 @@ namespace WPFClient
             RecipientsStringRule.AllEmployees = RecipientsControlModel.AllEmployees;
         }
 
-        
+        private void OnRecipientsTextBoxError(object sender, ValidationErrorEventArgs e)
+        {
+            int a = 10;
+            a++;
+           // if(e.Action == ValidationErrorEventAction.Added)
+               // MessageBox.Show(e.Error.ErrorContent.ToString());
+        }
+
+   
     }
 }
 

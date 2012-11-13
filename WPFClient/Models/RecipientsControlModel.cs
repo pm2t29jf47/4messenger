@@ -120,6 +120,9 @@ namespace WPFClient.Models
             }
             set
             {
+                if (string.Compare(recipientsString, value) == 0)
+                    return;
+
                 IsValid = true;
                 recipientsString = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString"));
@@ -136,10 +139,10 @@ namespace WPFClient.Models
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public string OnRecipientsStringChanged()
+        public string OnRecipientsStringChanged(string s)
         {
             ValidationErrorMessage = string.Empty;
-            return CheckRecipientsString(ref validationErrorMessage, recipientsString);            
+            return CheckRecipientsString(ref validationErrorMessage, s);            
         } 
 
         /// <summary>
@@ -225,7 +228,7 @@ namespace WPFClient.Models
         /// <returns></returns>
         string ParseUsername(string recipientString)
         {
-            int begin = recipientString.IndexOf(leftUsernameStopper),////////////////////////////
+            int begin = recipientString.IndexOf(leftUsernameStopper),
                 end = recipientString.IndexOf(rightUsernameStopper);
 
             if (begin == -1 || end == -1)

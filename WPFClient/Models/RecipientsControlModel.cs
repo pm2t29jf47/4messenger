@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using Entities;
 using System.ComponentModel;
+using WPFClient.Additional;
 
 namespace WPFClient.Models
 {
-    public class RecipientsControlModel : INotifyPropertyChanged
+    public class RecipientsControlModel : INotifyPropertyChanged, IDataErrorInfo
     {
+        #region Common code
+
         char leftUsernameStopper = '<',
             rightUsernameStopper = '>',
             userDataDevider = ';',
@@ -28,6 +31,10 @@ namespace WPFClient.Models
         /// Все сотрудники
         /// </summary>
         List<Employee> allEmployees = new List<Employee>();
+
+        /// <summary>
+        /// Все сотрудники
+        /// </summary>
         public List<Employee> AllEmployees
         {
             get
@@ -49,6 +56,10 @@ namespace WPFClient.Models
         /// Оставшиеся сотрудники (AllEmployees - RecipientsEmployees)
         /// </summary>
         List<Employee> allResidueEmployees = new List<Employee>();
+
+        /// <summary>
+        /// Оставшиеся сотрудники (AllEmployees - RecipientsEmployees)
+        /// </summary>
         public List<Employee> AllResidueEmployees
         {
             get
@@ -68,6 +79,10 @@ namespace WPFClient.Models
         /// Получатели
         /// </summary>  
         List<Recipient> recipients = new List<Recipient>();
+
+        /// <summary>
+        /// Получатели
+        /// </summary>  
         public List<Recipient> Recipients
         {
             set
@@ -94,6 +109,10 @@ namespace WPFClient.Models
         /// Строка пользовательского ввода получателей
         /// </summary>
         string recipientsString = string.Empty;
+
+        /// <summary>
+        /// Строка пользовательского ввода получателей
+        /// </summary>
         public string RecipientsString
         {
             get
@@ -103,79 +122,52 @@ namespace WPFClient.Models
             set
             {
                 if (string.Compare(recipientsString, value) == 0)
-                    return;
-                
+                    return;                
                 recipientsString = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString"));
-
-                                           
-                //App.Current.Dispatcher.BeginInvoke( new delegate = {
-                //OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString")) ; }, null
-                //);             
+                OnPropertyChanged(new PropertyChangedEventArgs("RecipientsString"));             
             }
         }
 
         /// <summary>
-        /// Обработчик события изменения RecipientsTextBox
+        /// автоматически сгенерированный код
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void RemakeRecipientsString()
-        {            
-            RecipientsString = CheckRecipientsString( RecipientsString);            
-        } 
-
-        /// <summary>
-        /// Производит проверку списка рассылки
-        /// </summary>
-        /// <param name="errorMessage"></param>
-        /// <returns></returns>
-        string CheckRecipientsString(string recipientsString)
+        public string Error
         {
-            RecipientsEmployees.Clear();
-            string[] recipientsStringArray = recipientsString.Split(userDataDevider);                     
-            return CheckRecipientsSubstrings(recipientsStringArray);
+            get { throw new NotImplementedException(); }
         }
 
         /// <summary>
-        /// Проверяет список рассылки построчно
+        /// Добавляет описание новой ошибки к строке ошибок!!!!!!!!!!!!!!!
         /// </summary>
-        /// <param name="recipientsStringArray"></param>
         /// <param name="errorMessage"></param>
+        /// <param name="aditionalErrorMessage"></param>
         /// <returns></returns>
-        string CheckRecipientsSubstrings(string[] recipientsSubstrings)
-        {           
-            string result = string.Empty,
-                processedEmployee;
-            string[] usernames = ParseToUsernames(recipientsSubstrings);
-            foreach (var username in usernames)
-            {
-                processedEmployee = ProcessUsername(username);
-                result = JoinToString(result, processedEmployee);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Обрабатывает одну строку из списка рассылки
-        /// </summary>
-        /// <param name="recipientString"></param>
-        /// <param name="errorMessage"></param>
-        /// <returns></returns>
-        string ProcessUsername(string username)
+        string JoinToString(string baseString, string additionalString)
         {
-            string result = string.Empty;
-            Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
-            if (foundEmployee != null)
+            if (baseString.Length != 0)
             {
-                if (!this.RecipientsEmployees.Contains(foundEmployee))
+                if (additionalString.Length != 0)
                 {
-                    RecipientsEmployees.Add(foundEmployee);
-                    return EmployeeToString(foundEmployee);
-                }                
-            }           
-            return result;
+                    return baseString
+                        + userDataDevider
+                        + additionalString;
+                }
+                else
+                {
+                    return baseString;
+                }
+            }
+            else
+            {
+                if (additionalString.Length != 0)
+                {
+                    return additionalString;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
         }
 
         /// <summary>
@@ -197,6 +189,91 @@ namespace WPFClient.Models
                 begin += 1;
                 return recipientString.Substring(begin, end - begin);
             }
+        }
+
+        /// <summary>
+        /// Преобразует в массив username-ов
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
+        string[] ParseToUsernames(string[] array)
+        {
+            string[] result = new string[array.Count()];
+            for (int i = 0; i < array.Count(); i++)
+                result[i] = ParseUsername(array[i]);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Обновляет строку адресатов
+        /// </summary>
+        /// <returns></returns>
+        public void AddEmployeesToRecipientsString(List<Employee> Employees)
+        {
+            string buf = EmployeesToString(Employees);
+            if ((RecipientsString.Length != 0) && (buf.Length != 0))
+                buf = userDataDevider + buf;
+            RecipientsString += buf;
+            UpdateRecipients();
+        }
+
+        /// <summary>
+        /// Заполнякт Recipients по коллекции RecipientsEmployees
+        /// </summary>
+        /// <remarks>
+        /// Необходимо обновлять !объект! recipients при каждом изменении коллекции RecipientsEmployees.
+        /// </remarks>
+        private void UpdateRecipients()
+        {
+            recipients.Clear();
+            foreach (var item in RecipientsEmployees)
+            {
+                recipients.Add(
+                    new Recipient(
+                        item.Username,
+                        null,
+                        false,
+                        false));
+            }
+        }
+
+        #endregion
+
+        #region Update recipients defenition
+
+        /// <summary>
+        /// Обработчик события изменения RecipientsTextBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void UpdateRecipientsDefenitionInRecipientsString()
+        {
+            string[] recipientsSubStrings = recipientsString.Split(userDataDevider);              
+            string result = string.Empty,
+                fullRecipientDefenition;
+            string[] usernames = ParseToUsernames(recipientsSubStrings);
+            foreach (var item in usernames)
+            {
+                fullRecipientDefenition = ProcessUsername(item);
+                result = JoinToString(result, fullRecipientDefenition);
+            }
+            RecipientsString = result;
+        }
+
+        /// <summary>
+        /// Обрабатывает одну строку из списка рассылки
+        /// </summary>
+        /// <param name="recipientString"></param>
+        /// <param name="errorMessage"></param>
+        /// <returns></returns>
+        string ProcessUsername(string username)
+        {
+            Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
+            if (foundEmployee != null)                  
+                return EmployeeToString(foundEmployee);                             
+            
+            return username;
         }
 
         /// <summary>
@@ -237,84 +314,137 @@ namespace WPFClient.Models
                 result = result.Substring(0, result.Length - 1);
             }
             return result;
-        }
-    
-        /// <summary>
-        /// Обновляет строку адресатов
-        /// </summary>
-        /// <returns></returns>
-        public void AddEmployeesToRecipientsString(List<Employee> Employees)
-        {
-            string buf = EmployeesToString(Employees);
-            if ((RecipientsString.Length != 0) && (buf.Length != 0))
-                buf = userDataDevider + buf;
-            RecipientsString += buf;
-        }
+        }      
 
-        /// <summary>
-        /// Добавляет описание новой ошибки к строке ошибок
-        /// </summary>
-        /// <param name="errorMessage"></param>
-        /// <param name="aditionalErrorMessage"></param>
-        /// <returns></returns>
-        string JoinToString(string baseString, string additionalString)
-        {
-            if(baseString.Length != 0)
-            {
-                if(additionalString.Length != 0)
-                {
-                    return baseString
-                        + userDataDevider
-                        + additionalString;
-                }
-                else
-                {
-                    return baseString;
-                }
-            }
-            else
-            {
-                if(additionalString.Length != 0)
-                {
-                    return additionalString;
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }                    
-        }
-        
-        /// <summary>
-        /// Заполнякт Recipients по коллекции RecipientsEmployees
-        /// </summary>
-        public void UpdateRecipients()
-        {
-            recipients.Clear();
-            foreach (var item in RecipientsEmployees)
-            {
-                recipients.Add(
-                    new Recipient(
-                        item.Username,
-                        null,
-                        false,
-                        false));
-            }
-        }
-
-        /// <summary>
-        /// Преобразует в массив username-ов
-        /// </summary>
-        /// <param name="array"></param>
-        /// <returns></returns>
-        string[] ParseToUsernames(string[] array)
-        {
-            string[] result = new string[array.Count()];
-            for (int i = 0; i < array.Count(); i++)
-                result[i] = ParseUsername(array[i]);
-
-            return result;
-        }
+        #endregion
      
+        #region RecipientsString validation
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        public string this[string property]
+        {
+            get
+            {
+                string msg = null;
+                if (string.Compare(property, "RecipientsString") == 0)
+                {
+                    string result = CheckRecipientString(RecipientsString);
+                    if (string.Compare(result, string.Empty) != 0)
+                        msg = result;               
+                }
+                else
+                {
+                    throw new ArgumentException("Unrecognized property: " + property);
+                }
+                return msg;            
+            }
+        }      
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="recipientsString"></param>
+        /// <returns></returns>
+        string CheckRecipientString(string recipientsString)
+        {
+            RecipientsEmployees.Clear();
+            string[] recipients = recipientsString.Split(userDataDevider);
+            string errorMessage = string.Empty;
+            if ((recipients.Length == 1)
+                && (string.Compare(recipients[0], string.Empty) == 0))
+            {
+                return Properties.Resources.RecipientsStringNotBeEmpty;
+            }
+            string[] usernames = ParseToUsernames(recipients);          
+            return ProcessUsernames(usernames);
+        }
+
+        /// <summary>
+        /// Обрабатывает одну строку из списка рассылки
+        /// </summary>
+        /// <param name="recipientString"></param>
+        /// <param name="errorMessage"></param>
+        /// <returns></returns>
+        string ProcessUsernames(string[] usernames)
+        {
+            string errorMessage = string.Empty;
+            string checkUniquenessUsenamesErrorMessage = CheckUniquenessUsenames(usernames);
+            string checkUsernameExistenceErrorMessage = CheckUsernameExistence(usernames);
+            errorMessage = JoinToString(errorMessage, checkUniquenessUsenamesErrorMessage);
+            errorMessage = JoinToString(errorMessage, checkUsernameExistenceErrorMessage);
+            return errorMessage;
+        }  
+
+        /// <summary>
+        /// Проверяет массив username-ов на уникальность
+        /// </summary>
+        /// <param name="usernames"></param>
+        /// <returns>
+        /// Возвращает строку содержащую ошибки проверки
+        /// </returns>
+        string CheckUniquenessUsenames(string[] usernames)
+        {
+            string errorMessage = string.Empty;
+            if(usernames != null)
+            {
+                List<string> buf = new List<string>();
+                foreach(string item in usernames)
+                {
+                    if (buf.Contains(item, new CustomStringComparer()))
+                    {
+                        string msg = Properties.Resources.UnuniqueUsername
+                            + space
+                            + item;
+
+                        errorMessage = JoinToString(errorMessage, msg);
+                    }
+                    else
+                    {
+                        buf.Add(item);
+                    }
+                }
+            }
+            return errorMessage;
+        }
+
+        /// <summary>
+        /// Проверяет существование  пользователя по его username
+        /// </summary>
+        /// <param name="usernames"></param>
+        /// <returns>
+        /// Возвращает строку содержащую ошибки проверки
+        /// </returns>
+        string CheckUsernameExistence(string[] usernames)
+        {
+            string errorMessage = string.Empty;
+            if (usernames != null)
+            {
+                string[] distinctUsernames = usernames.Distinct(new CustomStringComparer()).ToArray();
+                foreach (var item in distinctUsernames)
+                {
+                    string msg;
+                    Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, item) == 0));
+                    if (foundEmployee == null)
+                    {
+                        msg = item
+                            + space
+                            + Properties.Resources.NotFound;
+                    }
+                    else
+                    {
+                        RecipientsEmployees.Add(foundEmployee);
+                        msg = string.Empty;
+                    }
+                    errorMessage = JoinToString(errorMessage, msg);
+                }
+            }
+            return errorMessage;
+        }
+         
+        #endregion        
     }
 }

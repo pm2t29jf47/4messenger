@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DataSourceLayer;
 using DBService;
+using WPFClient.Additional;
 
 namespace TestProject1
 {
@@ -14,10 +15,22 @@ namespace TestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            string left = "<", right = ">";
-            string a = "Иван Иванов <Ivan>";
-            int start = a.IndexOf(left[0]);
-            int end = a.IndexOf(right[0]);
+            string[] a = new string[5] { "aaa", "sss", "ddd", "fff", "aaa" };
+            List<string> al = new List<string>();
+            string msg = string.Empty;
+            foreach (var item in a)
+            {
+                if(al.Contains(item, new CustomStringComparer()))
+                {
+                    msg += item + ")";
+                }
+                else
+                {
+                    al.Add(item);
+                }
+            }
+            int v = 2;
+            
  
     
  

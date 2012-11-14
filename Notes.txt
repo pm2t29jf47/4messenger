@@ -2,6 +2,7 @@
 - SqlMembershipProvider
 
 !!!!
+- case ins
 - обработка исключений
 - переделать тулбар под шаблоны
 - Dispatcher

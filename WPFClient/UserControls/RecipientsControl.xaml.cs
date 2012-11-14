@@ -24,8 +24,7 @@ namespace WPFClient
     {
         public RecipientsControl()
         {
-            InitializeComponent();            
-            DataContextChanged +=new DependencyPropertyChangedEventHandler(OnRecipientsControlDataContextChanged);   
+            InitializeComponent();             
         }
 
         RecipientsControlModel RecipientsControlModel
@@ -48,6 +47,10 @@ namespace WPFClient
         /// Определяет вариант отображения контрола
         /// </summary>
         state controlState;
+
+        /// <summary>
+        /// Определяет вариант отображения контрола
+        /// </summary>
         public state ControlState
         {
             get
@@ -70,8 +73,7 @@ namespace WPFClient
         {
             RecipientsEditor recipientsEditor = (RecipientsEditor)sender;
             RecipientsEditorModel rem = (RecipientsEditorModel)recipientsEditor.DataContext;
-            RecipientsControlModel.AddEmployeesToRecipientsString(rem.RecipientsEmployees);
-            RecipientsControlModel.UpdateRecipients();         
+            RecipientsControlModel.AddEmployeesToRecipientsString(rem.RecipientsEmployees);       
         }       
         
         /// <summary>
@@ -107,23 +109,9 @@ namespace WPFClient
             recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
         }
 
-        void OnRecipientsTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        private void OnRecipientsTextBoxLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (!Validation.GetHasError(RecipientsTextBox))
-                RecipientsControlModel.RemakeRecipientsString();          
-        }
-
-        void OnRecipientsControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            RecipientsStringRule.AllEmployees = RecipientsControlModel.AllEmployees;
-        }
-
-        private void OnRecipientsTextBoxError(object sender, ValidationErrorEventArgs e)
-        {
-            int a = 10;
-            a++;
-           // if(e.Action == ValidationErrorEventAction.Added)
-               // MessageBox.Show(e.Error.ErrorContent.ToString());
+            RecipientsControlModel.UpdateRecipientsDefenitionInRecipientsString();
         }
 
    

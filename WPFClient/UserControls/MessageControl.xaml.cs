@@ -24,9 +24,12 @@ namespace WPFClient.UserControls
         public MessageControl()
         {     
             InitializeComponent();   
-            DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageControlDataContextChanged);           
+            DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageControlDataContextChanged);
         }
 
+        /// <summary>
+        /// Объектная модель
+        /// </summary>
         private MessageControlModel MessageControlModel
         {
             get
@@ -38,6 +41,11 @@ namespace WPFClient.UserControls
             }
         }
 
+        /// <summary>
+        /// Заполняет DataContext RecipientsControl-а
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnMessageControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             RecipientsControl.DataContext = new RecipientsControlModel()
@@ -56,6 +64,10 @@ namespace WPFClient.UserControls
         /// Определяет вариант отображения контрола
         /// </summary>
         private state controlState;
+
+        /// <summary>
+        /// Определяет вариант отображения контрола
+        /// </summary>
         public state ControlState
         {
             get
@@ -92,5 +104,7 @@ namespace WPFClient.UserControls
                 this.MessageContentTextBox.IsReadOnly = false;
             }
         }
+       
+       
     }
 }

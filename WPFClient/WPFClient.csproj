@@ -59,7 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Additional\RecipientsStringRule.cs" />
+    <Compile Include="Additional\CustomStringComparer.cs" />
     <Compile Include="Models\MessageControlModel.cs" />
     <Compile Include="MessageCreator.xaml.cs">
       <DependentUpon>MessageCreator.xaml</DependentUpon>

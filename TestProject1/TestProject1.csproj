@@ -66,6 +66,10 @@
       <Project>{AC3D427A-B2F7-4973-B975-6BCF522358B3}</Project>
       <Name>Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFClient\WPFClient.csproj">
+      <Project>{A9BC93EE-7CB4-4CD6-AC9D-6155624703E5}</Project>
+      <Name>WPFClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

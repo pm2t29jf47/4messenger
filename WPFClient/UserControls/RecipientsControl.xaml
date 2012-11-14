@@ -10,8 +10,10 @@
     <Control.Resources>    
         <Style TargetType="{x:Type TextBox}">
             <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"></Setter>
+                <Trigger Property="Validation.HasError" 
+                         Value="true">
+                    <Setter Property="ToolTip" 
+                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"></Setter>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -26,16 +28,14 @@
                  VerticalScrollBarVisibility="Visible"
                  Margin="0,0,5,0"
                  TextWrapping="Wrap"
-                 TextChanged="OnRecipientsTextBoxTextChanged"
-                 Validation.Error="OnRecipientsTextBoxError">
+                 LostKeyboardFocus="OnRecipientsTextBoxLostKeyboardFocus">
             <TextBox.Text> 
                 <Binding Path="RecipientsString" 
                          Mode="TwoWay" 
                          UpdateSourceTrigger="PropertyChanged" 
                          NotifyOnValidationError="True">
-                    <Binding.ValidationRules>
-                        <additional:RecipientsStringRule x:Name="RecipientsStringRule" 
-                                                         ValidationStep="UpdatedValue"/>
+                    <Binding.ValidationRules>                       
+                        <DataErrorValidationRule></DataErrorValidationRule>
                     </Binding.ValidationRules>                  
                 </Binding>
             </TextBox.Text>

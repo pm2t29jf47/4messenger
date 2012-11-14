@@ -24,7 +24,10 @@ namespace WPFClient
     {
         public RecipientsControl()
         {
-            InitializeComponent();             
+            InitializeComponent();   
+            Binding bind = new Binding();
+            bind.Path = new PropertyPath("IsValid");
+            SetBinding(IsValidProperty, bind);
         }
 
         RecipientsControlModel RecipientsControlModel
@@ -114,7 +117,17 @@ namespace WPFClient
             RecipientsControlModel.UpdateRecipientsDefenitionInRecipientsString();
         }
 
-   
+        public bool IsValid
+        {
+            get { return (bool)GetValue(IsValidProperty); }
+            set { SetValue(IsValidProperty, value); }
+
+        }
+
+        public static readonly DependencyProperty IsValidProperty =
+            DependencyProperty.Register("IsValid", typeof(bool),
+            typeof(RecipientsControl), new UIPropertyMetadata(false),
+            null);      
     }
 }
 

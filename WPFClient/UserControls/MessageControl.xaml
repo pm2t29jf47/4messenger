@@ -9,13 +9,7 @@
     <UserControl.Resources>
         <Style x:Key="MarginStyle">
             <Setter Property="Control.Margin" Value="5"/>
-        </Style>
-        <!--Style x:Key="MarginStyle">
-            <Style.Triggers>
-                <Trigger pro
-            </Style.Triggers>
-        </Style-->
-        <!---->
+        </Style>       
         <Style x:Key="OneRowTextBoxStyle" BasedOn="{StaticResource MarginStyle}">
             <Setter Property="Control.Height" Value="23" />
         </Style>
@@ -44,8 +38,8 @@
                Style="{StaticResource MarginStyle}" 
                Content="{x:Static res:Resources.SenderLabel}"/>
         <Label Name="RecipientLable" 
-               Grid.Row="1"                
-               Margin="5,4,5,6" 
+               Grid.Row="1"           
+               Style="{StaticResource RecipientsLabelStyle}"
                Content="{x:Static res:Resources.RecipientsLabel}"/>
         <Label Name="DateLable" 
                Grid.Column="0" 
@@ -92,7 +86,7 @@
                  VerticalScrollBarVisibility="Visible"                  
                  TextWrapping="Wrap" 
                  Text="{Binding Path=Message.Content, Mode=TwoWay}"
-                 Style="{StaticResource MarginStyle}"/>
+                 Style="{StaticResource MarginStyle}" TextChanged="MessageContentTextBox_TextChanged" />
     </Grid>    
 </UserControl>
 

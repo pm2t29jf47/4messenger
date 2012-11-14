@@ -7,7 +7,8 @@
     <Window.Resources>
         <Style x:Key="ButtonStyle">
             <Setter Property="Button.Margin" 
-                    Value="5"/>    
+                    Value="5"/> 
+
         </Style>
     </Window.Resources>
     <Grid>
@@ -21,7 +22,8 @@
                 Grid.Row="1" 
                 HorizontalAlignment="Right"
                 Click="OnSendMessageButtonClick" 
-                Style="{StaticResource ButtonStyle}">
+                Style="{StaticResource ButtonStyle}"
+                IsEnabled="{Binding ElementName=MessageControl, Path=IsValid}">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Images\mail_delete.png"></Image>
                 <Label Content="{x:Static res:Resources.SendMessageLabel}"></Label>

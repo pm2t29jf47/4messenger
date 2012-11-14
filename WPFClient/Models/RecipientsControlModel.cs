@@ -17,6 +17,24 @@ namespace WPFClient.Models
             userDataDevider = ';',
             space = ' ';
 
+        bool isValid = false;
+
+        public bool IsValid
+        {
+            get
+            {
+                return isValid;
+            }
+            set
+            {
+                if (isValid == value)
+                    return;
+
+                isValid = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("IsValid"));
+            }
+        }
+
         /// <summary>
         /// Событие изменения строки с получателями
         /// </summary>
@@ -332,9 +350,13 @@ namespace WPFClient.Models
                 string msg = null;
                 if (string.Compare(property, "RecipientsString") == 0)
                 {
+                    IsValid = true;
                     string result = CheckRecipientString(RecipientsString);
                     if (string.Compare(result, string.Empty) != 0)
-                        msg = result;               
+                    {
+                        msg = result;
+                        IsValid = false;
+                    }
                 }
                 else
                 {

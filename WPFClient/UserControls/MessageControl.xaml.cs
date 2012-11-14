@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Entities;
 using WPFClient.Models;
+using System.ComponentModel;
 
 namespace WPFClient.UserControls
 {
@@ -25,6 +26,10 @@ namespace WPFClient.UserControls
         {     
             InitializeComponent();   
             DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageControlDataContextChanged);
+            Binding bind = new Binding();
+            bind.ElementName = "RecipientsControl";
+            bind.Path = new PropertyPath("IsValid");
+            SetBinding(IsValidProperty, bind); 
         }
 
         /// <summary>
@@ -42,6 +47,20 @@ namespace WPFClient.UserControls
         }
 
         /// <summary>
+        /// Валидность данных MessageControl-a
+        /// </summary>
+        public bool IsValid
+        {
+            get { return (bool)GetValue(IsValidProperty); }
+            set { SetValue(IsValidProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsValidProperty =
+            DependencyProperty.Register("IsValid", typeof(bool),
+            typeof(MessageControl), new UIPropertyMetadata(false), null);
+
+
+        /// <summary>
         /// Заполняет DataContext RecipientsControl-а
         /// </summary>
         /// <param name="sender"></param>
@@ -52,9 +71,10 @@ namespace WPFClient.UserControls
             {
                 AllEmployees = MessageControlModel.AllEmployees,
                 Recipients = MessageControlModel.Message.Recipients
-            };    
+            };       
         }
 
+        
         /// <summary>
         /// Два состояния отображения контрола
         /// </summary>
@@ -104,7 +124,10 @@ namespace WPFClient.UserControls
                 this.MessageContentTextBox.IsReadOnly = false;
             }
         }
-       
-       
+
+        private void MessageContentTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string b = "Debug";
+        }
     }
 }

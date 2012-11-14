@@ -51,6 +51,9 @@ namespace WPFClient
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
             App.Proxy.SendMessage(mcm.Message);
             this.Close();
-        }     
+        }
+
+
+       
     }
 }

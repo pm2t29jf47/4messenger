@@ -117,4 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddRecipientLabel" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="AllEmployees" xml:space="preserve">
+    <value>Все сотрудники</value>
+  </data>
+  <data name="ChoiceResipientTitle" xml:space="preserve">
+    <value>Выбрать сотрудника</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Текст</value>
+  </data>
+  <data name="DateColumn" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="DateLabel" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="DeletedFolderLabel" xml:space="preserve">
+    <value>Удаленные</value>
+  </data>
+  <data name="DeleteMessageLabel" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="InboxFolderLabel" xml:space="preserve">
+    <value>Входящие</value>
+  </data>
+  <data name="Me" xml:space="preserve">
+    <value>я:</value>
+  </data>
+  <data name="MessageCreatorTitle" xml:space="preserve">
+    <value>Создание сообщения</value>
+  </data>
+  <data name="NewMessageLabel" xml:space="preserve">
+    <value>Новое сообщение</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>получатель не существует</value>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="Re" xml:space="preserve">
+    <value>re:</value>
+  </data>
+  <data name="RecipientsLabel" xml:space="preserve">
+    <value>Получатели</value>
+  </data>
+  <data name="RecipientsStringNotBeEmpty" xml:space="preserve">
+    <value>Строка получателей не может быть пустой</value>
+  </data>
+  <data name="ReplyMessageLabel" xml:space="preserve">
+    <value>Ответить</value>
+  </data>
+  <data name="SelectedEmployees" xml:space="preserve">
+    <value>Выбранные сотрудники</value>
+  </data>
+  <data name="SenderLabel" xml:space="preserve">
+    <value>Отправитель</value>
+  </data>
+  <data name="SenderUsernameColumn" xml:space="preserve">
+    <value>Отправитель</value>
+  </data>
+  <data name="SendMessageLabel" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="SentFolderLabel" xml:space="preserve">
+    <value>Отправленные</value>
+  </data>
+  <data name="TitleColumn" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="TitleLabel" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="UnuniqueUsername" xml:space="preserve">
+    <value>Получатель уже был введен:</value>
+  </data>
+  <data name="UsernameLabel" xml:space="preserve">
+    <value>Пользователь</value>
+  </data>
 </root>

@@ -87,7 +87,8 @@ namespace WPFClient
         {
             RecipientsEditor recipientsEditor = (RecipientsEditor)sender;
             RecipientsEditorModel rem = (RecipientsEditorModel)recipientsEditor.DataContext;
-            RecipientsControlModel.AddEmployeesToRecipientsString(rem.RecipientsEmployees);       
+            RecipientsControlModel.UpdateRecipientsString(rem.RecipientsEmployees);
+            RecipientsControlModel.UpdateRecipientsByRecipientsEmployees();
         }       
         
         /// <summary>
@@ -117,7 +118,8 @@ namespace WPFClient
             RecipientsEditor recipientsEditor = new RecipientsEditor();            
             recipientsEditor.DataContext = new RecipientsEditorModel()
             {
-                AllEmployees = RecipientsControlModel.AllResidueEmployees
+                AllEmployees = RecipientsControlModel.AllResidueEmployees,
+                RecipientsEmployees = RecipientsControlModel.RecipientsEmployees
             };
             recipientsEditor.ShowDialog();
             recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);

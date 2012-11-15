@@ -13,6 +13,10 @@ namespace WPFClient.Models
         /// Коллекция содержащая всех возможных для выбора сотрудников
         /// </summary>
         ObservableCollection<Employee> allEmployees = new ObservableCollection<Employee>();
+
+        /// <summary>
+        /// Коллекция содержащая всех возможных для выбора сотрудников
+        /// </summary>
         public ObservableCollection<Employee> AllEmployees 
         {
             get
@@ -21,14 +25,26 @@ namespace WPFClient.Models
             }
             set
             {
-                allEmployees = value;
+                if (allEmployees == value)
+                    return;
+                 
+                allEmployees = value;                
             }
         }
+
+        /// <summary>
+        /// Начальное состояние коллекции содержащей всех возможных для выбора сотрудников
+        /// </summary>
+        ObservableCollection<Employee> savedAllEmployees = new ObservableCollection<Employee>();
     
         /// <summary>
         /// Коллекция содержащая выбраных пользователем сотрудников
         /// </summary>
         ObservableCollection<Employee> selectedEmployees = new ObservableCollection<Employee>();
+
+        /// <summary>
+        /// Коллекция содержащая выбраных пользователем сотрудников
+        /// </summary>
         public ObservableCollection<Employee> SelectedEmployees 
         {
             get
@@ -37,8 +53,38 @@ namespace WPFClient.Models
             }
             set
             {
+                if (selectedEmployees == value)
+                    return;
+
                 selectedEmployees = value;
             }
+        }
+
+        /// <summary>
+        /// Начальное состояние коллекции содержащей выбраных пользователем сотрудников
+        /// </summary>
+        ObservableCollection<Employee> savedSelectedEmployees = new ObservableCollection<Employee>();
+
+        public void SaveState()
+        {
+            savedSelectedEmployees.Clear();
+            foreach (var item in selectedEmployees)
+                savedSelectedEmployees.Add(item);
+
+            savedAllEmployees.Clear();
+            foreach (var item in allEmployees)
+                savedAllEmployees.Add(item);
+        }
+
+        public void RestoreSavedState()
+        {
+            selectedEmployees.Clear();
+            foreach (var item in savedSelectedEmployees)
+                selectedEmployees.Add(item);
+
+            allEmployees.Clear();
+            foreach (var item in savedAllEmployees)
+                allEmployees.Add(item);
         }
     }
 }

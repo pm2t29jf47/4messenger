@@ -54,8 +54,11 @@ namespace WPFClient
             RecipientsEditorControlModel recm = new RecipientsEditorControlModel();           
             foreach (var item in RecipientsEditorModel.AllEmployees)
                 recm.AllEmployees.Add(item);
+
+            foreach (var item in RecipientsEditorModel.RecipientsEmployees)
+                recm.SelectedEmployees.Add(item);
           
             RecipientsEditorControl.DataContext = recm;
         }
-            }
+    }
 }

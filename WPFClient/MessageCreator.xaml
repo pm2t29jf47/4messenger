@@ -5,13 +5,21 @@
         xmlns:usercontrols="clr-namespace:WPFClient.UserControls"
         xmlns:res="clr-namespace:WPFClient.Properties">
     <Window.Resources>
+        
         <Style x:Key="ButtonStyle">
             <Setter Property="Button.Margin" 
-                    Value="5"/> 
-
+                    Value="5"/>
         </Style>
+        
+        <!--Расцветка всего окна-->
+        <Style x:Key="MainGridStyle">
+            <Setter Property="Control.Background" 
+                    Value="LightGray">
+            </Setter>
+        </Style>
+        
     </Window.Resources>
-    <Grid>
+    <Grid Style="{StaticResource MainGridStyle}">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>

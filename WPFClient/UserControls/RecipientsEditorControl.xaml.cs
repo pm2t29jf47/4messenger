@@ -22,6 +22,12 @@ namespace WPFClient.UserControls
         public RecipientsEditorControl()
         {
             InitializeComponent();
+            DataContextChanged += new DependencyPropertyChangedEventHandler(OnRecipientsEditorControlDataContextChanged);
+        }
+
+        void OnRecipientsEditorControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            RecipientsEditorControlModel.SaveState();
         }
 
         /// <summary>
@@ -55,9 +61,10 @@ namespace WPFClient.UserControls
                 RecipientsEditorControlModel.AllEmployees.Remove(item);
             }
             AllEmployeesListBox.SelectedIndex = nextSelection;
-            AddToSelectedButton.IsEnabled = (nextSelection < AllEmployeesListBox.Items.Count) ? true : false;
-            AllEmployeesListBox.Focus();
-
+            if (nextSelection < AllEmployeesListBox.Items.Count)          
+                AllEmployeesListBox.Focus();          
+            else           
+                AddToSelectedButton.IsEnabled = false;           
         }
 
         /// <summary>
@@ -77,8 +84,10 @@ namespace WPFClient.UserControls
                 RecipientsEditorControlModel.SelectedEmployees.Remove(item);
             }
             SelectedEmployeesListBox.SelectedIndex = nextSelection;
-            RemoveFromSelectedButton.IsEnabled = (nextSelection < SelectedEmployeesListBox.Items.Count) ? true : false;
-            AllEmployeesListBox.Focus();
+            if (nextSelection < SelectedEmployeesListBox.Items.Count)
+                SelectedEmployeesListBox.Focus();            
+            else
+                RemoveFromSelectedButton.IsEnabled = false;
         }
 
         /// <summary>
@@ -121,6 +130,18 @@ namespace WPFClient.UserControls
         private void OnSelectedEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             SelectedEmployeesListBox.SelectAll();
+        }
+
+        private void OnCancelButtonClick(object sender, RoutedEventArgs e)
+        {
+            RecipientsEditorControlModel.RestoreSavedState();
+            AddToSelectedButton.IsEnabled = false;
+            RemoveFromSelectedButton.IsEnabled = false;
+        }
+
+        private void OnOkButtonClick(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

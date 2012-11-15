@@ -61,6 +61,9 @@ namespace WPFClient.Models
             }
             set
             {
+                if (allEmployees == value)
+                    return;
+
                 allEmployees = value;
             }
         }
@@ -68,7 +71,42 @@ namespace WPFClient.Models
         /// <summary>
         /// Сотрудники получатели
         /// </summary>
-        List<Employee> RecipientsEmployees = new List<Employee>();
+        List<Employee> recipientsEmployees = new List<Employee>();
+
+        /// <summary>
+        /// Сотрудники получатели
+        /// </summary>
+        public List<Employee> RecipientsEmployees
+        {
+            get
+            {
+                return recipientsEmployees;
+            }
+            set
+            {
+                if (recipientsEmployees == value)
+                    return;
+
+                recipientsEmployees = value;
+            }
+        }
+
+        string unrecognizedUsernames = string.Empty;
+
+        public string UnrecognizedUsernames
+        {
+            get
+            {
+                return unrecognizedUsernames;
+            }
+            set
+            {
+                if (unrecognizedUsernames == value)
+                    return;
+
+                unrecognizedUsernames = value;
+            }
+        }
 
         /// <summary>
         /// Оставшиеся сотрудники (AllEmployees - RecipientsEmployees)
@@ -227,13 +265,10 @@ namespace WPFClient.Models
         /// Обновляет строку адресатов
         /// </summary>
         /// <returns></returns>
-        public void AddEmployeesToRecipientsString(List<Employee> Employees)
+        public void UpdateRecipientsString(List<Employee> Employees)
         {
             string buf = EmployeesToString(Employees);
-            if ((RecipientsString.Length != 0) && (buf.Length != 0))
-                buf = userDataDevider + buf;
-            RecipientsString += buf;
-            UpdateRecipients();
+            RecipientsString = JoinToString(UnrecognizedUsernames, buf);          
         }
 
         /// <summary>
@@ -242,7 +277,7 @@ namespace WPFClient.Models
         /// <remarks>
         /// Необходимо обновлять !объект! recipients при каждом изменении коллекции RecipientsEmployees.
         /// </remarks>
-        private void UpdateRecipients()
+        public void UpdateRecipientsByRecipientsEmployees()
         {
             recipients.Clear();
             foreach (var item in RecipientsEmployees)
@@ -374,6 +409,7 @@ namespace WPFClient.Models
         string CheckRecipientString(string recipientsString)
         {
             RecipientsEmployees.Clear();
+            UnrecognizedUsernames = string.Empty;
             string[] recipients = recipientsString.Split(userDataDevider);
             string errorMessage = string.Empty;
             if ((recipients.Length == 1)
@@ -443,28 +479,49 @@ namespace WPFClient.Models
         string CheckUsernameExistence(string[] usernames)
         {
             string errorMessage = string.Empty;
-            if (usernames != null)
-            {
-                string[] distinctUsernames = usernames.Distinct(new CustomStringComparer()).ToArray();
-                foreach (var item in distinctUsernames)
+            if (usernames != null)            
+            {               
+                foreach (var item in usernames)
                 {
-                    string msg;
+                    string msg = string.Empty;
                     Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, item) == 0));
-                    if (foundEmployee == null)
-                    {
-                        msg = item
-                            + space
-                            + Properties.Resources.NotFound;
-                    }
+                    if (foundEmployee == null)                    
+                        msg = AddUsernameToUnrecognizedUsernames(item);                   
                     else
-                    {
-                        RecipientsEmployees.Add(foundEmployee);
-                        msg = string.Empty;
-                    }
+                        AddEmployeeToRecipientsEmployees(foundEmployee); 
+                    
                     errorMessage = JoinToString(errorMessage, msg);
                 }
             }
             return errorMessage;
+        }
+
+        /// <summary>
+        /// Добавляет пользователя в коллекцию RecipientsEmployees
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// Если пользователь уже есть в списке добавление произведено не будет
+        /// </remarks>
+        void AddEmployeeToRecipientsEmployees(Employee employee)
+        {
+            if (!RecipientsEmployees.Contains(employee))
+                RecipientsEmployees.Add(employee);   
+        }
+
+        /// <summary>
+        /// Добавляет username нераспознанного пользователя в строку нераспознанных пользователей
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns>
+        /// Текст ошибки
+        /// </returns>
+        string AddUsernameToUnrecognizedUsernames(string username)
+        {            
+            UnrecognizedUsernames = JoinToString(UnrecognizedUsernames, username);
+            return username
+                + space
+                + Properties.Resources.NotFound;
         }
          
         #endregion        

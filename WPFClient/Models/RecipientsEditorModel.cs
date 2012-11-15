@@ -20,6 +20,9 @@ namespace WPFClient.Models
             }
             set
             {
+                if (allEmployees == value)
+                    return;
+
                 allEmployees = value;
             }
         }
@@ -36,6 +39,9 @@ namespace WPFClient.Models
             }
             set
             {
+                if (recipientsEmployees == value)
+                    return;
+
                 recipientsEmployees = value;
             }
         }

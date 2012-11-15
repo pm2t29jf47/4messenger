@@ -25,6 +25,7 @@ namespace WPFClient
         public RecipientsEditor()
         {
             InitializeComponent();
+            this.Title = Properties.Resources.RecipientsList;
             DataContextChanged += new DependencyPropertyChangedEventHandler(OnRecipientsEditorDataContextChanged);
             this.Closing +=new CancelEventHandler(OnRecipientsEditorClosing);
         }
@@ -56,5 +57,5 @@ namespace WPFClient
           
             RecipientsEditorControl.DataContext = recm;
         }
-    }
+            }
 }

@@ -198,4 +198,16 @@
   <data name="UnuniqueUsername" xml:space="preserve">
     <value>Ununique username:</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+  <data name="RecipientsList" xml:space="preserve">
+    <value>Recipients list editor</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="OkButton" xml:space="preserve">
+    <value>OK</value>
+  </data>
 </root>

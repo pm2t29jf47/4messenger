@@ -41,10 +41,14 @@ namespace WPFClient.UserControls
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void OnAddToSelectedButtonClick(object sender, RoutedEventArgs e)
-        {
-            Employee selectedItem = (Employee)AllEmployeesListBox.SelectedItem;
-            RecipientsEditorControlModel.SelectedEmployees.Add(selectedItem);
-            RecipientsEditorControlModel.AllEmployees.Remove(selectedItem);
+        {           
+            Employee[] selectedItems = new Employee[AllEmployeesListBox.SelectedItems.Count];
+            AllEmployeesListBox.SelectedItems.CopyTo(selectedItems, 0);
+            foreach (Employee item in selectedItems)
+            {
+                RecipientsEditorControlModel.SelectedEmployees.Add(item);
+                RecipientsEditorControlModel.AllEmployees.Remove(item);
+            }
             AddToSelectedButton.IsEnabled = false;
         }
 
@@ -55,10 +59,14 @@ namespace WPFClient.UserControls
         /// <param name="e"></param>
         void OnRemoveFromSelectedButtonClick(object sender, RoutedEventArgs e)
         {
-            Employee selectedItem = (Employee)SelectedEmployeesListBox.SelectedItem;
-            RecipientsEditorControlModel.SelectedEmployees.Remove(selectedItem);
-            RecipientsEditorControlModel.AllEmployees.Add(selectedItem);
-            RemoveFromSelectedButton.IsEnabled = false;
+            Employee[] selectedItems = new Employee[SelectedEmployeesListBox.SelectedItems.Count];
+            SelectedEmployeesListBox.SelectedItems.CopyTo(selectedItems, 0);
+            foreach (Employee item in selectedItems)
+            {               
+                RecipientsEditorControlModel.AllEmployees.Add(item);
+                RecipientsEditorControlModel.SelectedEmployees.Remove(item);
+            }
+            AddToSelectedButton.IsEnabled = false;
         }
 
         private void OnAllEmployeesListBoxIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -71,6 +79,16 @@ namespace WPFClient.UserControls
         {
             AddToSelectedButton.IsEnabled = false;
             RemoveFromSelectedButton.IsEnabled = true;
-        }       
+        }
+
+        private void OnAllEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            AllEmployeesListBox.SelectAll();     
+        }
+
+        private void OnSelectedEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            SelectedEmployeesListBox.SelectAll();
+        }
     }
 }

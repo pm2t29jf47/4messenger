@@ -43,6 +43,7 @@
         <Button Grid.Column="1" 
                 Grid.Row="2" 
                 Click="Button_Click"
-                Style="{StaticResource ButtonStyle}">Log In</Button>       
+                Style="{StaticResource ButtonStyle}"
+                Content="{x:Static res:Resources.Login}"></Button>       
     </Grid>
 </Window>

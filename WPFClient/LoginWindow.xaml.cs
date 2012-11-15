@@ -25,7 +25,9 @@ namespace WPFClient
     {
         public LoginWindow()
         {
+           
             InitializeComponent();
+            this.Title = Properties.Resources.Login;
             App.Username = "Ivan1";
             App.Password = "111";
             UsernameTexbox.Text = App.Username;

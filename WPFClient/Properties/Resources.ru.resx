@@ -198,4 +198,10 @@
   <data name="UsernameLabel" xml:space="preserve">
     <value>Пользователь</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="RecipientsList" xml:space="preserve">
+    <value>Редактирование списка получателей</value>
+  </data>
 </root>

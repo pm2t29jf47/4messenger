@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:res="clr-namespace:WPFClient.Properties"
              mc:Ignorable="d" 
-             d:DesignHeight="221" d:DesignWidth="533">
+             d:DesignHeight="260" d:DesignWidth="492">
 
     <Control.Resources>
         <Style x:Key="MarginStyle">
             <Setter Property="Control.Margin" 
                     Value="5"></Setter>
         </Style>
+        
         <!--Расцветка всего окна-->
         <Style x:Key="MainGridStyle">
             <Setter Property="Control.Background" 
@@ -27,11 +28,16 @@
             <Setter Property="Control.Margin" 
                     Value="2"></Setter>
         </Style> 
-        <Style x:Key="ButtonsStyle" 
+        <Style x:Key="AddRemoveButtonsStyle" 
                BasedOn="{StaticResource MarginStyle}">
             <Setter Property="Button.IsEnabled" 
                     Value="false"></Setter>
         </Style>
+
+        <Style x:Key="OKCancelButtonStyle" BasedOn="{StaticResource MarginStyle}">
+  
+        </Style>
+        
         <!--Стиль изображений на кнопке AddToSelected и его смена по состояниям-->
         <Style x:Key="AddToSelectedButtonImageStyle">
             <Style.Triggers>
@@ -47,6 +53,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        
         <!--Стиль изображений на кнопке RemoveFromSelected и его смена по состояниям-->
         <Style x:Key="RemoveFromSelectedButtonImageStyle">
             <Style.Triggers>
@@ -62,7 +69,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-    </Control.Resources>    
+    </Control.Resources>
 
     <Grid Style="{StaticResource MainGridStyle}">
         <Grid.ColumnDefinitions>
@@ -70,7 +77,11 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
         <!--Левая колонка-->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
@@ -84,8 +95,15 @@
                      Grid.Row="1" 
                      Style="{StaticResource ListBoxStyle}" 
                      ItemsSource="{Binding Path=AllEmployees }"
-                     IsKeyboardFocusWithinChanged="OnAllEmployeesListBoxIsKeyboardFocusWithinChanged">                           
-                <ListBox.ItemTemplate>  
+                     IsKeyboardFocusWithinChanged="OnAllEmployeesListBoxIsKeyboardFocusWithinChanged"
+                     SelectionMode="Extended">
+                <ListBox.CommandBindings>
+                    <CommandBinding Command="SelectAll" Executed="OnAllEmployeesSelectAllExecuted"></CommandBinding>
+                </ListBox.CommandBindings>
+                <ListBox.InputBindings>
+                    <KeyBinding Command="ApplicationCommands.SelectAll" Modifiers="Ctrl" Key="A"></KeyBinding>
+                </ListBox.InputBindings>
+                <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Style="{StaticResource ListBoxItemStyle}">
                             <TextBlock.Text>
@@ -100,7 +118,7 @@
                             </TextBlock.Text>
                         </TextBlock>
                     </DataTemplate>
-                </ListBox.ItemTemplate>                     
+                </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
 
@@ -111,17 +129,17 @@
                         HorizontalAlignment="Center">
                 <Button Name="AddToSelectedButton" 
                         Click="OnAddToSelectedButtonClick"
-                        Style="{StaticResource ButtonsStyle}">
-                    <Image Style="{StaticResource AddToSelectedButtonImageStyle}"></Image>                  
+                        Style="{StaticResource AddRemoveButtonsStyle}">
+                    <Image Style="{StaticResource AddToSelectedButtonImageStyle}"></Image>
                 </Button>
                 <Button Name="RemoveFromSelectedButton" 
                         Click="OnRemoveFromSelectedButtonClick" 
-                        Style="{StaticResource ButtonsStyle}">
+                        Style="{StaticResource AddRemoveButtonsStyle}">
                     <Image Style="{StaticResource RemoveFromSelectedButtonImageStyle}"></Image>
                 </Button>
             </StackPanel>
         </Grid>
-        
+
         <!--Правая колонка-->
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -135,7 +153,14 @@
                      Grid.Row="1" 
                      Style="{StaticResource ListBoxStyle}" 
                      ItemsSource="{Binding Path=SelectedEmployees }"
-                     IsKeyboardFocusWithinChanged="OnSelectedEmployeesListBoxIsKeyboardFocusWithinChanged">
+                     IsKeyboardFocusWithinChanged="OnSelectedEmployeesListBoxIsKeyboardFocusWithinChanged"
+                     SelectionMode="Extended">
+                <ListBox.CommandBindings>
+                    <CommandBinding Command="SelectAll" Executed="OnSelectedEmployeesSelectAllExecuted"></CommandBinding>
+                </ListBox.CommandBindings>
+                <ListBox.InputBindings>
+                    <KeyBinding Command="ApplicationCommands.SelectAll" Modifiers="Ctrl" Key="A"></KeyBinding>
+                </ListBox.InputBindings>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Style="{StaticResource ListBoxItemStyle}">
@@ -154,5 +179,25 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
+        <!--Нижняя панель с кнопками-->
+        <StackPanel Grid.Row="1"
+                    Grid.ColumnSpan="3"                   
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Grid Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" 
+                                      SharedSizeGroup="ButtonsGroup"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"
+                                      SharedSizeGroup="ButtonsGroup"></ColumnDefinition>
+                </Grid.ColumnDefinitions>    
+                <Button Name="OkButton" Content="{x:Static res:Resources.OkButton}"
+                        Style="{StaticResource OKCancelButtonStyle}"></Button>
+                <Button Name="CancelButton" 
+                        Grid.Column="1"
+                        Content="{x:Static res:Resources.CancelButton}"                    
+                        Style="{StaticResource OKCancelButtonStyle}"></Button>
+            </Grid>
+        </StackPanel>
     </Grid>
 </UserControl>

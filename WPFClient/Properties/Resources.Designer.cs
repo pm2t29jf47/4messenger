@@ -79,6 +79,15 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string CancelButton {
+            get {
+                return ResourceManager.GetString("CancelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choice resipient.
         /// </summary>
         public static string ChoiceResipientTitle {
@@ -142,6 +151,15 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log In.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to me:.
         /// </summary>
         public static string Me {
@@ -178,6 +196,15 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string OkButton {
+            get {
+                return ResourceManager.GetString("OkButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string PasswordLabel {
@@ -201,6 +228,15 @@ namespace WPFClient.Properties {
         public static string RecipientsLabel {
             get {
                 return ResourceManager.GetString("RecipientsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recipients list editor.
+        /// </summary>
+        public static string RecipientsList {
+            get {
+                return ResourceManager.GetString("RecipientsList", resourceCulture);
             }
         }
         

@@ -65,7 +65,18 @@ namespace WPFClient
                 controlState = value;
                 PrepareControl();
             }
-        }        
+        }
+
+        public bool IsValid
+        {
+            get { return (bool)GetValue(IsValidProperty); }
+            set { SetValue(IsValidProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsValidProperty =
+            DependencyProperty.Register("IsValid", typeof(bool),
+            typeof(RecipientsControl), new UIPropertyMetadata(false),
+            null); 
 
         /// <summary>
         /// Отлов события закрытия окна RecipientsEditor
@@ -108,7 +119,7 @@ namespace WPFClient
             {
                 AllEmployees = RecipientsControlModel.AllResidueEmployees
             };
-            recipientsEditor.Show();
+            recipientsEditor.ShowDialog();
             recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
         }
 
@@ -117,17 +128,7 @@ namespace WPFClient
             RecipientsControlModel.UpdateRecipientsDefenitionInRecipientsString();
         }
 
-        public bool IsValid
-        {
-            get { return (bool)GetValue(IsValidProperty); }
-            set { SetValue(IsValidProperty, value); }
-
-        }
-
-        public static readonly DependencyProperty IsValidProperty =
-            DependencyProperty.Register("IsValid", typeof(bool),
-            typeof(RecipientsControl), new UIPropertyMetadata(false),
-            null);      
+     
     }
 }
 

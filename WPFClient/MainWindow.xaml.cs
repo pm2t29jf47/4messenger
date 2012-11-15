@@ -36,7 +36,7 @@ namespace WPFClient
         public MainWindow()
         {
             ///Выбирает локаль
-            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("ru");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
             InitializeComponent();
             PrepareWindow();
             ShowLoginWindow();         

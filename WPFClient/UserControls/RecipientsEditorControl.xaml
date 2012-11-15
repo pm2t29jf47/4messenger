@@ -8,34 +8,50 @@
              d:DesignHeight="260" d:DesignWidth="492">
 
     <Control.Resources>
+        <!--Базовый стиль-->
         <Style x:Key="MarginStyle">
             <Setter Property="Control.Margin" 
-                    Value="5"></Setter>
+                    Value="5">                
+            </Setter>
         </Style>
         
         <!--Расцветка всего окна-->
         <Style x:Key="MainGridStyle">
             <Setter Property="Control.Background" 
-                    Value="LightGray"></Setter>
+                    Value="LightGray">
+            </Setter>
         </Style>
+
+        <!--Стиль ListBox-а с сотрудниками-->
         <Style x:Key="ListBoxStyle">
             <Setter Property="Control.Background" 
-                    Value="White"></Setter>
+                    Value="White">                
+            </Setter>
             <Setter Property="Control.Margin" 
-                    Value="5"></Setter>
+                    Value="5">                
+            </Setter>
         </Style>
+
+        <!--Стиль элемента ListBox-а-->
         <Style x:Key="ListBoxItemStyle">
             <Setter Property="Control.Margin" 
-                    Value="2"></Setter>
+                    Value="2">                
+            </Setter>
         </Style> 
+        
+        <!--Стиль кнопок добавления и удаления сотрудников-->
         <Style x:Key="AddRemoveButtonsStyle" 
                BasedOn="{StaticResource MarginStyle}">
             <Setter Property="Button.IsEnabled" 
-                    Value="false"></Setter>
+                    Value="false">
+            </Setter>
         </Style>
 
+        <!--Стиль кнопок сохранения и отмены редактирования-->
         <Style x:Key="OKCancelButtonStyle" BasedOn="{StaticResource MarginStyle}">
-  
+            <Setter Property="Control.Padding"
+                    Value="5">
+            </Setter>
         </Style>
         
         <!--Стиль изображений на кнопке AddToSelected и его смена по состояниям-->
@@ -44,12 +60,14 @@
                 <DataTrigger Binding="{Binding ElementName=AddToSelectedButton, Path=IsEnabled}" 
                              Value="false">                    
                     <Setter Property="Image.Source" 
-                            Value="Images\arrow_right_green_disabled.png"></Setter>
+                            Value="Images\arrow_right_green_disabled.png">
+                    </Setter>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding ElementName=AddToSelectedButton, Path=IsEnabled}" 
                              Value="true">
                     <Setter Property="Image.Source" 
-                            Value="Images\arrow_right_green.png"></Setter>
+                            Value="Images\arrow_right_green.png">
+                    </Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -179,7 +197,8 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <!--Нижняя панель с кнопками-->
+        
+        <!--Нижняя панель с кнопками сохранения и отмены редактирования-->
         <StackPanel Grid.Row="1"
                     Grid.ColumnSpan="3"                   
                     Orientation="Horizontal"

@@ -24,6 +24,9 @@ namespace WPFClient.UserControls
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Возвращает модель из DataContex-а
+        /// </summary>
         RecipientsEditorControlModel RecipientsEditorControlModel
         {
             get
@@ -43,13 +46,18 @@ namespace WPFClient.UserControls
         void OnAddToSelectedButtonClick(object sender, RoutedEventArgs e)
         {           
             Employee[] selectedItems = new Employee[AllEmployeesListBox.SelectedItems.Count];
-            AllEmployeesListBox.SelectedItems.CopyTo(selectedItems, 0);
+            Employee firstSelectedItem = (Employee)AllEmployeesListBox.SelectedItem;
+            int nextSelection = AllEmployeesListBox.Items.IndexOf(firstSelectedItem);
+            AllEmployeesListBox.SelectedItems.CopyTo(selectedItems, 0);            
             foreach (Employee item in selectedItems)
             {
                 RecipientsEditorControlModel.SelectedEmployees.Add(item);
                 RecipientsEditorControlModel.AllEmployees.Remove(item);
             }
-            AddToSelectedButton.IsEnabled = false;
+            AllEmployeesListBox.SelectedIndex = nextSelection;
+            AddToSelectedButton.IsEnabled = (nextSelection < AllEmployeesListBox.Items.Count) ? true : false;
+            AllEmployeesListBox.Focus();
+
         }
 
         /// <summary>
@@ -60,32 +68,56 @@ namespace WPFClient.UserControls
         void OnRemoveFromSelectedButtonClick(object sender, RoutedEventArgs e)
         {
             Employee[] selectedItems = new Employee[SelectedEmployeesListBox.SelectedItems.Count];
+            Employee firstSelectedItem = (Employee)SelectedEmployeesListBox.SelectedItem;
+            int nextSelection = SelectedEmployeesListBox.Items.IndexOf(firstSelectedItem);
             SelectedEmployeesListBox.SelectedItems.CopyTo(selectedItems, 0);
             foreach (Employee item in selectedItems)
             {               
                 RecipientsEditorControlModel.AllEmployees.Add(item);
                 RecipientsEditorControlModel.SelectedEmployees.Remove(item);
             }
-            AddToSelectedButton.IsEnabled = false;
+            SelectedEmployeesListBox.SelectedIndex = nextSelection;
+            RemoveFromSelectedButton.IsEnabled = (nextSelection < SelectedEmployeesListBox.Items.Count) ? true : false;
+            AllEmployeesListBox.Focus();
         }
 
+        /// <summary>
+        /// Смена состояния кнопок (IsEditable) при переводе фокуса
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnAllEmployeesListBoxIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             AddToSelectedButton.IsEnabled = true;
             RemoveFromSelectedButton.IsEnabled = false;
         }
 
+        /// <summary>
+        /// Смена состояния кнопок (IsEditable) при переводе фокуса
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnSelectedEmployeesListBoxIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             AddToSelectedButton.IsEnabled = false;
             RemoveFromSelectedButton.IsEnabled = true;
         }
 
+        /// <summary>
+        /// Отмечает всех сотрудников в списке AllEmployeesListBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnAllEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             AllEmployeesListBox.SelectAll();     
         }
 
+        /// <summary>
+        /// Отмечает всех сотрудников в списке SelectedEmployeesListBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnSelectedEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             SelectedEmployeesListBox.SelectAll();

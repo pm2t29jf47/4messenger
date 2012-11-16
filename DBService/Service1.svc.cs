@@ -18,9 +18,7 @@ namespace DBService
 {
     public class Service1 : IService1
     {
-        /// <summary> 
-        /// Возвращает коллекцию содержащую всех сотрудников 
-        /// </summary>
+
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Employee> GetAllEmployees()
         {
@@ -28,9 +26,7 @@ namespace DBService
             return EmployeeGateway.SelectAll(currentUsername);
         }
 
-        /// <summary> 
-        /// Производит вставку письма в таблицу Message 
-        /// </summary>
+        
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void SendMessage(Message message, List<Recipient> recipients)
         {
@@ -50,10 +46,6 @@ namespace DBService
             }
         }
 
-        /// <summary>
-        /// Получить письма
-        /// </summary>
-        /// <returns></returns>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Message> GetInboxMessages()
         {
@@ -66,15 +58,9 @@ namespace DBService
             return messages;
         }
 
-        /// <summary>
-        /// Проверяет аутентификационные данные пользователя
-        /// </summary>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void CheckUser(){ }
 
-        /// <summary>
-        /// Возвращает коллекцию отправленных писем
-        /// </summary>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Message> GetSentMessages()
         {
@@ -83,21 +69,13 @@ namespace DBService
             return MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername,false);
         }
 
-        /// <summary>
-        /// Задает сообщению флаг прочитанности
-        /// </summary>
-        /// <param name="MessageId"></param>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void SetInboxMessageViewed(int messageId)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             RecipientGateway.UpdateViewed(currentUsername, messageId, true); 
         }
-        
-        /// <summary>
-        /// Возвращает письма помеченные удаленными
-        /// </summary>
-        /// <returns></returns>
+
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Message> GetDeletedMessages()
         {
@@ -116,20 +94,24 @@ namespace DBService
             return deletedMessages;      
         }
 
-        /// <summary>
-        /// Возвращает сотрудника по его иднтификатору
-        /// </summary>
-        /// <returns></returns>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public Employee GetEmployee(string selectableUsername)
         {
             string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return EmployeeGateway.SelectByUsername(selectableUsername, curentUsername);
         }
-        
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void SetInboxMessageDeleted(int MessageId)
         {
             throw new NotImplementedException();
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public List<Recipient> GetRecipients(int messageId)
+        {
+            string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            return RecipientGateway.SelectByMessageId(messageId, username);
         }
     }
 }

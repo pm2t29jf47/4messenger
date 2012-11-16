@@ -11,7 +11,6 @@
         Icon="Images\bug-mail.png">
     <Window.Resources>
 
-        <!--Серый фон-->
         <Style x:Key="BackgroundStyle">
             <Setter Property="Control.Background" 
                     Value="LightGray">

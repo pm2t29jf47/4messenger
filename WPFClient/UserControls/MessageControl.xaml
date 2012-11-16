@@ -7,26 +7,59 @@
                 xmlns:res="clr-namespace:WPFClient.Properties"
                 xmlns:local="clr-namespace:WPFClient"> 
     <UserControl.Resources>
-        <Style x:Key="MarginStyle">
+        <!--Базовый стиль для всех Label-->
+        <Style x:Key="DefaultLableStyle"
+               TargetType="{x:Type Label}">
             <Setter Property="Control.Margin" Value="5"/>
         </Style>
-        <!--Серый фон-->
+
+        <!--Стиль для RecipientsLabel (по дефолту криво стоит)-->
+        <Style x:Key="RecipientsLabelStyle"
+               TargetType="{x:Type Label}">
+            <Setter Property="Control.Margin" 
+                    Value="5,4,5,6"/>
+        </Style>
+   
         <Style x:Key="BackgroundStyle">
             <Setter Property="Control.Background" 
                     Value="LightGray">
             </Setter>
+        </Style>        
+    
+        <Style x:Key="RecipientsControlStyle">
+            <Setter Property="Control.Height" 
+                    Value="92"/>            
+            <Setter Property="Control.Margin" 
+                    Value="5"/>
         </Style>
         
-        <Style x:Key="OneRowTextBoxStyle" BasedOn="{StaticResource MarginStyle}">
-            <Setter Property="Control.Height" Value="23" />
+        <!--Базовый стиль для всех TextBox-ов-->
+        <Style x:Key="DefaultTextBoxStyle" 
+               TargetType="{x:Type TextBox}">
+            <Setter Property="Control.Height" 
+                    Value="23"/>
+            <Setter Property="TextWrapping" 
+                    Value="Wrap"/>
+            <Setter Property="Margin" 
+                    Value="5"/>
         </Style>
-        
-        <Style x:Key="RecipientsControlStyle" BasedOn="{StaticResource MarginStyle}">
-            <Setter Property="Control.Height" Value="92" />            
+
+        <!--Стиль для TextBox-ов которые нельзя редактировать-->
+        <Style x:Key="ReadOnlyTextBoxStyle" 
+               BasedOn="{StaticResource DefaultTextBoxStyle}"
+               TargetType="{x:Type TextBox}">            
+            <Setter Property="TextBox.IsReadOnly" 
+                    Value="True"/>            
         </Style>
-        
-        <Style x:Key="RecipientsLabelStyle">
-            <Setter Property="Control.Margin" Value="5,4,5,6" />
+
+        <Style x:Key="MessageContentTextBoxStyle"
+               TargetType="{x:Type TextBox}">
+            <Setter Property="TextWrapping" 
+                    Value="Wrap"/>
+            <Setter Property="VerticalScrollBarVisibility" 
+                    Value="Visible"/>
+                <Setter Property="Margin" 
+                    Value="5"/>            
         </Style>
         
     </UserControl.Resources>
@@ -46,7 +79,7 @@
         <Label Name="SenderLabel" 
                Grid.Column="0" 
                Grid.Row="0" 
-               Style="{StaticResource MarginStyle}" 
+               Style="{StaticResource DefaultLableStyle}" 
                Content="{x:Static res:Resources.SenderLabel}"/>
         <Label Name="RecipientLable" 
                Grid.Row="1"           
@@ -55,24 +88,23 @@
         <Label Name="DateLable" 
                Grid.Column="0" 
                Grid.Row="2" 
-               Style="{StaticResource MarginStyle}" 
+               Style="{StaticResource DefaultLableStyle}" 
                Content="{x:Static res:Resources.DateLabel}"/>
         <Label Name="TitleLable" 
                Grid.Column="0" 
                Grid.Row="3"                
                Content="{x:Static res:Resources.TitleLabel}"
-               Style="{StaticResource MarginStyle}"/>
+               Style="{StaticResource DefaultLableStyle}"/>
         <Label Name="MessageContentLable" 
                Grid.Column="0" 
                Grid.Row="4" 
                Content="{x:Static res:Resources.Content}"
-               Style="{StaticResource MarginStyle}"/>
+               Style="{StaticResource DefaultLableStyle}"/>
         <TextBox Name="SenderTextbox" 
                  Grid.Column="1" 
-                 Grid.Row="0"                  
-                 IsReadOnly="True" 
+                 Grid.Row="0"                      
                  Text="{Binding Path=Message.SenderUsername, Mode=OneWay}" 
-                 Style="{StaticResource OneRowTextBoxStyle}"/>
+                 Style="{StaticResource ReadOnlyTextBoxStyle}"/>
         <local:RecipientsControl x:Name="RecipientsControl" 
                                  Grid.Column="1" 
                                  Grid.Row="1"              
@@ -83,21 +115,19 @@
                  Grid.Row="2"                  
                  IsReadOnly="True" 
                  Text="{Binding Path=Message.Date, Mode=OneWay}" 
-                 Style="{StaticResource OneRowTextBoxStyle}"/>
+                 Style="{StaticResource ReadOnlyTextBoxStyle}"/>
         <TextBox Name="TitleTextbox" 
                  Grid.Column="1" 
                  Grid.Row="3" 
                  VerticalScrollBarVisibility="Visible"                  
                  TextWrapping="Wrap" 
                  Text="{Binding Path=Message.Title, Mode=TwoWay}"
-                 Style="{StaticResource OneRowTextBoxStyle}"/>
+                 Style="{StaticResource DefaultTextBoxStyle}"/>
         <TextBox Name="MessageContentTextBox" 
                  Grid.Column="1" 
-                 Grid.Row="4" 
-                 VerticalScrollBarVisibility="Visible"                  
-                 TextWrapping="Wrap" 
+                 Grid.Row="4"                   
                  Text="{Binding Path=Message.Content, Mode=TwoWay}"
-                 Style="{StaticResource MarginStyle}"/>
+                 Style="{StaticResource MessageContentTextBoxStyle}"/>
     </Grid>    
 </UserControl>
 

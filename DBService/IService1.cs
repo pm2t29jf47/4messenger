@@ -12,6 +12,12 @@ namespace DBService
     [ServiceContract]
     public interface IService1
     {
+        /// <summary>
+        /// Проверяет аутентификационные данные пользователя
+        /// </summary>
+        [OperationContract]
+        void CheckUser();
+
         /// <summary> 
         /// Возвращает коллекцию содержащую всех сотрудников 
         /// </summary>
@@ -25,44 +31,35 @@ namespace DBService
         [OperationContract]
         Employee GetEmployee(string username);
 
-        /// <summary> 
-        /// Производит вставку письма в таблицу Message 
+        /// <summary>
+        /// Возвращает всех получателей определенного сообщения
         /// </summary>
+        /// <param name="MessageId">
+        /// Id сообщения по которому осуществляется выборка в таблице
+        /// </param>
+        /// <returns>
+        /// Список получателей
+        /// </returns>
+        List<Recipient> GetRecipients(int MessageId);
+
+        /// <summary>
+        /// Отослать сообщение
+        /// </summary>
+        /// <param name="message">
+        /// Сущность "Message"
+        /// </param>
+        /// <param name="recipient">
+        /// Коллекция получателей сообщения
+        /// </param>
         [OperationContract]
         void SendMessage(Message message, List<Recipient> recipient);
 
         /// <summary>
-        /// Получить письма
+        /// Взвращает коллекцию писем из папки входящих
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Entities.Message> GetInboxMessages();
-
-        /// <summary>
-        /// Проверяет аутентификационные данные пользователя
-        /// </summary>
-        [OperationContract]
-        void CheckUser();
-
-        /// <summary>
-        /// Возвращает коллекцию отправленных писем
-        /// </summary>
-        [OperationContract]
-        List<Message> GetSentMessages();
-
-        /// <summary>
-        /// Задает сообщению флаг прочитанности
-        /// </summary>
-        /// <param name="MessageId"></param>
-        [OperationContract]
-        void SetInboxMessageViewed(int MessageId);
-
-        /// <summary>
-        /// Задает флаг удаления
-        /// </summary>
-        /// <param name="MessageId"></param>
-        [OperationContract]
-        void SetInboxMessageDeleted(int MessageId);
+        List<Message> GetInboxMessages();
 
         /// <summary>
         /// Возвращает письма помеченные удаленными
@@ -70,6 +67,29 @@ namespace DBService
         /// <returns></returns>
         [OperationContract]
         List<Message> GetDeletedMessages();
+
+        /// <summary>
+        /// Возвращает коллекцию отправленных писем
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        List<Message> GetSentMessages();
+
+        /// <summary>
+        /// Задает входящему сообщению флаг прочитанности
+        /// </summary>
+        /// <param name="MessageId"></param>
+        [OperationContract]
+        void SetInboxMessageViewed(int messageId);
+
+        /// <summary>
+        /// Задает флаг удаления
+        /// </summary>
+        /// <param name="MessageId"></param>
+        [OperationContract]
+        void SetInboxMessageDeleted(int messageId);
+
+
 
     }   
 }

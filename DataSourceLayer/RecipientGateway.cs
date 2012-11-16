@@ -40,7 +40,7 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="recipient"></param>
-        private static void PrepareIR(SqlCommand cmd, Recipient recipient)
+        static void PrepareIR(SqlCommand cmd, Recipient recipient)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             CreateIRParameters(cmd);
@@ -51,7 +51,7 @@ namespace DataSourceLayer
         /// Задает параметры хранимой процедуры insert_recipient 
         /// </summary>
         /// <param name="cmd"></param>
-        private static void CreateIRParameters(SqlCommand cmd)
+        static void CreateIRParameters(SqlCommand cmd)
         {
             cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.NVarChar, 50));
             cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
@@ -62,7 +62,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Заполняет параметры хранимой процедуры insert_recipient 
         /// </summary>
-        private static void SetIRParameters(SqlCommand cmd, Recipient recipient)
+        static void SetIRParameters(SqlCommand cmd, Recipient recipient)
         {
             cmd.Parameters["@recipientUsername"].Value = recipient.RecipientUsername;
             cmd.Parameters["@messageId"].Value = recipient.MessageId;
@@ -101,7 +101,7 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="username"></param>
-        private static void PrepareSR1(SqlCommand cmd, string username, bool deleted)
+        static void PrepareSR1(SqlCommand cmd, string username, bool deleted)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.NVarChar, 50));
@@ -142,7 +142,7 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="messageId"></param>
-        private static void PrepareSR2(SqlCommand cmd, int messageId)
+        static void PrepareSR2(SqlCommand cmd, int messageId)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
@@ -178,7 +178,7 @@ namespace DataSourceLayer
         /// <param name="username"></param>
         /// <param name="messageId"></param>
         /// <param name="viewed"></param>
-        private static void PrepareUR1(SqlCommand cmd, string username, int messageId, bool viewed)
+        static void PrepareUR1(SqlCommand cmd, string username, int messageId, bool viewed)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             CreateUR1Parameters(cmd);
@@ -189,7 +189,7 @@ namespace DataSourceLayer
         /// Задает параметры хранимой процедуры update_recipient
         /// </summary>
         /// <param name="cmd"></param>
-        private static void CreateUR1Parameters(SqlCommand cmd)
+        static void CreateUR1Parameters(SqlCommand cmd)
         {
             cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.NVarChar, 50));
             cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
@@ -203,7 +203,7 @@ namespace DataSourceLayer
         /// <param name="username"></param>
         /// <param name="messageId"></param>
         /// <param name="viewed"></param>
-        private static void SetUR1Parameters(SqlCommand cmd, string username, int messageId, bool viewed)
+        static void SetUR1Parameters(SqlCommand cmd, string username, int messageId, bool viewed)
         {
             cmd.Parameters["@recipientUsername"].Value = username;
             cmd.Parameters["@messageId"].Value = messageId;
@@ -215,7 +215,7 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        private static Recipient CreateRecipient(SqlDataReader reader)
+        static Recipient CreateRecipient(SqlDataReader reader)
         {
             return !reader.HasRows ? null : new Recipient(
                 (string) reader["RecipientUsername"],

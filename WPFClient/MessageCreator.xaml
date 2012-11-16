@@ -7,7 +7,7 @@
         Icon="Images\bug-mail.png">
     <Window.Resources>
         
-        <Style x:Key="ButtonStyle">
+        <Style x:Key="DefaultButtonStyle">
             <Setter Property="Button.Margin" 
                     Value="5"/>
         </Style>
@@ -31,7 +31,7 @@
                 Grid.Row="1" 
                 HorizontalAlignment="Right"
                 Click="OnSendMessageButtonClick" 
-                Style="{StaticResource ButtonStyle}"
+                Style="{StaticResource DefaultButtonStyle}"
                 IsEnabled="{Binding ElementName=MessageControl, Path=IsValid}">
             <StackPanel Orientation="Horizontal">
                 <Image Source="Images\mail_delete.png"></Image>

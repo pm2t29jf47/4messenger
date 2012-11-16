@@ -115,7 +115,19 @@ namespace WPFClient
             if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLabel) == 0)
                 MessageList.ItemsSource = App.Proxy.GetDeletedMessages();
             else if (string.Compare(selectedFolder.Name, Properties.Resources.InboxFolderLabel) == 0)
-                MessageList.ItemsSource = App.Proxy.GetInboxMessages();
+            {
+                List<Message> InboxMessages = App.Proxy.GetInboxMessages();
+                List<MessageModel> InboxMessagesModel = new List<MessageModel>();
+                foreach(var item in InboxMessages)
+                {
+                    InboxMessagesModel.Add(new MessageModel()
+                    {
+                       // Message = item,/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                       // SenderEmployee = 
+                    }
+                }
+                MessageList.ItemsSource = 
+            }
             else if (string.Compare(selectedFolder.Name, Properties.Resources.SentFolderLabel) == 0)
                 MessageList.ItemsSource = App.Proxy.GetSentMessages();
             else
@@ -138,7 +150,7 @@ namespace WPFClient
                 Message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false),
                 AllEmployees = App.Proxy.GetAllEmployees()
             };
-            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///?
+            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст
             messageCreator.Show();            
         }
 

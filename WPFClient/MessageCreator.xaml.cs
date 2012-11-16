@@ -19,10 +19,7 @@ namespace WPFClient
     /// Interaction logic for MessageCreator.xaml
     /// </summary>
     public partial class MessageCreator : Window
-    {   
-        List<Employee> RecipientsEmployees = new List<Employee>();
-        List<Employee> AllEmployees = new List<Employee>();        
-
+    { 
         /// <summary>
         /// Конструктор с параметрами
         /// </summary>
@@ -36,6 +33,11 @@ namespace WPFClient
             
         }
 
+        /// <summary>
+        /// Заполняет DataContext MessageControl-а
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnMessageCreatorDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             MessageControl.DataContext = new MessageControlModel()
@@ -45,7 +47,10 @@ namespace WPFClient
             };
             MessageControl.ControlState = WPFClient.UserControls.MessageControl.state.IsEditable;
         }
-
+        
+        /// <summary>
+        /// Модель храняещаяся в DataContext-е
+        /// </summary>
         private MessageCreatorModel MessageCreatorModel
         {
             get
@@ -58,7 +63,7 @@ namespace WPFClient
         }
         
         /// <summary>
-        /// Обработчик нажатия кнопки "Send"
+        /// Посылвет сообщение при нажатии кнопки "Send"
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -68,9 +73,6 @@ namespace WPFClient
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
             App.Proxy.SendMessage(mcm.Message, mcm.Recipients);
             this.Close();
-        }
-
-
-       
+        }       
     }
 }

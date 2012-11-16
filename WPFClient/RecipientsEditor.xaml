@@ -7,11 +7,12 @@
         Height="300" 
         Width="500" 
         MinWidth="500" 
-        MinHeight="300">
+        MinHeight="300"
+        Icon="Images\bug-mail.png">
     <Window.Resources>
-        
-        <!--Расцветка всего окна-->
-        <Style x:Key="MainGridStyle">
+
+        <!--Серый фон-->
+        <Style x:Key="BackgroundStyle">
             <Setter Property="Control.Background" 
                     Value="LightGray">
             </Setter>
@@ -28,7 +29,7 @@
         </Style>
         
     </Window.Resources>
-    <Grid Style="{StaticResource MainGridStyle}">
+    <Grid Style="{StaticResource BackgroundStyle}">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>

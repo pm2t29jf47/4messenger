@@ -25,22 +25,22 @@ namespace WPFClient
     {
         List<SidebarFolder> folders = new List<SidebarFolder>();
 
-        string leftUsernameStopper = "<",
-            rightUsernameStopper = ">",
-            userDataDevider = ";",
-            space = " ",
-            leftTitleStopper = "[",
-            rightTitleStopper  ="]",
-            titlePrefix = Properties.Resources.Re;
+        char leftUsernameStopper = '<',
+            rightUsernameStopper = '>',
+            userDataDevider = ';',
+            space = ' ',
+            leftTitleStopper = '[',
+            rightTitleStopper = ']';
+        string titlePrefix = Properties.Resources.Re;
 
         public MainWindow()
         {
             ///Выбирает локаль
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
+            ///
             InitializeComponent();
             PrepareWindow();
-            ShowLoginWindow();         
-
+            ShowLoginWindow(); 
         }
 
         public void PrepareWindow()
@@ -88,16 +88,6 @@ namespace WPFClient
             this.Hide();
             var loginWindow = new LoginWindow();
             loginWindow.Show();
-        }
-
-        string GetRecipientsString()
-        {
-            var selectedMessage = (Message)MessageList.SelectedItem;
-            List<Employee> recipientsEmployees = new List<Employee>();
-            foreach (var recipient in selectedMessage.Recipients)
-                recipientsEmployees.Add(App.Proxy.GetEmployee(recipient.RecipientUsername));
-
-            return EmployeesToString(recipientsEmployees); 
         }
 
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)

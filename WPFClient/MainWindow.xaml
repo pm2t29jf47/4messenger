@@ -3,18 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Messenger" Height="500" Width="876" Name="Messenger"
         xmlns:usercontrols="clr-namespace:WPFClient.UserControls"
-        xmlns:res="clr-namespace:WPFClient.Properties" MinWidth="640" MinHeight="450">
+        xmlns:res="clr-namespace:WPFClient.Properties" MinWidth="640" MinHeight="450"
+        Icon="Images\bug-mail.png">
     <Window.Resources>
         <Style x:Key="MarginStyle">
             <Setter Property="Control.Margin" Value="5"></Setter>
         </Style>
+
+        <!--Серый фон-->
+        <Style x:Key="BackgroundStyle">
+            <Setter Property="Control.Background" Value="LightGray"></Setter>
+        </Style>
+        
     </Window.Resources>
-    <Grid Background="LightGray">
+    <Grid Style="{StaticResource BackgroundStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Background="LightGray">
+        
+        <!--Тулбар-->
+        <Grid Style="{StaticResource BackgroundStyle}">
             <ToolBar>
                 <Button Name="CreateMessageButton" 
                         Click="OnCreateMessageButtonClick"
@@ -43,6 +52,8 @@
                 </Button>
             </ToolBar>
         </Grid>
+        
+        <!--Список сообщений-->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>          
                 <ColumnDefinition Width="auto"></ColumnDefinition>

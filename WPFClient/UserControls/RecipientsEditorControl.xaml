@@ -16,8 +16,8 @@
             </Setter>
         </Style>
         
-        <!--Расцветка всего окна-->
-        <Style x:Key="MainGridStyle">
+        <!--Серый фон-->
+        <Style x:Key="BackgroundStyle">
             <Setter Property="Control.Background" 
                     Value="LightGray">
             </Setter>
@@ -83,7 +83,7 @@
         </Style>
     </Control.Resources>
 
-    <Grid Style="{StaticResource MainGridStyle}">
+    <Grid Style="{StaticResource BackgroundStyle}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>

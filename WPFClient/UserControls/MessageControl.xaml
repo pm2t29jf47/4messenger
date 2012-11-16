@@ -10,8 +10,8 @@
         <Style x:Key="MarginStyle">
             <Setter Property="Control.Margin" Value="5"/>
         </Style>
-        <!--Расцветка всего окна-->
-        <Style x:Key="MainGridStyle">
+        <!--Серый фон-->
+        <Style x:Key="BackgroundStyle">
             <Setter Property="Control.Background" 
                     Value="LightGray">
             </Setter>
@@ -31,7 +31,7 @@
         
     </UserControl.Resources>
     <Grid Name="MessageAttributes"
-          Style="{StaticResource MainGridStyle}">
+          Style="{StaticResource BackgroundStyle}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>

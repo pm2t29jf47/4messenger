@@ -3,23 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="{x:Static res:Resources.MessageCreatorTitle}" Height="462" Width="634"
         xmlns:usercontrols="clr-namespace:WPFClient.UserControls"
-        xmlns:res="clr-namespace:WPFClient.Properties">
+        xmlns:res="clr-namespace:WPFClient.Properties"
+        Icon="Images\bug-mail.png">
     <Window.Resources>
         
         <Style x:Key="ButtonStyle">
             <Setter Property="Button.Margin" 
                     Value="5"/>
         </Style>
-        
-        <!--Расцветка всего окна-->
-        <Style x:Key="MainGridStyle">
+
+        <!--Серый фон-->
+        <Style x:Key="BackgroundStyle">
             <Setter Property="Control.Background" 
                     Value="LightGray">
             </Setter>
         </Style>
         
     </Window.Resources>
-    <Grid Style="{StaticResource MainGridStyle}">
+    <Grid Style="{StaticResource BackgroundStyle}">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>

@@ -59,11 +59,14 @@ namespace WPFClient
             foreach (var item in recm.SelectedEmployees)
                 RecipientsEditorModel.RecipientsEmployees.Add(item);
 
+            DialogResult = true;
             this.Close();
+            
         }
 
         private void OnCancelButtonClick(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             this.Close();
         }
     }

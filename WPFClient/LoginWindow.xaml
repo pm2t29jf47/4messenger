@@ -2,17 +2,24 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Log In" Height="143" Width="300" ResizeMode="NoResize"
-        xmlns:res="clr-namespace:WPFClient.Properties">
+        xmlns:res="clr-namespace:WPFClient.Properties"
+        Icon="Images\bug-mail.png">
     <Window.Resources>
         <Style x:Key="MarginStyle">
             <Setter Property="Control.Margin" Value="5"></Setter>
         </Style>
+        
         <Style x:Key="ButtonStyle" BasedOn="{StaticResource MarginStyle}">
             <Setter Property="Control.Padding"
                     Value="5"></Setter>
         </Style>
+        
+        <!--Серый фон-->
+        <Style x:Key="BackgroundStyle">
+            <Setter Property="Control.Background" Value="LightGray"></Setter>
+        </Style>
     </Window.Resources>
-    <Grid>
+    <Grid Style="{StaticResource BackgroundStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>

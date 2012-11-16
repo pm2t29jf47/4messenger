@@ -96,19 +96,11 @@ namespace WPFClient
         }
 
         /// <summary>
-        /// Обработчик кнопки добавления полуателей
+        /// Обработчик кнопки открытия диалога выбора сотрудников
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void OnAddButtonClick(object sender, RoutedEventArgs e)
-        {
-            ShowRecipientEditorDialog();
-        }
-
-        /// <summary>
-        /// Диалог выбора сотрудников
-        /// </summary>
-        void ShowRecipientEditorDialog()
         {
             RecipientsEditor recipientsEditor = new RecipientsEditor();
             recipientsEditor.DataContext = new RecipientsEditorModel()
@@ -116,14 +108,16 @@ namespace WPFClient
                 AllEmployees = RecipientsControlModel.AllResidueEmployees,
                 RecipientsEmployees = RecipientsControlModel.RecipientsEmployees
             };
-            recipientsEditor.ShowDialog();            
-            RecipientsEditorModel rem = (RecipientsEditorModel)recipientsEditor.DataContext;
-            RecipientsControlModel.UpdateRecipientsString(rem.RecipientsEmployees);
-            RecipientsControlModel.UpdateRecipientsByRecipientsEmployees();
+            if(recipientsEditor.ShowDialog() == true)
+            {
+                RecipientsEditorModel rem = (RecipientsEditorModel)recipientsEditor.DataContext;
+                RecipientsControlModel.UpdateRecipientsString(rem.RecipientsEmployees);
+                RecipientsControlModel.UpdateRecipientsByRecipientsEmployees();
+            }
         }
 
         /// <summary>
-        /// Наполнение RecipientsString данными о распознанных пользователях
+        /// При потери фокуса RecipientsTextBox-м наполнение RecipientsString данными о распознанных пользователях
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

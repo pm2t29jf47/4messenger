@@ -21,9 +21,15 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
         <!--Тулбар-->
-        <Grid Style="{StaticResource BackgroundStyle}">
+        <Grid Style="{StaticResource BackgroundStyle}"
+              Grid.ColumnSpan="3">
             <ToolBar>
                 <Button Name="CreateMessageButton" 
                         Click="OnCreateMessageButtonClick"
@@ -51,36 +57,38 @@
                     </StackPanel>
                 </Button>
             </ToolBar>
-        </Grid>
-        
+        </Grid>           
+            
+        <!--Sidebar-->
+        <StackPanel Name="Sidebar" 
+                    Grid.Row="1"
+                    Grid.Column="0"/>
+            
         <!--Список сообщений-->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>          
-                <ColumnDefinition Width="auto"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <StackPanel Name="Sidebar" Grid.Column="0"/>
-            <DataGrid Name="MessageList" 
-                      Grid.Column="1" 
-                      AutoGenerateColumns="False" 
-                      SelectionChanged="OnMessageListSelectionChanged" 
-                      IsReadOnly="True"
-                      Style="{StaticResource MarginStyle}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Path=SenderUsername, Mode=OneWay}" 
-                                        Header="{x:Static res:Resources.SenderUsernameColumn}"
-                                        Width="1*"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Path=Date}" 
-                                        Header="{x:Static res:Resources.DateColumn}"
-                                        Width="1*"></DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Path=Title}" 
-                                        Header="{x:Static res:Resources.TitleColumn}"
-                                        Width="1*"></DataGridTextColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-            <usercontrols:MessageControl x:Name="MessageControl" 
-                                  Grid.Column="2" />
-        </Grid>
+        <DataGrid Name="MessageList" 
+                    Grid.Row="1"
+                    Grid.Column="1" 
+                    AutoGenerateColumns="False" 
+                    SelectionChanged="OnMessageListSelectionChanged" 
+                    IsReadOnly="True"
+                    Style="{StaticResource MarginStyle}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=SenderUsername, Mode=OneWay}" 
+                                    Header="{x:Static res:Resources.SenderUsernameColumn}"
+                                    Width="1*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Date}" 
+                                    Header="{x:Static res:Resources.DateColumn}"
+                                    Width="1*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Title}" 
+                                    Header="{x:Static res:Resources.TitleColumn}"
+                                    Width="1*"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+            
+        <!--Секция отображающая выбранное сообщение-->
+        <usercontrols:MessageControl x:Name="MessageControl" 
+                                        Grid.Row="1"
+                                        Grid.Column="2" />
+      
     </Grid>
 </Window>

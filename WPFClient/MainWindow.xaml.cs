@@ -40,7 +40,12 @@ namespace WPFClient
             ///
             InitializeComponent();
             PrepareWindow();
-            ShowLoginWindow(); 
+            ShowLoginWindow();
+
+            MessageModel mm = new MessageModel(new Message(12, "title", DateTime.Now, null, "username", "content", true), new Employee("dd", "fn", "sn", "rol", ""));
+           
+            
+
         }
 
         public void PrepareWindow()

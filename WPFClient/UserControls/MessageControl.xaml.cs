@@ -70,7 +70,7 @@ namespace WPFClient.UserControls
             RecipientsControl.DataContext = new RecipientsControlModel()
             {
                 AllEmployees = MessageControlModel.AllEmployees,
-                Recipients = MessageControlModel.Message.Recipients
+                Recipients = MessageControlModel.Recipients
             };       
         }
 
@@ -123,11 +123,6 @@ namespace WPFClient.UserControls
                 this.TitleTextbox.IsReadOnly = false;
                 this.MessageContentTextBox.IsReadOnly = false;
             }
-        }
-
-        private void MessageContentTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string b = "Debug";
         }
     }
 }

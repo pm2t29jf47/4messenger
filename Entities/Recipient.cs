@@ -26,6 +26,8 @@ namespace Entities
             Viewed = viewed;
         }
 
+        public Recipient() { }
+
         /// <summary>
         /// Идентификатор сотрудника-получателя
         /// </summary>

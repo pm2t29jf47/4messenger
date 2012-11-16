@@ -16,7 +16,7 @@ namespace DBService
         /// Возвращает коллекцию содержащую всех сотрудников 
         /// </summary>
         [OperationContract]
-        List<Employee> GetEmployeeList();
+        List<Employee> GetAllEmployees();
 
         /// <summary>
         /// Возвращает сотрудника по его иднтификатору
@@ -29,14 +29,14 @@ namespace DBService
         /// Производит вставку письма в таблицу Message 
         /// </summary>
         [OperationContract]
-        void SendMessage(Message message);
+        void SendMessage(Message message, List<Recipient> recipient);
 
         /// <summary>
         /// Получить письма
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Entities.Message> GetInboxFolder();
+        List<Entities.Message> GetInboxMessages();
 
         /// <summary>
         /// Проверяет аутентификационные данные пользователя
@@ -48,28 +48,28 @@ namespace DBService
         /// Возвращает коллекцию отправленных писем
         /// </summary>
         [OperationContract]
-        List<Message> GetSentFolder();
+        List<Message> GetSentMessages();
 
         /// <summary>
         /// Задает сообщению флаг прочитанности
         /// </summary>
         /// <param name="MessageId"></param>
         [OperationContract]
-        void SetMessageViewed(int MessageId);
+        void SetInboxMessageViewed(int MessageId);
 
         /// <summary>
         /// Задает флаг удаления
         /// </summary>
         /// <param name="MessageId"></param>
         [OperationContract]
-        void SetMessageDeleted(int MessageId);
+        void SetInboxMessageDeleted(int MessageId);
 
         /// <summary>
         /// Возвращает письма помеченные удаленными
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Message> GetDeletedFolder();
+        List<Message> GetDeletedMessages();
 
     }   
 }

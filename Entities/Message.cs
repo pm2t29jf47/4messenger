@@ -26,7 +26,6 @@ namespace Entities
             int? id,
             string title,
             DateTime date,
-            List<Recipient> recipients,
             string senderUsername,
             string content,
             bool deleted)
@@ -36,9 +35,10 @@ namespace Entities
             Date = date;
             SenderUsername = senderUsername;
             Content = content;
-            Recipients = recipients;
             Deleted = deleted;
         }
+
+        public Message() { }
 
         /// <summary> 
         /// Первичный ключ 
@@ -69,12 +69,6 @@ namespace Entities
         /// </summary>
         [DataMember]
         public string SenderUsername { get; internal set; }
-
-        /// <summary> 
-        /// Получатели
-        /// </summary>
-        [DataMember]
-        public List<Recipient> Recipients { get; set; }
 
         /// <summary> 
         /// Флаг для переноса отправленных писем в папку удаленных

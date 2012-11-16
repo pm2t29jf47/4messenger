@@ -41,11 +41,6 @@ namespace WPFClient
             InitializeComponent();
             PrepareWindow();
             ShowLoginWindow();
-
-            MessageModel mm = new MessageModel(new Message(12, "title", DateTime.Now, null, "username", "content", true), new Employee("dd", "fn", "sn", "rol", ""));
-           
-            
-
         }
 
         public void PrepareWindow()
@@ -101,7 +96,7 @@ namespace WPFClient
                 return;
             MessageControlModel mcm = new MessageControlModel()
             {
-                AllEmployees = App.Proxy.GetEmployeeList(),
+                AllEmployees = App.Proxy.GetAllEmployees(),
                 Message = (Message)MessageList.SelectedItem
             };
             MessageControl.DataContext = mcm;
@@ -118,11 +113,11 @@ namespace WPFClient
             var selectedFolder = (Button)sender;
             HideToolbarButtons(true);
             if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLabel) == 0)
-                MessageList.ItemsSource = App.Proxy.GetDeletedFolder();
+                MessageList.ItemsSource = App.Proxy.GetDeletedMessages();
             else if (string.Compare(selectedFolder.Name, Properties.Resources.InboxFolderLabel) == 0)
-                MessageList.ItemsSource = App.Proxy.GetInboxFolder();
+                MessageList.ItemsSource = App.Proxy.GetInboxMessages();
             else if (string.Compare(selectedFolder.Name, Properties.Resources.SentFolderLabel) == 0)
-                MessageList.ItemsSource = App.Proxy.GetSentFolder();
+                MessageList.ItemsSource = App.Proxy.GetSentMessages();
             else
                 OnUserFolderClick();
         }
@@ -136,10 +131,14 @@ namespace WPFClient
         }
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
-        {
-            Message message = new Message(null, string.Empty, new DateTime(), new List<Recipient>(), App.Username, string.Empty, false);
-            MessageCreator messageCreator = new MessageCreator(message,App.Proxy.GetEmployeeList());
-            messageCreator.Title = Properties.Resources.MessageCreatorTitle;
+        {            
+            MessageCreator messageCreator = new MessageCreator();
+            messageCreator.DataContext = new MessageCreatorModel()
+            {
+                Message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false),
+                AllEmployees = App.Proxy.GetAllEmployees()
+            };
+            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///?
             messageCreator.Show();            
         }
 

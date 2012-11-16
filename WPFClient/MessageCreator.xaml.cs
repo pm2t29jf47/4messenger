@@ -29,15 +29,32 @@ namespace WPFClient
         /// <param name="senderTextboxText"></param>
         /// <param name="recipientTextboxText"></param>
         /// <param name="titleTextboxText"></param>
-        public MessageCreator(Message message, List<Employee> allEmployees)
+        public MessageCreator()
         {
             InitializeComponent();
-            MessageControl.DataContext = new MessageControlModel() 
-            { 
-                AllEmployees = allEmployees, 
-                Message = message 
+            DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageCreatorDataContextChanged);
+            
+        }
+
+        void OnMessageCreatorDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            MessageControl.DataContext = new MessageControlModel()
+            {
+                AllEmployees = MessageCreatorModel.AllEmployees,
+                Message = MessageCreatorModel.Message
             };
             MessageControl.ControlState = WPFClient.UserControls.MessageControl.state.IsEditable;
+        }
+
+        private MessageCreatorModel MessageCreatorModel
+        {
+            get
+            {
+                if (this.DataContext == null)
+                    this.DataContext = new MessageCreatorModel();
+
+                return (MessageCreatorModel)this.DataContext;
+            }
         }
         
         /// <summary>
@@ -49,7 +66,7 @@ namespace WPFClient
         {
             bool a = Validation.GetHasError(MessageControl);
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
-            App.Proxy.SendMessage(mcm.Message);
+            App.Proxy.SendMessage(mcm.Message, mcm.Recipients);
             this.Close();
         }
 

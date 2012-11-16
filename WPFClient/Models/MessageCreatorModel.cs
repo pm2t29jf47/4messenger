@@ -6,7 +6,7 @@ using Entities;
 
 namespace WPFClient.Models
 {
-    class MessageControlModel
+    class MessageCreatorModel
     {
         /// <summary>
         /// Объект сообщния для отображения или изменения
@@ -16,20 +16,20 @@ namespace WPFClient.Models
         /// <summary>
         /// Объект сообщния для отображения или изменения
         /// </summary>    
-        public Message Message 
-        { 
+        public Message Message
+        {
             get
             {
                 return message;
             }
             set
             {
-                if(message == value)
+                if (message == value)
                     return;
 
                 message = value;
             }
-        } 
+        }
 
         /// <summary>
         /// Коллекция содержащая всех возможных для выбора сотрудников
@@ -39,44 +39,19 @@ namespace WPFClient.Models
         /// <summary>
         /// Коллекция содержащая всех возможных для выбора сотрудников
         /// </summary>
-        public List<Employee> AllEmployees 
-        { 
+        public List<Employee> AllEmployees
+        {
             get
             {
                 return allEmployees;
             }
             set
             {
-                if(allEmployees == value)
+                if (allEmployees == value)
                     return;
 
                 allEmployees = value;
             }
         }
-
-        /// <summary>
-        /// Коллекция получателей
-        /// </summary>
-        List<Recipient> recipients = new List<Recipient>();
-
-        /// <summary>
-        /// Коллекция получателей
-        /// </summary>
-        public List<Recipient> Recipients
-        {
-            get
-            {
-                return recipients;
-            }
-            set
-            {
-                if (recipients == value)
-                    return;
-
-                recipients = value;
-            }
-        }
-
-        
     }
 }

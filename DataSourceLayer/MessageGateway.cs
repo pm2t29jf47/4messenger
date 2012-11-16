@@ -100,11 +100,8 @@ namespace DataSourceLayer
                     using (var reader = cmd.ExecuteReader())
                     {
                         reader.Read();
-                        msg = CreateMessage(reader);
-                    }
-                    if(msg != null)
-                        msg.Recipients = RecipientGateway.SelectByMessageId(id, username);
-                    return msg;                                                          
+                        return CreateMessage(reader);
+                    }                                                                                                 
                 }
             }
             catch (Exception ex)
@@ -133,9 +130,7 @@ namespace DataSourceLayer
                         {
                             rows.Add(CreateMessage(reader));
                         }
-                    }
-                    foreach (var row in rows)
-                        row.Recipients = RecipientGateway.SelectByMessageId((int)row.Id, username);
+                    }                    
                     return rows;
                 }
             }
@@ -172,7 +167,6 @@ namespace DataSourceLayer
                 int.Parse(reader["Id"].ToString()),
                 (string) reader["Title"],
                 (DateTime.Parse(reader["Date"].ToString())),
-                null,
                 (string) reader["SenderUsername"],
                 (string) reader["Content"],
                 bool.Parse(reader["Deleted"].ToString()));            

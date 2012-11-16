@@ -136,29 +136,30 @@ namespace WPFClient.Models
             }
         }
 
-        /// <summary> 
-        /// Получатели
-        /// </summary>
-        public List<Recipient> Recipients 
-        {
-            get
-            {
-                if (message == null)
-                    return null;
+        ///Переделать под новую сущность
+        ///// <summary> 
+        ///// Получатели
+        ///// </summary>
+        //public List<Recipient> Recipients 
+        //{
+        //    get
+        //    {
+        //        if (message == null)
+        //            return null;
 
-                return message.Recipients;
-            }
-            set
-            {
-                if (message == null)
-                    return;
+        //        return message.Recipients;
+        //    }
+        //    set
+        //    {
+        //        if (message == null)
+        //            return;
 
-                if (message.Recipients == value)
-                    return;
+        //        if (message.Recipients == value)
+        //            return;
 
-                message.Recipients = value;
-            }
-        }
+        //        message.Recipients = value;
+        //    }
+        //}
 
         /// <summary> 
         /// Флаг для переноса отправленных писем в папку удаленных

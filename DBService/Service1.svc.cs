@@ -22,7 +22,7 @@ namespace DBService
         /// Возвращает коллекцию содержащую всех сотрудников 
         /// </summary>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Employee> GetEmployeeList()
+        public List<Employee> GetAllEmployees()
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return EmployeeGateway.SelectAll(currentUsername);
@@ -32,7 +32,7 @@ namespace DBService
         /// Производит вставку письма в таблицу Message 
         /// </summary>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void SendMessage(Message message)
+        public void SendMessage(Message message, List<Recipient> recipients)
         {
             
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
@@ -43,10 +43,10 @@ namespace DBService
             message.Date = DateTime.Now;
             int? insertedMessageId = MessageGateway.Insert(message, currentUsername);
             if (insertedMessageId == null) return;
-            foreach (var recipient in message.Recipients)
+            foreach (var item in recipients)
             {
-                recipient.MessageId = (int)insertedMessageId;
-                RecipientGateway.Insert(recipient, currentUsername);
+                item.MessageId = (int)insertedMessageId;
+                RecipientGateway.Insert(item, currentUsername);
             }
         }
 
@@ -55,7 +55,7 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetInboxFolder()
+        public List<Message> GetInboxMessages()
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             List<Message> messages = new List<Message>();
@@ -76,7 +76,7 @@ namespace DBService
         /// Возвращает коллекцию отправленных писем
         /// </summary>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetSentFolder()
+        public List<Message> GetSentMessages()
         {
             ///добавить проверку на удаленность
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
@@ -88,7 +88,7 @@ namespace DBService
         /// </summary>
         /// <param name="MessageId"></param>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void SetMessageViewed(int messageId)
+        public void SetInboxMessageViewed(int messageId)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             RecipientGateway.UpdateViewed(currentUsername, messageId, true); 
@@ -99,7 +99,7 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetDeletedFolder()
+        public List<Message> GetDeletedMessages()
         {
             string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             var deletedMessages = new List<Message>();
@@ -127,7 +127,7 @@ namespace DBService
             return EmployeeGateway.SelectByUsername(selectableUsername, curentUsername);
         }
         
-        public void SetMessageDeleted(int MessageId)
+        public void SetInboxMessageDeleted(int MessageId)
         {
             throw new NotImplementedException();
         }

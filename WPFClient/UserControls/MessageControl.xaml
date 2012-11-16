@@ -97,7 +97,7 @@
                  VerticalScrollBarVisibility="Visible"                  
                  TextWrapping="Wrap" 
                  Text="{Binding Path=Message.Content, Mode=TwoWay}"
-                 Style="{StaticResource MarginStyle}" TextChanged="MessageContentTextBox_TextChanged" />
+                 Style="{StaticResource MarginStyle}"/>
     </Grid>    
 </UserControl>
 

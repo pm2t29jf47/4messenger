@@ -109,16 +109,16 @@ namespace WPFClient
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void OnFolderClick(object sender, RoutedEventArgs e)
-        {            
+        {
             var selectedFolder = (Button)sender;
             HideToolbarButtons(true);
-            if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLabel) == 0)          
-                MessageList.ItemsSource = App.Proxy.GetDeletedFolder();            
-            else if (string.Compare(selectedFolder.Name, Properties.Resources.InboxFolderLabel) == 0)   
-                MessageList.ItemsSource = App.Proxy.GetInboxFolder();           
-            else if (string.Compare(selectedFolder.Name, Properties.Resources.SentFolderLabel) == 0)     
-                MessageList.ItemsSource = App.Proxy.GetSentFolder();            
-            else 
+            if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLabel) == 0)
+                MessageList.ItemsSource = App.Proxy.GetDeletedFolder();
+            else if (string.Compare(selectedFolder.Name, Properties.Resources.InboxFolderLabel) == 0)
+                MessageList.ItemsSource = App.Proxy.GetInboxFolder();
+            else if (string.Compare(selectedFolder.Name, Properties.Resources.SentFolderLabel) == 0)
+                MessageList.ItemsSource = App.Proxy.GetSentFolder();
+            else
                 OnUserFolderClick();
         }
 
@@ -140,26 +140,19 @@ namespace WPFClient
 
         public void OnReplyMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            var selectedMessage = (Message)MessageList.SelectedItem;
-            var recipientEmployee = App.Proxy.GetEmployee(selectedMessage.SenderUsername);
-            string recipientString = recipientEmployee.FirstName + this.space
-                    + recipientEmployee.SecondName + space + leftUsernameStopper
-                    + recipientEmployee.Username + rightUsernameStopper;
+            //var selectedMessage = (Message)MessageList.SelectedItem;
+            //var recipientEmployee = App.Proxy.GetEmployee(selectedMessage.SenderUsername);
+            //string recipientString = recipientEmployee.FirstName + this.space
+            //        + recipientEmployee.SecondName + space + leftUsernameStopper
+            //        + recipientEmployee.Username + rightUsernameStopper;
 
-            //string senderString = SenderPrefix
+         
+
+            //string titleString = titlePrefix
             //    + space
-            //    + leftUsernameStopper 
-            //    + App.Username 
-            //    + rightUsernameStopper;
-
-            string titleString = titlePrefix
-                + space
-                + leftTitleStopper
-                + selectedMessage.Title
-                + rightTitleStopper;
-
-          // MessageCreator newMessage = new MessageCreator(senderString, recipientString, titleString);
-         //   newMessage.Show();
+            //    + leftTitleStopper
+            //    + selectedMessage.Title
+            //    + rightTitleStopper;       
         }
 
         public void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)

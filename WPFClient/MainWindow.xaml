@@ -15,6 +15,17 @@
             <Setter Property="Control.Background" Value="LightGray"></Setter>
         </Style>
         
+        <Style x:Key="MessageListItemBorberStyle" TargetType="{x:Type Border}">
+            <Setter Property="Margin" 
+                    Value="5"/>
+            <Setter Property="BorderThickness"
+                    Value="1"/>
+            <Setter Property="BorderBrush"
+                    Value="SteelBlue"/>
+            <Setter Property="CornerRadius"
+                    Value="4"/>
+        </Style>
+        
     </Window.Resources>
     <Grid Style="{StaticResource BackgroundStyle}">
         <Grid.RowDefinitions>
@@ -65,7 +76,7 @@
                     Grid.Column="0"/>
             
         <!--Список сообщений-->
-        <DataGrid Name="MessageList" 
+        <!--DataGrid Name="MessageList" 
                     Grid.Row="1"
                     Grid.Column="1" 
                     AutoGenerateColumns="False" 
@@ -83,7 +94,34 @@
                                     Header="{x:Static res:Resources.TitleColumn}"
                                     Width="1*"></DataGridTextColumn>
             </DataGrid.Columns>
-        </DataGrid>
+        </DataGrid-->
+
+        <ListBox Name="MessageList" 
+                 Grid.Row="1"
+                 Grid.Column="1" 
+                 SelectionMode="Single"
+                 SelectionChanged="OnMessageListSelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource MessageListItemBorberStyle}">
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Path=SenderUsername, Mode=OneWay}"/>
+                            <TextBlock Text="{Binding Path=Date, Mode=OneWay}"
+                                       Grid.Row="1"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
             
         <!--Секция отображающая выбранное сообщение-->
         <usercontrols:MessageControl x:Name="MessageControl" 

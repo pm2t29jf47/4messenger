@@ -105,6 +105,9 @@ namespace WPFClient
             ShowRecipientEditorDialog();
         }
 
+        /// <summary>
+        /// Диалог выбора сотрудников
+        /// </summary>
         void ShowRecipientEditorDialog()
         {
             RecipientsEditor recipientsEditor = new RecipientsEditor();
@@ -119,6 +122,11 @@ namespace WPFClient
             RecipientsControlModel.UpdateRecipientsByRecipientsEmployees();
         }
 
+        /// <summary>
+        /// Наполнение RecipientsString данными о распознанных пользователях
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnRecipientsTextBoxLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             RecipientsControlModel.UpdateRecipientsDefenitionInRecipientsString();

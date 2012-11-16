@@ -33,11 +33,6 @@ namespace WPFClient.Models
         }
 
         /// <summary>
-        /// Начальное состояние коллекции содержащей всех возможных для выбора сотрудников
-        /// </summary>
-        ObservableCollection<Employee> savedAllEmployees = new ObservableCollection<Employee>();
-    
-        /// <summary>
         /// Коллекция содержащая выбраных пользователем сотрудников
         /// </summary>
         ObservableCollection<Employee> selectedEmployees = new ObservableCollection<Employee>();
@@ -58,11 +53,6 @@ namespace WPFClient.Models
 
                 selectedEmployees = value;
             }
-        }
-
-        /// <summary>
-        /// Начальное состояние коллекции содержащей выбраных пользователем сотрудников
-        /// </summary>
-        ObservableCollection<Employee> savedSelectedEmployees = new ObservableCollection<Employee>();      
+        }    
     }
 }

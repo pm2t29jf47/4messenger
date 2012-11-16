@@ -85,43 +85,43 @@ namespace WPFClient.UserControls
         }
 
         /// <summary>
-        /// Смена состояния кнопок (IsEditable) при переводе фокуса
+        /// Смена состояния кнопок AddToSelectedButton и RemoveFromSelectedButton (IsEditable) при переводе фокуса
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnAllEmployeesListBoxIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
+        void OnAllEmployeesListBoxIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             AddToSelectedButton.IsEnabled = true;
             RemoveFromSelectedButton.IsEnabled = false;
         }
 
         /// <summary>
-        /// Смена состояния кнопок (IsEditable) при переводе фокуса
+        /// Смена состояния кнопок AddToSelectedButton и RemoveFromSelectedButton (IsEditable) при переводе фокуса
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnSelectedEmployeesListBoxIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
+        void OnSelectedEmployeesListBoxIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             AddToSelectedButton.IsEnabled = false;
             RemoveFromSelectedButton.IsEnabled = true;
         }
 
         /// <summary>
-        /// Отмечает всех сотрудников в списке AllEmployeesListBox
+        /// Отмечает всех сотрудников в списке AllEmployeesListBox по комбинации ctrl + a
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnAllEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
+        void OnAllEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             AllEmployeesListBox.SelectAll();     
         }
 
         /// <summary>
-        /// Отмечает всех сотрудников в списке SelectedEmployeesListBox
+        /// Отмечает всех сотрудников в списке SelectedEmployeesListBox по комбинации ctrl + a
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnSelectedEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
+        void OnSelectedEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             SelectedEmployeesListBox.SelectAll();
         }   

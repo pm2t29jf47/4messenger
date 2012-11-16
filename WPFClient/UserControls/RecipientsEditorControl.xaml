@@ -98,7 +98,7 @@
             </Grid.RowDefinitions>
             <TextBlock Style="{StaticResource MarginStyle}" 
                        Text="{x:Static res:Resources.AllEmployees}" 
-                       HorizontalAlignment="Center"></TextBlock>
+                       HorizontalAlignment="Left"></TextBlock>
             <ListBox Name="AllEmployeesListBox" 
                      Grid.Row="1" 
                      Style="{StaticResource ListBoxStyle}" 
@@ -156,7 +156,7 @@
             </Grid.RowDefinitions>
             <TextBlock Style="{StaticResource MarginStyle}" 
                        Text="{x:Static res:Resources.SelectedEmployees}" 
-                       HorizontalAlignment="Center"></TextBlock>
+                       HorizontalAlignment="Left"></TextBlock>
             <ListBox Name="SelectedEmployeesListBox" 
                      Grid.Row="1" 
                      Style="{StaticResource ListBoxStyle}" 

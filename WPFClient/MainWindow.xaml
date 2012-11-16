@@ -46,7 +46,7 @@
                         Click="OnCreateMessageButtonClick"
                         Style="{StaticResource MarginStyle}">
                     <StackPanel>
-                        <Image Source="Images\mail.png"></Image>
+                        <Image Source="Images\mail_new.png"></Image>
                         <Label Content="{x:Static res:Resources.NewMessageLabel}"></Label>
                     </StackPanel>
                 </Button>

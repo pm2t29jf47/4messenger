@@ -76,20 +76,7 @@ namespace WPFClient
         public static readonly DependencyProperty IsValidProperty =
             DependencyProperty.Register("IsValid", typeof(bool),
             typeof(RecipientsControl), new UIPropertyMetadata(false),
-            null); 
-
-        /// <summary>
-        /// Отлов события закрытия окна RecipientsEditor
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void OnrecipientsEditorClosing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            RecipientsEditor recipientsEditor = (RecipientsEditor)sender;
-            RecipientsEditorModel rem = (RecipientsEditorModel)recipientsEditor.DataContext;
-            RecipientsControlModel.UpdateRecipientsString(rem.RecipientsEmployees);
-            RecipientsControlModel.UpdateRecipientsByRecipientsEmployees();
-        }       
+            null);     
         
         /// <summary>
         /// Подготавливает контрол для различных вариантов использования
@@ -115,22 +102,27 @@ namespace WPFClient
         /// <param name="e"></param>
         void OnAddButtonClick(object sender, RoutedEventArgs e)
         {
-            RecipientsEditor recipientsEditor = new RecipientsEditor();            
+            ShowRecipientEditorDialog();
+        }
+
+        void ShowRecipientEditorDialog()
+        {
+            RecipientsEditor recipientsEditor = new RecipientsEditor();
             recipientsEditor.DataContext = new RecipientsEditorModel()
             {
                 AllEmployees = RecipientsControlModel.AllResidueEmployees,
                 RecipientsEmployees = RecipientsControlModel.RecipientsEmployees
             };
-            recipientsEditor.ShowDialog();
-            recipientsEditor.Closing += new System.ComponentModel.CancelEventHandler(OnrecipientsEditorClosing);
+            recipientsEditor.ShowDialog();            
+            RecipientsEditorModel rem = (RecipientsEditorModel)recipientsEditor.DataContext;
+            RecipientsControlModel.UpdateRecipientsString(rem.RecipientsEmployees);
+            RecipientsControlModel.UpdateRecipientsByRecipientsEmployees();
         }
 
         private void OnRecipientsTextBoxLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             RecipientsControlModel.UpdateRecipientsDefenitionInRecipientsString();
-        }
-
-     
+        }    
     }
 }
 

@@ -8,6 +8,7 @@
              d:DesignHeight="260" d:DesignWidth="492">
 
     <Control.Resources>
+        
         <!--Базовый стиль-->
         <Style x:Key="MarginStyle">
             <Setter Property="Control.Margin" 
@@ -38,21 +39,6 @@
                     Value="2">                
             </Setter>
         </Style> 
-        
-        <!--Стиль кнопок добавления и удаления сотрудников-->
-        <Style x:Key="AddRemoveButtonsStyle" 
-               BasedOn="{StaticResource MarginStyle}">
-            <Setter Property="Button.IsEnabled" 
-                    Value="false">
-            </Setter>
-        </Style>
-
-        <!--Стиль кнопок сохранения и отмены редактирования-->
-        <Style x:Key="OKCancelButtonStyle" BasedOn="{StaticResource MarginStyle}">
-            <Setter Property="Control.Padding"
-                    Value="5">
-            </Setter>
-        </Style>
         
         <!--Стиль изображений на кнопке AddToSelected и его смена по состояниям-->
         <Style x:Key="AddToSelectedButtonImageStyle">
@@ -87,6 +73,14 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+        <!--Стиль кнопок добавления и удаления сотрудников-->
+        <Style x:Key="AddRemoveButtonsStyle" 
+               BasedOn="{StaticResource MarginStyle}">
+            <Setter Property="Button.IsEnabled" 
+                    Value="false">
+            </Setter>
+        </Style>
     </Control.Resources>
 
     <Grid Style="{StaticResource MainGridStyle}">
@@ -95,13 +89,9 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-        </Grid.RowDefinitions>
-
+        
         <!--Левая колонка-->
-        <Grid Grid.Column="0">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -196,27 +186,6 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </Grid>
-        
-        <!--Нижняя панель с кнопками сохранения и отмены редактирования-->
-        <StackPanel Grid.Row="1"
-                    Grid.ColumnSpan="3"                   
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right">
-            <Grid Grid.IsSharedSizeScope="True">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" 
-                                      SharedSizeGroup="ButtonsGroup"></ColumnDefinition>
-                    <ColumnDefinition Width="auto"
-                                      SharedSizeGroup="ButtonsGroup"></ColumnDefinition>
-                </Grid.ColumnDefinitions>    
-                <Button Name="OkButton" Content="{x:Static res:Resources.OkButton}"
-                        Style="{StaticResource OKCancelButtonStyle}" Click="OnOkButtonClick"></Button>
-                <Button Name="CancelButton" 
-                        Grid.Column="1"
-                        Content="{x:Static res:Resources.CancelButton}"                    
-                        Style="{StaticResource OKCancelButtonStyle}" Click="OnCancelButtonClick"></Button>
-            </Grid>
-        </StackPanel>
+        </Grid>       
     </Grid>
 </UserControl>

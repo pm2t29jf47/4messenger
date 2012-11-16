@@ -12,6 +12,10 @@ namespace WPFClient.Models
         /// Коллекция содержащая всех возможных для выбора сотрудников
         /// </summary>
         List<Employee> allEmployees = new List<Employee>();
+
+        /// <summary>
+        /// Коллекция содержащая всех возможных для выбора сотрудников
+        /// </summary>
         public List<Employee> AllEmployees 
         {
             get
@@ -31,6 +35,10 @@ namespace WPFClient.Models
         /// Коллекция содержащая выбраных пользователем сотрудников
         /// </summary>
         List<Employee> recipientsEmployees = new List<Employee>();
+
+        /// <summary>
+        /// Коллекция содержащая выбраных пользователем сотрудников
+        /// </summary>
         public List<Employee> RecipientsEmployees 
         {
             get
@@ -45,6 +53,7 @@ namespace WPFClient.Models
                 recipientsEmployees = value;
             }
         }
+
     }
 }
 

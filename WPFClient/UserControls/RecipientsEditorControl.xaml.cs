@@ -22,12 +22,6 @@ namespace WPFClient.UserControls
         public RecipientsEditorControl()
         {
             InitializeComponent();
-            DataContextChanged += new DependencyPropertyChangedEventHandler(OnRecipientsEditorControlDataContextChanged);
-        }
-
-        void OnRecipientsEditorControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            RecipientsEditorControlModel.SaveState();
         }
 
         /// <summary>
@@ -130,18 +124,6 @@ namespace WPFClient.UserControls
         private void OnSelectedEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             SelectedEmployeesListBox.SelectAll();
-        }
-
-        private void OnCancelButtonClick(object sender, RoutedEventArgs e)
-        {
-            RecipientsEditorControlModel.RestoreSavedState();
-            AddToSelectedButton.IsEnabled = false;
-            RemoveFromSelectedButton.IsEnabled = false;
-        }
-
-        private void OnOkButtonClick(object sender, RoutedEventArgs e)
-        {
-
-        }
+        }   
     }
 }

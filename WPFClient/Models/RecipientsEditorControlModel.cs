@@ -63,28 +63,6 @@ namespace WPFClient.Models
         /// <summary>
         /// Начальное состояние коллекции содержащей выбраных пользователем сотрудников
         /// </summary>
-        ObservableCollection<Employee> savedSelectedEmployees = new ObservableCollection<Employee>();
-
-        public void SaveState()
-        {
-            savedSelectedEmployees.Clear();
-            foreach (var item in selectedEmployees)
-                savedSelectedEmployees.Add(item);
-
-            savedAllEmployees.Clear();
-            foreach (var item in allEmployees)
-                savedAllEmployees.Add(item);
-        }
-
-        public void RestoreSavedState()
-        {
-            selectedEmployees.Clear();
-            foreach (var item in savedSelectedEmployees)
-                selectedEmployees.Add(item);
-
-            allEmployees.Clear();
-            foreach (var item in savedAllEmployees)
-                allEmployees.Add(item);
-        }
+        ObservableCollection<Employee> savedSelectedEmployees = new ObservableCollection<Employee>();      
     }
 }

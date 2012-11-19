@@ -2,10 +2,8 @@
 - SqlMembershipProvider
 
 !!!!
-- Work stop on MainWindow.xaml.cs
 - обработка исключений
 - переделать тулбар под шаблоны
-- WPFClient.Models.MessageModel Comments?
 
 
 ####

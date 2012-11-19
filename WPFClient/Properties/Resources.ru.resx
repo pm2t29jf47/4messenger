@@ -151,7 +151,7 @@
     <value>Создание сообщения</value>
   </data>
   <data name="NewMessageLabel" xml:space="preserve">
-    <value>Новое сообщение</value>
+    <value>Создать</value>
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>получатель не существует</value>

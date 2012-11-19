@@ -297,9 +297,9 @@ namespace WPFClient.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Sent.
         /// </summary>
-        public static string SentFolderLabel {
+        public static string SentboxFolderLabel {
             get {
-                return ResourceManager.GetString("SentFolderLabel", resourceCulture);
+                return ResourceManager.GetString("SentboxFolderLabel", resourceCulture);
             }
         }
         

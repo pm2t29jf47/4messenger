@@ -15,6 +15,7 @@ using Entities;
 using WPFClient.Models;
 using WPFClient.UserControls;
 using WPFClient.Additional;
+using WPFClient.OverEntities;
 
 namespace WPFClient
 {
@@ -79,7 +80,7 @@ namespace WPFClient
         void FillFoldersNames()
         {
             folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLabel));
-            folders.Add(new SidebarFolder(Properties.Resources.SentFolderLabel));
+            folders.Add(new SidebarFolder(Properties.Resources.SentboxFolderLabel));
             folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLabel));
         }
 
@@ -92,15 +93,15 @@ namespace WPFClient
 
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MessageList.SelectedItem == null)
-                return;
-            MessageControlModel mcm = new MessageControlModel()
-            {
-                AllEmployees = App.Proxy.GetAllEmployees(),
-                Message = (Message)MessageList.SelectedItem
-            };
-            MessageControl.DataContext = mcm;
-            HideToolbarButtons(false);       
+            //if (MessageList.SelectedItem == null)
+            //    return;
+            //MessageControlModel mcm = new MessageControlModel()
+            //{
+            //    AllEmployees = App.Proxy.GetAllEmployees(),
+            //    Message = (Message)MessageList.SelectedItem
+            //};
+            //MessageControl.DataContext = mcm;
+            //HideToolbarButtons(false);       
         }
 
         /// <summary>
@@ -109,29 +110,69 @@ namespace WPFClient
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void OnFolderClick(object sender, RoutedEventArgs e)
-        {
+        {   
             var selectedFolder = (Button)sender;
             HideToolbarButtons(true);
             if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLabel) == 0)
-                MessageList.ItemsSource = App.Proxy.GetDeletedMessages();
+                PrepareMessageListForDeletedFolder();
             else if (string.Compare(selectedFolder.Name, Properties.Resources.InboxFolderLabel) == 0)
-            {
-                List<Message> InboxMessages = App.Proxy.GetInboxMessages();
-                List<MessageModel> InboxMessagesModel = new List<MessageModel>();
-                foreach(var item in InboxMessages)
-                {
-                    InboxMessagesModel.Add(new MessageModel()
-                    {
-                       // Message = item,/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                       // SenderEmployee = 
-                    }
-                }
-                MessageList.ItemsSource = 
-            }
-            else if (string.Compare(selectedFolder.Name, Properties.Resources.SentFolderLabel) == 0)
-                MessageList.ItemsSource = App.Proxy.GetSentMessages();
+                PrepareMessageListForInboxFolder();
+            else if (string.Compare(selectedFolder.Name, Properties.Resources.SentboxFolderLabel) == 0)
+                PrepareMessageListForSentboxFolder();
             else
                 OnUserFolderClick();
+            
+        }
+
+        void PrepareMessageListForInboxFolder()
+        {
+            MessageList.ItemTemplate = (DataTemplate)FindResource("ForInboxFolderTemplate");
+            List<Message> InboxMessages = App.Proxy.GetInboxMessages();
+            List<MessageModel> InboxMessagesModel = new List<MessageModel>();
+            foreach (var item in InboxMessages)
+            {
+                InboxMessagesModel.Add(new MessageModel()
+                {
+                    Message = item,
+                    SenderEmployee = App.Proxy.GetEmployee(item.SenderUsername),
+                    Recipients = App.Proxy.GetRecipients((int)item.Id)
+                });
+            }
+            MessageList.ItemsSource = InboxMessagesModel;
+        }
+
+        void PrepareMessageListForSentboxFolder()
+        {
+            MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");            
+            List<Message> SentboxMessages = App.Proxy.GetSentboxMessages();
+            List<MessageModel> SentboxMessagesModel = new List<MessageModel>();
+            foreach (var item in SentboxMessages)
+            {
+                SentboxMessagesModel.Add(new MessageModel()
+                {
+                    Message = item,
+                    SenderEmployee = App.Proxy.GetEmployee(item.SenderUsername),
+                    Recipients = App.Proxy.GetRecipients((int)item.Id)
+                });
+            }
+            MessageList.ItemsSource = SentboxMessagesModel;
+        }
+
+        void PrepareMessageListForDeletedFolder()
+        {
+            MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
+            List<Message> DeletedMessages = App.Proxy.GetDeletedMessages();     
+            List<MessageModel> DeletedMessagesModel = new List<MessageModel>();
+            foreach (var item in DeletedMessages)
+            {
+                DeletedMessagesModel.Add(new MessageModel()
+                {
+                    Message = item,
+                    SenderEmployee = App.Proxy.GetEmployee(item.SenderUsername),
+                    Recipients = App.Proxy.GetRecipients((int)item.Id)
+                });
+            }
+            MessageList.ItemsSource = DeletedMessagesModel;
         }
 
         /// <summary>

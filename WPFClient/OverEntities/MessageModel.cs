@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Entities;
 
-namespace WPFClient.Models
+namespace WPFClient.OverEntities
 {
     public class MessageModel
     {
@@ -45,7 +45,7 @@ namespace WPFClient.Models
 
         List<Recipient> recipients = new List<Recipient>();
 
-        List<Recipient> Recipients
+        public List<Recipient> Recipients
         {
             get
             {
@@ -58,6 +58,14 @@ namespace WPFClient.Models
 
                 recipients = value;
             }
-        }           
+        }   
+
+        public bool Viewed
+        {
+            get
+            {
+                return Recipients.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0).Viewed;
+            }
+        }
     }
 }

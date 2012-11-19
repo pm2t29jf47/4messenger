@@ -40,6 +40,7 @@ namespace DBService
         /// <returns>
         /// Список получателей
         /// </returns>
+        [OperationContract]
         List<Recipient> GetRecipients(int MessageId);
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Message> GetSentMessages();
+        List<Message> GetSentboxMessages();
 
         /// <summary>
         /// Задает входящему сообщению флаг прочитанности

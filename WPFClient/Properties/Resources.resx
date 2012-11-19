@@ -144,7 +144,7 @@
   <data name="SenderLabel" xml:space="preserve">
     <value>Sender</value>
   </data>
-  <data name="SentFolderLabel" xml:space="preserve">
+  <data name="SentboxFolderLabel" xml:space="preserve">
     <value>Sent</value>
   </data>
   <data name="TitleColumn" xml:space="preserve">

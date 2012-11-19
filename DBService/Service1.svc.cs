@@ -62,7 +62,7 @@ namespace DBService
         public void CheckUser(){ }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetSentMessages()
+        public List<Message> GetSentboxMessages()
         {
             ///добавить проверку на удаленность
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
@@ -111,7 +111,7 @@ namespace DBService
         public List<Recipient> GetRecipients(int messageId)
         {
             string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return RecipientGateway.SelectByMessageId(messageId, username);
+            return RecipientGateway.SelectByMessageId(messageId, curentUsername);
         }
     }
 }

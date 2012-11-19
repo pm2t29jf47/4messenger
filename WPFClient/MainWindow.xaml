@@ -25,6 +25,118 @@
                     Value="4"/>
         </Style>
         
+        <Style x:Key="MessageListItemStyle">
+            <Setter Property="Control.Margin" Value="2"/>
+        </Style>
+
+        <Style x:Key="SenderItemStyle" BasedOn="{StaticResource MessageListItemStyle}">
+            <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="DateItemStyle" BasedOn="{StaticResource MessageListItemStyle}">
+            <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+        </Style>
+                
+        <DataTemplate x:Key="ForInboxFolderTemplate">  
+            <Border Style="{StaticResource MessageListItemBorberStyle}" >
+                <Grid Margin="5"
+                            x:Name="ListBoxItemGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <!--пиктограмма письма-->
+                    <Image x:Name="MessageImage"
+                            Source="Images\mail.png"
+                                Style="{StaticResource MessageListItemStyle}"></Image>
+                    <!--ФИО отправителя-->
+                    <TextBlock Grid.Column="1"
+                                    Style="{StaticResource SenderItemStyle}">
+                            <TextBlock.Text>                                    
+                                <MultiBinding StringFormat="{}{0} {1} &lt;{2}&gt;">
+                                    <Binding Path="SenderEmployee.FirstName" 
+                                                Mode="OneWay"/>
+                                    <Binding Path="SenderEmployee.SecondName" 
+                                                Mode="OneWay"/>
+                                    <Binding Path="SenderEmployee.Username" 
+                                                Mode="OneWay"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                    </TextBlock>
+                    <!--Дата-->
+                    <TextBlock Grid.Column="2"
+                                    Text="{Binding Path=Message.Date}"
+                                    Style="{StaticResource DateItemStyle}">
+                    </TextBlock>
+                    <!--Тема-->
+                    <TextBlock Grid.Row="1"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Text="{Binding Path=Message.Title, Mode=OneWay}"
+                                    Style="{StaticResource MessageListItemStyle}"/>
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=Viewed}" Value="False">
+                    <Setter TargetName="MessageImage" Property="Source" Value="Images\mail2.png"></Setter>
+                    <Setter Property="ListBoxItem.Foreground" Value="Red"></Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>    
+        </DataTemplate>
+
+        <DataTemplate x:Key="DefaultFolderTemplate">
+            <Border Style="{StaticResource MessageListItemBorberStyle}" >
+                <Grid Margin="5"
+                            x:Name="ListBoxItemGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <!--пиктограмма письма-->
+                    <Image x:Name="MessageImage"
+                            Source="Images\mail.png"
+                                Style="{StaticResource MessageListItemStyle}"></Image>
+                    
+                    <!--ФИО отправителя-->
+                    <TextBlock Grid.Column="1"
+                                    Style="{StaticResource SenderItemStyle}">
+                            <TextBlock.Text>                                    
+                                <MultiBinding StringFormat="{}{0} {1} &lt;{2}&gt;">
+                                    <Binding Path="SenderEmployee.FirstName" 
+                                                Mode="OneWay"/>
+                                    <Binding Path="SenderEmployee.SecondName" 
+                                                Mode="OneWay"/>
+                                    <Binding Path="SenderEmployee.Username" 
+                                                Mode="OneWay"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                    </TextBlock>
+                    
+                    <!--Дата-->
+                    <TextBlock Grid.Column="2"
+                                    Text="{Binding Path=Message.Date}"
+                                    Style="{StaticResource DateItemStyle}">
+                    </TextBlock>
+                    
+                    <!--Тема-->
+                    <TextBlock Grid.Row="1"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Text="{Binding Path=Message.Title, Mode=OneWay}"
+                                    Style="{StaticResource MessageListItemStyle}"/>
+                </Grid>
+            </Border>            
+        </DataTemplate>
     </Window.Resources>
     <Grid Style="{StaticResource BackgroundStyle}">
         <Grid.RowDefinitions>
@@ -73,54 +185,13 @@
         <StackPanel Name="Sidebar" 
                     Grid.Row="1"
                     Grid.Column="0"/>
-            
-        <!--Список сообщений-->
-        <!--DataGrid Name="MessageList" 
-                    Grid.Row="1"
-                    Grid.Column="1" 
-                    AutoGenerateColumns="False" 
-                    SelectionChanged="OnMessageListSelectionChanged" 
-                    IsReadOnly="True"
-                    Style="{StaticResource MarginStyle}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=SenderUsername, Mode=OneWay}" 
-                                    Header="{x:Static res:Resources.SenderUsernameColumn}"
-                                    Width="1*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Path=Date}" 
-                                    Header="{x:Static res:Resources.DateColumn}"
-                                    Width="1*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Path=Title}" 
-                                    Header="{x:Static res:Resources.TitleColumn}"
-                                    Width="1*"></DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid-->
 
+        <!--Список сообщений-->
         <ListBox Name="MessageList" 
                  Grid.Row="1"
                  Grid.Column="1" 
                  SelectionMode="Single"
-                 SelectionChanged="OnMessageListSelectionChanged">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Style="{StaticResource MessageListItemBorberStyle}">
-                        <Grid Margin="5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Path=SenderUsername, Mode=OneWay}"/>
-                            <TextBlock Text="{Binding Path=Date, Mode=OneWay}"
-                                       Grid.Row="1"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                 SelectionChanged="OnMessageListSelectionChanged"/> 
             
         <!--Секция отображающая выбранное сообщение-->
         <usercontrols:MessageControl x:Name="MessageControl" 

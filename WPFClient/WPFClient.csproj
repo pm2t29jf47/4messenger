@@ -60,6 +60,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Additional\CustomStringComparer.cs" />
+    <Compile Include="Additional\SpecialSymbols.cs" />
     <Compile Include="Models\MessageControlModel.cs" />
     <Compile Include="MessageCreator.xaml.cs">
       <DependentUpon>MessageCreator.xaml</DependentUpon>

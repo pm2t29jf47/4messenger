@@ -12,11 +12,6 @@ namespace WPFClient.Models
     {
         #region Common code
 
-        char leftUsernameStopper = '<',
-            rightUsernameStopper = '>',
-            userDataDevider = ';',
-            space = ' ';
-
         bool isValid = false;
 
         public bool IsValid
@@ -143,21 +138,17 @@ namespace WPFClient.Models
         {
             set
             {
-                if (value == null)
-                {
+                if (value == null)                
                    return;
-                }
-                else
-                {           
-                    recipients = value;
-                    RecipientsEmployees.Clear();
-                    foreach (var item in value)
-                    {
-                        Employee employee = AllEmployees.FirstOrDefault(row => (string.Compare(row.Username, item.RecipientUsername) == 0));
-                        if (employee != null)
-                            RecipientsEmployees.Add(employee);
-                    }
-                }
+
+                recipients = value;
+                RecipientsEmployees.Clear();
+                foreach (var item in value)
+                {
+                    Employee employee = AllEmployees.FirstOrDefault(row => (string.Compare(row.Username, item.RecipientUsername) == 0));
+                    if (employee != null)
+                        RecipientsEmployees.Add(employee);
+                }               
             }
         }        
 
@@ -205,7 +196,7 @@ namespace WPFClient.Models
                 if (additionalString.Length != 0)
                 {
                     return baseString
-                        + userDataDevider
+                        + SpecialSymbols.userDataDevider
                         + additionalString;
                 }
                 else
@@ -233,8 +224,8 @@ namespace WPFClient.Models
         /// <returns></returns>
         string ParseUsername(string recipientString)
         {
-            int begin = recipientString.IndexOf(leftUsernameStopper),
-                end = recipientString.IndexOf(rightUsernameStopper);
+            int begin = recipientString.IndexOf(SpecialSymbols.leftUsernameStopper),
+                end = recipientString.IndexOf(SpecialSymbols.rightUsernameStopper);
 
             if (begin == -1 || end == -1)
             {
@@ -302,7 +293,7 @@ namespace WPFClient.Models
         /// <param name="e"></param>
         public void UpdateRecipientsDefenitionInRecipientsString()
         {
-            string[] recipientsSubStrings = recipientsString.Split(userDataDevider);              
+            string[] recipientsSubStrings = recipientsString.Split(SpecialSymbols.userDataDevider);              
             string result = string.Empty,
                 fullRecipientDefenition;
             string[] usernames = ParseToUsernames(recipientsSubStrings);
@@ -339,13 +330,13 @@ namespace WPFClient.Models
             string result = string.Empty;
             if (employee != null)
             {
-                result = employee.FirstName 
-                    + space
-                    + employee.SecondName 
-                    + space 
-                    + leftUsernameStopper
-                    + employee.Username 
-                    + rightUsernameStopper;
+                result = employee.FirstName
+                    + SpecialSymbols.space
+                    + employee.SecondName
+                    + SpecialSymbols.space
+                    + SpecialSymbols.leftUsernameStopper
+                    + employee.Username
+                    + SpecialSymbols.rightUsernameStopper;
             }
             return result;
         }
@@ -362,7 +353,7 @@ namespace WPFClient.Models
                 && Employees.Count != 0)
             {
                 foreach (var item in Employees)
-                    result += EmployeeToString(item) + userDataDevider;
+                    result += EmployeeToString(item) + SpecialSymbols.userDataDevider;
 
                 result = result.Substring(0, result.Length - 1);
             }
@@ -410,7 +401,7 @@ namespace WPFClient.Models
         {
             RecipientsEmployees.Clear();
             UnrecognizedUsernames = string.Empty;
-            string[] recipients = recipientsString.Split(userDataDevider);
+            string[] recipients = recipientsString.Split(SpecialSymbols.userDataDevider);
             string errorMessage = string.Empty;
             if ((recipients.Length == 1)
                 && (string.Compare(recipients[0], string.Empty) == 0))
@@ -455,7 +446,7 @@ namespace WPFClient.Models
                     if (buf.Contains(item, new CustomStringComparer()))
                     {
                         string msg = Properties.Resources.UnuniqueUsername
-                            + space
+                            + SpecialSymbols.space
                             + item;
 
                         errorMessage = JoinToString(errorMessage, msg);
@@ -520,7 +511,7 @@ namespace WPFClient.Models
         {            
             UnrecognizedUsernames = JoinToString(UnrecognizedUsernames, username);
             return username
-                + space
+                + SpecialSymbols.space
                 + Properties.Resources.NotFound;
         }
          

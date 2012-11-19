@@ -77,6 +77,23 @@ namespace WPFClient.Models
             }
         }
 
+        Employee senderEmployee = new Employee();
+
+        public Employee SenderEmployee
+        {
+            get
+            {
+                return senderEmployee;
+            }
+            set
+            {
+                if (senderEmployee == value)
+                    return;
+
+                senderEmployee = value;
+            }
+        }
+
         
     }
 }

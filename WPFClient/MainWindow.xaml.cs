@@ -26,14 +26,6 @@ namespace WPFClient
     {
         List<SidebarFolder> folders = new List<SidebarFolder>();
 
-        char leftUsernameStopper = '<',
-            rightUsernameStopper = '>',
-            userDataDevider = ';',
-            space = ' ',
-            leftTitleStopper = '[',
-            rightTitleStopper = ']';
-        string titlePrefix = Properties.Resources.Re;
-
         public MainWindow()
         {
             ///Выбирает локаль
@@ -93,15 +85,17 @@ namespace WPFClient
 
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (MessageList.SelectedItem == null)
-            //    return;
-            //MessageControlModel mcm = new MessageControlModel()
-            //{
-            //    AllEmployees = App.Proxy.GetAllEmployees(),
-            //    Message = (Message)MessageList.SelectedItem
-            //};
-            //MessageControl.DataContext = mcm;
-            //HideToolbarButtons(false);       
+            if (MessageList.SelectedItem == null)
+                return;
+            MessageControlModel mcm = new MessageControlModel()
+            {
+                AllEmployees = App.Proxy.GetAllEmployees(),
+                Message = ((MessageModel)MessageList.SelectedItem).Message,
+                Recipients = ((MessageModel)MessageList.SelectedItem).Recipients,
+                SenderEmployee = ((MessageModel)MessageList.SelectedItem).SenderEmployee
+            };
+            MessageControl.DataContext = mcm;
+            HideToolbarButtons(false);       
         }
 
         /// <summary>
@@ -203,9 +197,9 @@ namespace WPFClient
             //        + recipientEmployee.SecondName + space + leftUsernameStopper
             //        + recipientEmployee.Username + rightUsernameStopper;
 
-         
 
-            //string titleString = titlePrefix
+
+            //string titleString = Properties.Resources.Re
             //    + space
             //    + leftTitleStopper
             //    + selectedMessage.Title
@@ -227,13 +221,13 @@ namespace WPFClient
             string result = string.Empty;
             if (employee != null)
             {
-                result = employee.FirstName 
-                    + space
-                    + employee.SecondName 
-                    + space 
-                    + leftUsernameStopper
-                    + employee.Username 
-                    + rightUsernameStopper;
+                result = employee.FirstName
+                    + SpecialSymbols.space
+                    + employee.SecondName
+                    + SpecialSymbols.space
+                    + SpecialSymbols.leftUsernameStopper
+                    + employee.Username
+                    + SpecialSymbols.rightUsernameStopper;
             }
             return result;
         }
@@ -245,7 +239,7 @@ namespace WPFClient
                 && Employees.Count != 0)
             {
                 foreach (var item in Employees)
-                    result += EmployeeToString(item) + userDataDevider;
+                    result += EmployeeToString(item) + SpecialSymbols.userDataDevider;
 
                 result = result.Substring(0, result.Length - 1);
             }

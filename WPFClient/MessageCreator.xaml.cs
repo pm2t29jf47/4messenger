@@ -43,7 +43,8 @@ namespace WPFClient
             MessageControl.DataContext = new MessageControlModel()
             {
                 AllEmployees = MessageCreatorModel.AllEmployees,
-                Message = MessageCreatorModel.Message
+                Message = MessageCreatorModel.Message,
+                SenderEmployee = MessageCreatorModel.SenderEmployee
             };
             MessageControl.ControlState = WPFClient.UserControls.MessageControl.state.IsEditable;
         }
@@ -68,8 +69,7 @@ namespace WPFClient
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSendMessageButtonClick(object sender, RoutedEventArgs e)
-        {
-            bool a = Validation.GetHasError(MessageControl);
+        {           
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
             App.Proxy.SendMessage(mcm.Message, mcm.Recipients);
             this.Close();

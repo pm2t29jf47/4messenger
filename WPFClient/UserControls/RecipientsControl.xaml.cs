@@ -111,8 +111,8 @@ namespace WPFClient
             if(recipientsEditor.ShowDialog() == true)
             {
                 RecipientsEditorModel rem = (RecipientsEditorModel)recipientsEditor.DataContext;
-                RecipientsControlModel.UpdateRecipientsString(rem.RecipientsEmployees);
-                RecipientsControlModel.UpdateRecipientsByRecipientsEmployees();
+                RecipientsControlModel.RecipientsEmployees = rem.RecipientsEmployees;
+                RecipientsControlModel.UpdateByRecipientsEmployees();
             }
         }
 

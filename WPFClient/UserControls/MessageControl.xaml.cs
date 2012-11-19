@@ -59,7 +59,6 @@ namespace WPFClient.UserControls
             DependencyProperty.Register("IsValid", typeof(bool),
             typeof(MessageControl), new UIPropertyMetadata(false), null);
 
-
         /// <summary>
         /// Заполняет DataContext RecipientsControl-а
         /// </summary>
@@ -67,13 +66,14 @@ namespace WPFClient.UserControls
         /// <param name="e"></param>
         void OnMessageControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            RecipientsControl.DataContext = new RecipientsControlModel()
+            RecipientsControlModel rcm = new RecipientsControlModel()
             {
                 AllEmployees = MessageControlModel.AllEmployees,
                 Recipients = MessageControlModel.Recipients
-            };       
+            };
+            rcm.UpdateByRecipients();
+            RecipientsControl.DataContext = rcm;
         }
-
         
         /// <summary>
         /// Два состояния отображения контрола

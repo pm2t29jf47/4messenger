@@ -136,19 +136,16 @@ namespace WPFClient.Models
         /// </summary>  
         public List<Recipient> Recipients
         {
+            get
+            {
+                return recipients;
+            }
             set
             {
                 if (value == null)                
                    return;
 
-                recipients = value;
-                RecipientsEmployees.Clear();
-                foreach (var item in value)
-                {
-                    Employee employee = AllEmployees.FirstOrDefault(row => (string.Compare(row.Username, item.RecipientUsername) == 0));
-                    if (employee != null)
-                        RecipientsEmployees.Add(employee);
-                }               
+                recipients = value;                
             }
         }        
 
@@ -253,25 +250,56 @@ namespace WPFClient.Models
         }
 
         /// <summary>
-        /// Обновляет строку адресатов
+        /// Обновляет строку RecipientsString  и коллекцию Recipients по коллекции RecipientsEmployees
         /// </summary>
-        /// <returns></returns>
-        public void UpdateRecipientsString(List<Employee> Employees)
+        /// <remarks>
+        /// Необхдимо вызввать при каждом изменении Recipients
+        /// </remarks>
+        public void UpdateByRecipientsEmployees()
         {
-            string buf = EmployeesToString(Employees);
-            RecipientsString = JoinToString(UnrecognizedUsernames, buf);          
+            string buf = EmployeesToString(recipientsEmployees);
+            RecipientsString = JoinToString(UnrecognizedUsernames, buf);
+            recipients.Clear();
+            foreach (var item in recipientsEmployees)
+            {
+                recipients.Add(
+                    new Recipient(
+                        item.Username,
+                        null,
+                        false,
+                        false));
+            }
         }
 
         /// <summary>
-        /// Заполнякт Recipients по коллекции RecipientsEmployees
+        /// Обновляет строку RecipientsString  и коллекцию RecipientEmployees по коллекции Recipients
         /// </summary>
         /// <remarks>
-        /// Необходимо обновлять !объект! recipients при каждом изменении коллекции RecipientsEmployees.
+        /// Необхдимо вызввать при каждом изменении Recipients
         /// </remarks>
-        public void UpdateRecipientsByRecipientsEmployees()
+        public void UpdateByRecipients()
+        {
+            recipientsEmployees.Clear();
+            foreach (var item in recipients)
+            {
+                Employee employee = AllEmployees.FirstOrDefault(row => (string.Compare(row.Username, item.RecipientUsername) == 0));
+                if (employee != null)
+                    recipientsEmployees.Add(employee);
+            }
+            string buf = EmployeesToString(recipientsEmployees);
+            RecipientsString = JoinToString(UnrecognizedUsernames, buf);  
+        }
+
+        /// <summary>
+        /// Обновляет коллекцию Recipients по коллекции RecipientsEmployees
+        /// </summary>
+        /// <remarks>
+        /// Вызывается при валидации RecipientString, заполнение коллекции RecipientsEmployees происходит в процессе этой валидации
+        /// </remarks>
+        void UpdateRecipientsByRecipientsEmployees()
         {
             recipients.Clear();
-            foreach (var item in RecipientsEmployees)
+            foreach (var item in recipientsEmployees)
             {
                 recipients.Add(
                     new Recipient(
@@ -409,7 +437,9 @@ namespace WPFClient.Models
                 return Properties.Resources.RecipientsStringNotBeEmpty;
             }
             string[] usernames = ParseToUsernames(recipients);          
-            return ProcessUsernames(usernames);
+            string result = ProcessUsernames(usernames);
+            UpdateRecipientsByRecipientsEmployees();
+            return result;
         }
 
         /// <summary>

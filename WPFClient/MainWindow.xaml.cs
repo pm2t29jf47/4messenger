@@ -180,10 +180,14 @@ namespace WPFClient
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
         {            
             MessageCreator messageCreator = new MessageCreator();
+            Message message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false);
+            List<Employee> allEmployees = App.Proxy.GetAllEmployees();
+            Employee senderEmployee = allEmployees.FirstOrDefault(row => string.Compare(row.Username, message.SenderUsername) == 0);
             messageCreator.DataContext = new MessageCreatorModel()
             {
-                Message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false),
-                AllEmployees = App.Proxy.GetAllEmployees()
+                Message = message,
+                AllEmployees = allEmployees,
+                SenderEmployee = senderEmployee
             };
             messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст
             messageCreator.Show();            

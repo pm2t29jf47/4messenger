@@ -25,7 +25,6 @@ namespace DBService
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return EmployeeGateway.SelectAll(currentUsername);
         }
-
         
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void SendMessage(Message message, List<Recipient> recipients)

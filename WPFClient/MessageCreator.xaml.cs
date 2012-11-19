@@ -43,8 +43,9 @@ namespace WPFClient
             MessageControl.DataContext = new MessageControlModel()
             {
                 AllEmployees = MessageCreatorModel.AllEmployees,
-                Message = MessageCreatorModel.Message,
-                SenderEmployee = MessageCreatorModel.SenderEmployee
+                Message = MessageCreatorModel.MessageModel.Message,
+                SenderEmployee = MessageCreatorModel.MessageModel.SenderEmployee,
+                Recipients = MessageCreatorModel.MessageModel.Recipients
             };
             MessageControl.ControlState = WPFClient.UserControls.MessageControl.state.IsEditable;
         }

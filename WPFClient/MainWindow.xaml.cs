@@ -26,6 +26,8 @@ namespace WPFClient
     {
         List<SidebarFolder> folders = new List<SidebarFolder>();
 
+        bool inboxFolderPressed = false;
+
         public MainWindow()
         {
             ///Выбирает локаль
@@ -87,14 +89,20 @@ namespace WPFClient
         {
             if (MessageList.SelectedItem == null)
                 return;
-            MessageControlModel mcm = new MessageControlModel()
+
+            MessageModel messagemodel = (MessageModel) MessageList.SelectedItem; 
+            if (!messagemodel.Recipients.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0).Viewed
+                && inboxFolderPressed)
             {
+                App.Proxy.SetInboxMessageViewed((int)messagemodel.Message.Id);
+            }
+            MessageControl.DataContext = new MessageControlModel()
+            {              
                 AllEmployees = App.Proxy.GetAllEmployees(),
                 Message = ((MessageModel)MessageList.SelectedItem).Message,
                 Recipients = ((MessageModel)MessageList.SelectedItem).Recipients,
                 SenderEmployee = ((MessageModel)MessageList.SelectedItem).SenderEmployee
             };
-            MessageControl.DataContext = mcm;
             HideToolbarButtons(false);       
         }
 
@@ -120,6 +128,7 @@ namespace WPFClient
 
         void PrepareMessageListForInboxFolder()
         {
+            inboxFolderPressed = true;
             MessageList.ItemTemplate = (DataTemplate)FindResource("ForInboxFolderTemplate");
             List<Message> InboxMessages = App.Proxy.GetInboxMessages();
             List<MessageModel> InboxMessagesModel = new List<MessageModel>();
@@ -137,6 +146,7 @@ namespace WPFClient
 
         void PrepareMessageListForSentboxFolder()
         {
+            inboxFolderPressed = false;
             MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");            
             List<Message> SentboxMessages = App.Proxy.GetSentboxMessages();
             List<MessageModel> SentboxMessagesModel = new List<MessageModel>();
@@ -154,6 +164,7 @@ namespace WPFClient
 
         void PrepareMessageListForDeletedFolder()
         {
+            inboxFolderPressed = false;
             MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
             List<Message> DeletedMessages = App.Proxy.GetDeletedMessages();     
             List<MessageModel> DeletedMessagesModel = new List<MessageModel>();
@@ -178,41 +189,59 @@ namespace WPFClient
         }
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
-        {            
-            MessageCreator messageCreator = new MessageCreator();
-            Message message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false);
+        {
             List<Employee> allEmployees = App.Proxy.GetAllEmployees();
+            Message message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false);
             Employee senderEmployee = allEmployees.FirstOrDefault(row => string.Compare(row.Username, message.SenderUsername) == 0);
-            messageCreator.DataContext = new MessageCreatorModel()
+            List<Recipient> recipients = new List<Recipient>();
+            MessageModel messageModel = new MessageModel()
             {
                 Message = message,
-                AllEmployees = allEmployees,
+                Recipients = recipients,
                 SenderEmployee = senderEmployee
+            };            
+            MessageCreator messageCreator = new MessageCreator();
+            messageCreator.DataContext = new MessageCreatorModel()
+            {                
+                AllEmployees = allEmployees,
+                MessageModel = messageModel
             };
-            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст
+            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст ?
             messageCreator.Show();            
         }
 
         public void OnReplyMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            //var selectedMessage = (Message)MessageList.SelectedItem;
-            //var recipientEmployee = App.Proxy.GetEmployee(selectedMessage.SenderUsername);
-            //string recipientString = recipientEmployee.FirstName + this.space
-            //        + recipientEmployee.SecondName + space + leftUsernameStopper
-            //        + recipientEmployee.Username + rightUsernameStopper;
-
-
-
-            //string titleString = Properties.Resources.Re
-            //    + space
-            //    + leftTitleStopper
-            //    + selectedMessage.Title
-            //    + rightTitleStopper;       
+            MessageModel selectedMessage = (MessageModel)MessageList.SelectedItem;            
+            string titleString = Properties.Resources.Re
+                + SpecialSymbols.space
+                + SpecialSymbols.leftTitleStopper
+                + selectedMessage.Message.Title
+                + SpecialSymbols.rightTitleStopper;
+            List<Employee> allEmployees = App.Proxy.GetAllEmployees();
+            Message message = new Message(null, titleString, new DateTime(), App.Username, string.Empty, false);
+            Employee senderEmployee = allEmployees.FirstOrDefault(row => string.Compare(row.Username, message.SenderUsername) == 0);
+            List<Recipient> recipients = new List<Recipient>();
+            recipients.Add(new Recipient(selectedMessage.Message.SenderUsername, null, false, false));            
+            MessageModel messageModel = new MessageModel()
+            {
+                Message = message,
+                SenderEmployee = senderEmployee,
+                Recipients = recipients
+            };
+            MessageCreator messageCreator = new MessageCreator();
+            messageCreator.DataContext = new MessageCreatorModel()
+            {
+                AllEmployees = allEmployees,
+                MessageModel = messageModel
+            };
+            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст
+            messageCreator.Show();
         }
 
         public void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
         {
-           // var selectedMessage = (Message)MessageList.SelectedItem;
+   
         }
 
         /// <summary>

@@ -3,34 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
+using WPFClient.OverEntities;
 
 namespace WPFClient.Models
 {
     class MessageCreatorModel
     {
-        /// <summary>
-        /// Объект сообщния для отображения или изменения
-        /// </summary>    
-        Message message = new Message();
-
-        /// <summary>
-        /// Объект сообщния для отображения или изменения
-        /// </summary>    
-        public Message Message
-        {
-            get
-            {
-                return message;
-            }
-            set
-            {
-                if (message == value)
-                    return;
-
-                message = value;
-            }
-        }
-
         /// <summary>
         /// Коллекция содержащая всех возможных для выбора сотрудников
         /// </summary>
@@ -54,21 +32,22 @@ namespace WPFClient.Models
             }
         }
 
-        Employee senderEmployee = new Employee();
+        MessageModel messageModel = new MessageModel();
 
-        public Employee SenderEmployee
+        public MessageModel MessageModel
         {
             get
             {
-                return senderEmployee;
+                return messageModel;
             }
             set
             {
-                if (senderEmployee == value)
+                if (messageModel == value)
                     return;
 
-                senderEmployee = value;
+                messageModel = value;
             }
         }
+       
     }
 }

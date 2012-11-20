@@ -123,6 +123,9 @@
   <data name="AllEmployees" xml:space="preserve">
     <value>Все сотрудники</value>
   </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="ChoiceResipientTitle" xml:space="preserve">
     <value>Выбрать сотрудника</value>
   </data>
@@ -144,6 +147,9 @@
   <data name="InboxFolderLabel" xml:space="preserve">
     <value>Входящие</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>Вход</value>
+  </data>
   <data name="Me" xml:space="preserve">
     <value>я:</value>
   </data>
@@ -156,6 +162,9 @@
   <data name="NotFound" xml:space="preserve">
     <value>получатель не существует</value>
   </data>
+  <data name="OkButton" xml:space="preserve">
+    <value>OK</value>
+  </data>
   <data name="PasswordLabel" xml:space="preserve">
     <value>Пароль</value>
   </data>
@@ -164,6 +173,9 @@
   </data>
   <data name="RecipientsLabel" xml:space="preserve">
     <value>Получатели</value>
+  </data>
+  <data name="RecipientsList" xml:space="preserve">
+    <value>Редактирование списка получателей</value>
   </data>
   <data name="RecipientsStringNotBeEmpty" xml:space="preserve">
     <value>Строка получателей не может быть пустой</value>
@@ -183,7 +195,7 @@
   <data name="SendMessageLabel" xml:space="preserve">
     <value>Отправить</value>
   </data>
-  <data name="SentFolderLabel" xml:space="preserve">
+  <data name="SentboxFolderLabel" xml:space="preserve">
     <value>Отправленные</value>
   </data>
   <data name="TitleColumn" xml:space="preserve">
@@ -197,11 +209,5 @@
   </data>
   <data name="UsernameLabel" xml:space="preserve">
     <value>Пользователь</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Вход</value>
-  </data>
-  <data name="RecipientsList" xml:space="preserve">
-    <value>Редактирование списка получателей</value>
   </data>
 </root>

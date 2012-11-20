@@ -29,10 +29,8 @@ namespace WPFClient
         bool inboxFolderPressed = false;
 
         public MainWindow()
-        {
-            ///Выбирает локаль
-            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
-            ///
+        {   
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("ru");
             InitializeComponent();
             PrepareWindow();
             ShowLoginWindow();

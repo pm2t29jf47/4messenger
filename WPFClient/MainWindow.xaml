@@ -9,11 +9,29 @@
         <Style x:Key="MarginStyle">
             <Setter Property="Control.Margin" Value="5"></Setter>
         </Style>
+        
+        <Style x:Key="DefaultImageWidthStyle" TargetType="{x:Type Image}">
+            <Setter Property="Width" Value="24"></Setter>
+        </Style>
+        
+        <Style x:Key="FolderTextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+        </Style>
+
+        <Style x:Key="FolderImageStyle" TargetType="{x:Type Image}">
+            <Setter Property="Width" Value="24"></Setter>
+            <Setter Property="Source" Value="Images/folder.png"></Setter>
+        </Style>
+        
+        <Style x:Key="FolderButtonStyle" TargetType="{x:Type Button}">           
+            <Setter Property="Margin" Value="5"></Setter>
+        </Style>
 
         <Style x:Key="BackgroundStyle">
             <Setter Property="Control.Background" Value="LightGray"></Setter>
         </Style>
-        
+
         <Style x:Key="MessageListItemBorberStyle" TargetType="{x:Type Border}">
             <Setter Property="Margin" 
                     Value="5"/>
@@ -24,23 +42,45 @@
             <Setter Property="CornerRadius"
                     Value="4"/>
         </Style>
+
+        <Style x:Key="MessageListItemTitleStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" 
+                    Value="2"/>
+        </Style>
+
+        <Style x:Key="MessageListItemImageStyle"
+               TargetType="{x:Type Image}">
+            <Setter Property="Margin" 
+                    Value="2"/>
+            <Setter Property="Width" 
+                    Value="24"/>
+            <Setter Property="Source" 
+                    Value="Images\mail.png"/>
+        </Style>
+
         
-        <Style x:Key="MessageListItemStyle">
-            <Setter Property="Control.Margin" Value="2"/>
+
+        <Style x:Key="MessageListItemSenderStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontWeight" 
+                    Value="Bold"/>
+            <Setter Property="Margin" 
+                    Value="2"/>
         </Style>
 
-        <Style x:Key="SenderItemStyle" BasedOn="{StaticResource MessageListItemStyle}">
-            <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+        <Style x:Key="DateItemStyle"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextAlignment" 
+                    Value="Left"/>
+            <Setter Property="Margin" 
+                    Value="2"/>
         </Style>
 
-        <Style x:Key="DateItemStyle" BasedOn="{StaticResource MessageListItemStyle}">
-            <Setter Property="TextBlock.TextAlignment" Value="Left"/>
-        </Style>
-                
-        <DataTemplate x:Key="ForInboxFolderTemplate">  
+        <DataTemplate x:Key="ForInboxFolderTemplate">
             <Border Style="{StaticResource MessageListItemBorberStyle}" >
                 <Grid Margin="5"
-                            x:Name="ListBoxItemGrid">
+                      x:Name="ListBoxItemGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
@@ -52,11 +92,10 @@
                     </Grid.ColumnDefinitions>
                     <!--пиктограмма письма-->
                     <Image x:Name="MessageImage"
-                            Source="Images\mail.png"
-                                Style="{StaticResource MessageListItemStyle}"></Image>
+                           Style="{StaticResource MessageListItemImageStyle}"></Image>
                     <!--ФИО отправителя-->
                     <TextBlock Grid.Column="1"
-                                    Style="{StaticResource SenderItemStyle}">
+                                    Style="{StaticResource MessageListItemSenderStyle}">
                             <TextBlock.Text>                                    
                                 <MultiBinding StringFormat="{}{0} {1} &lt;{2}&gt;">
                                     <Binding Path="SenderEmployee.FirstName" 
@@ -78,7 +117,7 @@
                                     Grid.Column="1"
                                     Grid.ColumnSpan="2"
                                     Text="{Binding Path=Message.Title, Mode=OneWay}"
-                                    Style="{StaticResource MessageListItemStyle}"/>
+                                    Style="{StaticResource MessageListItemTitleStyle}"/>
                 </Grid>
             </Border>
             <DataTemplate.Triggers>
@@ -86,7 +125,7 @@
                     <Setter TargetName="MessageImage" Property="Source" Value="Images\mail2.png"></Setter>
                     <Setter Property="ListBoxItem.Foreground" Value="Red"></Setter>
                 </DataTrigger>
-            </DataTemplate.Triggers>    
+            </DataTemplate.Triggers>
         </DataTemplate>
 
         <DataTemplate x:Key="DefaultFolderTemplate">
@@ -104,12 +143,11 @@
                     </Grid.ColumnDefinitions>
                     <!--пиктограмма письма-->
                     <Image x:Name="MessageImage"
-                            Source="Images\mail.png"
-                                Style="{StaticResource MessageListItemStyle}"></Image>
-                    
+                           Style="{StaticResource MessageListItemImageStyle}"></Image>
+
                     <!--ФИО отправителя-->
                     <TextBlock Grid.Column="1"
-                                    Style="{StaticResource SenderItemStyle}">
+                                    Style="{StaticResource MessageListItemSenderStyle}">
                             <TextBlock.Text>                                    
                                 <MultiBinding StringFormat="{}{0} {1} &lt;{2}&gt;">
                                     <Binding Path="SenderEmployee.FirstName" 
@@ -121,21 +159,21 @@
                                 </MultiBinding>
                             </TextBlock.Text>
                     </TextBlock>
-                    
+
                     <!--Дата-->
                     <TextBlock Grid.Column="2"
                                     Text="{Binding Path=Message.Date}"
                                     Style="{StaticResource DateItemStyle}">
                     </TextBlock>
-                    
+
                     <!--Тема-->
                     <TextBlock Grid.Row="1"
                                     Grid.Column="1"
                                     Grid.ColumnSpan="2"
                                     Text="{Binding Path=Message.Title, Mode=OneWay}"
-                                    Style="{StaticResource MessageListItemStyle}"/>
+                                    Style="{StaticResource MessageListItemTitleStyle}"/>
                 </Grid>
-            </Border>            
+            </Border>
         </DataTemplate>
     </Window.Resources>
     <Grid Style="{StaticResource BackgroundStyle}">
@@ -155,48 +193,73 @@
             <ToolBar>
                 <Button Name="CreateMessageButton" 
                         Click="OnCreateMessageButtonClick"
-                        Style="{StaticResource MarginStyle}">
+                        Margin="5">
                     <StackPanel>
-                        <Image Source="Images\mail_new.png"></Image>
-                        <Label Content="{x:Static res:Resources.NewMessageLabel}"></Label>
+                        <Image Source="Images\mail_new.png"
+                               Style="{StaticResource DefaultImageWidthStyle}"></Image>
+                        <Label Content="{x:Static res:Resources.NewMessageLabel}"
+                               Style="{StaticResource MarginStyle}"></Label>
                     </StackPanel>
                 </Button>
                 <Separator></Separator>
                 <Button Name="ReplyMessageButton"
                         Click="OnReplyMessageButtonClick"
-                        Style="{StaticResource MarginStyle}">      
+                        Style="{StaticResource MarginStyle}">
                     <StackPanel>
-                        <Image Source="Images\mail_forward.png"></Image>
-                        <Label Content="{x:Static res:Resources.ReplyMessageLabel}"></Label>
+                        <Image Source="Images\mail_forward.png"
+                               Style="{StaticResource DefaultImageWidthStyle}"></Image>
+                        <Label Content="{x:Static res:Resources.ReplyMessageLabel}"
+                               Style="{StaticResource MarginStyle}"></Label>
                     </StackPanel>
                 </Button>
                 <Button Name="DeleteMessageButton" 
                         Click="OnDeleteMessageButtonClick"
                         Style="{StaticResource MarginStyle}">
                     <StackPanel>
-                        <Image Source="Images\mail_delete.png"></Image>
-                        <Label Content="{x:Static res:Resources.DeleteMessageLabel}"></Label>
+                        <Image Source="Images\mail_delete.png"
+                               Style="{StaticResource DefaultImageWidthStyle}"></Image>
+                        <Label Content="{x:Static res:Resources.DeleteMessageLabel}"
+                               Style="{StaticResource MarginStyle}"></Label>
                     </StackPanel>
                 </Button>
             </ToolBar>
-        </Grid>           
-            
+        </Grid>
+        
         <!--Sidebar-->
-        <StackPanel Name="Sidebar" 
-                    Grid.Row="1"
-                    Grid.Column="0"/>
+        <ListBox Grid.Row="1"
+                 Grid.Column="0"
+                 Style="{StaticResource BackgroundStyle}"
+                 x:Name="Sidebar"
+                 HorizontalContentAlignment="Stretch"
+                 MaxWidth="150"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button Style="{StaticResource FolderButtonStyle}"
+                            Click="OnFolderClick">
+                        <StackPanel Orientation="Vertical">                            
+                            <!--Пиктограмма папки-->
+                            <Image Style="{StaticResource FolderImageStyle}"></Image>                            
+                            <!--Название папки-->
+                            <TextBlock Text="{Binding Path=FolderLabel, Mode=OneWay}"
+                                       Style="{StaticResource FolderTextBlockStyle}"/>
+                        </StackPanel>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <!--Список сообщений-->
         <ListBox Name="MessageList" 
                  Grid.Row="1"
                  Grid.Column="1" 
                  SelectionMode="Single"
-                 SelectionChanged="OnMessageListSelectionChanged"/> 
-            
+                 SelectionChanged="OnMessageListSelectionChanged"/>
+
         <!--Секция отображающая выбранное сообщение-->
         <usercontrols:MessageControl x:Name="MessageControl" 
                                         Grid.Row="1"
                                         Grid.Column="2" />
-      
+
     </Grid>
 </Window>

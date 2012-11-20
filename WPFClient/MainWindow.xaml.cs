@@ -50,23 +50,9 @@ namespace WPFClient
         }
 
         void PreareSidebar()
-        {            
+        {  
             FillFoldersNames();
-            foreach (var folder in folders)
-            {
-                Button folderButton = new Button();
-                StackPanel folderStackPanel = new StackPanel();
-                Uri uri = new Uri("pack://application:,,,/Images/folder.png");
-                BitmapImage source = new BitmapImage(uri);
-                folderStackPanel.Children.Add(new Image { Source = source });
-                folderStackPanel.Children.Add(new Label { Content = folder.FolderLabel });
-                folderButton.Content = folderStackPanel;
-                folderButton.Click += new RoutedEventHandler(OnFolderClick);
-                folderButton.Name = folder.FolderLabel;
-                Thickness a = new Thickness(5.0);
-                folderButton.Margin = a;
-                Sidebar.Children.Add(folderButton);
-            }            
+            Sidebar.ItemsSource = folders;
         }
 
         void FillFoldersNames()
@@ -74,6 +60,7 @@ namespace WPFClient
             folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLabel));
             folders.Add(new SidebarFolder(Properties.Resources.SentboxFolderLabel));
             folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLabel));
+            folders.Add(new SidebarFolder("дли"));
         }
 
         void ShowLoginWindow()
@@ -115,14 +102,17 @@ namespace WPFClient
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void OnFolderClick(object sender, RoutedEventArgs e)
-        {   
-            var selectedFolder = (Button)sender;
+        {
+            Button selectedFolder = (Button)sender;
+            StackPanel buttonStackPanel = (StackPanel)selectedFolder.Content;
+            TextBlock buttonTextBlock = (TextBlock)buttonStackPanel.Children[1];
+            
             HideToolbarButtons(true);
-            if (string.Compare(selectedFolder.Name, Properties.Resources.DeletedFolderLabel) == 0)
+            if (string.Compare(buttonTextBlock.Text, Properties.Resources.DeletedFolderLabel) == 0)
                 PrepareMessageListForDeletedFolder();
-            else if (string.Compare(selectedFolder.Name, Properties.Resources.InboxFolderLabel) == 0)
+            else if (string.Compare(buttonTextBlock.Text, Properties.Resources.InboxFolderLabel) == 0)
                 PrepareMessageListForInboxFolder();
-            else if (string.Compare(selectedFolder.Name, Properties.Resources.SentboxFolderLabel) == 0)
+            else if (string.Compare(buttonTextBlock.Text, Properties.Resources.SentboxFolderLabel) == 0)
                 PrepareMessageListForSentboxFolder();
             else
                 OnUserFolderClick();
@@ -188,7 +178,7 @@ namespace WPFClient
         /// </summary>
         void OnUserFolderClick()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 

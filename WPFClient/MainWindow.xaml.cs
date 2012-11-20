@@ -90,11 +90,16 @@ namespace WPFClient
             if (MessageList.SelectedItem == null)
                 return;
 
-            MessageModel messagemodel = (MessageModel) MessageList.SelectedItem; 
-            if (!messagemodel.Recipients.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0).Viewed
-                && inboxFolderPressed)
+            MessageModel messagemodel = (MessageModel) MessageList.SelectedItem;
+            string a = App.Username;
+            if (inboxFolderPressed)
             {
-                App.Proxy.SetInboxMessageViewed((int)messagemodel.Message.Id);
+                Recipient recipient = messagemodel.Recipients.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
+                if ((recipient != null)
+                    && (!recipient.Viewed))
+                {
+                    App.Proxy.SetInboxMessageViewed((int)messagemodel.Message.Id);
+                }
             }
             MessageControl.DataContext = new MessageControlModel()
             {              

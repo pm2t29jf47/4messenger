@@ -19,32 +19,45 @@
         </Style>
         
         <Style x:Key="MarginStyle">
-            <Setter Property="Control.Margin" Value="5"></Setter>
+            <Setter Property="Control.Margin" 
+                    Value="5"></Setter>
         </Style>
         
-        <Style x:Key="DefaultImageWidthStyle" TargetType="{x:Type Image}">
-            <Setter Property="Width" Value="24"></Setter>
+        <Style x:Key="DefaultImageWidthStyle" 
+               TargetType="{x:Type Image}">
+            <Setter Property="Width"
+                    Value="24"></Setter>
         </Style>
         
-        <Style x:Key="FolderTextBlockStyle" TargetType="{x:Type TextBlock}">
-            <Setter Property="Margin" Value="5"></Setter>
-            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+        <Style x:Key="FolderTextBlockStyle" 
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin"
+                    Value="5"></Setter>
+            <Setter Property="TextWrapping"
+                    Value="Wrap"></Setter>
         </Style>
 
-        <Style x:Key="FolderImageStyle" TargetType="{x:Type Image}">
-            <Setter Property="Width" Value="24"></Setter>
-            <Setter Property="Source" Value="Images/folder.png"></Setter>
+        <Style x:Key="FolderImageStyle" 
+               TargetType="{x:Type Image}">
+            <Setter Property="Width"
+                    Value="24"></Setter>
+            <Setter Property="Source" 
+                    Value="Images/folder.png"></Setter>
         </Style>
         
-        <Style x:Key="FolderButtonStyle" TargetType="{x:Type Button}">           
-            <Setter Property="Margin" Value="5"></Setter>
+        <Style x:Key="FolderButtonStyle" 
+               TargetType="{x:Type Button}">           
+            <Setter Property="Margin" 
+                    Value="5"></Setter>
         </Style>
 
         <Style x:Key="BackgroundStyle">
-            <Setter Property="Control.Background" Value="LightGray"></Setter>
+            <Setter Property="Control.Background" 
+                    Value="LightGray"></Setter>
         </Style>
 
-        <Style x:Key="MessageListItemBorberStyle" TargetType="{x:Type Border}">
+        <Style x:Key="MessageListItemBorberStyle" 
+               TargetType="{x:Type Border}">
             <Setter Property="Margin" 
                     Value="5"/>
             <Setter Property="BorderThickness"
@@ -59,6 +72,8 @@
                TargetType="{x:Type TextBlock}">
             <Setter Property="Margin" 
                     Value="2"/>
+            <Setter Property="TextTrimming" 
+                    Value="CharacterEllipsis"></Setter>
         </Style>
 
         <Style x:Key="MessageListItemImageStyle"
@@ -79,12 +94,14 @@
                     Value="2"/>
         </Style>
 
-        <Style x:Key="DateItemStyle"
+        <Style x:Key="MessageListItemDateStyle"
                TargetType="{x:Type TextBlock}">
             <Setter Property="TextAlignment" 
                     Value="Left"/>
             <Setter Property="Margin" 
                     Value="2"/>
+            <Setter Property="TextTrimming" 
+                    Value="CharacterEllipsis"></Setter>
         </Style>
 
         <DataTemplate x:Key="ForInboxFolderTemplate">
@@ -120,7 +137,7 @@
                     <!--Дата-->
                     <TextBlock Grid.Column="2"
                                     Text="{Binding Path=Message.Date}"
-                                    Style="{StaticResource DateItemStyle}">
+                                    Style="{StaticResource MessageListItemDateStyle}">
                     </TextBlock>
                     <!--Тема-->
                     <TextBlock Grid.Row="1"
@@ -173,7 +190,7 @@
                     <!--Дата-->
                     <TextBlock Grid.Column="2"
                                     Text="{Binding Path=Message.Date}"
-                                    Style="{StaticResource DateItemStyle}">
+                                    Style="{StaticResource MessageListItemDateStyle}">
                     </TextBlock>
 
                     <!--Тема-->
@@ -194,12 +211,13 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <!--Тулбар-->
         <Grid Style="{StaticResource BackgroundStyle}"
-              Grid.ColumnSpan="3">
+              Grid.ColumnSpan="4">
             <ToolBar>
                 <Button Name="CreateMessageButton" 
                         Click="OnCreateMessageButtonClick"
@@ -261,12 +279,18 @@
                  Grid.Row="1"
                  Grid.Column="1" 
                  SelectionMode="Single"
-                 SelectionChanged="OnMessageListSelectionChanged"/>
+                 SelectionChanged="OnMessageListSelectionChanged"
+                 HorizontalContentAlignment="Stretch"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 />
+        
+        <GridSplitter Grid.Column="2"
+                      Grid.Row="1"></GridSplitter>
 
         <!--Секция отображающая выбранное сообщение-->
         <usercontrols:MessageControl x:Name="MessageControl" 
                                         Grid.Row="1"
-                                        Grid.Column="2" />
+                                        Grid.Column="3" />
 
     </Grid>
 </Window>

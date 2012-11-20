@@ -12,7 +12,6 @@
                     Value="5"/>
         </Style>
 
-        <!--Серый фон-->
         <Style x:Key="BackgroundStyle">
             <Setter Property="Control.Background" 
                     Value="LightGray">

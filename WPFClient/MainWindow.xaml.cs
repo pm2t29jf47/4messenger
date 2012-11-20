@@ -30,7 +30,7 @@ namespace WPFClient
 
         public MainWindow()
         {   
-            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("ru");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
             InitializeComponent();
             PrepareWindow();
             ShowLoginWindow();
@@ -60,7 +60,7 @@ namespace WPFClient
             folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLabel));
             folders.Add(new SidebarFolder(Properties.Resources.SentboxFolderLabel));
             folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLabel));
-            folders.Add(new SidebarFolder("дли"));
+            folders.Add(new SidebarFolder("большая кнопка"));
         }
 
         void ShowLoginWindow()
@@ -115,8 +115,7 @@ namespace WPFClient
             else if (string.Compare(buttonTextBlock.Text, Properties.Resources.SentboxFolderLabel) == 0)
                 PrepareMessageListForSentboxFolder();
             else
-                OnUserFolderClick();
-            
+                OnUserFolderClick();            
         }
 
         void PrepareMessageListForInboxFolder()
@@ -178,7 +177,7 @@ namespace WPFClient
         /// </summary>
         void OnUserFolderClick()
         {
-            //throw new NotImplementedException();
+            MessageBox.Show("Не нажимать!");
         }
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 

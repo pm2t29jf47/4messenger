@@ -6,6 +6,18 @@
         xmlns:res="clr-namespace:WPFClient.Properties" MinWidth="640" MinHeight="450"
         Icon="Images\bug-mail.png">
     <Window.Resources>
+        <Style x:Key="SidebarStyle"
+               TargetType="{x:Type ListBox}">
+            <Setter Property="Control.Background" 
+                    Value="LightGray"></Setter>
+            <Setter Property="HorizontalContentAlignment" 
+                    Value="Stretch"></Setter>
+            <Setter Property="MaxWidth" 
+                    Value="150"></Setter>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                    Value="Disabled"></Setter>
+        </Style>
+        
         <Style x:Key="MarginStyle">
             <Setter Property="Control.Margin" Value="5"></Setter>
         </Style>
@@ -57,9 +69,7 @@
                     Value="24"/>
             <Setter Property="Source" 
                     Value="Images\mail.png"/>
-        </Style>
-
-        
+        </Style>        
 
         <Style x:Key="MessageListItemSenderStyle"
                TargetType="{x:Type TextBlock}">
@@ -228,11 +238,8 @@
         <!--Sidebar-->
         <ListBox Grid.Row="1"
                  Grid.Column="0"
-                 Style="{StaticResource BackgroundStyle}"
-                 x:Name="Sidebar"
-                 HorizontalContentAlignment="Stretch"
-                 MaxWidth="150"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                 Style="{StaticResource SidebarStyle}"
+                 x:Name="Sidebar">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Button Style="{StaticResource FolderButtonStyle}"

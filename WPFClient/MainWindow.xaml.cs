@@ -87,11 +87,14 @@ namespace WPFClient
                 }
             }
             MessageControl.DataContext = new MessageControlModel()
-            {              
+            {
                 AllEmployees = App.Proxy.GetAllEmployees(),
                 Message = ((MessageModel)MessageList.SelectedItem).Message,
                 Recipients = ((MessageModel)MessageList.SelectedItem).Recipients,
-                SenderEmployee = ((MessageModel)MessageList.SelectedItem).SenderEmployee
+                SenderEmployeeModel = new EmployeeModel()
+                {
+                    Employee = ((MessageModel)MessageList.SelectedItem).SenderEmployee
+                }
             };
             HideToolbarButtons(false);       
         }

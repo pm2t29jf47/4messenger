@@ -66,6 +66,7 @@
       <DependentUpon>MessageCreator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\MessageCreatorModel.cs" />
+    <Compile Include="OverEntities\EmployeeModel.cs" />
     <Compile Include="OverEntities\MessageModel.cs" />
     <Compile Include="Models\RecipientsEditorControlModel.cs" />
     <Compile Include="Models\RecipientsEditorModel.cs" />

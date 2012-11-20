@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Entities;
 using WPFClient.Models;
+using WPFClient.OverEntities;
 
 namespace WPFClient
 {
@@ -44,7 +45,10 @@ namespace WPFClient
             {
                 AllEmployees = MessageCreatorModel.AllEmployees,
                 Message = MessageCreatorModel.MessageModel.Message,
-                SenderEmployee = MessageCreatorModel.MessageModel.SenderEmployee,
+                SenderEmployeeModel = new EmployeeModel()
+                {
+                    Employee = MessageCreatorModel.MessageModel.SenderEmployee
+                },
                 Recipients = MessageCreatorModel.MessageModel.Recipients
             };
             MessageControl.ControlState = WPFClient.UserControls.MessageControl.state.IsEditable;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
+using WPFClient.OverEntities;
 
 namespace WPFClient.Models
 {
@@ -77,20 +78,20 @@ namespace WPFClient.Models
             }
         }
 
-        Employee senderEmployee = new Employee();
+        EmployeeModel senderEmployeeModel = new EmployeeModel();
 
-        public Employee SenderEmployee
+        public EmployeeModel SenderEmployeeModel
         {
             get
             {
-                return senderEmployee;
+                return senderEmployeeModel;
             }
             set
             {
-                if (senderEmployee == value)
+                if (senderEmployeeModel == value)
                     return;
 
-                senderEmployee = value;
+                senderEmployeeModel = value;
             }
         }
 

@@ -103,18 +103,8 @@
         <TextBox Name="SenderTextbox" 
                  Grid.Column="1" 
                  Grid.Row="0"                      
-                 Style="{StaticResource ReadOnlyTextBoxStyle}">      
-            <TextBox.Text>
-                <MultiBinding StringFormat="{}{0} {1} &lt;{2}&gt;">
-                    <Binding Path="SenderEmployee.FirstName" 
-                                             Mode="OneWay"/>
-                    <Binding Path="SenderEmployee.FirstName" 
-                                             Mode="OneWay"/>
-                    <Binding Path="SenderEmployee.FirstName" 
-                                             Mode="OneWay"/>
-                </MultiBinding>
-            </TextBox.Text>
-        </TextBox>
+                 Style="{StaticResource ReadOnlyTextBoxStyle}"
+                 Text="{Binding Path=SenderEmployeeModel.LongEmployeeName, Mode=OneWay}"/>
         <local:RecipientsControl x:Name="RecipientsControl" 
                                  Grid.Column="1" 
                                  Grid.Row="1"              

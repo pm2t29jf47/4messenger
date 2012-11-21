@@ -67,5 +67,9 @@ namespace Entities
             get;
             set;
         }
+
+        public Employee FKRecipientUsername { get; set; }
+
+        public Message FKMessageId { get; set; }
     }
 }

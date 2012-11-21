@@ -8,7 +8,7 @@ using WPFClient.OverEntities;
 namespace WPFClient.Models
 {
     class MessageControlModel
-    {
+    { 
         /// <summary>
         /// Объект сообщния для отображения или изменения
         /// </summary>    
@@ -94,7 +94,5 @@ namespace WPFClient.Models
                 senderEmployeeModel = value;
             }
         }
-
-        
     }
 }

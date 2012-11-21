@@ -69,5 +69,9 @@ namespace Entities
         /// </summary>
         [DataMember]
         public string Role { get; set; }
+
+        public List<Message> ExternalDependencySenderUsername { get; set; }
+
+        public List<Recipient> ExternalDependencyRecipientUsername { get; set; }
     }
 }

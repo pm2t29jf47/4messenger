@@ -285,7 +285,10 @@
                  />
         
         <GridSplitter Grid.Column="2"
-                      Grid.Row="1"></GridSplitter>
+                      Grid.Row="1"
+                      Width="5"
+                      VerticalAlignment="Stretch" 
+                      HorizontalAlignment="Center"></GridSplitter>
 
         <!--Секция отображающая выбранное сообщение-->
         <usercontrols:MessageControl x:Name="MessageControl" 

@@ -24,16 +24,29 @@ namespace WPFClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Коллекция содержащая всех сотрудников
+        /// </summary>
+        /// <remarks>
+        /// Обновляется при запуске и при получении сообщения от ногового сотрудника, который еще не содержится в ней
+        /// </remarks>
+        List<Employee> allEmployee;
+
         List<SidebarFolder> folders = new List<SidebarFolder>();
 
         bool inboxFolderPressed = false;
 
         public MainWindow()
-        {   
+        {
+            Loaded += new RoutedEventHandler(OnMainWindowLoaded);
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
             InitializeComponent();
-            PrepareWindow();
-            ShowLoginWindow();
+        }
+
+        void OnMainWindowLoaded(object sender, RoutedEventArgs e)
+        {
+             PrepareWindow();
+             ShowLoginWindow();
         }
 
         public void PrepareWindow()

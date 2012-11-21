@@ -14,6 +14,7 @@ using System.ServiceModel;
 using DBService;
 using System.IdentityModel.Tokens;
 using InformatonTips;
+using System.ComponentModel;
 
 
 namespace WPFClient
@@ -25,13 +26,24 @@ namespace WPFClient
     {
         public LoginWindow()
         {
-           
+            Closing += new CancelEventHandler(OnLoginWindowClosing);
             InitializeComponent();
             this.Title = Properties.Resources.Login;
             App.Username = "Ivan1";
             App.Password = "111";
             UsernameTexbox.Text = App.Username;
             PasswordTexbox.Password = App.Password;
+        }
+
+        void OnLoginWindowClosing(object sender, CancelEventArgs e)
+        {
+            CheckLoginResult();
+        }
+
+        void CheckLoginResult()
+        {
+            if (App.Proxy == null)
+                App.Current.Shutdown();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

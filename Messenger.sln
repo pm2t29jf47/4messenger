@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientSideExceptionHandler"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InformatonTips", "InformatonTips\InformatonTips.csproj", "{739F2E4F-96EB-488B-866A-E35648A0FE9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecialSymbols", "SpecialSymbols\SpecialSymbols.csproj", "{9C424B52-282C-4625-A39E-E890A68AFA65}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Messenger1.vsmdi
@@ -135,6 +137,16 @@ Global
 		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{739F2E4F-96EB-488B-866A-E35648A0FE9B}.Release|x86.ActiveCfg = Release|Any CPU
+		{9C424B52-282C-4625-A39E-E890A68AFA65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C424B52-282C-4625-A39E-E890A68AFA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C424B52-282C-4625-A39E-E890A68AFA65}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9C424B52-282C-4625-A39E-E890A68AFA65}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9C424B52-282C-4625-A39E-E890A68AFA65}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9C424B52-282C-4625-A39E-E890A68AFA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C424B52-282C-4625-A39E-E890A68AFA65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C424B52-282C-4625-A39E-E890A68AFA65}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9C424B52-282C-4625-A39E-E890A68AFA65}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9C424B52-282C-4625-A39E-E890A68AFA65}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

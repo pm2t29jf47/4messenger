@@ -136,14 +136,14 @@
                     </TextBlock>
                     <!--Дата-->
                     <TextBlock Grid.Column="2"
-                                    Text="{Binding Path=Message.Date}"
+                                    Text="{Binding Path=Date}"
                                     Style="{StaticResource MessageListItemDateStyle}">
                     </TextBlock>
                     <!--Тема-->
                     <TextBlock Grid.Row="1"
                                     Grid.Column="1"
                                     Grid.ColumnSpan="2"
-                                    Text="{Binding Path=Message.Title, Mode=OneWay}"
+                                    Text="{Binding Path=Title, Mode=OneWay}"
                                     Style="{StaticResource MessageListItemTitleStyle}"/>
                 </Grid>
             </Border>

@@ -60,7 +60,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Additional\CustomStringComparer.cs" />
-    <Compile Include="Additional\SpecialSymbols.cs" />
     <Compile Include="Models\MessageControlModel.cs" />
     <Compile Include="MessageCreator.xaml.cs">
       <DependentUpon>MessageCreator.xaml</DependentUpon>
@@ -175,6 +174,10 @@
     <ProjectReference Include="..\InformatonTips\InformatonTips.csproj">
       <Project>{739F2E4F-96EB-488B-866A-E35648A0FE9B}</Project>
       <Name>InformatonTips</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SpecialSymbols\SpecialSymbols.csproj">
+      <Project>{9C424B52-282C-4625-A39E-E890A68AFA65}</Project>
+      <Name>SpecialSymbols</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

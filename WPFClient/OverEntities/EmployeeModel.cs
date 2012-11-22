@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Entities;
 using WPFClient.Additional;
+using WPFClient.Properties;
 
 namespace WPFClient.OverEntities
 {
@@ -26,25 +27,25 @@ namespace WPFClient.OverEntities
             }
         }
 
-        public string LongEmployeeName
+        public string LongString
         {
             get
             {
                 string result = employee.FirstName
-                    + SpecialSymbols.space
+                    + SpecialSymbols.SpecialSymbols.space
                     + employee.SecondName
-                    + SpecialSymbols.space
-                    + SpecialSymbols.leftUsernameStopper
+                    + SpecialSymbols.SpecialSymbols.space
+                    + SpecialSymbols.SpecialSymbols.leftUsernameStopper
                     + employee.Username
-                    + SpecialSymbols.rightUsernameStopper;
+                    + SpecialSymbols.SpecialSymbols.rightUsernameStopper;
 
                 if (string.Compare(App.Username, employee.Username) == 0)
                 {
-                    return Properties.Resources.Me
-                        + SpecialSymbols.space
-                        + SpecialSymbols.leftTitleStopper
+                    return Resources.Me
+                        + SpecialSymbols.SpecialSymbols.space
+                        + SpecialSymbols.SpecialSymbols.leftTitleStopper
                         + result
-                        + SpecialSymbols.rightTitleStopper;
+                        + SpecialSymbols.SpecialSymbols.rightTitleStopper;
                 }
                 return result;
             }

@@ -11,6 +11,7 @@
 - сплиттер
 - неактивность кнопки Send
 - убрать возможность выбора в sidebar-е
+- remove entitiesToString, EmployeeToString
 
 
 ####

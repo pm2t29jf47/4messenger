@@ -139,53 +139,50 @@ namespace WPFClient
             inboxFolderPressed = true;
             MessageList.ItemTemplate = (DataTemplate)FindResource("ForInboxFolderTemplate");
             List<Message> InboxMessages = App.Proxy.GetInboxMessages();
-            List<MessageModel> InboxMessagesModel = new List<MessageModel>();
+           
             foreach (var item in InboxMessages)
             {
-                InboxMessagesModel.Add(new MessageModel()
-                {
-                    Message = item,
-                    SenderEmployee = App.Proxy.GetEmployee(item.SenderUsername),
-                    Recipients = App.Proxy.GetRecipients((int)item.Id)
-                });
+                item.FKEmployee_SenderUsername = App.Proxy.GetEmployee(item.SenderUsername);
+                item.EDRecipient_MessageId = App.Proxy.GetRecipients((int)item.Id);  
             }
-            MessageList.ItemsSource = InboxMessagesModel;
+            MessageList.ItemsSource = InboxMessages;
+
         }
 
         void PrepareMessageListForSentboxFolder()
         {
-            inboxFolderPressed = false;
-            MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");            
-            List<Message> SentboxMessages = App.Proxy.GetSentboxMessages();
-            List<MessageModel> SentboxMessagesModel = new List<MessageModel>();
-            foreach (var item in SentboxMessages)
-            {
-                SentboxMessagesModel.Add(new MessageModel()
-                {
-                    Message = item,
-                    SenderEmployee = App.Proxy.GetEmployee(item.SenderUsername),
-                    Recipients = App.Proxy.GetRecipients((int)item.Id)
-                });
-            }
-            MessageList.ItemsSource = SentboxMessagesModel;
+            //inboxFolderPressed = false;
+            //MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
+            //List<Message> SentboxMessages = App.Proxy.GetSentboxMessages();
+            //List<MessageModel> SentboxMessagesModel = new List<MessageModel>();
+            //foreach (var item in SentboxMessages)
+            //{
+            //    SentboxMessagesModel.Add(new MessageModel()
+            //    {
+            //        Message = item,
+            //        SenderEmployee = App.Proxy.GetEmployee(item.SenderUsername),
+            //        Recipients = App.Proxy.GetRecipients((int)item.Id)
+            //    });
+            //}
+            //MessageList.ItemsSource = SentboxMessagesModel;
         }
 
         void PrepareMessageListForDeletedFolder()
         {
-            inboxFolderPressed = false;
-            MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
-            List<Message> DeletedMessages = App.Proxy.GetDeletedMessages();     
-            List<MessageModel> DeletedMessagesModel = new List<MessageModel>();
-            foreach (var item in DeletedMessages)
-            {
-                DeletedMessagesModel.Add(new MessageModel()
-                {
-                    Message = item,
-                    SenderEmployee = App.Proxy.GetEmployee(item.SenderUsername),
-                    Recipients = App.Proxy.GetRecipients((int)item.Id)
-                });
-            }
-            MessageList.ItemsSource = DeletedMessagesModel;
+            //inboxFolderPressed = false;
+            //MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
+            //List<Message> DeletedMessages = App.Proxy.GetDeletedMessages();
+            //List<MessageModel> DeletedMessagesModel = new List<MessageModel>();
+            //foreach (var item in DeletedMessages)
+            //{
+            //    DeletedMessagesModel.Add(new MessageModel()
+            //    {
+            //        Message = item,
+            //        SenderEmployee = App.Proxy.GetEmployee(item.SenderUsername),
+            //        Recipients = App.Proxy.GetRecipients((int)item.Id)
+            //    });
+            //}
+            //MessageList.ItemsSource = DeletedMessagesModel;
         }
 
         /// <summary>
@@ -222,10 +219,10 @@ namespace WPFClient
         {
             MessageModel selectedMessage = (MessageModel)MessageList.SelectedItem;            
             string titleString = Properties.Resources.Re
-                + SpecialSymbols.space
-                + SpecialSymbols.leftTitleStopper
+                + SpecialSymbols.SpecialSymbols.space
+                + SpecialSymbols.SpecialSymbols.leftTitleStopper
                 + selectedMessage.Message.Title
-                + SpecialSymbols.rightTitleStopper;
+                + SpecialSymbols.SpecialSymbols.rightTitleStopper;
             List<Employee> allEmployees = App.Proxy.GetAllEmployees();
             Message message = new Message(null, titleString, new DateTime(), App.Username, string.Empty, false);
             Employee senderEmployee = allEmployees.FirstOrDefault(row => string.Compare(row.Username, message.SenderUsername) == 0);
@@ -252,39 +249,5 @@ namespace WPFClient
    
         }
 
-        /// <summary>
-        /// Преобразует поля класса Employee в строку
-        /// </summary>
-        /// <param name="employee"></param>
-        /// <returns></returns>
-        string EmployeeToString(Employee employee)
-        {
-            string result = string.Empty;
-            if (employee != null)
-            {
-                result = employee.FirstName
-                    + SpecialSymbols.space
-                    + employee.SecondName
-                    + SpecialSymbols.space
-                    + SpecialSymbols.leftUsernameStopper
-                    + employee.Username
-                    + SpecialSymbols.rightUsernameStopper;
-            }
-            return result;
-        }
-
-        string EmployeesToString(List<Employee> Employees)
-        {
-            string result = string.Empty;
-            if (Employees != null
-                && Employees.Count != 0)
-            {
-                foreach (var item in Employees)
-                    result += EmployeeToString(item) + SpecialSymbols.userDataDevider;
-
-                result = result.Substring(0, result.Length - 1);
-            }
-            return result;
-        }
     }
 }

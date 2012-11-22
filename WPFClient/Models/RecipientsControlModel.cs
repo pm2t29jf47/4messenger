@@ -5,6 +5,7 @@ using System.Text;
 using Entities;
 using System.ComponentModel;
 using WPFClient.Additional;
+using SpecialSymbols;
 
 namespace WPFClient.Models
 {
@@ -193,7 +194,7 @@ namespace WPFClient.Models
                 if (additionalString.Length != 0)
                 {
                     return baseString
-                        + SpecialSymbols.userDataDevider
+                        + SpecialSymbols.SpecialSymbols.userDataDevider
                         + additionalString;
                 }
                 else
@@ -221,8 +222,8 @@ namespace WPFClient.Models
         /// <returns></returns>
         string ParseUsername(string recipientString)
         {
-            int begin = recipientString.IndexOf(SpecialSymbols.leftUsernameStopper),
-                end = recipientString.IndexOf(SpecialSymbols.rightUsernameStopper);
+            int begin = recipientString.IndexOf(SpecialSymbols.SpecialSymbols.leftUsernameStopper),
+                end = recipientString.IndexOf(SpecialSymbols.SpecialSymbols.rightUsernameStopper);
 
             if (begin == -1 || end == -1)
             {
@@ -321,7 +322,7 @@ namespace WPFClient.Models
         /// <param name="e"></param>
         public void UpdateRecipientsDefenitionInRecipientsString()
         {
-            string[] recipientsSubStrings = recipientsString.Split(SpecialSymbols.userDataDevider);              
+            string[] recipientsSubStrings = recipientsString.Split(SpecialSymbols.SpecialSymbols.userDataDevider);              
             string result = string.Empty,
                 fullRecipientDefenition;
             string[] usernames = ParseToUsernames(recipientsSubStrings);
@@ -359,12 +360,12 @@ namespace WPFClient.Models
             if (employee != null)
             {
                 result = employee.FirstName
-                    + SpecialSymbols.space
+                    + SpecialSymbols.SpecialSymbols.space
                     + employee.SecondName
-                    + SpecialSymbols.space
-                    + SpecialSymbols.leftUsernameStopper
+                    + SpecialSymbols.SpecialSymbols.space
+                    + SpecialSymbols.SpecialSymbols.leftUsernameStopper
                     + employee.Username
-                    + SpecialSymbols.rightUsernameStopper;
+                    + SpecialSymbols.SpecialSymbols.rightUsernameStopper;
             }
             return result;
         }
@@ -381,7 +382,7 @@ namespace WPFClient.Models
                 && Employees.Count != 0)
             {
                 foreach (var item in Employees)
-                    result += EmployeeToString(item) + SpecialSymbols.userDataDevider;
+                    result += EmployeeToString(item) + SpecialSymbols.SpecialSymbols.userDataDevider;
 
                 result = result.Substring(0, result.Length - 1);
             }
@@ -429,7 +430,7 @@ namespace WPFClient.Models
         {
             RecipientsEmployees.Clear();
             UnrecognizedUsernames = string.Empty;
-            string[] recipients = recipientsString.Split(SpecialSymbols.userDataDevider);
+            string[] recipients = recipientsString.Split(SpecialSymbols.SpecialSymbols.userDataDevider);
             string errorMessage = string.Empty;
             if ((recipients.Length == 1)
                 && (string.Compare(recipients[0], string.Empty) == 0))
@@ -476,7 +477,7 @@ namespace WPFClient.Models
                     if (buf.Contains(item, new CustomStringComparer()))
                     {
                         string msg = Properties.Resources.UnuniqueUsername
-                            + SpecialSymbols.space
+                            + SpecialSymbols.SpecialSymbols.space
                             + item;
 
                         errorMessage = JoinToString(errorMessage, msg);
@@ -541,7 +542,7 @@ namespace WPFClient.Models
         {            
             UnrecognizedUsernames = JoinToString(UnrecognizedUsernames, username);
             return username
-                + SpecialSymbols.space
+                + SpecialSymbols.SpecialSymbols.space
                 + Properties.Resources.NotFound;
         }
          

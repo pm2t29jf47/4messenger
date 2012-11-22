@@ -114,6 +114,8 @@ namespace WPFClient
             HideToolbarButtons(false);       
         }
 
+        #region Prepare "MessageList" by foldel click
+
         /// <summary>
         /// Общий обработчик для нажатий на папки в Sidebar
         /// </summary>
@@ -190,24 +192,44 @@ namespace WPFClient
             MessageBox.Show("Не нажимать!");
         }
 
-        public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
+        void FillMessages(List<Message> messages)
         {
-            Message message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false)
+            foreach (var item in messages)
+            {
+                item.FKEmployee_SenderUsername = App.Proxy.GetEmployee(item.SenderUsername);
+                item.EDRecipient_MessageId = App.Proxy.GetRecipients((int)item.Id);
+            }
+        }
+        #endregion
+
+        #region "Create" "Reply" "Delete" buttons
+
+        void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
+        {
+            CreateNewMessage();       
+        }
+
+        void OnReplyMessageButtonClick(object sender, RoutedEventArgs e)
+        {
+            CreateReplyMessage();
+        }
+
+        void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
+        {
+   
+        }
+        
+        void CreateNewMessage()
+        {
+             Message message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false)
             {
                FKEmployee_SenderUsername = allEmployees.FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0),
                EDRecipient_MessageId = new List<Recipient>()
             };
-            MessageCreator messageCreator = new MessageCreator();
-            messageCreator.DataContext = new MessageCreatorModel()
-            {                
-                AllEmployees = allEmployees,
-                Message = message
-            };
-            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст ?
-            messageCreator.Show();            
+             CreateMessageCreatorWindow(message);
         }
 
-        public void OnReplyMessageButtonClick(object sender, RoutedEventArgs e)
+        void CreateReplyMessage()
         {
             Message selectedMessage = (Message)MessageList.SelectedItem;
             string newTitle = PrepareReplyMssageTitle(selectedMessage.Title);
@@ -218,29 +240,20 @@ namespace WPFClient
             {
                 EDRecipient_MessageId = recipients,
                 FKEmployee_SenderUsername = senderEmployee
-            };            
+            };
+            CreateMessageCreatorWindow(message);
+        }
+
+        void CreateMessageCreatorWindow(Message message)
+        {
             MessageCreator messageCreator = new MessageCreator();
             messageCreator.DataContext = new MessageCreatorModel()
             {
                 AllEmployees = allEmployees,
                 Message = message
             };
-            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст
+            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст ?
             messageCreator.Show();
-        }
-
-        public void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
-        {
-   
-        }
-
-        void FillMessages(List<Message> messages)
-        {
-            foreach (var item in messages)
-            {
-                item.FKEmployee_SenderUsername = App.Proxy.GetEmployee(item.SenderUsername);
-                item.EDRecipient_MessageId = App.Proxy.GetRecipients((int)item.Id);
-            }
         }
 
         string PrepareReplyMssageTitle(string title)
@@ -252,5 +265,6 @@ namespace WPFClient
                 + SpecialSymbols.SpecialSymbols.rightTitleStopper;
         }
 
+        #endregion
     }
 }

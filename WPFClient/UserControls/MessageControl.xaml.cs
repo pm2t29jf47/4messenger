@@ -66,10 +66,11 @@ namespace WPFClient.UserControls
         /// <param name="e"></param>
         void OnMessageControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            MessageControlModel.FillMessageEDRecipient_MessageId();
             RecipientsControlModel rcm = new RecipientsControlModel()
             {
                 AllEmployees = MessageControlModel.AllEmployees,
-                Recipients = MessageControlModel.Recipients
+                Recipients = MessageControlModel.Message.EDRecipient_MessageId
             };
             rcm.UpdateByRecipients();
             RecipientsControl.DataContext = rcm;

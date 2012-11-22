@@ -65,8 +65,6 @@
       <DependentUpon>MessageCreator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\MessageCreatorModel.cs" />
-    <Compile Include="OverEntities\EmployeeModel.cs" />
-    <Compile Include="OverEntities\MessageModel.cs" />
     <Compile Include="Models\RecipientsEditorControlModel.cs" />
     <Compile Include="Models\RecipientsEditorModel.cs" />
     <Compile Include="Models\RecipientsControlModel.cs" />
@@ -216,6 +214,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\mail_new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="OverEntities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

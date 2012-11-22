@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
-using WPFClient.OverEntities;
 
 namespace WPFClient.Models
 {
@@ -32,20 +31,20 @@ namespace WPFClient.Models
             }
         }
 
-        MessageModel messageModel = new MessageModel();
+        Message message = new Message();
 
-        public MessageModel MessageModel
+        public Message Message
         {
             get
             {
-                return messageModel;
+                return message;
             }
             set
             {
-                if (messageModel == value)
+                if (message == value)
                     return;
 
-                messageModel = value;
+                message = value;
             }
         }
        

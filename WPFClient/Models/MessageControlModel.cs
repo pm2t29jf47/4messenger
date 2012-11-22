@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
-using WPFClient.OverEntities;
 
 namespace WPFClient.Models
 {
@@ -55,43 +54,16 @@ namespace WPFClient.Models
             }
         }
 
-        /// <summary>
-        /// Коллекция получателей
-        /// </summary>
-        List<Recipient> recipients = new List<Recipient>();
-
-        /// <summary>
-        /// Коллекция получателей
-        /// </summary>
-        public List<Recipient> Recipients
+        public void FillMessageEDRecipient_MessageId()
         {
-            get
-            {
-                return recipients;
-            }
-            set
-            {
-                if (recipients == value)
-                    return;
+            if(message.EDRecipient_MessageId == null)
+                return;
 
-                recipients = value;
-            }
-        }
-
-        EmployeeModel senderEmployeeModel = new EmployeeModel();
-
-        public EmployeeModel SenderEmployeeModel
-        {
-            get
+            foreach(Recipient item in message.EDRecipient_MessageId)
             {
-                return senderEmployeeModel;
-            }
-            set
-            {
-                if (senderEmployeeModel == value)
-                    return;
-
-                senderEmployeeModel = value;
+                item.FKMessage_MessageId = message;
+                item.FKEmployee_RecipientUsername = allEmployees.FirstOrDefault(
+                    row => string.Compare(row.Username, item.RecipientUsername) == 0);
             }
         }
     }

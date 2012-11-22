@@ -15,7 +15,6 @@ using Entities;
 using WPFClient.Models;
 using WPFClient.UserControls;
 using WPFClient.Additional;
-using WPFClient.OverEntities;
 
 namespace WPFClient
 {
@@ -30,7 +29,7 @@ namespace WPFClient
         /// <remarks>
         /// Обновляется при запуске и при получении сообщения от ногового сотрудника, который еще не содержится в ней
         /// </remarks>
-        List<Employee> allEmployee;
+        List<Employee> allEmployees;
 
         List<SidebarFolder> folders = new List<SidebarFolder>();
 
@@ -45,8 +44,10 @@ namespace WPFClient
 
         void OnMainWindowLoaded(object sender, RoutedEventArgs e)
         {
-             PrepareWindow();
-             ShowLoginWindow();
+            PrepareWindow();
+            ShowLoginWindow();
+            PrepareEmployeeClass();
+            allEmployees = App.Proxy.GetAllEmployees();
         }
 
         public void PrepareWindow()
@@ -54,6 +55,12 @@ namespace WPFClient
             PreareSidebar();
             HideToolbarButtons(true);
             MessageControl.ControlState = MessageControl.state.IsReadOnly;
+        }
+
+        void PrepareEmployeeClass()
+        {
+            Employee.CurrentUsername = App.Username;
+            Employee.NamePrefix = Properties.Resources.Me;
         }
         
         void HideToolbarButtons(bool state)
@@ -80,7 +87,7 @@ namespace WPFClient
         {
             this.Hide();
             var loginWindow = new LoginWindow();
-            loginWindow.Show();
+            loginWindow.ShowDialog();
         }
 
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -88,26 +95,21 @@ namespace WPFClient
             if (MessageList.SelectedItem == null)
                 return;
 
-            MessageModel messagemodel = (MessageModel) MessageList.SelectedItem;
-            string a = App.Username;
-            if (inboxFolderPressed)
-            {
-                Recipient recipient = messagemodel.Recipients.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
-                if ((recipient != null)
-                    && (!recipient.Viewed))
-                {
-                    App.Proxy.SetInboxMessageViewed((int)messagemodel.Message.Id);
-                }
-            }
+            Message selectedMessage = (Message)MessageList.SelectedItem;            
+            //помечает открытое письмо прочитанным
+            //if (inboxFolderPressed)
+            //{
+            //    Recipient recipient = messagemodel.Recipients.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
+            //    if ((recipient != null)
+            //        && (!recipient.Viewed))
+            //    {
+            //        App.Proxy.SetInboxMessageViewed((int)messagemodel.Message.Id);
+            //    }
+            //}
             MessageControl.DataContext = new MessageControlModel()
             {
-                AllEmployees = App.Proxy.GetAllEmployees(),
-                Message = ((MessageModel)MessageList.SelectedItem).Message,
-                Recipients = ((MessageModel)MessageList.SelectedItem).Recipients,
-                SenderEmployeeModel = new EmployeeModel()
-                {
-                    Employee = ((MessageModel)MessageList.SelectedItem).SenderEmployee
-                }
+                AllEmployees = allEmployees,
+                Message = selectedMessage                
             };
             HideToolbarButtons(false);       
         }
@@ -139,12 +141,7 @@ namespace WPFClient
             inboxFolderPressed = true;
             MessageList.ItemTemplate = (DataTemplate)FindResource("ForInboxFolderTemplate");
             List<Message> InboxMessages = App.Proxy.GetInboxMessages();
-           
-            foreach (var item in InboxMessages)
-            {
-                item.FKEmployee_SenderUsername = App.Proxy.GetEmployee(item.SenderUsername);
-                item.EDRecipient_MessageId = App.Proxy.GetRecipients((int)item.Id);  
-            }
+            FillMessages(InboxMessages);
             MessageList.ItemsSource = InboxMessages;
 
         }
@@ -195,21 +192,16 @@ namespace WPFClient
 
         public void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
         {
-            List<Employee> allEmployees = App.Proxy.GetAllEmployees();
-            Message message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false);
-            Employee senderEmployee = allEmployees.FirstOrDefault(row => string.Compare(row.Username, message.SenderUsername) == 0);
-            List<Recipient> recipients = new List<Recipient>();
-            MessageModel messageModel = new MessageModel()
+            Message message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false)
             {
-                Message = message,
-                Recipients = recipients,
-                SenderEmployee = senderEmployee
-            };            
+               FKEmployee_SenderUsername = allEmployees.FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0),
+               EDRecipient_MessageId = new List<Recipient>()
+            };
             MessageCreator messageCreator = new MessageCreator();
             messageCreator.DataContext = new MessageCreatorModel()
             {                
                 AllEmployees = allEmployees,
-                MessageModel = messageModel
+                Message = message
             };
             messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст ?
             messageCreator.Show();            
@@ -217,36 +209,45 @@ namespace WPFClient
 
         public void OnReplyMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            MessageModel selectedMessage = (MessageModel)MessageList.SelectedItem;            
-            string titleString = Properties.Resources.Re
-                + SpecialSymbols.SpecialSymbols.space
-                + SpecialSymbols.SpecialSymbols.leftTitleStopper
-                + selectedMessage.Message.Title
-                + SpecialSymbols.SpecialSymbols.rightTitleStopper;
-            List<Employee> allEmployees = App.Proxy.GetAllEmployees();
-            Message message = new Message(null, titleString, new DateTime(), App.Username, string.Empty, false);
-            Employee senderEmployee = allEmployees.FirstOrDefault(row => string.Compare(row.Username, message.SenderUsername) == 0);
-            List<Recipient> recipients = new List<Recipient>();
-            recipients.Add(new Recipient(selectedMessage.Message.SenderUsername, null, false, false));            
-            MessageModel messageModel = new MessageModel()
-            {
-                Message = message,
-                SenderEmployee = senderEmployee,
-                Recipients = recipients
-            };
-            MessageCreator messageCreator = new MessageCreator();
-            messageCreator.DataContext = new MessageCreatorModel()
-            {
-                AllEmployees = allEmployees,
-                MessageModel = messageModel
-            };
-            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст
-            messageCreator.Show();
+            //MessageModel selectedMessage = (MessageModel)MessageList.SelectedItem;            
+            //string titleString = Properties.Resources.Re
+            //    + SpecialSymbols.SpecialSymbols.space
+            //    + SpecialSymbols.SpecialSymbols.leftTitleStopper
+            //    + selectedMessage.Message.Title
+            //    + SpecialSymbols.SpecialSymbols.rightTitleStopper;
+            //List<Employee> allEmployees = App.Proxy.GetAllEmployees();
+            //Message message = new Message(null, titleString, new DateTime(), App.Username, string.Empty, false);
+            //Employee senderEmployee = allEmployees.FirstOrDefault(row => string.Compare(row.Username, message.SenderUsername) == 0);
+            //List<Recipient> recipients = new List<Recipient>();
+            //recipients.Add(new Recipient(selectedMessage.Message.SenderUsername, null, false, false));            
+            //MessageModel messageModel = new MessageModel()
+            //{
+            //    Message = message,
+            //    SenderEmployee = senderEmployee,
+            //    Recipients = recipients
+            //};
+            //MessageCreator messageCreator = new MessageCreator();
+            //messageCreator.DataContext = new MessageCreatorModel()
+            //{
+            //    AllEmployees = allEmployees,
+            //    MessageModel = messageModel
+            //};
+            //messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст
+            //messageCreator.Show();
         }
 
         public void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
         {
    
+        }
+
+        void FillMessages(List<Message> messages)
+        {
+            foreach (var item in messages)
+            {
+                item.FKEmployee_SenderUsername = App.Proxy.GetEmployee(item.SenderUsername);
+                item.EDRecipient_MessageId = App.Proxy.GetRecipients((int)item.Id);
+            }
         }
 
     }

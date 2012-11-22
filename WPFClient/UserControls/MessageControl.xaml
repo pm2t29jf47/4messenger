@@ -104,7 +104,7 @@
                  Grid.Column="1" 
                  Grid.Row="0"                      
                  Style="{StaticResource ReadOnlyTextBoxStyle}"
-                 Text="{Binding Path=SenderEmployeeModel.LongEmployeeName, Mode=OneWay}"/>
+                 Text="{Binding Path=Message.FKEmployee_SenderUsername.ToLongString, Mode=OneWay}"/>
         <local:RecipientsControl x:Name="RecipientsControl" 
                                  Grid.Column="1" 
                                  Grid.Row="1"              

@@ -12,7 +12,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Entities;
 using WPFClient.Models;
-using WPFClient.OverEntities;
 
 namespace WPFClient
 {
@@ -44,12 +43,7 @@ namespace WPFClient
             MessageControl.DataContext = new MessageControlModel()
             {
                 AllEmployees = MessageCreatorModel.AllEmployees,
-                Message = MessageCreatorModel.MessageModel.Message,
-                SenderEmployeeModel = new EmployeeModel()
-                {
-                    Employee = MessageCreatorModel.MessageModel.SenderEmployee
-                },
-                Recipients = MessageCreatorModel.MessageModel.Recipients
+                Message = MessageCreatorModel.Message               
             };
             MessageControl.ControlState = WPFClient.UserControls.MessageControl.state.IsEditable;
         }
@@ -76,7 +70,7 @@ namespace WPFClient
         private void OnSendMessageButtonClick(object sender, RoutedEventArgs e)
         {           
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
-            App.Proxy.SendMessage(mcm.Message, mcm.Recipients);
+            //App.Proxy.SendMessage(mcm.Message, mcm.Recipients);
             this.Close();
         }       
     }

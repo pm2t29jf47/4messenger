@@ -209,31 +209,24 @@ namespace WPFClient
 
         public void OnReplyMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            //MessageModel selectedMessage = (MessageModel)MessageList.SelectedItem;            
-            //string titleString = Properties.Resources.Re
-            //    + SpecialSymbols.SpecialSymbols.space
-            //    + SpecialSymbols.SpecialSymbols.leftTitleStopper
-            //    + selectedMessage.Message.Title
-            //    + SpecialSymbols.SpecialSymbols.rightTitleStopper;
-            //List<Employee> allEmployees = App.Proxy.GetAllEmployees();
-            //Message message = new Message(null, titleString, new DateTime(), App.Username, string.Empty, false);
-            //Employee senderEmployee = allEmployees.FirstOrDefault(row => string.Compare(row.Username, message.SenderUsername) == 0);
-            //List<Recipient> recipients = new List<Recipient>();
-            //recipients.Add(new Recipient(selectedMessage.Message.SenderUsername, null, false, false));            
-            //MessageModel messageModel = new MessageModel()
-            //{
-            //    Message = message,
-            //    SenderEmployee = senderEmployee,
-            //    Recipients = recipients
-            //};
-            //MessageCreator messageCreator = new MessageCreator();
-            //messageCreator.DataContext = new MessageCreatorModel()
-            //{
-            //    AllEmployees = allEmployees,
-            //    MessageModel = messageModel
-            //};
-            //messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст
-            //messageCreator.Show();
+            Message selectedMessage = (Message)MessageList.SelectedItem;
+            string newTitle = PrepareReplyMssageTitle(selectedMessage.Title);
+            Employee senderEmployee = allEmployees.FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0);
+            List<Recipient> recipients = new List<Recipient>();
+            recipients.Add(new Recipient(selectedMessage.SenderUsername, null, false, false));
+            Message message = new Message(null, newTitle, new DateTime(), App.Username, string.Empty, false)
+            {
+                EDRecipient_MessageId = recipients,
+                FKEmployee_SenderUsername = senderEmployee
+            };            
+            MessageCreator messageCreator = new MessageCreator();
+            messageCreator.DataContext = new MessageCreatorModel()
+            {
+                AllEmployees = allEmployees,
+                Message = message
+            };
+            messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст
+            messageCreator.Show();
         }
 
         public void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
@@ -248,6 +241,15 @@ namespace WPFClient
                 item.FKEmployee_SenderUsername = App.Proxy.GetEmployee(item.SenderUsername);
                 item.EDRecipient_MessageId = App.Proxy.GetRecipients((int)item.Id);
             }
+        }
+
+        string PrepareReplyMssageTitle(string title)
+        {
+            return Properties.Resources.Re
+                + SpecialSymbols.SpecialSymbols.space
+                + SpecialSymbols.SpecialSymbols.leftTitleStopper
+                + title
+                + SpecialSymbols.SpecialSymbols.rightTitleStopper;
         }
 
     }

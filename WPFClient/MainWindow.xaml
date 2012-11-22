@@ -166,22 +166,13 @@
 
                     <!--ФИО отправителя-->
                     <TextBlock Grid.Column="1"
-                                    Style="{StaticResource MessageListItemSenderStyle}">
-                            <TextBlock.Text>                                    
-                                <MultiBinding StringFormat="{}{0} {1} &lt;{2}&gt;">
-                                    <Binding Path="SenderEmployee.FirstName" 
-                                                Mode="OneWay"/>
-                                    <Binding Path="SenderEmployee.SecondName" 
-                                                Mode="OneWay"/>
-                                    <Binding Path="SenderEmployee.Username" 
-                                                Mode="OneWay"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
+                               Style="{StaticResource MessageListItemSenderStyle}"
+                               Text="{Binding Path=FKEmployee_SenderUsername.ToString}">                            
                     </TextBlock>
 
                     <!--Дата-->
                     <TextBlock Grid.Column="2"
-                                    Text="{Binding Path=Message.Date}"
+                                    Text="{Binding Path=Date}"
                                     Style="{StaticResource MessageListItemDateStyle}">
                     </TextBlock>
 
@@ -189,7 +180,7 @@
                     <TextBlock Grid.Row="1"
                                     Grid.Column="1"
                                     Grid.ColumnSpan="2"
-                                    Text="{Binding Path=Message.Title, Mode=OneWay}"
+                                    Text="{Binding Path=Title, Mode=OneWay}"
                                     Style="{StaticResource MessageListItemTitleStyle}"/>
                 </Grid>
             </Border>

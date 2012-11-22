@@ -23,6 +23,8 @@ namespace WPFClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Common code
+
         /// <summary>
         /// Коллекция содержащая всех сотрудников
         /// </summary>
@@ -114,6 +116,8 @@ namespace WPFClient
             HideToolbarButtons(false);       
         }
 
+        #endregion
+
         #region Prepare "MessageList" by foldel click
 
         /// <summary>
@@ -142,46 +146,28 @@ namespace WPFClient
         {
             inboxFolderPressed = true;
             MessageList.ItemTemplate = (DataTemplate)FindResource("ForInboxFolderTemplate");
-            List<Message> InboxMessages = App.Proxy.GetInboxMessages();
-            FillMessages(InboxMessages);
-            MessageList.ItemsSource = InboxMessages;
+            List<Message> inboxMessages = App.Proxy.GetInboxMessages();
+            FillMessages(inboxMessages);
+            MessageList.ItemsSource = inboxMessages;
 
         }
 
         void PrepareMessageListForSentboxFolder()
         {
-            //inboxFolderPressed = false;
-            //MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
-            //List<Message> SentboxMessages = App.Proxy.GetSentboxMessages();
-            //List<MessageModel> SentboxMessagesModel = new List<MessageModel>();
-            //foreach (var item in SentboxMessages)
-            //{
-            //    SentboxMessagesModel.Add(new MessageModel()
-            //    {
-            //        Message = item,
-            //        SenderEmployee = App.Proxy.GetEmployee(item.SenderUsername),
-            //        Recipients = App.Proxy.GetRecipients((int)item.Id)
-            //    });
-            //}
-            //MessageList.ItemsSource = SentboxMessagesModel;
+            inboxFolderPressed = false;
+            MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
+            List<Message> sentboxMessages = App.Proxy.GetSentboxMessages();
+            FillMessages(sentboxMessages);
+            MessageList.ItemsSource = sentboxMessages;
         }
 
         void PrepareMessageListForDeletedFolder()
         {
-            //inboxFolderPressed = false;
-            //MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
-            //List<Message> DeletedMessages = App.Proxy.GetDeletedMessages();
-            //List<MessageModel> DeletedMessagesModel = new List<MessageModel>();
-            //foreach (var item in DeletedMessages)
-            //{
-            //    DeletedMessagesModel.Add(new MessageModel()
-            //    {
-            //        Message = item,
-            //        SenderEmployee = App.Proxy.GetEmployee(item.SenderUsername),
-            //        Recipients = App.Proxy.GetRecipients((int)item.Id)
-            //    });
-            //}
-            //MessageList.ItemsSource = DeletedMessagesModel;
+            inboxFolderPressed = false;
+            MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
+            List<Message> deletedMessages = App.Proxy.GetDeletedMessages();
+            FillMessages(deletedMessages);
+            MessageList.ItemsSource = deletedMessages;
         }
 
         /// <summary>

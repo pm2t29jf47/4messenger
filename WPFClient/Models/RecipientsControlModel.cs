@@ -258,7 +258,7 @@ namespace WPFClient.Models
         /// </remarks>
         public void UpdateByRecipientsEmployees()
         {
-            string buf = EmployeesToString(recipientsEmployees);
+            string buf = Employee.CollectionToString(recipientsEmployees);
             RecipientsString = JoinToString(UnrecognizedUsernames, buf);
             recipients.Clear();
             foreach (var item in recipientsEmployees)
@@ -287,7 +287,7 @@ namespace WPFClient.Models
                 if (employee != null)
                     recipientsEmployees.Add(employee);
             }
-            string buf = EmployeesToString(recipientsEmployees);
+            string buf = Employee.CollectionToString(recipientsEmployees);
             RecipientsString = JoinToString(UnrecognizedUsernames, buf);  
         }
 
@@ -344,50 +344,10 @@ namespace WPFClient.Models
         {
             Employee foundEmployee = AllEmployees.FirstOrDefault(i => (string.Compare(i.Username, username) == 0));
             if (foundEmployee != null)                  
-                return EmployeeToString(foundEmployee);                             
+                return foundEmployee.ToString;                             
             
             return username;
-        }
-
-        /// <summary>
-        /// Преобразует поля класса Employee в строку
-        /// </summary>
-        /// <param name="employee"></param>
-        /// <returns></returns>
-        string EmployeeToString(Employee employee)
-        {
-            string result = string.Empty;
-            if (employee != null)
-            {
-                result = employee.FirstName
-                    + SpecialSymbols.SpecialSymbols.space
-                    + employee.SecondName
-                    + SpecialSymbols.SpecialSymbols.space
-                    + SpecialSymbols.SpecialSymbols.leftUsernameStopper
-                    + employee.Username
-                    + SpecialSymbols.SpecialSymbols.rightUsernameStopper;
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Преобразует коллекцию объектов Employee в строку
-        /// </summary>
-        /// <param name="Employees"></param>
-        /// <returns></returns>
-        string EmployeesToString(List<Employee> Employees)
-        {
-            string result = string.Empty;
-            if (Employees != null
-                && Employees.Count != 0)
-            {
-                foreach (var item in Employees)
-                    result += EmployeeToString(item) + SpecialSymbols.SpecialSymbols.userDataDevider;
-
-                result = result.Substring(0, result.Length - 1);
-            }
-            return result;
-        }      
+        }        
 
         #endregion
      

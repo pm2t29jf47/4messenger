@@ -60,6 +60,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Additional\CustomStringComparer.cs" />
+    <Compile Include="Additional\DeletedFolder.cs" />
+    <Compile Include="Additional\InboxFolder.cs" />
+    <Compile Include="Additional\SentboxFolder.cs" />
     <Compile Include="Models\MessageControlModel.cs" />
     <Compile Include="MessageCreator.xaml.cs">
       <DependentUpon>MessageCreator.xaml</DependentUpon>
@@ -148,6 +151,7 @@
     <EmbeddedResource Include="Properties\Resources.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.ru.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

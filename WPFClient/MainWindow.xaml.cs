@@ -50,6 +50,12 @@ namespace WPFClient
             ShowLoginWindow();
             PrepareEmployeeClass();
             allEmployees = App.Proxy.GetAllEmployees();
+
+            SidebarFolder sf ;
+            sf = new InboxFolder();
+            var a = sf.GetFolderContent();
+            sf = new DeletedFolder();
+            a = sf.GetFolderContent();
         }
 
         public void PrepareWindow()
@@ -79,10 +85,10 @@ namespace WPFClient
 
         void FillFoldersNames()
         {
-            folders.Add(new SidebarFolder(Properties.Resources.InboxFolderLabel));
-            folders.Add(new SidebarFolder(Properties.Resources.SentboxFolderLabel));
-            folders.Add(new SidebarFolder(Properties.Resources.DeletedFolderLabel));
-            folders.Add(new SidebarFolder("большая кнопка"));
+            folders.Add(new InboxFolder());
+            folders.Add(new SentboxFolder());
+            folders.Add(new DeletedFolder());
+           
         }
 
         void ShowLoginWindow()
@@ -128,6 +134,10 @@ namespace WPFClient
         public void OnFolderClick(object sender, RoutedEventArgs e)
         {
             Button selectedFolder = (Button)sender;
+
+            SidebarFolder sf = (SidebarFolder)selectedFolder.DataContext;
+
+
             StackPanel buttonStackPanel = (StackPanel)selectedFolder.Content;
             TextBlock buttonTextBlock = (TextBlock)buttonStackPanel.Children[1];
             
@@ -155,9 +165,11 @@ namespace WPFClient
         void PrepareMessageListForSentboxFolder()
         {
             inboxFolderPressed = false;
+
             MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
             List<Message> sentboxMessages = App.Proxy.GetSentboxMessages();
             FillMessages(sentboxMessages);
+
             MessageList.ItemsSource = sentboxMessages;
         }
 

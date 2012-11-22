@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Entities;
+
+namespace WPFClient.Additional
+{
+    class DeletedFolder : SidebarFolder
+    {
+        public DeletedFolder()
+        {
+            FolderLabel = Properties.Resources.DeletedFolderLabel;
+        }
+        public override List<Entities.Message> GetFolderContent()
+        {
+            List<Message> messages = App.Proxy.GetDeletedMessages();
+            FillMessages(messages);
+            return messages;
+        }
+    }
+}

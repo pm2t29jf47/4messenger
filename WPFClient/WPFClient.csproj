@@ -60,6 +60,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Additional\CustomStringComparer.cs" />
+    <Compile Include="Additional\ServiceWatcher.cs" />
     <Compile Include="SidebarFolders\DeletedFolder.cs" />
     <Compile Include="SidebarFolders\InboxFolder.cs" />
     <Compile Include="SidebarFolders\SentboxFolder.cs" />

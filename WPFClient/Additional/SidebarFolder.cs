@@ -11,7 +11,7 @@ namespace WPFClient.Additional
         public SidebarFolder()
         {
             FolderLabel = "New folder";
-            FolderImage = "Images / folder.png";
+            FolderImage = "Images/folder.png";
         }
 
         public string FolderLabel { set; get; }

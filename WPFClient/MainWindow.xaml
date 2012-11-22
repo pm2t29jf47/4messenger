@@ -41,8 +41,6 @@
                TargetType="{x:Type Image}">
             <Setter Property="Width"
                     Value="24"></Setter>
-            <Setter Property="Source" 
-                    Value="Images/folder.png"></Setter>
         </Style>
         
         <Style x:Key="FolderButtonStyle" 
@@ -246,8 +244,9 @@
                     <Button Style="{StaticResource FolderButtonStyle}"
                             Click="OnFolderClick">
                         <StackPanel Orientation="Vertical">                            
-                            <!--Пиктограмма папки-->
-                            <Image Style="{StaticResource FolderImageStyle}"></Image>                            
+                            <!--Пиктограмма папки-->                           
+                            <Image Source="{Binding Path=FolderImage, Mode=OneWay}"
+                                   Style="{StaticResource FolderImageStyle}"></Image>
                             <!--Название папки-->
                             <TextBlock Text="{Binding Path=FolderLabel, Mode=OneWay}"
                                        Style="{StaticResource FolderTextBlockStyle}"/>

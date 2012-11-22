@@ -49,13 +49,7 @@ namespace WPFClient
             PrepareWindow();
             ShowLoginWindow();
             PrepareEmployeeClass();
-            allEmployees = App.Proxy.GetAllEmployees();
-
-            SidebarFolder sf ;
-            sf = new InboxFolder();
-            var a = sf.GetFolderContent();
-            sf = new DeletedFolder();
-            a = sf.GetFolderContent();
+            allEmployees = App.Proxy.GetAllEmployees();          
         }
 
         public void PrepareWindow()
@@ -134,70 +128,15 @@ namespace WPFClient
         public void OnFolderClick(object sender, RoutedEventArgs e)
         {
             Button selectedFolder = (Button)sender;
-
-            SidebarFolder sf = (SidebarFolder)selectedFolder.DataContext;
-
-
-            StackPanel buttonStackPanel = (StackPanel)selectedFolder.Content;
-            TextBlock buttonTextBlock = (TextBlock)buttonStackPanel.Children[1];
-            
-            HideToolbarButtons(true);
-            if (string.Compare(buttonTextBlock.Text, Properties.Resources.DeletedFolderLabel) == 0)
-                PrepareMessageListForDeletedFolder();
-            else if (string.Compare(buttonTextBlock.Text, Properties.Resources.InboxFolderLabel) == 0)
-                PrepareMessageListForInboxFolder();
-            else if (string.Compare(buttonTextBlock.Text, Properties.Resources.SentboxFolderLabel) == 0)
-                PrepareMessageListForSentboxFolder();
+            SidebarFolder sidebarFolder = (SidebarFolder)selectedFolder.DataContext;
+            if (sidebarFolder is InboxFolder)            
+                MessageList.ItemTemplate = (DataTemplate)FindResource("ForInboxFolderTemplate");             
             else
-                OnUserFolderClick();            
-        }
-
-        void PrepareMessageListForInboxFolder()
-        {
-            inboxFolderPressed = true;
-            MessageList.ItemTemplate = (DataTemplate)FindResource("ForInboxFolderTemplate");
-            List<Message> inboxMessages = App.Proxy.GetInboxMessages();
-            FillMessages(inboxMessages);
-            MessageList.ItemsSource = inboxMessages;
-
-        }
-
-        void PrepareMessageListForSentboxFolder()
-        {
-            inboxFolderPressed = false;
-
-            MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
-            List<Message> sentboxMessages = App.Proxy.GetSentboxMessages();
-            FillMessages(sentboxMessages);
-
-            MessageList.ItemsSource = sentboxMessages;
-        }
-
-        void PrepareMessageListForDeletedFolder()
-        {
-            inboxFolderPressed = false;
-            MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");
-            List<Message> deletedMessages = App.Proxy.GetDeletedMessages();
-            FillMessages(deletedMessages);
-            MessageList.ItemsSource = deletedMessages;
-        }
-
-        /// <summary>
-        /// Обработка нажатия на пользовательскую папку
-        /// </summary>
-        void OnUserFolderClick()
-        {
-            MessageBox.Show("Не нажимать!");
-        }
-
-        void FillMessages(List<Message> messages)
-        {
-            foreach (var item in messages)
-            {
-                item.FKEmployee_SenderUsername = App.Proxy.GetEmployee(item.SenderUsername);
-                item.EDRecipient_MessageId = App.Proxy.GetRecipients((int)item.Id);
-            }
-        }
+                MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");                   
+            
+            MessageList.ItemsSource = sidebarFolder.GetFolderContent();                    
+            HideToolbarButtons(true);           
+        }       
         #endregion
 
         #region "Create" "Reply" "Delete" buttons

@@ -68,8 +68,8 @@ namespace Entities
             set;
         }
 
-        public Employee FKRecipientUsername { get; set; }
+        public Employee FKEmployee_RecipientUsername { get; set; }
 
-        public Message FKMessageId { get; set; }
+        public Message FKMessage_MessageId { get; set; }
     }
 }

@@ -70,8 +70,8 @@ namespace Entities
         [DataMember]
         public string Role { get; set; }
 
-        public List<Message> ExternalDependencySenderUsername { get; set; }
+        public List<Message> EDMessage_SenderUsername { get; set; }
 
-        public List<Recipient> ExternalDependencyRecipientUsername { get; set; }
+        public List<Recipient> EDRecipient_RecipientUsername { get; set; }
     }
 }

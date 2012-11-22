@@ -41,7 +41,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Presentation" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -60,9 +60,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Additional\CustomStringComparer.cs" />
-    <Compile Include="Additional\DeletedFolder.cs" />
-    <Compile Include="Additional\InboxFolder.cs" />
-    <Compile Include="Additional\SentboxFolder.cs" />
+    <Compile Include="SidebarFolders\DeletedFolder.cs" />
+    <Compile Include="SidebarFolders\InboxFolder.cs" />
+    <Compile Include="SidebarFolders\SentboxFolder.cs" />
     <Compile Include="Models\MessageControlModel.cs" />
     <Compile Include="MessageCreator.xaml.cs">
       <DependentUpon>MessageCreator.xaml</DependentUpon>
@@ -85,7 +85,7 @@
     <Compile Include="UserControls\RecipientsEditorControl.xaml.cs">
       <DependentUpon>RecipientsEditorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Additional\SidebarFolder.cs" />
+    <Compile Include="SidebarFolders\SidebarFolder.cs" />
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

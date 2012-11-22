@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Entities;
 
-namespace WPFClient.Additional
+namespace WPFClient.SidebarFolders
 {
     class InboxFolder : SidebarFolder
     {

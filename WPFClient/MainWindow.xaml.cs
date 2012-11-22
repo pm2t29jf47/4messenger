@@ -15,6 +15,7 @@ using Entities;
 using WPFClient.Models;
 using WPFClient.UserControls;
 using WPFClient.Additional;
+using WPFClient.SidebarFolders;
 
 namespace WPFClient
 {
@@ -33,6 +34,10 @@ namespace WPFClient
         /// </remarks>
         List<Employee> allEmployees;
 
+       // List<Message>
+
+        
+
         List<SidebarFolder> folders = new List<SidebarFolder>();
 
         bool inboxFolderPressed = false;
@@ -41,7 +46,7 @@ namespace WPFClient
         {
             Loaded += new RoutedEventHandler(OnMainWindowLoaded);
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
-            InitializeComponent();
+            InitializeComponent();           
         }
 
         void OnMainWindowLoaded(object sender, RoutedEventArgs e)
@@ -49,8 +54,30 @@ namespace WPFClient
             PrepareWindow();
             ShowLoginWindow();
             PrepareEmployeeClass();
-            allEmployees = App.Proxy.GetAllEmployees();          
+            FirstDataLoad();            
+            StartTimer();            
         }
+
+        void FirstDataLoad()
+        {
+            allEmployees = App.Proxy.GetAllEmployees();
+
+        }
+
+        void StartTimer()
+        {
+            var timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Interval = new TimeSpan(10000000); ///1 per second
+            timer.Tick += new EventHandler(OnTimerTick);
+            timer.Start();
+        }
+
+        void OnTimerTick(object sender, EventArgs e)
+        {
+            
+        }
+
+
 
         public void PrepareWindow()
         {

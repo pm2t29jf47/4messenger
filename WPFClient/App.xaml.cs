@@ -13,13 +13,7 @@ namespace WPFClient
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
-    {
-        /// <summary>
-        /// Хранит прокси класс для обращения к методам сервиса
-        /// </summary>
-        public static IService1 Proxy
-        { get; set; }
-
+    {  
         /// <summary>
         /// Имя пользователя
         /// </summary>
@@ -37,5 +31,20 @@ namespace WPFClient
         public static MainWindow MW;
 
         public static ServiceWatcher ServiceWatcher {get; set;}
+
+        static TimeSpan timeBetweenUpdating = new TimeSpan(0, 1, 0);
+
+        public static TimeSpan TimeBetweenUpdating
+        {
+            get
+            {
+                return timeBetweenUpdating;
+            }
+            set
+            {
+                if (timeBetweenUpdating != value)
+                    timeBetweenUpdating = value;
+            }
+        }
     }
 }

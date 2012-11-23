@@ -11,7 +11,7 @@
 - сплиттер
 - неактивность кнопки Send
 - убрать возможность выбора в sidebar-е
-- remove entitiesToString, EmployeeToString
+- поток в обработчике события контрола и в обработчике DispetcherTimer.Tick
 
 
 ####

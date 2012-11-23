@@ -16,6 +16,7 @@ using WPFClient.Models;
 using WPFClient.UserControls;
 using WPFClient.Additional;
 using WPFClient.SidebarFolders;
+using System.ComponentModel;
 
 namespace WPFClient
 {
@@ -32,22 +33,16 @@ namespace WPFClient
         /// <remarks>
         /// Обновляется при запуске и при получении сообщения от ногового сотрудника, который еще не содержится в ней
         /// </remarks>
-        List<Employee> allEmployees;
-
-       // List<Message>
-
-        
+       
+        public ServiceWatcher ServiceWatcher { get; set; }
 
         List<SidebarFolder> folders = new List<SidebarFolder>();
-
-        bool inboxFolderPressed = false;
 
         public MainWindow()
         {
             Loaded += new RoutedEventHandler(OnMainWindowLoaded);
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
-            InitializeComponent();
-            App.ServiceWatcher = new ServiceWatcher();
+            InitializeComponent();            
         }
 
         void OnMainWindowLoaded(object sender, RoutedEventArgs e)
@@ -55,11 +50,10 @@ namespace WPFClient
             PrepareWindow();
             ShowLoginWindow();
             PrepareEmployeeClass();
-            allEmployees = App.Proxy.GetAllEmployees();
-            App.ServiceWatcher.StartWathing();                       
+            CreateServiceWatcherHandler();                             
         }
-        
-        public void PrepareWindow()
+
+        void PrepareWindow()
         {
             PreareSidebar();
             HideToolbarButtons(true);
@@ -117,7 +111,7 @@ namespace WPFClient
             //}
             MessageControl.DataContext = new MessageControlModel()
             {
-                AllEmployees = allEmployees,
+                AllEmployees = App.ServiceWatcher.AllEmployees,
                 Message = selectedMessage                
             };
             HideToolbarButtons(false);       
@@ -167,7 +161,7 @@ namespace WPFClient
         {
              Message message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false)
             {
-               FKEmployee_SenderUsername = allEmployees.FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0),
+                FKEmployee_SenderUsername = App.ServiceWatcher.AllEmployees.FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0),
                EDRecipient_MessageId = new List<Recipient>()
             };
              CreateMessageCreatorWindow(message);
@@ -177,7 +171,7 @@ namespace WPFClient
         {
             Message selectedMessage = (Message)MessageList.SelectedItem;
             string newTitle = PrepareReplyMssageTitle(selectedMessage.Title);
-            Employee senderEmployee = allEmployees.FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0);
+            Employee senderEmployee = App.ServiceWatcher.AllEmployees.FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0);
             List<Recipient> recipients = new List<Recipient>();
             recipients.Add(new Recipient(selectedMessage.SenderUsername, null, false, false));
             Message message = new Message(null, newTitle, new DateTime(), App.Username, string.Empty, false)
@@ -193,7 +187,7 @@ namespace WPFClient
             MessageCreator messageCreator = new MessageCreator();
             messageCreator.DataContext = new MessageCreatorModel()
             {
-                AllEmployees = allEmployees,
+                AllEmployees = App.ServiceWatcher.AllEmployees,
                 Message = message
             };
             messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст ?
@@ -207,6 +201,20 @@ namespace WPFClient
                 + SpecialSymbols.SpecialSymbols.leftTitleStopper
                 + title
                 + SpecialSymbols.SpecialSymbols.rightTitleStopper;
+        }
+
+        #endregion
+
+        #region ServiceWatcher        
+
+        void CreateServiceWatcherHandler()
+        {
+            App.ServiceWatcher.DataUpdated += new Additional.ServiceWatcher.eventHandler(OnServiceWatcherDataUpdated);
+        }
+
+        void OnServiceWatcherDataUpdated(object sender, PropertyChangedEventArgs e)
+        {
+            string d = "debug!";
         }
 
         #endregion

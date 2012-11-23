@@ -14,7 +14,7 @@ namespace WPFClient.SidebarFolders
         }
         public override List<Entities.Message> GetFolderContent()
         {
-            List<Message> messages = App.Proxy.GetDeletedMessages();
+            List<Message> messages = App.ServiceWatcher.GetDeletedMessages();
             FillMessages(messages);
             return messages;
         }

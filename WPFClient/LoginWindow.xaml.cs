@@ -15,6 +15,7 @@ using DBService;
 using System.IdentityModel.Tokens;
 using InformatonTips;
 using System.ComponentModel;
+using WPFClient.Additional;
 
 
 namespace WPFClient
@@ -42,24 +43,27 @@ namespace WPFClient
 
         void CheckLoginResult()
         {
-            if (App.Proxy == null)
+            if (App.ServiceWatcher == null)
                 App.Current.Shutdown();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
-            {
+            {              
                 ///quick login
                 App.Username = "Ivan1";
                 App.Password = "111";
+                //
                 UsernameTexbox.Text = App.Username;
                 PasswordTexbox.Password = App.Password;
                 var factory1 = new ChannelFactory<IService1>("*");
                 factory1.Credentials.UserName.UserName = UsernameTexbox.Text;
                 factory1.Credentials.UserName.Password = PasswordTexbox.Password;
-                App.Proxy = factory1.CreateChannel();
-                App.Proxy.CheckUser();
+                IService1 proxy = factory1.CreateChannel();
+                App.ServiceWatcher = new ServiceWatcher(proxy, App.TimeBetweenUpdating);
+                App.ServiceWatcher.CheckUser();
+                App.ServiceWatcher.StartWatch();
                 App.Current.MainWindow.Show();               
                 this.Close();
             }
@@ -74,5 +78,6 @@ namespace WPFClient
                 ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex2, "private void Button_Click(object sender, RoutedEventArgs e)");
             }
         }
+
     }
 }

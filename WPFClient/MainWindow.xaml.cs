@@ -111,7 +111,7 @@ namespace WPFClient
             //}
             MessageControl.DataContext = new MessageControlModel()
             {
-                AllEmployees = App.ServiceWatcher.AllEmployees,
+                AllEmployees = App.ServiceWatcher.GetAllEmployees(),
                 Message = selectedMessage                
             };
             HideToolbarButtons(false);       
@@ -161,7 +161,7 @@ namespace WPFClient
         {
              Message message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false)
             {
-                FKEmployee_SenderUsername = App.ServiceWatcher.AllEmployees.FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0),
+                FKEmployee_SenderUsername = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0),
                EDRecipient_MessageId = new List<Recipient>()
             };
              CreateMessageCreatorWindow(message);
@@ -171,7 +171,7 @@ namespace WPFClient
         {
             Message selectedMessage = (Message)MessageList.SelectedItem;
             string newTitle = PrepareReplyMssageTitle(selectedMessage.Title);
-            Employee senderEmployee = App.ServiceWatcher.AllEmployees.FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0);
+            Employee senderEmployee = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0);
             List<Recipient> recipients = new List<Recipient>();
             recipients.Add(new Recipient(selectedMessage.SenderUsername, null, false, false));
             Message message = new Message(null, newTitle, new DateTime(), App.Username, string.Empty, false)
@@ -187,7 +187,7 @@ namespace WPFClient
             MessageCreator messageCreator = new MessageCreator();
             messageCreator.DataContext = new MessageCreatorModel()
             {
-                AllEmployees = App.ServiceWatcher.AllEmployees,
+                AllEmployees = App.ServiceWatcher.GetAllEmployees(),
                 Message = message
             };
             messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст ?

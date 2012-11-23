@@ -37,6 +37,12 @@ namespace WPFClient.Additional
 
         System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
 
+        void OntimerTick(object sender, EventArgs e)
+        {
+            var a = new EventArgs();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs(""));
+        }
+
         TimeSpan TimeSpan { get; set; }
 
         void CreateDataUpdatedEvent(PropertyChangedEventArgs e)
@@ -51,30 +57,9 @@ namespace WPFClient.Additional
 
         List<Employee> allEmployees;
 
-        public List<Employee> AllEmployees 
-        {
-            get
-            {
-                if (allEmployees == null) 
-                    AllEmployees = Proxy.GetAllEmployees();                    
-                
-                    return allEmployees;                
-            }
-            set
-            {
-                if (allEmployees != value)
-                {
-                    allEmployees = value;
-                    CreateDataUpdatedEvent(new PropertyChangedEventArgs("AllEmployees"));                    
-                }
-            }
-        }
+        List<Message> inboxMessages;
 
-        void OntimerTick(object sender, EventArgs e)
-        {
-            var a = new EventArgs();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs(""));
-        }
+        List<Message> sentboxMessages;
 
         public void CheckUser()
         {
@@ -83,34 +68,56 @@ namespace WPFClient.Additional
      
         public List<Employee> GetAllEmployees()
         {
-            return AllEmployees;
+            if (allEmployees == null)
+            {
+                allEmployees = Proxy.GetAllEmployees();
+                CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));
+            }
+            return allEmployees;             
         }
 
         public Employee GetEmployee(string username)
         {
-            ///ищем локально, если не нашли, то перезагружаем список сотрудников и ищем опять
-            Employee result = AllEmployees.FirstOrDefault(row => string.Compare(row.Username, username) == 0);
+            
+            ///если еще не загружали - подгружаем и ищем
+            if (allEmployees == null)
+            {
+                allEmployees = Proxy.GetAllEmployees();
+                CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees")); //потестить, когда сработает обработчик
+                return allEmployees.FirstOrDefault(row => string.Compare(row.Username, username) == 0);
+            }
+
+            /// ищем локально, если не нашли, то перезагружаем список сотрудников и ищем опять
+            Employee result = allEmployees.FirstOrDefault(row => string.Compare(row.Username, username) == 0);
             if (result == null)
             {
-                AllEmployees = Proxy.GetAllEmployees();
-                result = AllEmployees.FirstOrDefault(row => string.Compare(row.Username, username) == 0);
+                allEmployees = Proxy.GetAllEmployees();
+                CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));
+                return allEmployees.FirstOrDefault(row => string.Compare(row.Username, username) == 0);
             }
             return result;             
         }
 
         public List<Recipient> GetRecipients(int MessageId)
         {
-            throw new NotImplementedException();
+            return Proxy.GetRecipients(MessageId);
         }
 
         public void SendMessage(Message message, List<Recipient> recipient)
         {
-            throw new NotImplementedException();
+            Proxy.SendMessage(message, recipient);
+            sentboxMessages = Proxy.GetSentboxMessages();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("sentboxMessages"));
         }
 
         public List<Message> GetInboxMessages()
         {
-            throw new NotImplementedException();
+            if (inboxMessages == null)
+            { 
+                inboxMessages = Proxy.GetInboxMessages();
+                CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
+            }
+            return null;         
         }
 
         public List<Message> GetDeletedMessages()

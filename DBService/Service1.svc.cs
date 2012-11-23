@@ -23,7 +23,8 @@ namespace DBService
         public List<Employee> GetAllEmployees()
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return EmployeeGateway.SelectAll(currentUsername);
+            var a = EmployeeGateway.SelectAll(currentUsername);
+            return a;
         }
         
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]

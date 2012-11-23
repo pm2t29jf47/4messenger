@@ -46,7 +46,8 @@ namespace WPFClient
         {
             Loaded += new RoutedEventHandler(OnMainWindowLoaded);
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
-            InitializeComponent();           
+            InitializeComponent();
+            App.ServiceWatcher = new ServiceWatcher();
         }
 
         void OnMainWindowLoaded(object sender, RoutedEventArgs e)
@@ -54,31 +55,10 @@ namespace WPFClient
             PrepareWindow();
             ShowLoginWindow();
             PrepareEmployeeClass();
-            FirstDataLoad();            
-            StartTimer();            
-        }
-
-        void FirstDataLoad()
-        {
             allEmployees = App.Proxy.GetAllEmployees();
-
+            App.ServiceWatcher.StartWathing();                       
         }
-
-        void StartTimer()
-        {
-            var timer = new System.Windows.Threading.DispatcherTimer();
-            timer.Interval = new TimeSpan(10000000); ///1 per second
-            timer.Tick += new EventHandler(OnTimerTick);
-            timer.Start();
-        }
-
-        void OnTimerTick(object sender, EventArgs e)
-        {
-            
-        }
-
-
-
+        
         public void PrepareWindow()
         {
             PreareSidebar();

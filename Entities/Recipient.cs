@@ -70,6 +70,6 @@ namespace Entities
 
         public Employee FKEmployee_RecipientUsername { get; set; }
 
-        public Message FKMessage_MessageId { get; set; }
+        public Message FKMessage_MessageId { get; set; }        
     }
 }

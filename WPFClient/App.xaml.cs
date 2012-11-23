@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using DBService;
+using WPFClient.Additional;
 
 namespace WPFClient
 {
@@ -32,6 +33,9 @@ namespace WPFClient
         { get; set; }
 
         public static LoginWindow LW;
+
         public static MainWindow MW;
+
+        public static ServiceWatcher ServiceWatcher {get; set;}
     }
 }

@@ -7,6 +7,8 @@ using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 
+
+
 namespace Entities
 {
     /// <summary>
@@ -21,10 +23,10 @@ namespace Entities
         /// <param name="EmploeeId"></param>
         /// <param name="Name"></param>
         public Employee(
-            string username, 
-            string firstName, 
-            string secondName, 
-            string role, 
+            string username,
+            string firstName,
+            string secondName,
+            string role,
             string password)
         {
             Username = username;
@@ -43,7 +45,7 @@ namespace Entities
         public string Username
         {
             get;
-            internal set;         
+            internal set;
         }
 
         /// <summary>
@@ -63,7 +65,7 @@ namespace Entities
         /// </summary>
         [DataMember]
         public string SecondName { get; set; }
-        
+
         /// <summary>
         /// Роль(и)
         /// </summary>
@@ -110,7 +112,7 @@ namespace Entities
         {
             get
             {
-                string result = this.ToString; 
+                string result = this.ToString;
                 if (string.Compare(CurrentUsername, Username) == 0)
                 {
                     return NamePrefix

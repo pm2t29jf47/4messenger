@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DataSourceLayer;
 using DBService;
 using WPFClient.Additional;
+using Entities;
 
 namespace TestProject1
 {
@@ -15,13 +16,10 @@ namespace TestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            Entities.Employee a = new Entities.Employee("", "", "", "", "");
-            
-            
- 
-    
- 
-            
+           
+                
         }
+
+       
     }
 }

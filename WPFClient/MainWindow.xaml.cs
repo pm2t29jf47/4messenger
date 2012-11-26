@@ -159,10 +159,15 @@ namespace WPFClient
         
         void CreateNewMessage()
         {
-             Message message = new Message(null, string.Empty, new DateTime(), App.Username, string.Empty, false)
+             Message message = new Message()
             {
-                FKEmployee_SenderUsername = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0),
-               EDRecipient_MessageId = new List<Recipient>()
+                Content = string.Empty,
+                Date = new DateTime(),
+                Deleted = false,
+                SenderUsername = App.Username,
+                Title = string.Empty,
+                FKEmployee_SenderUsername = App.ServiceWatcher.GetEmployee(App.Username),
+                EDRecipient_MessageId = new List<Recipient>()
             };
              CreateMessageCreatorWindow(message);
         }
@@ -170,14 +175,23 @@ namespace WPFClient
         void CreateReplyMessage()
         {
             Message selectedMessage = (Message)MessageList.SelectedItem;
-            string newTitle = PrepareReplyMssageTitle(selectedMessage.Title);
-            Employee senderEmployee = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(row.Username, App.Username) == 0);
+            string newTitle = PrepareReplyMssageTitle(selectedMessage.Title);          
             List<Recipient> recipients = new List<Recipient>();
-            recipients.Add(new Recipient(selectedMessage.SenderUsername, null, false, false));
-            Message message = new Message(null, newTitle, new DateTime(), App.Username, string.Empty, false)
+            recipients.Add(
+                new Recipient(selectedMessage.SenderUsername, null)
+                {
+                    Deleted = false,
+                    Viewed = false
+                });
+            Message message = new Message()
             {
+                Content = string.Empty,
+                Date = new DateTime(),
+                Deleted = false,
+                SenderUsername = App.Username,
+                Title = newTitle,
                 EDRecipient_MessageId = recipients,
-                FKEmployee_SenderUsername = senderEmployee
+                FKEmployee_SenderUsername = App.ServiceWatcher.GetEmployee(App.Username)
             };
             CreateMessageCreatorWindow(message);
         }

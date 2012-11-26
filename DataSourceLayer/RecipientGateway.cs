@@ -218,10 +218,12 @@ namespace DataSourceLayer
         static Recipient CreateRecipient(SqlDataReader reader)
         {
             return !reader.HasRows ? null : new Recipient(
-                (string) reader["RecipientUsername"],
-                int.Parse(reader["MessageId"].ToString()),
-                bool.Parse(reader["Deleted"].ToString()),
-                bool.Parse(reader["Viewed"].ToString()));
+                (string)reader["RecipientUsername"],
+                int.Parse(reader["MessageId"].ToString()))
+                {
+                    Deleted = bool.Parse(reader["Deleted"].ToString()),
+                    Viewed = bool.Parse(reader["Viewed"].ToString())
+                };
         }         
     }
 }

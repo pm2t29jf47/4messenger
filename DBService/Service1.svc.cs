@@ -36,12 +36,15 @@ namespace DBService
                 return;
 
             message.Date = DateTime.Now;
-            int? insertedMessageId = MessageGateway.Insert(message, currentUsername);
-            if (insertedMessageId == null) return;
-            foreach (var item in message.EDRecipient_MessageId)
+            int? result = MessageGateway.Insert(message, currentUsername);
+            if (result == null) 
+                return;
+
+            int insertedMessageId = (int)result;
+            foreach (Recipient item in message.EDRecipient_MessageId)
             {
-                item.MessageId = (int)insertedMessageId;
-                RecipientGateway.Insert(item, currentUsername);
+                Recipient recipient = new Recipient(item.RecipientUsername, insertedMessageId);           
+                RecipientGateway.Insert(recipient, currentUsername);
             }
         }
 

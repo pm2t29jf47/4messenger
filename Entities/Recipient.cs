@@ -16,14 +16,10 @@ namespace Entities
         /// <param name="messageId"></param>
         /// <param name="delete"></param>
         public Recipient(string recipientUsername,
-            int? messageId,
-            bool deleted,
-            bool viewed)
-        {
-            Deleted = deleted;
+            int? messageId)
+        {            
             RecipientUsername = recipientUsername;
-            MessageId = messageId;
-            Viewed = viewed;
+            MessageId = messageId;            
         }
 
         public Recipient() { }
@@ -35,7 +31,7 @@ namespace Entities
         public string RecipientUsername
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -45,7 +41,7 @@ namespace Entities
         public int? MessageId
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>

@@ -22,18 +22,9 @@ namespace Entities
         /// </summary>
         /// <param name="EmploeeId"></param>
         /// <param name="Name"></param>
-        public Employee(
-            string username,
-            string firstName,
-            string secondName,
-            string role,
-            string password)
+        public Employee( string username )
         {
-            Username = username;
-            FirstName = firstName;
-            SecondName = secondName;
-            Role = role;
-            Password = password;
+            Username = username;           
         }
 
         public Employee() { }

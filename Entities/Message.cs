@@ -22,20 +22,9 @@ namespace Entities
         /// <param name="recipients"></param>
         /// <param name="sender"></param>
         /// <param name="content"></param>           
-        public Message(
-            int? id,
-            string title,
-            DateTime date,
-            string senderUsername,
-            string content,
-            bool deleted)
+        public Message(int? id)
         {
-            Id = id;
-            Title = title;
-            Date = date;
-            SenderUsername = senderUsername;
-            Content = content;
-            Deleted = deleted;
+            Id = id;          
         }
 
         public Message() { }
@@ -68,7 +57,7 @@ namespace Entities
         /// Отпраитель
         /// </summary>
         [DataMember]
-        public string SenderUsername { get; internal set; }
+        public string SenderUsername { get; set; }
 
         /// <summary> 
         /// Флаг для переноса отправленных писем в папку удаленных

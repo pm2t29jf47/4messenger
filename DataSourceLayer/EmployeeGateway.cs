@@ -100,12 +100,13 @@ namespace DataSourceLayer
         /// </summary>
         private static Employee CreateEmployee(SqlDataReader reader, bool security)
         {
-            return !reader.HasRows ? null : new Employee(
-                (string)reader["Username"],
-                (string)reader["FirstName"],
-                (string)reader["SecondName"],
-                (string)reader["Role"],
-                security ? (string)reader["Password"] : null);
+            return !reader.HasRows ? null : new Employee((string)reader["Username"])
+            {
+                FirstName = (string)reader["FirstName"],
+                SecondName = (string)reader["SecondName"],
+                Role = (string)reader["Role"],
+                Password = security ? (string)reader["Password"] : null
+            };
         }
 
         /// <summary>

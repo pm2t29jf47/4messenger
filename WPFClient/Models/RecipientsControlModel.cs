@@ -264,11 +264,11 @@ namespace WPFClient.Models
             foreach (var item in recipientsEmployees)
             {
                 recipients.Add(
-                    new Recipient(
-                        item.Username,
-                        null,
-                        false,
-                        false));
+                    new Recipient(item.Username, null)
+                        {
+                            Viewed = false,
+                            Deleted = false
+                        });
             }
         }
 
@@ -303,11 +303,11 @@ namespace WPFClient.Models
             foreach (var item in recipientsEmployees)
             {
                 recipients.Add(
-                    new Recipient(
-                        item.Username,
-                        null,
-                        false,
-                        false));
+                    new Recipient(item.Username, null)
+                    {
+                        Deleted = false,
+                        Viewed = false
+                    });
             }
         }
 

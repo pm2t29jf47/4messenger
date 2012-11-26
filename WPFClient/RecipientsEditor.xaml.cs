@@ -60,8 +60,7 @@ namespace WPFClient
                 RecipientsEditorModel.RecipientsEmployees.Add(item);
 
             DialogResult = true;
-            this.Close();
-            
+            this.Close();            
         }
 
         private void OnCancelButtonClick(object sender, RoutedEventArgs e)

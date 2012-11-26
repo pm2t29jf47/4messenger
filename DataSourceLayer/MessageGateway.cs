@@ -163,13 +163,17 @@ namespace DataSourceLayer
         /// <returns></returns>
         private static Message CreateMessage(SqlDataReader reader)
         {
-            return !reader.HasRows ? null : new Message(
-                int.Parse(reader["Id"].ToString()),
-                (string) reader["Title"],
-                (DateTime.Parse(reader["Date"].ToString())),
-                (string) reader["SenderUsername"],
-                (string) reader["Content"],
-                bool.Parse(reader["Deleted"].ToString()));            
+            if(!reader.HasRows)
+                return null;
+            
+            return new Message(int.Parse(reader["Id"].ToString()))
+            {
+                Title = (string) reader["Title"],
+                Date = (DateTime.Parse(reader["Date"].ToString())),
+                SenderUsername = (string) reader["SenderUsername"],
+                Content = (string) reader["Content"],
+                Deleted = bool.Parse(reader["Deleted"].ToString())
+            };
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
+using WPFClient.Additional;
 
 namespace WPFClient.SidebarFolders
 {
@@ -25,11 +26,11 @@ namespace WPFClient.SidebarFolders
 
         protected void FillMessages(List<Message> messages)
         {
-            //foreach (var item in messages)
-            //{
-            //    item.FKEmployee_SenderUsername = App.Proxy.GetEmployee(item.SenderUsername);
-            //    item.EDRecipient_MessageId = App.Proxy.GetRecipients((int)item.Id);
-            //}
+            foreach (var item in messages)
+            {
+                item.FKEmployee_SenderUsername = App.ServiceWatcher.GetEmployee(item.SenderUsername);
+                item.EDRecipient_MessageId = App.ServiceWatcher.GetRecipients((int)item.Id);
+            }
         }
     }
 }

@@ -106,7 +106,7 @@ namespace WPFClient
             //    if ((recipient != null)
             //        && (!recipient.Viewed))
             //    {
-            //        App.Proxy.SetInboxMessageViewed((int)messagemodel.Message.Id);
+            //        App.ServiceWatcher.SetInboxMessageViewed((int)messagemodel.Message.Id);
             //    }
             //}
             MessageControl.DataContext = new MessageControlModel()

@@ -12,9 +12,10 @@ namespace WPFClient.SidebarFolders
         {
             FolderLabel = Properties.Resources.SentboxFolderLabel;
         }
+
         public override List<Entities.Message> GetFolderContent()
         {
-            List<Message> messages = null;//App.Proxy.GetSentboxMessages();
+            List<Message> messages = App.ServiceWatcher.GetSentboxMessages();
              FillMessages(messages);
              return messages;
         }

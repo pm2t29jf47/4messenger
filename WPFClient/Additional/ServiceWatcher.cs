@@ -18,9 +18,14 @@ namespace WPFClient.Additional
       
         public ServiceWatcher(IService1 proxy, TimeSpan timeSpan)
         {     
-            this.Proxy = proxy;
-            this.TimeSpan = timeSpan;
-        }     
+            this.Proxy = proxy;            
+            this.TimeSpan = timeSpan;           
+        }
+
+        public ServiceWatcher()
+        {
+
+        }
      
         public void StartWatch()
         {
@@ -39,8 +44,19 @@ namespace WPFClient.Additional
 
         void OntimerTick(object sender, EventArgs e)
         {
-            var a = new EventArgs();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs(""));
+            UpdateData();
+        }
+
+        public void UpdateData()
+        {
+            allEmployees = Proxy.GetAllEmployees();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));
+            inboxMessages = Proxy.GetInboxMessages();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
+            sentboxMessages = Proxy.GetSentboxMessages();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("sentboxMessages"));
+            deletedMessages = Proxy.GetDeletedMessages();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedMessages"));
         }
 
         TimeSpan TimeSpan { get; set; }
@@ -55,11 +71,13 @@ namespace WPFClient.Additional
 
         public delegate void eventHandler(object sender, PropertyChangedEventArgs e);
 
-        List<Employee> allEmployees;
+        List<Employee> allEmployees = new List<Employee>();
 
-        List<Message> inboxMessages;
+        List<Message> inboxMessages = new List<Message>();
 
-        List<Message> sentboxMessages;
+        List<Message> sentboxMessages = new List<Message>();
+
+        List<Message> deletedMessages = new List<Message>();
 
         public void CheckUser()
         {
@@ -68,34 +86,12 @@ namespace WPFClient.Additional
      
         public List<Employee> GetAllEmployees()
         {
-            if (allEmployees == null)
-            {
-                allEmployees = Proxy.GetAllEmployees();
-                CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));
-            }
             return allEmployees;             
         }
 
         public Employee GetEmployee(string username)
         {
-            
-            ///если еще не загружали - подгружаем и ищем
-            if (allEmployees == null)
-            {
-                allEmployees = Proxy.GetAllEmployees();
-                CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees")); //потестить, когда сработает обработчик
-                return allEmployees.FirstOrDefault(row => string.Compare(row.Username, username) == 0);
-            }
-
-            /// ищем локально, если не нашли, то перезагружаем список сотрудников и ищем опять
-            Employee result = allEmployees.FirstOrDefault(row => string.Compare(row.Username, username) == 0);
-            if (result == null)
-            {
-                allEmployees = Proxy.GetAllEmployees();
-                CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));
-                return allEmployees.FirstOrDefault(row => string.Compare(row.Username, username) == 0);
-            }
-            return result;             
+            return Proxy.GetEmployee(username);                       
         }
 
         public List<Recipient> GetRecipients(int MessageId)
@@ -112,32 +108,33 @@ namespace WPFClient.Additional
 
         public List<Message> GetInboxMessages()
         {
-            if (inboxMessages == null)
-            { 
-                inboxMessages = Proxy.GetInboxMessages();
-                CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
-            }
-            return null;         
+            return inboxMessages;         
         }
 
         public List<Message> GetDeletedMessages()
         {
-            throw new NotImplementedException();
+            return deletedMessages;
         }
 
         public List<Message> GetSentboxMessages()
         {
-            throw new NotImplementedException();
+            return sentboxMessages;
         }
 
         public void SetInboxMessageViewed(int messageId)
         {
-            throw new NotImplementedException();
+            Proxy.SetInboxMessageViewed(messageId);
+            inboxMessages = Proxy.GetInboxMessages();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
         }
 
         public void SetInboxMessageDeleted(int messageId)
         {
-            throw new NotImplementedException();
+            Proxy.SetInboxMessageDeleted(messageId);
+            inboxMessages = Proxy.GetInboxMessages();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
+            deletedMessages = Proxy.GetDeletedMessages();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedMessages"));    
         }
     }
 }

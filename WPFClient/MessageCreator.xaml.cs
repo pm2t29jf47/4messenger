@@ -70,7 +70,8 @@ namespace WPFClient
         private void OnSendMessageButtonClick(object sender, RoutedEventArgs e)
         {           
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
-            //App.Proxy.SendMessage(mcm.Message, mcm.Recipients);
+            
+            App.ServiceWatcher.SendMessage(mcm.Message, mcm.Message.EDRecipient_MessageId);
             this.Close();
         }       
     }

@@ -12,6 +12,7 @@ namespace WPFClient.SidebarFolders
         {
             FolderLabel = Properties.Resources.DeletedFolderLabel;
         }
+
         public override List<Entities.Message> GetFolderContent()
         {
             List<Message> messages = App.ServiceWatcher.GetDeletedMessages();

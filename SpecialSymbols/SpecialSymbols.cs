@@ -12,6 +12,8 @@ namespace SpecialSymbols
             userDataDevider = ';',
             space = ' ',
             leftTitleStopper = '[',
-            rightTitleStopper = ']';
+            rightTitleStopper = ']',
+            leftCountOfStopper = '(',
+            rightCountOfStopper = ')';
     }
 }

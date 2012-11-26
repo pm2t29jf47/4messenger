@@ -65,6 +65,17 @@ namespace Entities
         [DataMember]
         public bool Deleted { get; set; }
 
+        public bool Viewed { get; set; }
+
+        public bool VeiwedByRecipient
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+
         [DataMember]
         public Employee FKEmployee_SenderUsername { get; set; }
 

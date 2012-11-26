@@ -2,6 +2,7 @@
 - SqlMembershipProvider
 
 !!!
+- stopped SidebarFolder, CountOfUnviewedMessages
 - обработка исключений
 
 - драг н дроп
@@ -12,6 +13,7 @@
 - неактивность кнопки Send
 - убрать возможность выбора в sidebar-е
 - поток в обработчике события контрола и в обработчике DispetcherTimer.Tick ?
+- добавить Message Viewed по recipient-ам
 
 
 ####

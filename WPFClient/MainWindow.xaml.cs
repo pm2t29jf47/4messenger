@@ -229,6 +229,17 @@ namespace WPFClient
         void OnServiceWatcherDataUpdated(object sender, PropertyChangedEventArgs e)
         {
             string d = "debug!";
+
+            if (string.Compare("inboxMessages", e.PropertyName) == 0)
+            {
+
+            }
+            else if (string.Compare("sentboxMessages", e.PropertyName) == 0)
+            {
+            }
+            else if (string.Compare("deletedMessages", e.PropertyName) == 0)
+            {
+            }            
         }
 
         #endregion

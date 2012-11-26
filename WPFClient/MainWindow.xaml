@@ -138,7 +138,7 @@
                 </Grid>
             </Border>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Path=Viewed}" Value="False">
+                <DataTrigger Binding="{Binding Path=VeiwedByRecipient}" Value="False">
                     <Setter TargetName="MessageImage" Property="Source" Value="Images\mail2.png"></Setter>
                     <Setter Property="ListBoxItem.Foreground" Value="Red"></Setter>
                 </DataTrigger>

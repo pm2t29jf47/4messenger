@@ -154,8 +154,10 @@ namespace Entities
             return result;
         }
 
+        [DataMember]
         public List<Message> EDMessage_SenderUsername { get; set; }
 
+        [DataMember]
         public List<Recipient> EDRecipient_RecipientUsername { get; set; }
     }
 }

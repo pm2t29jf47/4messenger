@@ -68,8 +68,10 @@ namespace Entities
             set;
         }
 
+        [DataMember]
         public Employee FKEmployee_RecipientUsername { get; set; }
 
+        [DataMember]
         public Message FKMessage_MessageId { get; set; }        
     }
 }

@@ -128,7 +128,7 @@ namespace DBService
 
         }
 
-        /* Сообщния уже содержат в себе получателей
+        /* Сообщения уже содержат в себе получателей
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Recipient> GetRecipients(int messageId)
         {

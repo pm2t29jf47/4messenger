@@ -76,8 +76,10 @@ namespace Entities
         [DataMember]
         public bool Deleted { get; set; }
 
+        [DataMember]
         public Employee FKEmployee_SenderUsername { get; set; }
 
+        [DataMember]
         public List<Recipient> EDRecipient_MessageId { get; set; }
     }
 }

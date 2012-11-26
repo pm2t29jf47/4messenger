@@ -64,6 +64,7 @@ namespace WPFClient
                 App.ServiceWatcher = new ServiceWatcher(proxy, App.TimeBetweenUpdating);
                 App.ServiceWatcher.CheckUser();
                 App.ServiceWatcher.StartWatch();
+                App.ServiceWatcher.UpdateData();
                 App.Current.MainWindow.Show();               
                 this.Close();
             }

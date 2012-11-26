@@ -62,8 +62,7 @@ namespace WPFClient.Models
             foreach(Recipient item in message.EDRecipient_MessageId)
             {
                 item.FKMessage_MessageId = message;
-                item.FKEmployee_RecipientUsername = allEmployees.FirstOrDefault(
-                    row => string.Compare(row.Username, item.RecipientUsername) == 0);
+                item.FKEmployee_RecipientUsername = App.ServiceWatcher.GetEmployee(item.RecipientUsername);
             }
         }
     }

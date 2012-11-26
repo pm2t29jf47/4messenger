@@ -31,7 +31,7 @@ namespace DBService
         [OperationContract]
         Employee GetEmployee(string username);
 
-        /* Сообщния уже содержат в себе получателей
+        /* Сообщения уже содержат в себе получателей
         /// <summary>
         /// Возвращает всех получателей определенного сообщения
         /// </summary>

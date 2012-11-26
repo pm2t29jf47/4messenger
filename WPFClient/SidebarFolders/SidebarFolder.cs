@@ -12,8 +12,7 @@ namespace WPFClient.SidebarFolders
     {
         public SidebarFolder()
         {
-            FolderLabel = "New folder";
-            DisplayedFolderLable = FolderLabel;
+            FolderLabel = "New folder";       
             FolderImage = "Images/folder.png";
         }
 
@@ -26,18 +25,34 @@ namespace WPFClient.SidebarFolders
                 if (string.Compare(folderLabel, value) != 0)
                 {
                     folderLabel = value;
-                    CreatePropertyChangedEvent(new PropertyChangedEventArgs("FolderLabel"));
+                    CreatePropertyChangedEvent(new PropertyChangedEventArgs(""));
                 }
             }
             get
             {
                 return folderLabel;
             }
+        }        
+
+        public string DisplayedFolderLable 
+        {
+            get
+            {
+                if (CountOfUnviewedMessages == 0
+                    || CountOfUnviewedMessages < 0)
+                {
+                    return FolderLabel;
+                }
+                else
+                {
+                    return FolderLabel
+                        + SpecialSymbols.SpecialSymbols.space
+                        + SpecialSymbols.SpecialSymbols.leftCountOfStopper
+                        + CountOfUnviewedMessages.ToString()
+                        + SpecialSymbols.SpecialSymbols.rightCountOfStopper;
+                }
+            }
         }
-
-        public string displayedFolderLable;
-
-        public string DisplayedFolderLable { get; set; }
 
         string folderImage = string.Empty;
 
@@ -70,18 +85,21 @@ namespace WPFClient.SidebarFolders
                 PropertyChanged(this, e);
         }
 
+        int countOfUnviewedMessages = 0;
+
         public int CountOfUnviewedMessages 
         {
             set
             {
-                if(value == 0 
-                    || value < 0) 
-                    return;
-                FolderLabel = FolderLabel
-                    + SpecialSymbols.SpecialSymbols.space
-                    + SpecialSymbols.SpecialSymbols.leftCountOfStopper
-                    + value.ToString()
-                    + SpecialSymbols.SpecialSymbols.rightCountOfStopper;
+                if (countOfUnviewedMessages != value)
+                {
+                    countOfUnviewedMessages = value;
+                    CreatePropertyChangedEvent(new PropertyChangedEventArgs(""));
+                }
+            }
+            get
+            {
+                return countOfUnviewedMessages;
             }
 
         }

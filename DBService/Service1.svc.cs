@@ -56,8 +56,7 @@ namespace DBService
 
             foreach (Message item in messages)
             {
-                item.EDRecipient_MessageId = RecipientGateway.SelectByMessageId((int)item.Id, currentUsername);
-                item.FKEmployee_SenderUsername = EmployeeGateway.SelectByUsername(item.SenderUsername, currentUsername);
+                FillMessage(item, currentUsername);
             }
             return messages;
         }
@@ -69,8 +68,7 @@ namespace DBService
             List<Message> sentMessages = MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername,false);
             foreach (Message item in sentMessages)
             {
-                item.FKEmployee_SenderUsername = EmployeeGateway.SelectByUsername(item.SenderUsername, currentUsername);
-                item.EDRecipient_MessageId = RecipientGateway.SelectByMessageId((int)item.Id, currentUsername);
+                FillMessage(item, currentUsername);
             }
             return sentMessages;
         }
@@ -78,16 +76,20 @@ namespace DBService
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Message> GetDeletedMessages()
         {
-            string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             var deletedMessages = new List<Message>();
-            List<Recipient> currentUserInRecipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(curentUsername, true);
+            List<Recipient> currentUserInRecipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(currentUsername, true);
             foreach (Recipient item in currentUserInRecipients)
             {
-                var receivedMessage = MessageGateway.SelectById((int)item.MessageId, curentUsername);            
+                var receivedMessage = MessageGateway.SelectById((int)item.MessageId, currentUsername);            
                 deletedMessages.Add(receivedMessage);
             }           
-            List<Message> currentUserInSenders = MessageGateway.SelectBy_SenderUsername_Deleted(curentUsername,true);            
+            List<Message> currentUserInSenders = MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername,true);            
             deletedMessages.AddRange(currentUserInSenders);
+            foreach (Message item in deletedMessages)
+            {
+                FillMessage(item, currentUsername);
+            }
             return deletedMessages;      
         }
 
@@ -104,8 +106,8 @@ namespace DBService
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public Employee GetEmployee(string selectableUsername)
         {
-            string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return EmployeeGateway.SelectByUsername(selectableUsername, curentUsername);
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            return EmployeeGateway.SelectByUsername(selectableUsername, currentUsername);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
@@ -114,12 +116,24 @@ namespace DBService
             throw new NotImplementedException();
         }
 
+        void FillMessage(Message message, string currentUsername)
+        {
+            if (message == null
+                || message.Id == null
+                || message.SenderUsername == null)
+                return;
+            message.FKEmployee_SenderUsername = EmployeeGateway.SelectByUsername(message.SenderUsername, currentUsername);
+            message.EDRecipient_MessageId = RecipientGateway.SelectByMessageId((int)message.Id, currentUsername);
+            
+
+        }
+
         /* Сообщния уже содержат в себе получателей
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Recipient> GetRecipients(int messageId)
         {
-            string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return RecipientGateway.SelectByMessageId(messageId, curentUsername);
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            return RecipientGateway.SelectByMessageId(messageId, currentUsername);
         }
         */
     }

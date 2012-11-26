@@ -71,7 +71,7 @@ namespace WPFClient
         {           
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
             
-            App.ServiceWatcher.SendMessage(mcm.Message, mcm.Message.EDRecipient_MessageId);
+            App.ServiceWatcher.SendMessage(mcm.Message);
             this.Close();
         }       
     }

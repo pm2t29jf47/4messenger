@@ -23,14 +23,5 @@ namespace WPFClient.SidebarFolders
         {
             return null;
         }
-
-        protected void FillMessages(List<Message> messages)
-        {
-            foreach (var item in messages)
-            {
-                item.FKEmployee_SenderUsername = App.ServiceWatcher.GetEmployee(item.SenderUsername);
-                item.EDRecipient_MessageId = App.ServiceWatcher.GetRecipients((int)item.Id);
-            }
-        }
     }
 }

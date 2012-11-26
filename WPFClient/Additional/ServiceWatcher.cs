@@ -94,14 +94,9 @@ namespace WPFClient.Additional
             return Proxy.GetEmployee(username);                       
         }
 
-        public List<Recipient> GetRecipients(int MessageId)
+        public void SendMessage(Message message)
         {
-            return Proxy.GetRecipients(MessageId);
-        }
-
-        public void SendMessage(Message message, List<Recipient> recipient)
-        {
-            Proxy.SendMessage(message, recipient);
+            Proxy.SendMessage(message);
             sentboxMessages = Proxy.GetSentboxMessages();
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("sentboxMessages"));
         }
@@ -136,5 +131,6 @@ namespace WPFClient.Additional
             deletedMessages = Proxy.GetDeletedMessages();
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedMessages"));    
         }
+
     }
 }

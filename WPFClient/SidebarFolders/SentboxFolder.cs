@@ -15,8 +15,7 @@ namespace WPFClient.SidebarFolders
 
         public override List<Entities.Message> GetFolderContent()
         {
-            List<Message> messages = App.ServiceWatcher.GetSentboxMessages();
-             FillMessages(messages);
+            List<Message> messages = App.ServiceWatcher.GetSentboxMessages();          
              return messages;
         }
     }

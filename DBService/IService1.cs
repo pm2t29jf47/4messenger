@@ -31,6 +31,7 @@ namespace DBService
         [OperationContract]
         Employee GetEmployee(string username);
 
+        /* Сообщния уже содержат в себе получателей
         /// <summary>
         /// Возвращает всех получателей определенного сообщения
         /// </summary>
@@ -42,6 +43,7 @@ namespace DBService
         /// </returns>
         [OperationContract]
         List<Recipient> GetRecipients(int MessageId);
+        */
 
         /// <summary>
         /// Отослать сообщение
@@ -53,7 +55,7 @@ namespace DBService
         /// Коллекция получателей сообщения
         /// </param>
         [OperationContract]
-        void SendMessage(Message message, List<Recipient> recipient);
+        void SendMessage(Message message);
 
         /// <summary>
         /// Взвращает коллекцию писем из папки входящих

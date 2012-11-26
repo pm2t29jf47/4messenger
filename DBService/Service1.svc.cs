@@ -23,8 +23,7 @@ namespace DBService
         public List<Employee> GetAllEmployees()
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            var a = EmployeeGateway.SelectAll(currentUsername);
-            return a;
+            return EmployeeGateway.SelectAll(currentUsername);
         }
         
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
@@ -64,21 +63,16 @@ namespace DBService
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void CheckUser(){ }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Message> GetSentboxMessages()
         {
-            ///добавить проверку на удаленность
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername,false);
-        }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void SetInboxMessageViewed(int messageId)
-        {
-            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            RecipientGateway.UpdateViewed(currentUsername, messageId, true); 
+            List<Message> sentMessages = MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername,false);
+            foreach (Message item in sentMessages)
+            {
+                item.FKEmployee_SenderUsername = EmployeeGateway.SelectByUsername(item.SenderUsername, currentUsername);
+                item.EDRecipient_MessageId = RecipientGateway.SelectByMessageId((int)item.Id, currentUsername);
+            }
+            return sentMessages;
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
@@ -86,17 +80,25 @@ namespace DBService
         {
             string curentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             var deletedMessages = new List<Message>();
-            var userInRecipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(curentUsername, true);
-            foreach (var recipient in userInRecipients)
+            List<Recipient> currentUserInRecipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(curentUsername, true);
+            foreach (Recipient item in currentUserInRecipients)
             {
-                var receivedMessage = MessageGateway.SelectById((int)recipient.MessageId, curentUsername);
-                ///recipient.MessageId не может быть null, тк берется из базы
+                var receivedMessage = MessageGateway.SelectById((int)item.MessageId, curentUsername);            
                 deletedMessages.Add(receivedMessage);
             }           
-            var a = MessageGateway.SelectBy_SenderUsername_Deleted(curentUsername,true);
-            var sentMessages = MessageGateway.SelectBy_SenderUsername_Deleted(curentUsername, true);
-            deletedMessages.AddRange(sentMessages);
+            List<Message> currentUserInSenders = MessageGateway.SelectBy_SenderUsername_Deleted(curentUsername,true);            
+            deletedMessages.AddRange(currentUserInSenders);
             return deletedMessages;      
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public void CheckUser() { }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public void SetInboxMessageViewed(int messageId)
+        {
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            RecipientGateway.UpdateViewed(currentUsername, messageId, true);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]

@@ -100,23 +100,10 @@ namespace DBService
         public void CheckUser() { }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void SetInboxMessageViewed(int messageId)
-        {
-            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            RecipientGateway.UpdateViewed(currentUsername, messageId, true);
-        }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public Employee GetEmployee(string selectableUsername)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return EmployeeGateway.SelectByUsername(selectableUsername, currentUsername);
-        }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void SetInboxMessageDeleted(int MessageId)
-        {
-            throw new NotImplementedException();
         }
 
         void FillMessage(Message message, string currentUsername)
@@ -131,13 +118,17 @@ namespace DBService
 
         }
 
-        /* Сообщения уже содержат в себе получателей
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Recipient> GetRecipients(int messageId)
+        public void SetRecipientViewed(int messageId, bool viewed)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return RecipientGateway.SelectByMessageId(messageId, currentUsername);
+            RecipientGateway.UpdateViewed(currentUsername, messageId, viewed);
         }
-        */
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public void SetRecipientDeleted(int messageId, bool deleted)
+        {
+           ///
+        }
     }
 }

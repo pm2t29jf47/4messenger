@@ -79,20 +79,19 @@ namespace DBService
         List<Message> GetSentboxMessages();
 
         /// <summary>
-        /// Задает входящему сообщению флаг прочитанности
+        /// Задает флаг прочитанности
         /// </summary>
-        /// <param name="MessageId"></param>
+        /// <param name="messageId"></param>
+        /// <param name="viewed"></param>
         [OperationContract]
-        void SetInboxMessageViewed(int messageId);
+        void SetRecipientViewed(int messageId, bool viewed);
 
         /// <summary>
         /// Задает флаг удаления
         /// </summary>
-        /// <param name="MessageId"></param>
+        /// <param name="messageId"></param>
+        /// <param name="deleted"></param>
         [OperationContract]
-        void SetInboxMessageDeleted(int messageId);
-
-
-
+        void SetRecipientDeleted(int messageId, bool deleted); 
     }   
 }

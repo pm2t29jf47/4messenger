@@ -25,7 +25,8 @@ namespace WPFClient.SidebarFolders
                 if (string.Compare(folderLabel, value) != 0)
                 {
                     folderLabel = value;
-                    CreatePropertyChangedEvent(new PropertyChangedEventArgs(""));
+                    CreatePropertyChangedEvent(new PropertyChangedEventArgs("FolderLabel"));
+                    CreatePropertyChangedEvent(new PropertyChangedEventArgs("DisplayedFolderLable"));                    
                 }
             }
             get
@@ -77,14 +78,6 @@ namespace WPFClient.SidebarFolders
             return null;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void CreatePropertyChangedEvent(PropertyChangedEventArgs e)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, e);
-        }
-
         int countOfUnviewedMessages = 0;
 
         public int CountOfUnviewedMessages 
@@ -94,7 +87,8 @@ namespace WPFClient.SidebarFolders
                 if (countOfUnviewedMessages != value)
                 {
                     countOfUnviewedMessages = value;
-                    CreatePropertyChangedEvent(new PropertyChangedEventArgs(""));
+                    CreatePropertyChangedEvent(new PropertyChangedEventArgs("DisplayedFolderLable"));
+                    CreatePropertyChangedEvent(new PropertyChangedEventArgs("CountOfUnviewedMessages"));
                 }
             }
             get
@@ -102,6 +96,14 @@ namespace WPFClient.SidebarFolders
                 return countOfUnviewedMessages;
             }
 
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void CreatePropertyChangedEvent(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, e);
         }
     }
 }

@@ -248,7 +248,7 @@
                             <Image Source="{Binding Path=FolderImage, Mode=OneWay}"
                                    Style="{StaticResource FolderImageStyle}"></Image>
                             <!--Название папки-->
-                            <TextBlock Text="{Binding Path=FolderLabel, Mode=OneWay}"
+                            <TextBlock Text="{Binding Path=DisplayedFolderLable, Mode=OneWay}"
                                        Style="{StaticResource FolderTextBlockStyle}"/>
                         </StackPanel>
                     </Button>

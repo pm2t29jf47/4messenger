@@ -74,7 +74,7 @@ namespace WPFClient
 
         void PreareSidebar()
         {  
-            FillFoldersNames();
+            FillFoldersNames();   
             Sidebar.ItemsSource = folders;
         }
 
@@ -90,7 +90,7 @@ namespace WPFClient
         {
             this.Hide();
             var loginWindow = new LoginWindow();
-            loginWindow.ShowDialog();
+            loginWindow.ShowDialog();      
         }
 
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -228,6 +228,7 @@ namespace WPFClient
 
         void OnServiceWatcherDataUpdated(object sender, PropertyChangedEventArgs e)
         {
+            folders[0].CountOfUnviewedMessages = 100;
             string d = "debug!";
 
             if (string.Compare("inboxMessages", e.PropertyName) == 0)

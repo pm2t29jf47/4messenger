@@ -97,7 +97,7 @@ namespace WPFClient.Additional
         public void SendMessage(Message message)
         {
             Proxy.SendMessage(message);
-            sentboxMessages = Proxy.GetSentboxMessages();
+            sentboxMessages.Add(message);
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("sentboxMessages"));
         }
 
@@ -116,21 +116,15 @@ namespace WPFClient.Additional
             return sentboxMessages;
         }
 
-        public void SetInboxMessageViewed(int messageId)
+        public void SetRecipientViewed(int messageId, bool viewed)
         {
-            Proxy.SetInboxMessageViewed(messageId);
-            inboxMessages = Proxy.GetInboxMessages();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
+            throw new NotImplementedException();
         }
 
-        public void SetInboxMessageDeleted(int messageId)
+        public void SetRecipientDeleted(int messageId, bool deleted)
         {
-            Proxy.SetInboxMessageDeleted(messageId);
-            inboxMessages = Proxy.GetInboxMessages();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
-            deletedMessages = Proxy.GetDeletedMessages();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedMessages"));    
+            throw new NotImplementedException();
         }
-
     }
 }
+

@@ -73,7 +73,7 @@ namespace WPFClient.SidebarFolders
             }
         }
 
-        public virtual List<Message> GetFolderContent()
+        public virtual List<MessageListItemModel> GetFolderContent()
         {
             return null;
         }

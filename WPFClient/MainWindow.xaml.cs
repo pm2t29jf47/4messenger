@@ -42,7 +42,7 @@ namespace WPFClient
         {
             Loaded += new RoutedEventHandler(OnMainWindowLoaded);
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
-            InitializeComponent();            
+            InitializeComponent();           
         }
 
         void OnMainWindowLoaded(object sender, RoutedEventArgs e)
@@ -233,6 +233,7 @@ namespace WPFClient
 
             if (string.Compare("inboxMessages", e.PropertyName) == 0)
             {
+                string b = "debug";
 
             }
             else if (string.Compare("sentboxMessages", e.PropertyName) == 0)

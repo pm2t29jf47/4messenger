@@ -2,7 +2,7 @@
 - SqlMembershipProvider
 
 !!!
-- stopped SidebarFolder, CountOfUnviewedMessages
+
 - обработка исключений
 
 - драг н дроп

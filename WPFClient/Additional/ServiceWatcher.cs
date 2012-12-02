@@ -10,12 +10,11 @@ using System.ComponentModel;
 
 namespace WPFClient.Additional
 {
+    /// <summary>
+    /// im watching u!
+    /// </summary>
     public class ServiceWatcher : IService1
-    {
-        /// <summary>
-        /// im watching u!
-        /// </summary>
-      
+    {      
         public ServiceWatcher(IService1 proxy, TimeSpan timeSpan)
         {     
             this.Proxy = proxy;            
@@ -35,19 +34,31 @@ namespace WPFClient.Additional
             timer.Start();
         }
 
+
         /// <summary>
         /// Хранит прокси класс для обращения к методам сервиса
         /// </summary>
         IService1 Proxy { get; set; }
 
+        TimeSpan TimeSpan { get; set; }
+
+        List<Employee> allEmployees = new List<Employee>();
+
+        List<Message> inboxMessages = new List<Message>();
+
+        List<Message> sentboxMessages = new List<Message>();
+
+        List<Message> deletedMessages = new List<Message>();
+
+
         System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
 
         void OntimerTick(object sender, EventArgs e)
         {
-            UpdateData();
+            DownloadData();
         }
 
-        public void UpdateData()
+        public void DownloadData()
         {
             allEmployees = Proxy.GetAllEmployees();
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));
@@ -58,8 +69,7 @@ namespace WPFClient.Additional
             deletedMessages = Proxy.GetDeletedMessages();
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedMessages"));
         }
-
-        TimeSpan TimeSpan { get; set; }
+        
 
         void CreateDataUpdatedEvent(PropertyChangedEventArgs e)
         {
@@ -70,14 +80,7 @@ namespace WPFClient.Additional
         public event eventHandler DataUpdated;
 
         public delegate void eventHandler(object sender, PropertyChangedEventArgs e);
-
-        List<Employee> allEmployees = new List<Employee>();
-
-        List<Message> inboxMessages = new List<Message>();
-
-        List<Message> sentboxMessages = new List<Message>();
-
-        List<Message> deletedMessages = new List<Message>();
+        
 
         public void CheckUser()
         {
@@ -116,10 +119,59 @@ namespace WPFClient.Additional
             return sentboxMessages;
         }
 
+
         public void SetRecipientViewed(int messageId, bool viewed)
         {
-            throw new NotImplementedException();
+            Proxy.SetRecipientViewed(messageId, viewed);
+            UpdateLocalInboxMessages(messageId, viewed);
+            UpdateLocalSentboxMessages(messageId, viewed);
+            UpdateLocalDeletedMessages(messageId, viewed);  
         }
+
+        void UpdateLocalInboxMessages(int messageId, bool viewed)
+        {
+            Message message = inboxMessages.FirstOrDefault(row => row.Id == messageId);
+            if (message != null)
+            {
+                Recipient recipient = message.EDRecipient_MessageId.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
+                if (recipient != null)
+                {
+                    recipient.Viewed = viewed;
+                    CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));                    
+                }
+            }
+        }
+
+        void UpdateLocalSentboxMessages(int messageId, bool viewed)
+        {
+
+            Message message = sentboxMessages.FirstOrDefault(row => row.Id == messageId);
+            if (message != null)
+            {
+                Recipient recipient = message.EDRecipient_MessageId.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
+                if (recipient != null)
+                {
+                    recipient.Viewed = viewed;                   
+                    CreateDataUpdatedEvent(new PropertyChangedEventArgs("sentboxMessages"));
+                }
+            }
+        }
+
+        void UpdateLocalDeletedMessages(int messageId, bool viewed)
+        {
+
+            Message message = deletedMessages.FirstOrDefault(row => row.Id == messageId);
+            if (message != null)
+            {
+                Recipient recipient = message.EDRecipient_MessageId.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
+                if (recipient != null)
+                {
+                    recipient.Viewed = viewed;        
+                    CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedMessages"));
+                }
+            }
+        }
+
 
         public void SetRecipientDeleted(int messageId, bool deleted)
         {

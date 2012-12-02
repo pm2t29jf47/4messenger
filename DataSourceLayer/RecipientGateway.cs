@@ -70,6 +70,7 @@ namespace DataSourceLayer
             cmd.Parameters["@viewed"].Value = recipient.Viewed;
         }
 
+
         /// <summary>
         /// Возвращает все строки таблицы Recipient с данным адресатом и флагом удаления
         /// </summary>
@@ -110,6 +111,7 @@ namespace DataSourceLayer
             cmd.Parameters["@deleted"].Value = deleted;
         }
 
+
         /// <summary>
         /// Возвращает все строки таблицы Recipient с данным идентификатором сообщения
         /// </summary>
@@ -148,6 +150,7 @@ namespace DataSourceLayer
             cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
             cmd.Parameters["@messageId"].Value = messageId;
         }
+
 
         /// <summary>
         /// Обновляет флаг прочитанности у строки таблицы Recipient

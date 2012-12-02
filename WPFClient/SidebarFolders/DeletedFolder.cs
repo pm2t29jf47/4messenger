@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
+using WPFClient.Additional;
 
 namespace WPFClient.SidebarFolders
 {
@@ -13,10 +14,19 @@ namespace WPFClient.SidebarFolders
             FolderLabel = Properties.Resources.DeletedFolderLabel;
         }
 
-        public override List<Entities.Message> GetFolderContent()
+        public override List<MessageListItemModel> GetFolderContent()
         {
             List<Message> messages = App.ServiceWatcher.GetDeletedMessages();
-            return messages;
+            List<MessageListItemModel> messageModels = new List<MessageListItemModel>();
+            foreach (Message item in messages)
+            {
+                messageModels.Add(
+                    new MessageListItemModel()
+                    {
+                        Message = item
+                    });
+            }
+            return messageModels;
         }
     }
 }

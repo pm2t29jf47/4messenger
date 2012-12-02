@@ -33,7 +33,7 @@ namespace Entities
         /// Первичный ключ 
         /// </summary>   
         [DataMember]
-        public int? Id { get; internal set; }
+        public int? Id { get; protected set; }
 
         /// <summary> 
         /// Название письма 
@@ -64,17 +64,6 @@ namespace Entities
         /// </summary>
         [DataMember]
         public bool Deleted { get; set; }
-
-        public bool Viewed { get; set; }
-
-        public bool VeiwedByRecipient
-        {
-            get
-            {
-                return false;
-            }
-        }
-
 
         [DataMember]
         public Employee FKEmployee_SenderUsername { get; set; }

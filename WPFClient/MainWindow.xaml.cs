@@ -98,7 +98,8 @@ namespace WPFClient
             if (MessageList.SelectedItem == null)
                 return;
 
-            Message selectedMessage = (Message)MessageList.SelectedItem;            
+            
+            Message selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;            
             //помечает открытое письмо прочитанным
             //if (inboxFolderPressed)
             //{
@@ -174,7 +175,7 @@ namespace WPFClient
 
         void CreateReplyMessage()
         {
-            Message selectedMessage = (Message)MessageList.SelectedItem;
+            Message selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;
             string newTitle = PrepareReplyMssageTitle(selectedMessage.Title);          
             List<Recipient> recipients = new List<Recipient>();
             recipients.Add(

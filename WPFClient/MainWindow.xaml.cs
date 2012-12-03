@@ -130,12 +130,7 @@ namespace WPFClient
         public void OnFolderClick(object sender, RoutedEventArgs e)
         {
             Button selectedFolder = (Button)sender;
-            SidebarFolder sidebarFolder = (SidebarFolder)selectedFolder.DataContext;
-            if (sidebarFolder is InboxFolder)            
-                MessageList.ItemTemplate = (DataTemplate)FindResource("ForInboxFolderTemplate");             
-            else
-                MessageList.ItemTemplate = (DataTemplate)FindResource("DefaultFolderTemplate");                   
-            
+            SidebarFolder sidebarFolder = (SidebarFolder)selectedFolder.DataContext;           
             MessageList.ItemsSource = sidebarFolder.GetFolderContent();                    
             HideToolbarButtons(true);           
         }       

@@ -105,5 +105,19 @@ namespace WPFClient.SidebarFolders
             if (PropertyChanged != null)
                 PropertyChanged(this, e);
         }
+
+
+        protected bool IsViewedMessage(Message message)
+        {
+            if (message != null
+                && message.EDRecipient_MessageId != null)
+            {
+                Recipient result = message.EDRecipient_MessageId.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
+                if (result != null)
+                    return result.Viewed;
+                return false;         
+            }
+            return false;
+        }
     }
 }

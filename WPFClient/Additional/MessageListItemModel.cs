@@ -39,9 +39,22 @@ namespace WPFClient.Additional
             }
         }
 
+        bool isViewed = true;
+
         /// <summary>
         /// Необходимо для триггера в шаблоне элемента MessageList.
         /// </summary>
-        public bool IsUnViewed { get; set; }
+        public bool IsViewed 
+        {
+            get
+            {
+                return isViewed;
+            }
+            set
+            {
+                if (isViewed != value)
+                    isViewed = value;
+            }
+        }
     }
 }

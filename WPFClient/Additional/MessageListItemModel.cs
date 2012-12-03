@@ -6,7 +6,7 @@ using Entities;
 
 namespace WPFClient.Additional
 {
-    class MessageListItemModel : Message
+    public class MessageListItemModel : Message
     {
         Message message = new Message();
 

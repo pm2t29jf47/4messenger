@@ -32,9 +32,17 @@ namespace WPFClient
         /// <summary>
         /// Сообщение выбранное в списке MessageList. Хранится для помечания просмотренным
         /// </summary>
-        Message selectedMessage;
+        MessageListItemModel selectedInMessageList;
 
         SidebarFolder selectedFolder;
+
+        public List<MessageListItemModel> ololo
+        {
+            get
+            {
+                return (List<MessageListItemModel>)MessageList.ItemsSource;
+            }
+        }
 
         System.Windows.Threading.DispatcherTimer messageIsViewedTimer = new System.Windows.Threading.DispatcherTimer()
         {
@@ -100,20 +108,21 @@ namespace WPFClient
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (MessageList.SelectedItem == null)
+            {
                 return;
-            MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;
-            Message selectedMessage = selectedMessageModel.Message;
+            }
+            MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;            
             if ((selectedFolder is InboxFolder  || selectedFolder is DeletedFolder)
                 && selectedMessageModel.IsViewed == false)
             {
                 messageIsViewedTimer.Stop();
                 messageIsViewedTimer.Start();
-                this.selectedMessage = selectedMessage;
+                this.selectedInMessageList = selectedMessageModel;
             }
             MessageControl.DataContext = new MessageControlModel()
             {
                 AllEmployees = App.ServiceWatcher.GetAllEmployees(),
-                Message = selectedMessage                
+                Message = selectedMessageModel.Message                
             };
             HideToolbarButtons(false);       
         }
@@ -121,8 +130,8 @@ namespace WPFClient
         void OnmessageIsViewedTimerTick(object sender, EventArgs e)
         {
             messageIsViewedTimer.Stop();
-            Message selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;
-            if (this.selectedMessage.Equals(selectedMessage)
+            Message selectedMessage = (MessageListItemModel)MessageList.SelectedItem;
+            if (this.selectedInMessageList.Equals(selectedMessage)
                 && selectedMessage != null)
             {               
                 int selectedMessageId = (int)selectedMessage.Id;
@@ -138,12 +147,11 @@ namespace WPFClient
 
         void LoadFromWatcher()
         {
-            List<MessageListItemModel> LoadedMessageModels = this.selectedFolder.GetFolderContent();
-            Message selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;
-            MessageList.ItemsSource = LoadedMessageModels;/////////////////////////////////////
-            if (selectedMessageModel != null)
+            List<MessageListItemModel> LoadedMessageModels = this.selectedFolder.GetFolderContent();            
+            MessageList.ItemsSource = LoadedMessageModels;
+            if (selectedInMessageList != null)
             {
-                Message newSelectedMessageModel = LoadedMessageModels.FirstOrDefault(row => row.Id == selectedMessageModel.Id);
+                Message newSelectedMessageModel = LoadedMessageModels.FirstOrDefault(row => row.Id == selectedInMessageList.Id);
                 MessageList.SelectedItem = newSelectedMessageModel;
             }
             if (selectedFolder is InboxFolder)
@@ -170,7 +178,7 @@ namespace WPFClient
         {
             Button selectedFolderButton = (Button)sender;
             SidebarFolder sidebarFolder = (SidebarFolder)selectedFolderButton.DataContext;
-            this.selectedMessage = null;
+            this.selectedInMessageList = null;
             this.selectedFolder = sidebarFolder;
             LoadFromWatcher();
             HideToolbarButtons(true); 

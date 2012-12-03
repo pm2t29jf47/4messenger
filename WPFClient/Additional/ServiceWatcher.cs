@@ -30,6 +30,7 @@ namespace WPFClient.Additional
         {
             timer.Interval = TimeSpan;
             timer.Tick += new EventHandler(OntimerTick);
+            DownloadData();
             CreateDataUpdatedEvent(new PropertyChangedEventArgs(""));
             timer.Start();
         }
@@ -60,7 +61,7 @@ namespace WPFClient.Additional
             DownloadData();
         }
 
-        public void DownloadData()
+        void DownloadData()
         {
             allEmployees = Proxy.GetAllEmployees();
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));

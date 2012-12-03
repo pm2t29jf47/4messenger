@@ -27,7 +27,6 @@ namespace WPFClient
     {
         #region Common code
 
-
         List<SidebarFolder> folders = new List<SidebarFolder>();
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace WPFClient
         /// </summary>
         Message selectedMessage;
 
-        bool timerMustWork = true;
+        SidebarFolder selectedFolder;
 
         System.Windows.Threading.DispatcherTimer messageIsViewedTimer = new System.Windows.Threading.DispatcherTimer()
         {
@@ -102,13 +101,15 @@ namespace WPFClient
         {
             if (MessageList.SelectedItem == null)
                 return;
-            if (timerMustWork)
+            MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;
+            Message selectedMessage = selectedMessageModel.Message;
+            if ((selectedFolder is InboxFolder  || selectedFolder is DeletedFolder)
+                && selectedMessageModel.IsViewed == false)
             {
                 messageIsViewedTimer.Stop();
                 messageIsViewedTimer.Start();
-                this.selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;               
+                this.selectedMessage = selectedMessage;
             }
-            Message selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;
             MessageControl.DataContext = new MessageControlModel()
             {
                 AllEmployees = App.ServiceWatcher.GetAllEmployees(),
@@ -121,16 +122,35 @@ namespace WPFClient
         {
             messageIsViewedTimer.Stop();
             Message selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;
-            if (this.selectedMessage.Equals(selectedMessage))
-            {
-                if (selectedMessage != null)
-                {
-                    int id = (int)selectedMessage.Id;
-                    App.ServiceWatcher.SetRecipientViewed(id, true);
-                }
+            if (this.selectedMessage.Equals(selectedMessage)
+                && selectedMessage != null)
+            {               
+                int selectedMessageId = (int)selectedMessage.Id;
+                App.ServiceWatcher.SetRecipientViewed(selectedMessageId, true);  
+                List<MessageListItemModel> messageModels = selectedFolder.GetFolderContent();
+                MessageListItemModel selectedMessageModel = messageModels.FirstOrDefault(row => row.Id == selectedMessageId);
+                MessageList.ItemsSource = messageModels;
+                MessageList.SelectedItem = selectedMessageModel;
+                if (selectedFolder is InboxFolder)                                
+                    selectedFolder.CountOfUnviewedMessages = messageModels.Count(row => row.IsViewed == false);   
             }            
         }
 
+        void LoadFromWatcher()
+        {
+            List<MessageListItemModel> LoadedMessageModels = this.selectedFolder.GetFolderContent();
+            Message selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;
+            MessageList.ItemsSource = LoadedMessageModels;/////////////////////////////////////
+            if (selectedMessageModel != null)
+            {
+                Message newSelectedMessageModel = LoadedMessageModels.FirstOrDefault(row => row.Id == selectedMessageModel.Id);
+                MessageList.SelectedItem = newSelectedMessageModel;
+            }
+            if (selectedFolder is InboxFolder)
+            {
+                selectedFolder.CountOfUnviewedMessages = LoadedMessageModels.Count(row => row.IsViewed == false);
+            }
+        }
         #endregion
 
         #region Prepare "MessageList" by foldel click
@@ -142,15 +162,20 @@ namespace WPFClient
         /// <param name="e"></param>
         public void OnFolderClick(object sender, RoutedEventArgs e)
         {
+            LoadFolderData(sender);
+            messageIsViewedTimer.Stop();
+        }
+
+        void LoadFolderData(object sender)
+        {
             Button selectedFolderButton = (Button)sender;
-            SidebarFolder sidebarFolder = (SidebarFolder)selectedFolderButton.DataContext;           
-            MessageList.ItemsSource = sidebarFolder.GetFolderContent();                    
-            HideToolbarButtons(true);
-            if (sidebarFolder is SentboxFolder)
-                timerMustWork = false;
-            else
-                timerMustWork = true;
-        }       
+            SidebarFolder sidebarFolder = (SidebarFolder)selectedFolderButton.DataContext;
+            this.selectedMessage = null;
+            this.selectedFolder = sidebarFolder;
+            LoadFromWatcher();
+            HideToolbarButtons(true); 
+        }
+
         #endregion
 
         #region "Create" "Reply" "Delete" buttons
@@ -241,22 +266,23 @@ namespace WPFClient
 
         void OnServiceWatcherDataUpdated(object sender, PropertyChangedEventArgs e)
         {
-            folders[0].CountOfUnviewedMessages = 100;
-            string d = "debug!";
-
-            if (string.Compare("inboxMessages", e.PropertyName) == 0)
+            if (string.Compare("inboxMessages", e.PropertyName) == 0
+                && selectedFolder is InboxFolder)
             {
-                string b = "debug";
-
+                LoadFromWatcher();
             }
-            else if (string.Compare("sentboxMessages", e.PropertyName) == 0)
+            else if (string.Compare("sentboxMessages", e.PropertyName) == 0
+                && selectedFolder is SentboxFolder)
             {
+                LoadFromWatcher();
             }
-            else if (string.Compare("deletedMessages", e.PropertyName) == 0)
+            else if ((string.Compare("deletedInboxMessages", e.PropertyName) == 0 
+                      || string.Compare("deletedSentboxMessages", e.PropertyName) == 0)
+                && selectedFolder is DeletedFolder)
             {
-            }            
+                LoadFromWatcher();
+            }
         }
-
         #endregion
     }
 }

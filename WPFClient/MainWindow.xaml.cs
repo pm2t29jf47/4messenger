@@ -27,14 +27,6 @@ namespace WPFClient
     {
         #region Common code
 
-        /// <summary>
-        /// Коллекция содержащая всех сотрудников
-        /// </summary>
-        /// <remarks>
-        /// Обновляется при запуске и при получении сообщения от ногового сотрудника, который еще не содержится в ней
-        /// </remarks>
-       
-        public ServiceWatcher ServiceWatcher { get; set; }
 
         List<SidebarFolder> folders = new List<SidebarFolder>();
 
@@ -43,11 +35,12 @@ namespace WPFClient
         /// </summary>
         Message selectedMessage;
 
+        bool timerMustWork = true;
+
         System.Windows.Threading.DispatcherTimer messageIsViewedTimer = new System.Windows.Threading.DispatcherTimer()
         {
-            Interval = new TimeSpan(0, 0, 10)
+            Interval = App.timePerMessageIsViewed
         };
-
 
         public MainWindow()
         {
@@ -109,19 +102,13 @@ namespace WPFClient
         {
             if (MessageList.SelectedItem == null)
                 return;
-
-            messageIsViewedTimer.Start();
-            Message selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;            
-            //помечает открытое письмо прочитанным
-            //if (inboxFolderPressed)
-            //{
-            //    Recipient recipient = messagemodel.Recipients.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
-            //    if ((recipient != null)
-            //        && (!recipient.Viewed))
-            //    {
-            //        App.ServiceWatcher.SetInboxMessageViewed((int)messagemodel.Message.Id);
-            //    }
-            //}
+            if (timerMustWork)
+            {
+                messageIsViewedTimer.Stop();
+                messageIsViewedTimer.Start();
+                this.selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;               
+            }
+            Message selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;
             MessageControl.DataContext = new MessageControlModel()
             {
                 AllEmployees = App.ServiceWatcher.GetAllEmployees(),
@@ -132,8 +119,16 @@ namespace WPFClient
 
         void OnmessageIsViewedTimerTick(object sender, EventArgs e)
         {
-            string a = "debug";
             messageIsViewedTimer.Stop();
+            Message selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;
+            if (this.selectedMessage.Equals(selectedMessage))
+            {
+                if (selectedMessage != null)
+                {
+                    int id = (int)selectedMessage.Id;
+                    App.ServiceWatcher.SetRecipientViewed(id, true);
+                }
+            }            
         }
 
         #endregion
@@ -147,10 +142,14 @@ namespace WPFClient
         /// <param name="e"></param>
         public void OnFolderClick(object sender, RoutedEventArgs e)
         {
-            Button selectedFolder = (Button)sender;
-            SidebarFolder sidebarFolder = (SidebarFolder)selectedFolder.DataContext;           
+            Button selectedFolderButton = (Button)sender;
+            SidebarFolder sidebarFolder = (SidebarFolder)selectedFolderButton.DataContext;           
             MessageList.ItemsSource = sidebarFolder.GetFolderContent();                    
-            HideToolbarButtons(true);           
+            HideToolbarButtons(true);
+            if (sidebarFolder is SentboxFolder)
+                timerMustWork = false;
+            else
+                timerMustWork = true;
         }       
         #endregion
 

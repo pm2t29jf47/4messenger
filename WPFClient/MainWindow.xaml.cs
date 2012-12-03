@@ -36,14 +36,6 @@ namespace WPFClient
 
         SidebarFolder selectedFolder;
 
-        public List<MessageListItemModel> ololo
-        {
-            get
-            {
-                return (List<MessageListItemModel>)MessageList.ItemsSource;
-            }
-        }
-
         System.Windows.Threading.DispatcherTimer messageIsViewedTimer = new System.Windows.Threading.DispatcherTimer()
         {
             Interval = App.timePerMessageIsViewed

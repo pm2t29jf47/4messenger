@@ -77,17 +77,26 @@ namespace DBService
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetDeletedMessages()
+        public List<Message> GetDeletedInboxMessages()
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             var deletedMessages = new List<Message>();
             List<Recipient> currentUserInRecipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(currentUsername, true);
             foreach (Recipient item in currentUserInRecipients)
             {
-                var receivedMessage = MessageGateway.SelectById((int)item.MessageId, currentUsername);            
+                Message receivedMessage = MessageGateway.SelectById((int)item.MessageId, currentUsername);
+                FillMessage(receivedMessage, currentUsername);
                 deletedMessages.Add(receivedMessage);
-            }           
-            List<Message> currentUserInSenders = MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername,true);            
+            }    
+            return deletedMessages;      
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public List<Message> GetDeletedSentboxMessages()
+        {
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            var deletedMessages = new List<Message>();
+            List<Message> currentUserInSenders = MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername, true);
             deletedMessages.AddRange(currentUserInSenders);
             foreach (Message item in deletedMessages)
             {
@@ -130,5 +139,8 @@ namespace DBService
         {
            ///
         }
+
+
+       
     }
 }

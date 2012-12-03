@@ -48,7 +48,9 @@ namespace WPFClient.Additional
 
         List<Message> sentboxMessages = new List<Message>();
 
-        List<Message> deletedMessages = new List<Message>();
+        List<Message> deletedInboxMessages = new List<Message>();
+
+        List<Message> deletedSentboxMessages = new List<Message>();
 
 
         System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
@@ -66,8 +68,10 @@ namespace WPFClient.Additional
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
             sentboxMessages = Proxy.GetSentboxMessages();
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("sentboxMessages"));
-            deletedMessages = Proxy.GetDeletedMessages();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedMessages"));
+            deletedInboxMessages = Proxy.GetDeletedInboxMessages();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedInboxMessages"));
+            deletedSentboxMessages = Proxy.GetDeletedSentboxMessages();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedSentboxMessages"));
         }
         
 
@@ -109,9 +113,9 @@ namespace WPFClient.Additional
             return inboxMessages;         
         }
 
-        public List<Message> GetDeletedMessages()
+        public List<Message> GetDeletedInboxMessages()
         {
-            return deletedMessages;
+            return deletedInboxMessages;
         }
 
         public List<Message> GetSentboxMessages()
@@ -125,7 +129,8 @@ namespace WPFClient.Additional
             Proxy.SetRecipientViewed(messageId, viewed);
             UpdateLocalInboxMessages(messageId, viewed);
             UpdateLocalSentboxMessages(messageId, viewed);
-            UpdateLocalDeletedMessages(messageId, viewed);  
+            UpdateLocalDeletedInboxMessages(messageId, viewed);
+            UpdateLocalDeletedSentboxMessages(messageId, viewed);  
         }
 
         void UpdateLocalInboxMessages(int messageId, bool viewed)
@@ -157,25 +162,45 @@ namespace WPFClient.Additional
             }
         }
 
-        void UpdateLocalDeletedMessages(int messageId, bool viewed)
+        void UpdateLocalDeletedInboxMessages(int messageId, bool viewed)
         {
 
-            Message message = deletedMessages.FirstOrDefault(row => row.Id == messageId);
+            Message message = deletedInboxMessages.FirstOrDefault(row => row.Id == messageId);
             if (message != null)
             {
                 Recipient recipient = message.EDRecipient_MessageId.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
                 if (recipient != null)
                 {
                     recipient.Viewed = viewed;        
-                    CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedMessages"));
+                    CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedInboxMessages"));
                 }
             }
         }
 
+        void UpdateLocalDeletedSentboxMessages(int messageId, bool viewed)
+        {
+
+            Message message = deletedSentboxMessages.FirstOrDefault(row => row.Id == messageId);
+            if (message != null)
+            {
+                Recipient recipient = message.EDRecipient_MessageId.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
+                if (recipient != null)
+                {
+                    recipient.Viewed = viewed;
+                    CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedSentboxMessages"));
+                }
+            }
+        }
 
         public void SetRecipientDeleted(int messageId, bool deleted)
         {
             throw new NotImplementedException();
+        }
+
+        
+        public List<Message> GetDeletedSentboxMessages()
+        {
+            return deletedSentboxMessages;
         }
     }
 }

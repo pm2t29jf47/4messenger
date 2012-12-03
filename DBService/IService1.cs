@@ -30,21 +30,7 @@ namespace DBService
         /// <returns></returns>
         [OperationContract]
         Employee GetEmployee(string username);
-
-        /* Сообщения уже содержат в себе получателей
-        /// <summary>
-        /// Возвращает всех получателей определенного сообщения
-        /// </summary>
-        /// <param name="MessageId">
-        /// Id сообщения по которому осуществляется выборка в таблице
-        /// </param>
-        /// <returns>
-        /// Список получателей
-        /// </returns>
-        [OperationContract]
-        List<Recipient> GetRecipients(int MessageId);
-        */
-
+               
         /// <summary>
         /// Отослать сообщение
         /// </summary>
@@ -65,11 +51,18 @@ namespace DBService
         List<Message> GetInboxMessages();
 
         /// <summary>
-        /// Возвращает письма помеченные удаленными
+        /// Возвращает письма помеченные удаленными в папке входящих
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Message> GetDeletedMessages();
+        List<Message> GetDeletedInboxMessages();
+
+        /// <summary>
+        /// Возвращает письма помеченные удаленными в папке отправленных
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        List<Message> GetDeletedSentboxMessages();
 
         /// <summary>
         /// Возвращает коллекцию отправленных писем

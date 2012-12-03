@@ -260,15 +260,25 @@ namespace WPFClient.Models
         {
             string buf = Employee.CollectionToString(recipientsEmployees);
             RecipientsString = JoinToString(UnrecognizedUsernames, buf);
+            List<Recipient> recipientsBuf = new List<Recipient>();
+            recipientsBuf.AddRange(recipients);
             recipients.Clear();
             foreach (var item in recipientsEmployees)
             {
-                recipients.Add(
-                    new Recipient(item.Username, null)
-                        {
-                            Viewed = false,
-                            Deleted = false
-                        });
+                Recipient foundRecipient = recipientsBuf.FirstOrDefault(row => string.Compare(row.RecipientUsername, item.Username) == 0);
+                if (foundRecipient == null)
+                {
+                    recipients.Add(
+                        new Recipient(item.Username, null)
+                            {
+                                Viewed = false,
+                                Deleted = false
+                            });
+                }
+                else
+                {
+                    recipients.Add(foundRecipient);
+                }
             }
         }
 
@@ -299,15 +309,25 @@ namespace WPFClient.Models
         /// </remarks>
         void UpdateRecipientsByRecipientsEmployees()
         {
+            List<Recipient> recipientsBuf = new List<Recipient>();
+            recipientsBuf.AddRange(recipients);
             recipients.Clear();
             foreach (var item in recipientsEmployees)
             {
-                recipients.Add(
-                    new Recipient(item.Username, null)
-                    {
-                        Deleted = false,
-                        Viewed = false
-                    });
+                Recipient foundRecipient = recipientsBuf.FirstOrDefault(row => string.Compare(row.RecipientUsername, item.Username) == 0);
+                if (foundRecipient == null)
+                {
+                    recipients.Add(
+                        new Recipient(item.Username, null)
+                        {
+                            Viewed = false,
+                            Deleted = false
+                        });
+                }
+                else
+                {
+                    recipients.Add(foundRecipient);
+                }
             }
         }
 

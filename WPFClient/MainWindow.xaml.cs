@@ -38,9 +38,21 @@ namespace WPFClient
 
         List<SidebarFolder> folders = new List<SidebarFolder>();
 
+        /// <summary>
+        /// Сообщение выбранное в списке MessageList. Хранится для помечания просмотренным
+        /// </summary>
+        Message selectedMessage;
+
+        System.Windows.Threading.DispatcherTimer messageIsViewedTimer = new System.Windows.Threading.DispatcherTimer()
+        {
+            Interval = new TimeSpan(0, 0, 10)
+        };
+
+
         public MainWindow()
         {
             Loaded += new RoutedEventHandler(OnMainWindowLoaded);
+            messageIsViewedTimer.Tick += new EventHandler(OnmessageIsViewedTimerTick);
             System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
             InitializeComponent();           
         }
@@ -98,7 +110,7 @@ namespace WPFClient
             if (MessageList.SelectedItem == null)
                 return;
 
-            
+            messageIsViewedTimer.Start();
             Message selectedMessage = ((MessageListItemModel)MessageList.SelectedItem).Message;            
             //помечает открытое письмо прочитанным
             //if (inboxFolderPressed)
@@ -116,6 +128,12 @@ namespace WPFClient
                 Message = selectedMessage                
             };
             HideToolbarButtons(false);       
+        }
+
+        void OnmessageIsViewedTimerTick(object sender, EventArgs e)
+        {
+            string a = "debug";
+            messageIsViewedTimer.Stop();
         }
 
         #endregion

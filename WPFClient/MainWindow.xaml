@@ -221,7 +221,7 @@
         <ListBox Name="MessageList" 
                  Grid.Row="1"
                  Grid.Column="1" 
-                 SelectionMode="Single"
+                 SelectionMode="Extended"
                  SelectionChanged="OnMessageListSelectionChanged"
                  HorizontalContentAlignment="Stretch"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"

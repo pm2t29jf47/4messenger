@@ -61,9 +61,9 @@ namespace WPFClient
                 factory1.Credentials.UserName.UserName = UsernameTexbox.Text;
                 factory1.Credentials.UserName.Password = PasswordTexbox.Password;
                 IService1 proxy = factory1.CreateChannel();
-                App.ServiceWatcher = new ServiceWatcher(proxy, App.TimeBetweenUpdating);
+                App.ServiceWatcher = new ServiceWatcher(proxy, App.timeBetweenUpdating);
                 App.ServiceWatcher.CheckUser();
-                App.ServiceWatcher.StartWatch();
+                App.ServiceWatcher.StartWatching();
                 App.ServiceWatcher.DownloadData();
                 App.Current.MainWindow.Show();               
                 this.Close();

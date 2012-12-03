@@ -26,7 +26,7 @@ namespace WPFClient.Additional
 
         }
      
-        public void StartWatch()
+        public void StartWatching()
         {
             timer.Interval = TimeSpan;
             timer.Tick += new EventHandler(OntimerTick);

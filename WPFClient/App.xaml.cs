@@ -30,21 +30,11 @@ namespace WPFClient
 
         public static MainWindow MW;
 
-        public static ServiceWatcher ServiceWatcher {get; set;}
+        public static ServiceWatcher ServiceWatcher {get; set;}  
 
-        static TimeSpan timeBetweenUpdating = new TimeSpan(0, 0, 20);
+        public static TimeSpan timeBetweenUpdating = new TimeSpan(0, 0, 20);
 
-        public static TimeSpan TimeBetweenUpdating
-        {
-            get
-            {
-                return timeBetweenUpdating;
-            }
-            set
-            {
-                if (timeBetweenUpdating != value)
-                    timeBetweenUpdating = value;
-            }
-        }
+        public static TimeSpan timePerMessageIsViewed = new TimeSpan(0, 0, 10);
+    
     }
 }

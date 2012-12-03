@@ -54,7 +54,8 @@ namespace WPFClient
             PrepareWindow();
             ShowLoginWindow();
             PrepareEmployeeClass();
-            CreateServiceWatcherHandler();                             
+            CreateServiceWatcherHandler();
+            App.ServiceWatcher.StartWatching();  
         }
 
         void PrepareWindow()
@@ -137,19 +138,14 @@ namespace WPFClient
             }            
         }
 
-        void LoadFromWatcher()
+        void UploadToMessageList(List<MessageListItemModel> loadedMessageModels)
         {
-            List<MessageListItemModel> LoadedMessageModels = this.selectedFolder.GetFolderContent();            
-            MessageList.ItemsSource = LoadedMessageModels;
+            MessageList.ItemsSource = loadedMessageModels;
             if (selectedInMessageList != null)
             {
-                Message newSelectedMessageModel = LoadedMessageModels.FirstOrDefault(row => row.Id == selectedInMessageList.Id);
+                Message newSelectedMessageModel = loadedMessageModels.FirstOrDefault(row => row.Id == selectedInMessageList.Id);
                 MessageList.SelectedItem = newSelectedMessageModel;
-            }
-            if (selectedFolder is InboxFolder)
-            {
-                selectedFolder.CountOfUnviewedMessages = LoadedMessageModels.Count(row => row.IsViewed == false);
-            }
+            }            
         }
         #endregion
 
@@ -172,7 +168,8 @@ namespace WPFClient
             SidebarFolder sidebarFolder = (SidebarFolder)selectedFolderButton.DataContext;
             this.selectedInMessageList = null;
             this.selectedFolder = sidebarFolder;
-            LoadFromWatcher();
+            List<MessageListItemModel> loadedMessageModels = this.selectedFolder.GetFolderContent();
+            UploadToMessageList(loadedMessageModels);
             HideToolbarButtons(true); 
         }
 
@@ -266,21 +263,52 @@ namespace WPFClient
 
         void OnServiceWatcherDataUpdated(object sender, PropertyChangedEventArgs e)
         {
-            if (string.Compare("inboxMessages", e.PropertyName) == 0
-                && selectedFolder is InboxFolder)
+            UpdateLayoutByTimerEvent(e.PropertyName);
+        }
+
+        void UpdateLayoutByTimerEvent(string propertyName)
+        {            
+            if (string.Compare("allEmployees", propertyName) == 0)            
+                return;    
+        
+            else if (string.Compare("inboxMessages", propertyName) == 0)  
+                ProcessInboxLayoutUpdate(propertyName);
+
+            else if (string.Compare("sentboxMessages", propertyName) == 0)                
+                ProcessSentLayoutUpdate(propertyName);
+
+            else if ((string.Compare("deletedInboxMessages", propertyName) == 0
+                || string.Compare("deletedSentboxMessages", propertyName) == 0))                
+                ProcessDeletedLayoutUpdate(propertyName);                
+            
+        }
+
+        void ProcessInboxLayoutUpdate(string propertyName)
+        {            
+            ////что если не выбранна ни одна папка
+            ////List<MessageListItemModel> loadedMessageModels = this.selectedFolder.GetFolderContent();
+            folders[0].CountOfUnviewedMessages = loadedMessageModels.Count(row => row.IsViewed == false);
+            if (selectedFolder is InboxFolder)
             {
-                LoadFromWatcher();
+                UploadToMessageList(loadedMessageModels);
+            }               
+        }
+
+        void ProcessSentLayoutUpdate(string propertyName)
+        {
+            if (selectedFolder is SentboxFolder)
+            {
+                List<MessageListItemModel> loadedMessageModels = this.selectedFolder.GetFolderContent();
+                UploadToMessageList(loadedMessageModels);
             }
-            else if (string.Compare("sentboxMessages", e.PropertyName) == 0
-                && selectedFolder is SentboxFolder)
+        }
+
+        void ProcessDeletedLayoutUpdate(string propertyName)
+        {
+            if (selectedFolder is DeletedFolder)
             {
-                LoadFromWatcher();
-            }
-            else if ((string.Compare("deletedInboxMessages", e.PropertyName) == 0 
-                      || string.Compare("deletedSentboxMessages", e.PropertyName) == 0)
-                && selectedFolder is DeletedFolder)
-            {
-                LoadFromWatcher();
+                List<MessageListItemModel> loadedMessageModels = this.selectedFolder.GetFolderContent();
+                UploadToMessageList(loadedMessageModels);
             }
         }
         #endregion

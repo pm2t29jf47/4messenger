@@ -106,7 +106,7 @@ namespace WPFClient.SidebarFolders
                 PropertyChanged(this, e);
         }
 
-        protected bool IsViewedMessage(Message message)
+        protected static bool IsViewedMessage(Message message)
         {
             if (message != null
                 && message.EDRecipient_MessageId != null)

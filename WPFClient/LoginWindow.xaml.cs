@@ -63,7 +63,6 @@ namespace WPFClient
                 IService1 proxy = factory1.CreateChannel();
                 App.ServiceWatcher = new ServiceWatcher(proxy, App.timeBetweenUpdating);
                 App.ServiceWatcher.CheckUser();
-                App.ServiceWatcher.StartWatching();
                 App.Current.MainWindow.Show();               
                 this.Close();
             }

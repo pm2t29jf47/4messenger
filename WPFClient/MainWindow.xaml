@@ -224,8 +224,10 @@
                  SelectionMode="Extended"
                  SelectionChanged="OnMessageListSelectionChanged"
                  HorizontalContentAlignment="Stretch"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 ItemTemplate="{StaticResource FolderTemplate}"/>
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"    
+                 ScrollViewer.CanContentScroll="False"
+                 ItemTemplate="{StaticResource FolderTemplate}">        
+        </ListBox>
 
         <GridSplitter Grid.Column="2"
                       Grid.Row="1"

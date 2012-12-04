@@ -29,5 +29,17 @@ namespace WPFClient.SidebarFolders
             }
             return messageModels;
         }
+
+        public static int CountOfUnViewed()
+        {
+            int result = 0;
+            List<Message> inboxMessages = App.ServiceWatcher.GetInboxMessages();
+            foreach (Message item in inboxMessages)
+            {
+                if (!IsViewedMessage(item))
+                    result++;
+            }
+            return result;
+        }
     }
 }

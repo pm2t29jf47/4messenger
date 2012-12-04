@@ -124,23 +124,27 @@ namespace WPFClient.UserControls
         void OnSelectedEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             SelectedEmployeesListBox.SelectAll();
-        }
-
-        ListBox dragSource = null;
+        }     
 
         private void OnAllEmployeesListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ListBox parent = (ListBox)sender;
-            dragSource = parent;
-            object data = GetDataFromListBox(dragSource, e.GetPosition(parent));
-
+            ListBox listBox = (ListBox)sender;
+            object data;
+            if (listBox.SelectedItems.Count == 0)
+            {
+                data = GetDataFromListBoxForSingleSelection(listBox, e.GetPosition(listBox));
+            }
+            else
+            {
+                data = GetDataFromListBoxForMultipleSelection(listBox);
+            }
             if (data != null)
             {
-                DragDrop.DoDragDrop(parent, data, DragDropEffects.Move);
+                DragDrop.DoDragDrop(listBox, data, DragDropEffects.Move);
             }
         }
 
-        private static object GetDataFromListBox(ListBox source, Point point)
+        private static object GetDataFromListBoxForSingleSelection(ListBox source, Point point)
         {
             UIElement element = source.InputHitTest(point) as UIElement;
             if (element != null)
@@ -166,12 +170,19 @@ namespace WPFClient.UserControls
             return null;
         }
 
+        object GetDataFromListBoxForMultipleSelection(ListBox source)
+        {
+            return source.SelectedItems;
+        }
+
         private void OnSelectedEmployeesListBoxDrop(object sender, DragEventArgs e)
         {
             ListBox parent = (ListBox)sender;
-            object data = e.Data.GetData(typeof(string));
+            object data = e.Data.GetData(typeof(System.Collections.IList));
            // ((IList)dragSource.ItemsSource).Remove(data);
-            parent.Items.Add(data);
+           // SelectedEmployeesListBox.Items.Add(data);
+            //SelectedEmployeesListBox.SelectAll();
+            RecipientsEditorControlModel.SelectedEmployees.Add((Employee)data);
         }   
     }
 }

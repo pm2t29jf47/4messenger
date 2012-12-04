@@ -104,7 +104,9 @@
                      Style="{StaticResource ListBoxStyle}" 
                      ItemsSource="{Binding Path=AllEmployees }"
                      IsKeyboardFocusWithinChanged="OnAllEmployeesListBoxIsKeyboardFocusWithinChanged"
-                     SelectionMode="Extended">
+                     SelectionMode="Extended" 
+                     AllowDrop="True" 
+                     PreviewMouseLeftButtonDown="OnAllEmployeesListBoxPreviewMouseLeftButtonDown">   
                 <ListBox.CommandBindings>
                     <CommandBinding Command="SelectAll" Executed="OnAllEmployeesSelectAllExecuted"></CommandBinding>
                 </ListBox.CommandBindings>
@@ -162,7 +164,9 @@
                      Style="{StaticResource ListBoxStyle}" 
                      ItemsSource="{Binding Path=SelectedEmployees }"
                      IsKeyboardFocusWithinChanged="OnSelectedEmployeesListBoxIsKeyboardFocusWithinChanged"
-                     SelectionMode="Extended">
+                     SelectionMode="Extended" 
+                     AllowDrop="True"
+                     Drop="OnSelectedEmployeesListBoxDrop">
                 <ListBox.CommandBindings>
                     <CommandBinding Command="SelectAll" Executed="OnSelectedEmployeesSelectAllExecuted"></CommandBinding>
                 </ListBox.CommandBindings>

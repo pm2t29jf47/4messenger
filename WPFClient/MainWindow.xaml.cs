@@ -38,7 +38,7 @@ namespace WPFClient
 
         System.Windows.Threading.DispatcherTimer messageIsViewedTimer = new System.Windows.Threading.DispatcherTimer()
         {
-            Interval = App.timePerMessageIsViewed
+            Interval = App.timePerMessageSetViewed
         };
 
         public MainWindow()

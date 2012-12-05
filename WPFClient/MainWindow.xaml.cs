@@ -50,6 +50,7 @@ namespace WPFClient
             var a = CultureInfo.GetCultures(CultureTypes.AllCultures);
             Thread.CurrentThread.CurrentCulture = a[139];
             Thread.CurrentThread.CurrentUICulture = a[139];
+            Thread.CurrentThread.
             //System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("ru");
             //System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("ru");
             InitializeComponent();           

@@ -17,6 +17,8 @@ using WPFClient.UserControls;
 using WPFClient.Additional;
 using WPFClient.SidebarFolders;
 using System.ComponentModel;
+using System.Threading;
+using System.Globalization;
 
 namespace WPFClient
 {
@@ -45,7 +47,11 @@ namespace WPFClient
         {
             Loaded += new RoutedEventHandler(OnMainWindowLoaded);
             messageIsViewedTimer.Tick += new EventHandler(OnmessageIsViewedTimerTick);
-            System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("en");
+            var a = CultureInfo.GetCultures(CultureTypes.AllCultures);
+            Thread.CurrentThread.CurrentCulture = a[139];
+            Thread.CurrentThread.CurrentUICulture = a[139];
+            //System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("ru");
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("ru");
             InitializeComponent();           
         }
 
@@ -55,7 +61,8 @@ namespace WPFClient
             ShowLoginWindow();
             PrepareEmployeeClass();
             CreateServiceWatcherHandler();
-            App.ServiceWatcher.StartWatching();  
+            App.ServiceWatcher.StartWatching();
+            var a = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
         }
 
         void PrepareWindow()

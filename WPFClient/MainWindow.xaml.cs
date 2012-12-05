@@ -134,18 +134,22 @@ namespace WPFClient
             {
                 int selectedMessageId = (int)selectedMessage.Id;
                 App.ServiceWatcher.SetRecipientViewed(selectedMessageId, true);
-                List<MessageListItemModel> messageModels = selectedFolder.GetFolderContent();
-                MessageListItemModel selectedMessageModel = messageModels.FirstOrDefault(row => row.Id == selectedMessageId);
-                MessageList.ItemsSource = messageModels;
-                MessageList.SelectedItem = selectedMessageModel;
+                UploadToMessageList();
                 if (selectedFolder is InboxFolder)
-                    selectedFolder.CountOfUnviewedMessages = messageModels.Count(row => row.IsViewed == false);
+                {
+                    selectedFolder.CountOfUnviewedMessages = InboxFolder.CountOfUnViewed();
+                }
             }
         }
 
         void UploadToMessageList()
         {
-            System.Collections.IList savedSelectedItems = MessageList.SelectedItems;
+            List<MessageListItemModel> savedSelectedItems = new List<MessageListItemModel>();
+
+            foreach (MessageListItemModel item in MessageList.SelectedItems)
+            {
+                savedSelectedItems.Add(item);
+            }
             List<MessageListItemModel> loadedMessageModels = this.selectedFolder.GetFolderContent();
             MessageList.ItemsSource = loadedMessageModels;
             if (savedSelectedItems.Count != 0)

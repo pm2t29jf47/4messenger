@@ -176,20 +176,16 @@ namespace WPFClient.UserControls
             ListBox source = DraggedListBox;
             DraggedListBox = null;
             int indexUnderMouse = this.GetCurrentIndex(target, e.GetPosition);
-            if (indexUnderMouse >= 0 || target.Items.Count == 0)
+            if(indexUnderMouse < 0)
             {
-                List<Employee> externalSelectedEmployees = (List<Employee>)e.Data.GetData(typeof(List<Employee>));
-                ObservableCollection<Employee> sourceListBoxCollection = (ObservableCollection<Employee>)source.ItemsSource;
-                ObservableCollection<Employee> targetListBoxCollection = (ObservableCollection<Employee>)target.ItemsSource;
-                int insertIndex = GetInsertIndex(target, indexUnderMouse, externalSelectedEmployees);                
-                if (insertIndex >= 0)
-                {
-                    RemoveFromCollection(sourceListBoxCollection, externalSelectedEmployees);
-                                        
-                    InsertCollection(externalSelectedEmployees, targetListBoxCollection, insertIndex);
-                    ProcessSelectionHighlighting(source, target, externalSelectedEmployees);
-                }
-            }
+                indexUnderMouse = target.Items.Count;
+            }           
+            List<Employee> externalSelectedEmployees = (List<Employee>)e.Data.GetData(typeof(List<Employee>));
+            ObservableCollection<Employee> sourceListBoxCollection = (ObservableCollection<Employee>)source.ItemsSource;
+            ObservableCollection<Employee> targetListBoxCollection = (ObservableCollection<Employee>)target.ItemsSource;
+            RemoveFromCollection(sourceListBoxCollection, externalSelectedEmployees);
+            InsertCollection(externalSelectedEmployees, targetListBoxCollection, indexUnderMouse);
+            ProcessSelectionHighlighting(source, target, externalSelectedEmployees);                
         }
 
         private void ProcessSelectionHighlighting(ListBox source, ListBox target, List<Employee> highlightCollection)
@@ -201,22 +197,6 @@ namespace WPFClient.UserControls
                 target.SelectedItems.Add(item);
         }
 
-        int GetInsertIndex(ListBox target, int indexUnderMouse, List<Employee> externalSelectedEmployees)
-        {
-            int insertIndex = indexUnderMouse;
-            if (target.Items.Count == 0)
-            {
-                insertIndex = 0;
-            }
-            else
-            {
-                Employee dropTargetEmployee = (Employee)target.Items[indexUnderMouse];
-                if (externalSelectedEmployees.Contains(dropTargetEmployee))
-                    insertIndex = -1;
-            }
-            return insertIndex;
-            
-        }
 
         void RemoveFromCollection(ObservableCollection<Employee> source, List<Employee> removable)
         {

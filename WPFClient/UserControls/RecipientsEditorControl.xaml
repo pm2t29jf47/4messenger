@@ -104,8 +104,9 @@
                      Style="{StaticResource ListBoxStyle}" 
                      ItemsSource="{Binding Path=AllEmployees }"
                      IsKeyboardFocusWithinChanged="OnAllEmployeesListBoxIsKeyboardFocusWithinChanged"
-                     SelectionMode="Extended" 
-                     AllowDrop="True" 
+                     SelectionMode="Extended"        
+                     AllowDrop="True"
+                     Drop="OnAllEmployeesListBoxDrop"
                      PreviewMouseLeftButtonDown="OnAllEmployeesListBoxPreviewMouseLeftButtonDown">   
                 <ListBox.CommandBindings>
                     <CommandBinding Command="SelectAll" Executed="OnAllEmployeesSelectAllExecuted"></CommandBinding>
@@ -115,7 +116,7 @@
                 </ListBox.InputBindings>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Style="{StaticResource ListBoxItemStyle}">
+                        <TextBlock Style="{StaticResource ListBoxItemStyle}" AllowDrop="True">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0} {1} &lt;{2}&gt;">
                                     <Binding Path="FirstName" 
@@ -166,7 +167,8 @@
                      IsKeyboardFocusWithinChanged="OnSelectedEmployeesListBoxIsKeyboardFocusWithinChanged"
                      SelectionMode="Extended" 
                      AllowDrop="True"
-                     Drop="OnSelectedEmployeesListBoxDrop">
+                     Drop="OnSelectedEmployeesListBoxDrop"
+                     PreviewMouseLeftButtonDown ="OnSelectedEmployeesListBoxPreviewMouseLeftButtonDown">
                 <ListBox.CommandBindings>
                     <CommandBinding Command="SelectAll" Executed="OnSelectedEmployeesSelectAllExecuted"></CommandBinding>
                 </ListBox.CommandBindings>

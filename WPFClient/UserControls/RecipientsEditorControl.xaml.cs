@@ -14,9 +14,12 @@ using System.Windows.Shapes;
 using Entities;
 using System.Collections.ObjectModel;
 using WPFClient.Models;
+using System.Windows.Controls.Primitives;
 
 namespace WPFClient.UserControls
 {
+    delegate Point GetPositionDelegate(IInputElement element);
+
     public partial class RecipientsEditorControl : UserControl
     {
         public RecipientsEditorControl()
@@ -124,65 +127,152 @@ namespace WPFClient.UserControls
         void OnSelectedEmployeesSelectAllExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             SelectedEmployeesListBox.SelectAll();
-        }     
-
-        private void OnAllEmployeesListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        }
+      
+        void OnAllEmployeesListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ListBox listBox = (ListBox)sender;
-            object data;
-            if (listBox.SelectedItems.Count == 0)
+            DoDrag(sender, e);
+        }
+
+        ListBox DraggedListBox;
+
+        void DoDrag(object sender, MouseButtonEventArgs e)
+        {
+            ListBox parent = (ListBox)sender;
+            if (parent.SelectedItems.Count != 0)
+            {               
+                int indexUnderMouse = GetCurrentIndex(parent, e.GetPosition);
+                if (indexUnderMouse >= 0)
+                {
+                    Employee draggedItem = (Employee)parent.Items[indexUnderMouse];
+                    if (parent.SelectedItems.Contains(draggedItem))
+                    {
+                        List<Employee> dataToSend = GetSelectedItems(parent);
+                        DraggedListBox = parent;
+                        DragDrop.DoDragDrop(parent, dataToSend, DragDropEffects.Move);
+                    }
+                }
+            }
+        }
+
+        List<Employee> GetSelectedItems(ListBox source)
+        {
+            List<Employee> result = new List<Employee>();
+            foreach (Employee item in source.SelectedItems)
             {
-                data = GetDataFromListBoxForSingleSelection(listBox, e.GetPosition(listBox));
+                result.Add(item);
+            }
+            return result;
+        }
+
+        void OnSelectedEmployeesListBoxDrop(object sender, DragEventArgs e)
+        {          
+           DoDrop(sender, e);  
+        }
+
+        void DoDrop(object sender, DragEventArgs e)
+        {
+            ListBox target = (ListBox)sender;
+            ListBox source = DraggedListBox;
+            DraggedListBox = null;
+            int indexUnderMouse = this.GetCurrentIndex(target, e.GetPosition);
+            if (indexUnderMouse >= 0 || target.Items.Count == 0)
+            {
+                List<Employee> externalSelectedEmployees = (List<Employee>)e.Data.GetData(typeof(List<Employee>));
+                ObservableCollection<Employee> sourceListBoxCollection = (ObservableCollection<Employee>)source.ItemsSource;
+                ObservableCollection<Employee> targetListBoxCollection = (ObservableCollection<Employee>)target.ItemsSource;
+                int insertIndex = GetInsertIndex(target, indexUnderMouse, externalSelectedEmployees);                
+                if (insertIndex >= 0)
+                {
+                    RemoveFromCollection(sourceListBoxCollection, externalSelectedEmployees);
+                                        
+                    InsertCollection(externalSelectedEmployees, targetListBoxCollection, insertIndex);
+                    ProcessSelectionHighlighting(source, target, externalSelectedEmployees);
+                }
+            }
+        }
+
+        private void ProcessSelectionHighlighting(ListBox source, ListBox target, List<Employee> highlightCollection)
+        {
+            source.SelectedItems.Clear();
+            target.SelectedItems.Clear();           
+            target.Focus();
+            foreach (Employee item in highlightCollection)
+                target.SelectedItems.Add(item);
+        }
+
+        int GetInsertIndex(ListBox target, int indexUnderMouse, List<Employee> externalSelectedEmployees)
+        {
+            int insertIndex = indexUnderMouse;
+            if (target.Items.Count == 0)
+            {
+                insertIndex = 0;
             }
             else
             {
-                data = GetDataFromListBoxForMultipleSelection(listBox);
+                Employee dropTargetEmployee = (Employee)target.Items[indexUnderMouse];
+                if (externalSelectedEmployees.Contains(dropTargetEmployee))
+                    insertIndex = -1;
             }
-            if (data != null)
+            return insertIndex;
+            
+        }
+
+        void RemoveFromCollection(ObservableCollection<Employee> source, List<Employee> removable)
+        {
+            foreach (Employee item in removable)
             {
-                DragDrop.DoDragDrop(listBox, data, DragDropEffects.Move);
+                source.Remove(item);
             }
         }
 
-        private static object GetDataFromListBoxForSingleSelection(ListBox source, Point point)
+        void InsertCollection(List<Employee> source, ObservableCollection<Employee> target, int index)
         {
-            UIElement element = source.InputHitTest(point) as UIElement;
-            if (element != null)
+            foreach (Employee item in source)
             {
-                object data = DependencyProperty.UnsetValue;
-                while (data == DependencyProperty.UnsetValue)
+                target.Insert(index++, item);
+            }
+
+        }
+
+        ListBoxItem GetListViewItem(ListBox source, int index)
+        {
+            if (source.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
+                return null;
+
+            return source.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
+        }
+
+        int GetCurrentIndex(ListBox source, GetPositionDelegate getPosition)
+        {
+            int index = -1;
+            for (int i = 0; i < source.Items.Count; ++i)
+            {
+                ListBoxItem item = GetListViewItem(source, i);
+                if (this.IsMouseOverTarget(item, getPosition))
                 {
-                    data = source.ItemContainerGenerator.ItemFromContainer(element);
-                    if (data == DependencyProperty.UnsetValue)
-                    {
-                        element = VisualTreeHelper.GetParent(element) as UIElement;
-                    }
-                    if (element == source)
-                    {
-                        return null;
-                    }
-                }
-                if (data != DependencyProperty.UnsetValue)
-                {
-                    return data;
+                    index = i;
+                    break;
                 }
             }
-            return null;
+            return index;
         }
 
-        object GetDataFromListBoxForMultipleSelection(ListBox source)
+        bool IsMouseOverTarget(Visual target, GetPositionDelegate getPosition)
         {
-            return source.SelectedItems;
+            Rect bounds = VisualTreeHelper.GetDescendantBounds(target);
+            Point mousePos = getPosition((IInputElement)target);
+            return bounds.Contains(mousePos);
         }
 
-        private void OnSelectedEmployeesListBoxDrop(object sender, DragEventArgs e)
+        private void OnAllEmployeesListBoxDrop(object sender, DragEventArgs e)
         {
-            ListBox parent = (ListBox)sender;
-            object data = e.Data.GetData(typeof(System.Collections.IList));
-           // ((IList)dragSource.ItemsSource).Remove(data);
-           // SelectedEmployeesListBox.Items.Add(data);
-            //SelectedEmployeesListBox.SelectAll();
-            RecipientsEditorControlModel.SelectedEmployees.Add((Employee)data);
-        }   
+            DoDrop(sender, e);  
+        }
+
+        private void OnSelectedEmployeesListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DoDrag(sender, e);
+        }
     }
 }

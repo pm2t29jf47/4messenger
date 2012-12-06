@@ -77,7 +77,8 @@ namespace WPFClient
         void PrepareWindow()
         {
             PreareSidebar();
-            HideToolbarButtons(true);
+            this.ReplyMessageButton.IsEnabled = false;
+            this.DeleteMessageButton.IsEnabled = false;
             MessageControl.ControlState = MessageControl.state.IsReadOnly;
         }
 
@@ -87,12 +88,6 @@ namespace WPFClient
             Employee.NamePrefix = Properties.Resources.Me;
         }
         
-        void HideToolbarButtons(bool state)
-        {
-            this.ReplyMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible;
-            this.DeleteMessageButton.Visibility = state ? Visibility.Collapsed : Visibility.Visible; 
-        }
-
         void PreareSidebar()
         {  
             FillFoldersNames();   
@@ -116,24 +111,48 @@ namespace WPFClient
 
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MessageList.SelectedItem == null)
+            if (MessageList.SelectedItem != null)
             {
-                return;
+                CheckDeleteReplyButtonsState();
+                MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;
+                this.singleSelectedInMessageList = selectedMessageModel;
+                if ((selectedFolder is InboxFolder || selectedFolder is DeletedFolder)
+                    && selectedMessageModel.IsViewed == false)
+                {
+                    messageIsViewedTimer.Stop();
+                    messageIsViewedTimer.Start();
+                }
+                MessageControl.DataContext = new MessageControlModel()
+                {
+                    AllEmployees = App.ServiceWatcher.GetAllEmployees(),
+                    Message = selectedMessageModel.Message
+                };
             }
-            MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;
-            this.singleSelectedInMessageList = selectedMessageModel;
-            if ((selectedFolder is InboxFolder  || selectedFolder is DeletedFolder)
-                && selectedMessageModel.IsViewed == false)
+        }
+
+        void CheckDeleteReplyButtonsState()
+        {
+            switch (MessageList.SelectedItems.Count)
             {
-                messageIsViewedTimer.Stop();
-                messageIsViewedTimer.Start();                
-            }
-            MessageControl.DataContext = new MessageControlModel()
-            {
-                AllEmployees = App.ServiceWatcher.GetAllEmployees(),
-                Message = selectedMessageModel.Message                
-            };
-            HideToolbarButtons(false);       
+                case 0:
+                    {
+                        this.ReplyMessageButton.IsEnabled = false;
+                        this.DeleteMessageButton.IsEnabled = false;
+                        break;
+                    }
+                case 1:
+                    {
+                        this.ReplyMessageButton.IsEnabled = true;
+                        this.DeleteMessageButton.IsEnabled = true;
+                        break;
+                    }
+                default:
+                    {
+                        this.ReplyMessageButton.IsEnabled = false;
+                        this.DeleteMessageButton.IsEnabled = true;
+                        break;
+                    }
+            } 
         }
 
         void OnmessageIsViewedTimerTick(object sender, EventArgs e)
@@ -201,7 +220,8 @@ namespace WPFClient
             this.singleSelectedInMessageList = null;
             this.selectedFolder = sidebarFolder;            
             UploadToMessageList();
-            HideToolbarButtons(true); 
+            this.ReplyMessageButton.IsEnabled = false;
+            this.DeleteMessageButton.IsEnabled = false;
         }
 
         #endregion
@@ -316,5 +336,9 @@ namespace WPFClient
                 UploadToMessageList();
         }
         #endregion
+
+
+
+   
     }
 }

@@ -63,16 +63,23 @@ namespace WPFClient.Additional
 
         void DownloadData()
         {
-            allEmployees = Proxy.GetAllEmployees();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));
-            inboxMessages = Proxy.GetInboxMessages();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
-            sentboxMessages = Proxy.GetSentboxMessages();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs("sentboxMessages"));
-            deletedInboxMessages = Proxy.GetDeletedInboxMessages();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedInboxMessages"));
-            deletedSentboxMessages = Proxy.GetDeletedSentboxMessages();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedSentboxMessages"));
+            try
+            {
+                allEmployees = Proxy.GetAllEmployees();
+                CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));
+                inboxMessages = Proxy.GetInboxMessages();
+                CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
+                sentboxMessages = Proxy.GetSentboxMessages();
+                CreateDataUpdatedEvent(new PropertyChangedEventArgs("sentboxMessages"));
+                deletedInboxMessages = Proxy.GetDeletedInboxMessages();
+                CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedInboxMessages"));
+                deletedSentboxMessages = Proxy.GetDeletedSentboxMessages();
+                CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedSentboxMessages"));
+            }
+            catch (Exception ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
+            }
         }
         
 
@@ -89,7 +96,14 @@ namespace WPFClient.Additional
 
         public void CheckUser()
         {
-            Proxy.CheckUser();
+            try
+            {
+                Proxy.CheckUser();
+            }
+            catch (Exception ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.CheckUser()");
+            }
         }
      
         public List<Employee> GetAllEmployees()
@@ -99,12 +113,27 @@ namespace WPFClient.Additional
 
         public Employee GetEmployee(string username)
         {
-            return Proxy.GetEmployee(username);                       
+            try
+            {
+                return Proxy.GetEmployee(username);
+            }
+            catch (Exception ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "(Employee)WPFClient.Additional.ServiceWatcher.GetEmployee(string username)");
+                return null;
+            }
         }
 
         public void SendMessage(Message message)
         {
-            Proxy.SendMessage(message);
+            try
+            {
+                Proxy.SendMessage(message);
+            }
+            catch (Exception ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.SendMessage(Message message)");
+            }
         }
 
         public List<Message> GetInboxMessages()
@@ -124,7 +153,14 @@ namespace WPFClient.Additional
 
         public void SetRecipientViewed(int messageId, bool viewed)
         {
-            Proxy.SetRecipientViewed(messageId, viewed);    
+            try
+            {
+                Proxy.SetRecipientViewed(messageId, viewed);
+            }
+            catch (Exception ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.SetRecipientViewed(int messageId, bool viewed)");
+            }
         }
 
         public void SetRecipientDeleted(int messageId, bool deleted)

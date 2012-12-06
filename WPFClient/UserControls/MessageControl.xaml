@@ -114,7 +114,7 @@
                  Grid.Column="1" 
                  Grid.Row="2"                  
                  IsReadOnly="True" 
-                 Text="{Binding Path=Message.Date, Mode=OneWay}" 
+                 Text="{Binding Path=Message.Date, Mode=OneWay, StringFormat='dddd, dd MMMM yyyy, HH:mm'}" 
                  Style="{StaticResource ReadOnlyTextBoxStyle}"/>
         <TextBox Name="TitleTextbox" 
                  Grid.Column="1" 

@@ -19,6 +19,7 @@ using WPFClient.SidebarFolders;
 using System.ComponentModel;
 using System.Threading;
 using System.Globalization;
+using System.Windows.Markup;
 
 namespace WPFClient
 {
@@ -47,13 +48,21 @@ namespace WPFClient
         {
             Loaded += new RoutedEventHandler(OnMainWindowLoaded);
             messageIsViewedTimer.Tick += new EventHandler(OnmessageIsViewedTimerTick);
-            var a = CultureInfo.GetCultures(CultureTypes.AllCultures);
-            Thread.CurrentThread.CurrentCulture = a[139];
-            Thread.CurrentThread.CurrentUICulture = a[139];
-            Thread.CurrentThread.
-            //System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("ru");
-            //System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("ru");
+            SetCulture("ru");
             InitializeComponent();           
+        }
+
+        void SetCulture(string culture)
+        {
+            System.Globalization.CultureInfo ci = new
+            System.Globalization.CultureInfo(culture);
+            System.Threading.Thread.CurrentThread.CurrentCulture = ci;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
+            ///Для элементов WPF культура задается отдельно
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+              typeof(FrameworkElement),
+              new FrameworkPropertyMetadata(
+                  XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         }
 
         void OnMainWindowLoaded(object sender, RoutedEventArgs e)
@@ -62,8 +71,7 @@ namespace WPFClient
             ShowLoginWindow();
             PrepareEmployeeClass();
             CreateServiceWatcherHandler();
-            App.ServiceWatcher.StartWatching();
-            var a = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
+            App.ServiceWatcher.StartWatching();            
         }
 
         void PrepareWindow()

@@ -125,9 +125,9 @@
                           
                     </TextBlock>
                     <!--Дата-->
-                    <TextBlock Grid.Column="2"
-                                    Text="{Binding Path=Date, Mode=OneWay}"
-                                    Style="{StaticResource MessageListItemDateStyle}">
+                    <TextBlock Grid.Column="2"        
+                               Text="{Binding Path=Date, Mode=OneWay, StringFormat='dddd, dd MMMM yyyy, HH:mm'}"
+                               Style="{StaticResource MessageListItemDateStyle}">                   
                     </TextBlock>
                     <!--Тема-->
                     <TextBlock Grid.Row="1"

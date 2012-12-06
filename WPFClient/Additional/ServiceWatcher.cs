@@ -105,13 +105,13 @@ namespace WPFClient.Additional
                 ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.CheckUser()");
             }
         }
-     
-        public List<Employee> GetAllEmployees()
+
+        public List<Employee> GetAllEmployees(ref bool error)
         {
             return allEmployees;             
         }
 
-        public Employee GetEmployee(string username)
+        public Employee GetEmployee(string username, ref bool error)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace WPFClient.Additional
             }
         }
 
-        public void SendMessage(Message message)
+        public void SendMessage(Message message, ref bool error)
         {
             try
             {
@@ -136,22 +136,22 @@ namespace WPFClient.Additional
             }
         }
 
-        public List<Message> GetInboxMessages()
+        public List<Message> GetInboxMessages(ref bool error)
         {
             return inboxMessages;         
         }
 
-        public List<Message> GetDeletedInboxMessages()
+        public List<Message> GetDeletedInboxMessages(ref bool error)
         {
             return deletedInboxMessages;
         }
 
-        public List<Message> GetSentboxMessages()
+        public List<Message> GetSentboxMessages(ref bool error)
         {
             return sentboxMessages;
         }
 
-        public void SetRecipientViewed(int messageId, bool viewed)
+        public void SetRecipientViewed(int messageId, bool viewed, ref bool error)
         {
             try
             {
@@ -163,12 +163,12 @@ namespace WPFClient.Additional
             }
         }
 
-        public void SetRecipientDeleted(int messageId, bool deleted)
+        public void SetRecipientDeleted(int messageId, bool deleted, ref bool error)
         {
             throw new NotImplementedException();
         }
 
-        public List<Message> GetDeletedSentboxMessages()
+        public List<Message> GetDeletedSentboxMessages(ref bool error)
         {
             return deletedSentboxMessages;
         }

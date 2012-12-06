@@ -20,7 +20,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Возвращает коллекцию всех сотрудников
         /// </summary>
-        public static List<Employee> SelectAll(string username)
+        public static List<Employee> SelectAll(string username, ref bool error)
         {
             List<Employee> rows = new List<Employee>();
             try
@@ -29,14 +29,20 @@ namespace DataSourceLayer
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     using (var reader = cmd.ExecuteReader())
+                    {
                         while (reader.Read())
-                            rows.Add(CreateEmployee(reader,false));
+                        {
+                            rows.Add(CreateEmployee(reader, false));
+                        }
+                    }
+                    error = false;
                     return rows;
                 }                
             }
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExcepion(ex, "public static List<Employee> SelectAll(string username)");
+                error = true;
                 return rows;
             }
         }

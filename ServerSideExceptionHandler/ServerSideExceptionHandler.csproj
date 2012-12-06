@@ -43,6 +43,12 @@
     <Compile Include="ExceptionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpecialSymbols\SpecialWords.csproj">
+      <Project>{9C424B52-282C-4625-A39E-E890A68AFA65}</Project>
+      <Name>SpecialWords</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

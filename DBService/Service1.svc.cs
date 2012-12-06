@@ -18,7 +18,6 @@ namespace DBService
 {
     public class Service1 : IService1
     {
-
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Employee> GetAllEmployees()
         {
@@ -139,8 +138,5 @@ namespace DBService
         {
            ///
         }
-
-
-       
     }
 }

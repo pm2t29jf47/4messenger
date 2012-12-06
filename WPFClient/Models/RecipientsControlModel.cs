@@ -5,7 +5,7 @@ using System.Text;
 using Entities;
 using System.ComponentModel;
 using WPFClient.Additional;
-using SpecialSymbols;
+using SpecialWords;
 
 namespace WPFClient.Models
 {
@@ -194,7 +194,7 @@ namespace WPFClient.Models
                 if (additionalString.Length != 0)
                 {
                     return baseString
-                        + SpecialSymbols.SpecialSymbols.userDataDevider
+                        + SpecialWords.SpecialWords.Semicolon
                         + additionalString;
                 }
                 else
@@ -222,8 +222,8 @@ namespace WPFClient.Models
         /// <returns></returns>
         string ParseUsername(string recipientString)
         {
-            int begin = recipientString.IndexOf(SpecialSymbols.SpecialSymbols.leftUsernameStopper),
-                end = recipientString.IndexOf(SpecialSymbols.SpecialSymbols.rightUsernameStopper);
+            int begin = recipientString.IndexOf(SpecialWords.SpecialWords.LeftPointyBracket),
+                end = recipientString.IndexOf(SpecialWords.SpecialWords.RightPointyBracket);
 
             if (begin == -1 || end == -1)
             {
@@ -342,7 +342,7 @@ namespace WPFClient.Models
         /// <param name="e"></param>
         public void UpdateRecipientsDefenitionInRecipientsString()
         {
-            string[] recipientsSubStrings = recipientsString.Split(SpecialSymbols.SpecialSymbols.userDataDevider);              
+            string[] recipientsSubStrings = recipientsString.Split(SpecialWords.SpecialWords.Semicolon.ToCharArray());              
             string result = string.Empty,
                 fullRecipientDefenition;
             string[] usernames = ParseToUsernames(recipientsSubStrings);
@@ -410,7 +410,7 @@ namespace WPFClient.Models
         {
             RecipientsEmployees.Clear();
             UnrecognizedUsernames = string.Empty;
-            string[] recipients = recipientsString.Split(SpecialSymbols.SpecialSymbols.userDataDevider);
+            string[] recipients = recipientsString.Split(SpecialWords.SpecialWords.Semicolon.ToCharArray());
             string errorMessage = string.Empty;
             if ((recipients.Length == 1)
                 && (string.Compare(recipients[0], string.Empty) == 0))
@@ -457,7 +457,7 @@ namespace WPFClient.Models
                     if (buf.Contains(item, new CustomStringComparer()))
                     {
                         string msg = Properties.Resources.UnuniqueUsername
-                            + SpecialSymbols.SpecialSymbols.space
+                            + SpecialWords.SpecialWords.Space
                             + item;
 
                         errorMessage = JoinToString(errorMessage, msg);
@@ -522,7 +522,7 @@ namespace WPFClient.Models
         {            
             UnrecognizedUsernames = JoinToString(UnrecognizedUsernames, username);
             return username
-                + SpecialSymbols.SpecialSymbols.space
+                + SpecialWords.SpecialWords.Space
                 + Properties.Resources.NotFound;
         }
          

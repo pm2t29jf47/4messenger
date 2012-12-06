@@ -107,10 +107,10 @@ namespace Entities
                 if (string.Compare(CurrentUsername, Username) == 0)
                 {
                     return NamePrefix
-                        + SpecialSymbols.SpecialSymbols.space
-                        + SpecialSymbols.SpecialSymbols.leftTitleStopper
+                        + SpecialWords.SpecialWords.Space
+                        + SpecialWords.SpecialWords.LeftSquareBrackets
                         + result
-                        + SpecialSymbols.SpecialSymbols.rightTitleStopper;
+                        + SpecialWords.SpecialWords.RightSquareBracket;
                 }
                 return result;
             }
@@ -122,12 +122,12 @@ namespace Entities
             {
                 string result = string.Empty;
                 return FirstName
-                    + SpecialSymbols.SpecialSymbols.space
+                    + SpecialWords.SpecialWords.Space
                     + SecondName
-                    + SpecialSymbols.SpecialSymbols.space
-                    + SpecialSymbols.SpecialSymbols.leftUsernameStopper
+                    + SpecialWords.SpecialWords.Space
+                    + SpecialWords.SpecialWords.LeftPointyBracket
                     + Username
-                    + SpecialSymbols.SpecialSymbols.rightUsernameStopper;
+                    + SpecialWords.SpecialWords.RightPointyBracket;
             }
         }
 
@@ -138,7 +138,7 @@ namespace Entities
                 && employees.Count != 0)
             {
                 foreach (var item in employees)
-                    result += item.ToString + SpecialSymbols.SpecialSymbols.userDataDevider;
+                    result += item.ToString + SpecialWords.SpecialWords.Semicolon;
 
                 result = result.Substring(0, result.Length - 1);
             }

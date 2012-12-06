@@ -57,6 +57,10 @@
       <Project>{4846A902-46B6-4F66-8ECB-CF8D899EBCA0}</Project>
       <Name>DBService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServerSideExceptionHandler\ServerSideExceptionHandler.csproj">
+      <Project>{98E57650-2ED0-43FA-9239-17A7BE7CB477}</Project>
+      <Name>ServerSideExceptionHandler</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

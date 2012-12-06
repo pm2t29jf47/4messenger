@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Globalization;
 using System.Windows.Markup;
+using System.Diagnostics;
 
 namespace WPFClient
 {
@@ -49,7 +50,9 @@ namespace WPFClient
             Loaded += new RoutedEventHandler(OnMainWindowLoaded);
             messageIsViewedTimer.Tick += new EventHandler(OnmessageIsViewedTimerTick);
             SetCulture("ru");
-            InitializeComponent();           
+            InitializeComponent();
+            Debug.WriteLine(true, "ssssssssssssssssssssss");
+            Debug.Indent();
         }
 
         void SetCulture(string culture)
@@ -196,6 +199,7 @@ namespace WPFClient
                 }               
             }            
         }
+
         #endregion
 
         #region Prepare "MessageList" by foldel click
@@ -297,10 +301,10 @@ namespace WPFClient
         string PrepareReplyMssageTitle(string title)
         {
             return Properties.Resources.Re
-                + SpecialSymbols.SpecialSymbols.space
-                + SpecialSymbols.SpecialSymbols.leftTitleStopper
+                + SpecialWords.SpecialWords.Space
+                + SpecialWords.SpecialWords.LeftSquareBrackets
                 + title
-                + SpecialSymbols.SpecialSymbols.rightTitleStopper;
+                + SpecialWords.SpecialWords.RightSquareBracket;
         }
 
         #endregion
@@ -335,10 +339,7 @@ namespace WPFClient
                 && selectedFolder is DeletedFolder)
                 UploadToMessageList();
         }
+
         #endregion
-
-
-
-   
     }
 }

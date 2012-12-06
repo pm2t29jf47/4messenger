@@ -47,10 +47,10 @@ namespace WPFClient.SidebarFolders
                 else
                 {
                     return FolderLabel
-                        + SpecialSymbols.SpecialSymbols.space
-                        + SpecialSymbols.SpecialSymbols.leftCountOfStopper
+                        + SpecialWords.SpecialWords.Space
+                        + SpecialWords.SpecialWords.LeftRoundBracket
                         + CountOfUnviewedMessages.ToString()
-                        + SpecialSymbols.SpecialSymbols.rightCountOfStopper;
+                        + SpecialWords.SpecialWords.RightRoundBracket;
                 }
             }
         }

@@ -18,6 +18,20 @@
             </Setter>
         </Style>
         
+        <Style x:Key="SendMessageButtonImageStyle" 
+               TargetType="Image">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=SendMessageButton, Path=IsEnabled}" 
+                             Value="true">
+                    <Setter Property="Image.Source" Value="Images\mail_forward.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=SendMessageButton, Path=IsEnabled}" 
+                             Value="false">
+                    <Setter Property="Image.Source" Value="Images\mail_forward_disabled.png"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
     </Window.Resources>
     <Grid Style="{StaticResource BackgroundStyle}">
         <Grid.RowDefinitions>
@@ -33,7 +47,7 @@
                 Style="{StaticResource DefaultButtonStyle}"
                 IsEnabled="{Binding ElementName=MessageControl, Path=IsValid}">
             <StackPanel Orientation="Horizontal">
-                <Image Source="Images\mail_delete.png"></Image>
+                <Image Style="{StaticResource SendMessageButtonImageStyle}"></Image>
                 <Label Content="{x:Static res:Resources.SendMessageLabel}"></Label>
             </StackPanel>
         </Button>

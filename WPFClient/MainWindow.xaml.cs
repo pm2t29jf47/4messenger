@@ -58,7 +58,7 @@ namespace WPFClient
             System.Globalization.CultureInfo(culture);
             System.Threading.Thread.CurrentThread.CurrentCulture = ci;
             System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
-            ///Для элементов WPF культура задается отдельно
+            ///Для элементов WPF культура задается отдельно o_0
             FrameworkElement.LanguageProperty.OverrideMetadata(
               typeof(FrameworkElement),
               new FrameworkPropertyMetadata(
@@ -188,8 +188,10 @@ namespace WPFClient
         /// <param name="e"></param>
         public void OnFolderClick(object sender, RoutedEventArgs e)
         {
-            LoadFolderData(sender);
             messageIsViewedTimer.Stop();
+            MessageList.SelectedItems.Clear();
+            LoadFolderData(sender);
+            
         }
 
         void LoadFolderData(object sender)

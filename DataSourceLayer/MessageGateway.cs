@@ -19,7 +19,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Производит вставку письма в таблицу 
         /// </summary>
-        public static int? Insert(Message message, string username)
+        public static int Insert(Message message, string username)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace DataSourceLayer
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExcepion(ex, "public static int? Insert(Message message, string username)");
-                return null;
+                throw ex;
             }
         }
 
@@ -107,7 +107,7 @@ namespace DataSourceLayer
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExcepion(ex, "public static Message SelectById(int id, string username)");
-                return null;
+                throw ex;
             }
         }
 
@@ -137,7 +137,7 @@ namespace DataSourceLayer
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExcepion(ex, "public static List<Message> SelectBy_SenderUsername_Deleted(string username, bool deleted)");
-                return rows;
+                throw ex;
             }
         }
 

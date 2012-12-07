@@ -29,6 +29,7 @@ namespace DBService
         /// </summary>
         /// <returns></returns>
         [OperationContract]
+        [FaultContract(typeof(ArgumentNullException))]
         Employee GetEmployee(string username);
                
         /// <summary>
@@ -41,6 +42,8 @@ namespace DBService
         /// Коллекция получателей сообщения
         /// </param>
         [OperationContract]
+        [FaultContract(typeof(ArgumentException))]
+        [FaultContract(typeof(ArgumentNullException))]
         void SendMessage(Message message);
 
         /// <summary>

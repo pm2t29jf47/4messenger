@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens;
 using InformatonTips;
 using System.ComponentModel;
 using WPFClient.Additional;
+using System.ServiceModel.Channels;
 
 
 namespace WPFClient
@@ -60,7 +61,7 @@ namespace WPFClient
                 var factory1 = new ChannelFactory<IService1>("*");
                 factory1.Credentials.UserName.UserName = UsernameTexbox.Text;
                 factory1.Credentials.UserName.Password = PasswordTexbox.Password;
-                IService1 proxy = factory1.CreateChannel();
+                IService1 proxy = factory1.CreateChannel();  
                 App.ServiceWatcher = new ServiceWatcher(proxy, App.timeBetweenUpdating);
                 App.ServiceWatcher.CheckUser();
                 App.Current.MainWindow.Show();               

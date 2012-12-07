@@ -34,7 +34,7 @@ namespace WPFClient
 
         public static TimeSpan timeBetweenUpdating = new TimeSpan(0, 0, 60);
 
-        public static TimeSpan timePerMessageSetViewed = new TimeSpan(0, 0, 5); 
-    
+        public static TimeSpan timePerMessageSetViewed = new TimeSpan(0, 0, 5);
+
     }
 }

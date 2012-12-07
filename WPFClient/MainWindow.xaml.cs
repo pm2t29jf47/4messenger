@@ -51,8 +51,6 @@ namespace WPFClient
             messageIsViewedTimer.Tick += new EventHandler(OnmessageIsViewedTimerTick);
             SetCulture("ru");
             InitializeComponent();
-            Debug.WriteLine(true, "ssssssssssssssssssssss");
-            Debug.Indent();
         }
 
         void SetCulture(string culture)
@@ -74,7 +72,7 @@ namespace WPFClient
             ShowLoginWindow();
             PrepareEmployeeClass();
             CreateServiceWatcherHandler();
-            App.ServiceWatcher.StartWatching();            
+            App.ServiceWatcher.StartWatching();
         }
 
         void PrepareWindow()

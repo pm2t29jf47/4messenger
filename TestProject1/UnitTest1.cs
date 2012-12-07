@@ -16,7 +16,7 @@ namespace TestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            Message m = new Message();
+          //MessageGateway.Insert(new Message
                 
         }
 

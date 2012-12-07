@@ -21,31 +21,51 @@ namespace DBService
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Employee> GetAllEmployees()
         {
+            throw new Exception("xxxxxxxxxxxxxx");
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return EmployeeGateway.SelectAll(currentUsername);
-        }
-        
+        }        
+
+
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void SendMessage(Message message)
-        {
-            
+        {            
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            ///нельзя отсылать письма под чужим именем   
-            if (string.Compare(currentUsername, message.SenderUsername) != 0)
-                return;
-
+            CheckMessage(message, currentUsername);    
             message.Date = DateTime.Now;
-            int? result = MessageGateway.Insert(message, currentUsername);
-            if (result == null) 
-                return;
-
-            int insertedMessageId = (int)result;
+            int insertedMessageId = MessageGateway.Insert(message, currentUsername);
             foreach (Recipient item in message.EDRecipient_MessageId)
             {
-                Recipient recipient = new Recipient(item.RecipientUsername, insertedMessageId);           
+                Recipient recipient = new Recipient(item.RecipientUsername, insertedMessageId);
                 RecipientGateway.Insert(recipient, currentUsername);
+            }   
+        }
+
+        void CheckMessage(Message message, string currentUsername)
+        {
+            if (message == null)
+            {
+                ArgumentNullException ex = new ArgumentNullException("message");
+                throw new FaultException<ArgumentNullException>(ex, ex.Message);
+            }
+
+            if (message.EDRecipient_MessageId == null
+                || message.Content == null
+                || message.FKEmployee_SenderUsername == null
+                || message.SenderUsername == null
+                || message.Title == null)
+            {
+                ArgumentException ex = new ArgumentException("Only message.Id can be NULL");
+                throw new FaultException<ArgumentException>(ex, ex.Message);
+            }
+            ///нельзя отсылать письма под чужим именем   
+            if (string.Compare(currentUsername, message.SenderUsername) != 0)
+            {
+                ArgumentException ex = new ArgumentException("message.SenderUsername must be equal current username");
+                throw new FaultException<ArgumentException>(ex, ex.Message);
             }
         }
+
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Message> GetInboxMessages()
@@ -104,16 +124,6 @@ namespace DBService
             return deletedMessages;      
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void CheckUser() { }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public Employee GetEmployee(string selectableUsername)
-        {
-            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return EmployeeGateway.SelectByUsername(selectableUsername, currentUsername);
-        }
-
         void FillMessage(Message message, string currentUsername)
         {
             if (message == null
@@ -122,9 +132,25 @@ namespace DBService
                 return;
             message.FKEmployee_SenderUsername = EmployeeGateway.SelectByUsername(message.SenderUsername, currentUsername);
             message.EDRecipient_MessageId = RecipientGateway.SelectByMessageId((int)message.Id, currentUsername);
-            
+
 
         }
+
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public void CheckUser() { }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public Employee GetEmployee(string selectableUsername)
+        {
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            if (selectableUsername == null)
+            {
+                ArgumentNullException ex = new ArgumentNullException("selectableUsername");
+                throw new FaultException<ArgumentNullException>(ex, ex.Message);
+            }
+            return EmployeeGateway.SelectByUsername(selectableUsername, currentUsername);
+        }        
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void SetRecipientViewed(int messageId, bool viewed)

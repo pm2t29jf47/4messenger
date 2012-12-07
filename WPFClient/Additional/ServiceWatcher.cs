@@ -64,7 +64,7 @@ namespace WPFClient.Additional
         void DownloadData()
         {
             try
-            {
+            {              
                 allEmployees = Proxy.GetAllEmployees();
                 CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));
                 inboxMessages = Proxy.GetInboxMessages();
@@ -76,9 +76,15 @@ namespace WPFClient.Additional
                 deletedSentboxMessages = Proxy.GetDeletedSentboxMessages();
                 CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedSentboxMessages"));
             }
-            catch (Exception ex)
+            catch (System.ServiceModel.FaultException ex1)
             {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
+                throw ex1;
+            }
+            catch (Exception ex2)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex2, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
+                throw ex2;
             }
         }
         
@@ -103,6 +109,7 @@ namespace WPFClient.Additional
             catch (Exception ex)
             {
                 ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.CheckUser()");
+                throw ex;
             }
         }
 
@@ -120,12 +127,13 @@ namespace WPFClient.Additional
             catch (Exception ex)
             {
                 ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "(Employee)WPFClient.Additional.ServiceWatcher.GetEmployee(string username)");
-                return null;
+                throw ex;
             }
         }
 
         public void SendMessage(Message message)
         {
+            var a = ((System.ServiceModel.Channels.IChannel)Proxy).State;
             try
             {
                 Proxy.SendMessage(message);
@@ -133,6 +141,7 @@ namespace WPFClient.Additional
             catch (Exception ex)
             {
                 ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.SendMessage(Message message)");
+                throw ex;
             }
         }
 
@@ -160,6 +169,7 @@ namespace WPFClient.Additional
             catch (Exception ex)
             {
                 ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.SetRecipientViewed(int messageId, bool viewed)");
+                throw ex;
             }
         }
 

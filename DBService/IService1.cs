@@ -22,14 +22,14 @@ namespace DBService
         /// Возвращает коллекцию содержащую всех сотрудников 
         /// </summary>
         [OperationContract]
-        List<Employee> GetAllEmployees(ref bool error);
+        List<Employee> GetAllEmployees();
 
         /// <summary>
         /// Возвращает сотрудника по его иднтификатору
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        Employee GetEmployee(string username, ref bool error);
+        Employee GetEmployee(string username);
                
         /// <summary>
         /// Отослать сообщение
@@ -41,35 +41,35 @@ namespace DBService
         /// Коллекция получателей сообщения
         /// </param>
         [OperationContract]
-        void SendMessage(Message message, ref bool error);
+        void SendMessage(Message message);
 
         /// <summary>
         /// Взвращает коллекцию писем из папки входящих
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Message> GetInboxMessages(ref bool error);
+        List<Message> GetInboxMessages();
 
         /// <summary>
         /// Возвращает письма помеченные удаленными в папке входящих
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Message> GetDeletedInboxMessages(ref bool error);
+        List<Message> GetDeletedInboxMessages();
 
         /// <summary>
         /// Возвращает письма помеченные удаленными в папке отправленных
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Message> GetDeletedSentboxMessages(ref bool error);
+        List<Message> GetDeletedSentboxMessages();
 
         /// <summary>
         /// Возвращает коллекцию отправленных писем
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Message> GetSentboxMessages(ref bool error);
+        List<Message> GetSentboxMessages();
 
         /// <summary>
         /// Задает флаг прочитанности
@@ -77,7 +77,7 @@ namespace DBService
         /// <param name="messageId"></param>
         /// <param name="viewed"></param>
         [OperationContract]
-        void SetRecipientViewed(int messageId, bool viewed, ref bool error);
+        void SetRecipientViewed(int messageId, bool viewed);
 
         /// <summary>
         /// Задает флаг удаления
@@ -85,6 +85,6 @@ namespace DBService
         /// <param name="messageId"></param>
         /// <param name="deleted"></param>
         [OperationContract]
-        void SetRecipientDeleted(int messageId, bool deleted, ref bool error); 
+        void SetRecipientDeleted(int messageId, bool deleted); 
     }   
 }

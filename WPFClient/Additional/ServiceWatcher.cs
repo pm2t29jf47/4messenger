@@ -106,12 +106,12 @@ namespace WPFClient.Additional
             }
         }
 
-        public List<Employee> GetAllEmployees(ref bool error)
+        public List<Employee> GetAllEmployees()
         {
             return allEmployees;             
         }
 
-        public Employee GetEmployee(string username, ref bool error)
+        public Employee GetEmployee(string username)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace WPFClient.Additional
             }
         }
 
-        public void SendMessage(Message message, ref bool error)
+        public void SendMessage(Message message)
         {
             try
             {
@@ -136,22 +136,22 @@ namespace WPFClient.Additional
             }
         }
 
-        public List<Message> GetInboxMessages(ref bool error)
+        public List<Message> GetInboxMessages()
         {
             return inboxMessages;         
         }
 
-        public List<Message> GetDeletedInboxMessages(ref bool error)
+        public List<Message> GetDeletedInboxMessages()
         {
             return deletedInboxMessages;
         }
 
-        public List<Message> GetSentboxMessages(ref bool error)
+        public List<Message> GetSentboxMessages()
         {
             return sentboxMessages;
         }
 
-        public void SetRecipientViewed(int messageId, bool viewed, ref bool error)
+        public void SetRecipientViewed(int messageId, bool viewed)
         {
             try
             {
@@ -163,12 +163,12 @@ namespace WPFClient.Additional
             }
         }
 
-        public void SetRecipientDeleted(int messageId, bool deleted, ref bool error)
+        public void SetRecipientDeleted(int messageId, bool deleted)
         {
             throw new NotImplementedException();
         }
 
-        public List<Message> GetDeletedSentboxMessages(ref bool error)
+        public List<Message> GetDeletedSentboxMessages()
         {
             return deletedSentboxMessages;
         }

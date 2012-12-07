@@ -19,14 +19,14 @@ namespace DBService
     public class Service1 : IService1
     {
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Employee> GetAllEmployees()
+        public List<Employee> GetAllEmployees(ref bool error)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return EmployeeGateway.SelectAll(currentUsername);
+            return EmployeeGateway.SelectAll(currentUsername,ref error);
         }
         
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void SendMessage(Message message)
+        public void SendMessage(Message message, ref bool error)
         {
             
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
@@ -48,7 +48,7 @@ namespace DBService
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetInboxMessages()
+        public List<Message> GetInboxMessages(ref bool error)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             List<Message> messages = new List<Message>();
@@ -64,7 +64,7 @@ namespace DBService
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetSentboxMessages()
+        public List<Message> GetSentboxMessages(ref bool error)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             List<Message> sentMessages = MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername,false);
@@ -76,7 +76,7 @@ namespace DBService
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetDeletedInboxMessages()
+        public List<Message> GetDeletedInboxMessages(ref bool error)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             var deletedMessages = new List<Message>();
@@ -91,7 +91,7 @@ namespace DBService
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetDeletedSentboxMessages()
+        public List<Message> GetDeletedSentboxMessages(ref bool error)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             var deletedMessages = new List<Message>();
@@ -108,7 +108,7 @@ namespace DBService
         public void CheckUser() { }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public Employee GetEmployee(string selectableUsername)
+        public Employee GetEmployee(string selectableUsername, ref bool error)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return EmployeeGateway.SelectByUsername(selectableUsername, currentUsername);
@@ -127,16 +127,16 @@ namespace DBService
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void SetRecipientViewed(int messageId, bool viewed)
+        public void SetRecipientViewed(int messageId, bool viewed, ref bool error)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             RecipientGateway.UpdateViewed(currentUsername, messageId, viewed);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void SetRecipientDeleted(int messageId, bool deleted)
+        public void SetRecipientDeleted(int messageId, bool deleted, ref bool error)
         {
            ///
-        }
+        }     
     }
 }

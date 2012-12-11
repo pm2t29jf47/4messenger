@@ -14,13 +14,9 @@ namespace WPFClient
     /// </summary>
     public partial class App : Application
     {  
-        public static LoginWindow LW;
-
-        public static MainWindow MW;
-
         public static ServiceWatcher ServiceWatcher {get; set;}  
 
-        public static TimeSpan timeBetweenUpdating = new TimeSpan(0, 0, 5);
+        public static TimeSpan timeBetweenUpdating = new TimeSpan(0, 0, 50);
 
         public static TimeSpan timePerMessageSetViewed = new TimeSpan(0, 0, 3);
 

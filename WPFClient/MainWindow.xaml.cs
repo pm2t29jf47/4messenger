@@ -303,7 +303,8 @@ namespace WPFClient
             messageCreator.DataContext = new MessageCreatorModel()
             {
                 AllEmployees = App.ServiceWatcher.GetAllEmployees(),
-                Message = message
+                Message = message,
+                StatusBar = this.StatusBar
             };
             messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст ?
             messageCreator.Show();
@@ -334,17 +335,17 @@ namespace WPFClient
 
         void UpdateWindow()
         {
-            StatusBarModel StatusBarModel = (StatusBarModel)StatusBar.DataContext;
+            StatusBarModel statusBarModel = (StatusBarModel)StatusBar.DataContext;
             if (System.Exception.Equals(App.ServiceWatcher.DataDownloadException, null))
             {
                 UpdateSelectionFolderContent();
-                StatusBarModel.ShortMessage = Properties.Resources.Connected;
-                StatusBarModel.Exception = null;
+                statusBarModel.ShortMessage = Properties.Resources.Connected;
+                statusBarModel.Exception = null;
             }
             else
             {
-                StatusBarModel.ShortMessage = Properties.Resources.ConnectionError;
-                StatusBarModel.Exception = App.ServiceWatcher.DataDownloadException;
+                statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
+                statusBarModel.Exception = App.ServiceWatcher.DataDownloadException;
             }
         }
 

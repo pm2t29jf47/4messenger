@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
+using System.Windows.Controls.Primitives;
 
 namespace WPFClient.Models
 {
@@ -47,6 +48,8 @@ namespace WPFClient.Models
                 message = value;
             }
         }
+
+        public StatusBar StatusBar { get; set; }
        
     }
 }

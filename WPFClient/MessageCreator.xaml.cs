@@ -12,6 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Entities;
 using WPFClient.Models;
+using System.ServiceModel;
+using WPFClient.Additional;
+using System.Windows.Controls.Primitives;
 
 namespace WPFClient
 {
@@ -70,9 +73,29 @@ namespace WPFClient
         private void OnSendMessageButtonClick(object sender, RoutedEventArgs e)
         {           
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
+            try
+            {
+                App.ServiceWatcher.SendMessage(mcm.Message);
+                this.Close();
+            }
+            catch (EndpointNotFoundException ex1)
+            {
+                InformatonTips.SomeError.Show(ex1.InnerException.Message);
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1, "()WPFClient.MessageCreator.OnSendMessageButtonClick(object sender, RoutedEventArgs e)");
+                if (! StatusBar.Equals(MessageCreatorModel.StatusBar, null) 
+                    && ! MessageCreatorModel.StatusBar.DataContext.Equals(null))
+                {
+                    StatusBarModel statusBarModel = (StatusBarModel)MessageCreatorModel.StatusBar.DataContext;
+                    statusBarModel.Exception = ex1;
+                    statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
+                }
+            }
+            catch (Exception ex2)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex2, "()WPFClient.MessageCreator.OnSendMessageButtonClick(object sender, RoutedEventArgs e)");
+                throw;
+            }
             
-            App.ServiceWatcher.SendMessage(mcm.Message);
-            this.Close();
         }       
     }
 }

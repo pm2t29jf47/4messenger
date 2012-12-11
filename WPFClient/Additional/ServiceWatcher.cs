@@ -127,7 +127,7 @@ namespace WPFClient.Additional
             {
                 ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
                 DataDownloadException = ex1;
-                ///throw ///неизвестное исключение пробасывается дальше
+                throw; ///неизвестное исключение пробасывается дальше
             }
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("AllData"));
         }

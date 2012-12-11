@@ -30,7 +30,7 @@ namespace WPFClient.SidebarFolders
             return messageModels;
         }
 
-        public static int CountOfUnViewed()
+        public void RefreshCountOfUnViewedMessages()
         {
             int result = 0;
             List<Message> inboxMessages = App.ServiceWatcher.GetInboxMessages();
@@ -39,7 +39,10 @@ namespace WPFClient.SidebarFolders
                 if (!IsViewedMessage(item))
                     result++;
             }
-            return result;
+            if (CountOfUnviewedMessages != result)
+            {
+                CountOfUnviewedMessages = result;                
+            }            
         }
     }
 }

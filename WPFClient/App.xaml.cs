@@ -14,27 +14,15 @@ namespace WPFClient
     /// </summary>
     public partial class App : Application
     {  
-        /// <summary>
-        /// Имя пользователя
-        /// </summary>
-        public static string Username
-        { get; set; }
-
-        /// <summary>
-        /// Пароль
-        /// </summary>
-        public static string Password
-        { get; set; }
-
         public static LoginWindow LW;
 
         public static MainWindow MW;
 
         public static ServiceWatcher ServiceWatcher {get; set;}  
 
-        public static TimeSpan timeBetweenUpdating = new TimeSpan(0, 0, 60);
+        public static TimeSpan timeBetweenUpdating = new TimeSpan(0, 0, 5);
 
-        public static TimeSpan timePerMessageSetViewed = new TimeSpan(0, 0, 5);
+        public static TimeSpan timePerMessageSetViewed = new TimeSpan(0, 0, 3);
 
     }
 }

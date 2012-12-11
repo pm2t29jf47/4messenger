@@ -62,6 +62,11 @@
     <Compile Include="Additional\CustomStringComparer.cs" />
     <Compile Include="Additional\MessageListItemModel.cs" />
     <Compile Include="Additional\ServiceWatcher.cs" />
+    <Compile Include="Additional\StatusBarModel.cs" />
+    <Compile Include="ConnectionErrorDetails.xaml.cs">
+      <DependentUpon>ConnectionErrorDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ConnectionErrorDetailsModel.cs" />
     <Compile Include="SidebarFolders\DeletedFolder.cs" />
     <Compile Include="SidebarFolders\InboxFolder.cs" />
     <Compile Include="SidebarFolders\SentboxFolder.cs" />
@@ -88,6 +93,10 @@
       <DependentUpon>RecipientsEditorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="SidebarFolders\SidebarFolder.cs" />
+    <Page Include="ConnectionErrorDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -223,6 +232,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\mail_forward_disabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\error.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

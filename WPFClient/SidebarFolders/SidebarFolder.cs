@@ -10,13 +10,7 @@ namespace WPFClient.SidebarFolders
 {
     class SidebarFolder : INotifyPropertyChanged
     {
-        public SidebarFolder()
-        {
-            FolderLabel = "New folder";       
-            FolderImage = "Images/folder.png";
-        }
-
-        string folderLabel;
+        string folderLabel = "New folder";  
 
         public string FolderLabel 
         {
@@ -55,7 +49,7 @@ namespace WPFClient.SidebarFolders
             }
         }
 
-        string folderImage = string.Empty;
+        string folderImage = "Images/folder.png";
 
         public string FolderImage 
         {
@@ -100,7 +94,7 @@ namespace WPFClient.SidebarFolders
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void CreatePropertyChangedEvent(PropertyChangedEventArgs e)
+        void CreatePropertyChangedEvent(PropertyChangedEventArgs e)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, e);
@@ -111,7 +105,7 @@ namespace WPFClient.SidebarFolders
             if (message != null
                 && message.EDRecipient_MessageId != null)
             {
-                Recipient result = message.EDRecipient_MessageId.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.Username) == 0);
+                Recipient result = message.EDRecipient_MessageId.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.ServiceWatcher.FactoryUsername) == 0);
                 if (result != null)
                     return result.Viewed;
                 return false;         

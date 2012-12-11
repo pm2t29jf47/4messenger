@@ -204,10 +204,19 @@
   <data name="RecipientsList" xml:space="preserve">
     <value>Recipients list editor</value>
   </data>
-  <data name="CancelButton" xml:space="preserve">
+  <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="OkButton" xml:space="preserve">
+  <data name="Ok" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="ConnectionError" xml:space="preserve">
+    <value>Connection error</value>
+  </data>
+  <data name="Reconnect" xml:space="preserve">
+    <value>Reconnect</value>
   </data>
 </root>

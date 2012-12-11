@@ -7,6 +7,7 @@ using System.Threading;
 using System.Collections;
 using DBService;
 using System.ComponentModel;
+using System.ServiceModel;
 
 namespace WPFClient.Additional
 {
@@ -14,25 +15,22 @@ namespace WPFClient.Additional
     /// im watching u!
     /// </summary>
     public class ServiceWatcher : IService1
-    {      
-        public ServiceWatcher(IService1 proxy, TimeSpan timeSpan)
-        {     
-            this.Proxy = proxy;            
-            this.TimeSpan = timeSpan;           
-        }
-
-        public ServiceWatcher()
+    {  
+        public ServiceWatcher( TimeSpan timeSpan)
         {
-
+            timer.Interval = timeSpan;
+            timer.Tick += new EventHandler(OntimerTick);
         }
      
         public void StartWatching()
-        {
-            timer.Interval = TimeSpan;
-            timer.Tick += new EventHandler(OntimerTick);
-            DownloadData();
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs(""));
+        {            
+            DownloadData();           
             timer.Start();
+        }
+
+        public void StopWatching()
+        {
+            timer.Stop();
         }
 
 
@@ -41,7 +39,55 @@ namespace WPFClient.Additional
         /// </summary>
         IService1 Proxy { get; set; }
 
-        TimeSpan TimeSpan { get; set; }
+        ChannelFactory<IService1> factory = new ChannelFactory<IService1>("*");
+
+        public string FactoryUsername
+        {
+            get
+            {
+                return factory.Credentials.UserName.UserName;
+            }
+            set
+            {
+                if (string.Compare(factory.Credentials.UserName.UserName, value) != 0)
+                {
+                    factory.Credentials.UserName.UserName = value;
+                }
+            }
+        }
+
+        public string FactoryPassword
+        {
+            get
+            {
+                return factory.Credentials.UserName.Password;
+            }
+            set
+            {
+                if (string.Compare(factory.Credentials.UserName.Password, value) != 0)
+                {
+                    factory.Credentials.UserName.Password = value;
+                }
+            }
+        }
+
+        public void CreateChannel()
+        {
+            DestroyCurrentChannel();
+            Proxy = factory.CreateChannel();
+        }
+
+        public void DestroyCurrentChannel()
+        {
+            if (!IService1.Equals(Proxy, null))
+            {
+                ((System.ServiceModel.Channels.IChannel)Proxy).Close();
+                Proxy = null;
+            }
+        }
+  
+
+        public Exception DataDownloadException { get; set; } 
 
         List<Employee> allEmployees = new List<Employee>();
 
@@ -64,28 +110,26 @@ namespace WPFClient.Additional
         void DownloadData()
         {
             try
-            {              
-                allEmployees = Proxy.GetAllEmployees();
-                CreateDataUpdatedEvent(new PropertyChangedEventArgs("allEmployees"));
-                inboxMessages = Proxy.GetInboxMessages();
-                CreateDataUpdatedEvent(new PropertyChangedEventArgs("inboxMessages"));
-                sentboxMessages = Proxy.GetSentboxMessages();
-                CreateDataUpdatedEvent(new PropertyChangedEventArgs("sentboxMessages"));
-                deletedInboxMessages = Proxy.GetDeletedInboxMessages();
-                CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedInboxMessages"));
-                deletedSentboxMessages = Proxy.GetDeletedSentboxMessages();
-                CreateDataUpdatedEvent(new PropertyChangedEventArgs("deletedSentboxMessages"));
-            }
-            catch (System.ServiceModel.FaultException ex1)
             {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
-                throw ex1;
+                DataDownloadException = null;
+                allEmployees = Proxy.GetAllEmployees();
+                inboxMessages = Proxy.GetInboxMessages();
+                sentboxMessages = Proxy.GetSentboxMessages();
+                deletedInboxMessages = Proxy.GetDeletedInboxMessages();
+                deletedSentboxMessages = Proxy.GetDeletedSentboxMessages();               
             }
-            catch (Exception ex2)
+            catch (EndpointNotFoundException ex2)/// сервер не отвечает
             {
                 ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex2, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
-                throw ex2;
+                DataDownloadException = ex2;
             }
+            catch (Exception ex1) /// остальные исключения, в т.ч. неописанные контрактом
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
+                DataDownloadException = ex1;
+                ///throw ///неизвестное исключение пробасывается дальше
+            }
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("AllData"));
         }
         
 
@@ -102,15 +146,7 @@ namespace WPFClient.Additional
 
         public void CheckUser()
         {
-            try
-            {
-                Proxy.CheckUser();
-            }
-            catch (Exception ex)
-            {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.CheckUser()");
-                throw ex;
-            }
+            Proxy.CheckUser(); 
         }
 
         public List<Employee> GetAllEmployees()
@@ -120,29 +156,12 @@ namespace WPFClient.Additional
 
         public Employee GetEmployee(string username)
         {
-            try
-            {
-                return Proxy.GetEmployee(username);
-            }
-            catch (Exception ex)
-            {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "(Employee)WPFClient.Additional.ServiceWatcher.GetEmployee(string username)");
-                throw ex;
-            }
+            return Proxy.GetEmployee(username);  
         }
 
         public void SendMessage(Message message)
         {
-            var a = ((System.ServiceModel.Channels.IChannel)Proxy).State;
-            try
-            {
-                Proxy.SendMessage(message);
-            }
-            catch (Exception ex)
-            {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.SendMessage(Message message)");
-                throw ex;
-            }
+            Proxy.SendMessage(message);
         }
 
         public List<Message> GetInboxMessages()
@@ -162,15 +181,7 @@ namespace WPFClient.Additional
 
         public void SetRecipientViewed(int messageId, bool viewed)
         {
-            try
-            {
-                Proxy.SetRecipientViewed(messageId, viewed);
-            }
-            catch (Exception ex)
-            {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.SetRecipientViewed(int messageId, bool viewed)");
-                throw ex;
-            }
+            Proxy.SetRecipientViewed(messageId, viewed);           
         }
 
         public void SetRecipientDeleted(int messageId, bool deleted)

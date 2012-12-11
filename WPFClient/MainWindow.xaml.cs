@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 using Entities;
 using WPFClient.Models;
 using WPFClient.UserControls;
@@ -29,9 +29,7 @@ namespace WPFClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region Common code
-
-        List<SidebarFolder> folders = new List<SidebarFolder>();
+        #region Common code       
 
         /// <summary>
         /// Сообщение выбранное в списке MessageList. Хранится для помечания просмотренным
@@ -40,7 +38,7 @@ namespace WPFClient
 
         SidebarFolder selectedFolder;
 
-        System.Windows.Threading.DispatcherTimer messageIsViewedTimer = new System.Windows.Threading.DispatcherTimer()
+        DispatcherTimer messageIsViewedTimer = new System.Windows.Threading.DispatcherTimer()
         {
             Interval = App.timePerMessageSetViewed
         };
@@ -72,7 +70,8 @@ namespace WPFClient
             ShowLoginWindow();
             PrepareEmployeeClass();
             CreateServiceWatcherHandler();
-            App.ServiceWatcher.StartWatching();
+            App.ServiceWatcher.CreateChannel();
+            App.ServiceWatcher.StartWatching();            
         }
 
         void PrepareWindow()
@@ -81,21 +80,29 @@ namespace WPFClient
             this.ReplyMessageButton.IsEnabled = false;
             this.DeleteMessageButton.IsEnabled = false;
             MessageControl.ControlState = MessageControl.state.IsReadOnly;
+            PrepareStatusBar();
         }
 
         void PrepareEmployeeClass()
         {
-            Employee.CurrentUsername = App.Username;
+            Employee.CurrentUsername = App.ServiceWatcher.FactoryUsername;
             Employee.NamePrefix = Properties.Resources.Me;
         }
         
         void PreareSidebar()
-        {  
-            FillFoldersNames();   
+        {
+            List<SidebarFolder> folders = new List<SidebarFolder>();
+            FillFoldersNames(folders);   
             Sidebar.ItemsSource = folders;
         }
 
-        void FillFoldersNames()
+        void PrepareStatusBar()
+        {
+            StatusBar.MouseDown += new MouseButtonEventHandler(OnStatusBarMouseDown);
+            StatusBar.DataContext = new StatusBarModel();
+        }
+
+        void FillFoldersNames(List<SidebarFolder> folders)
         {
             folders.Add(new InboxFolder());
             folders.Add(new SentboxFolder());
@@ -107,7 +114,13 @@ namespace WPFClient
         {
             this.Hide();
             var loginWindow = new LoginWindow();
-            loginWindow.ShowDialog();      
+            bool? result = loginWindow.ShowDialog();
+            if ( bool.Equals(result, null)
+                || result.Equals(false))
+            {
+                App.Current.Shutdown();
+            }
+            this.Show();
         }
 
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -115,12 +128,12 @@ namespace WPFClient
             if (MessageList.SelectedItem != null)
             {
                 CheckDeleteReplyButtonsState();
-                MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;
-                this.singleSelectedInMessageList = selectedMessageModel;
+                MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;                
                 if ((selectedFolder is InboxFolder || selectedFolder is DeletedFolder)
                     && selectedMessageModel.IsViewed == false)
                 {
                     messageIsViewedTimer.Stop();
+                    this.singleSelectedInMessageList = selectedMessageModel;                    
                     messageIsViewedTimer.Start();
                 }
                 MessageControl.DataContext = new MessageControlModel()
@@ -164,7 +177,7 @@ namespace WPFClient
         void SetMessageViewed()
         {
             messageIsViewedTimer.Stop();
-            Message selectedMessage = (MessageListItemModel)MessageList.SelectedItem;
+            MessageListItemModel selectedMessage = (MessageListItemModel)MessageList.SelectedItem;
             if (this.singleSelectedInMessageList.Equals(selectedMessage)
                 && selectedMessage != null)
             {
@@ -173,7 +186,7 @@ namespace WPFClient
                 UploadToMessageList();
                 if (selectedFolder is InboxFolder)
                 {
-                    selectedFolder.CountOfUnviewedMessages = InboxFolder.CountOfUnViewed();
+                    ((InboxFolder)selectedFolder).RefreshCountOfUnViewedMessages();
                 }
             }
         }
@@ -252,9 +265,9 @@ namespace WPFClient
                 Content = string.Empty,
                 Date = new DateTime(),
                 Deleted = false,
-                SenderUsername = App.Username,
+                SenderUsername = App.ServiceWatcher.FactoryUsername,
                 Title = string.Empty,
-                FKEmployee_SenderUsername = App.ServiceWatcher.GetEmployee(App.Username),
+                FKEmployee_SenderUsername = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0),
                 EDRecipient_MessageId = new List<Recipient>()
             };
              CreateMessageCreatorWindow(message);
@@ -276,10 +289,10 @@ namespace WPFClient
                 Content = string.Empty,
                 Date = new DateTime(),
                 Deleted = false,
-                SenderUsername = App.Username,
+                SenderUsername = App.ServiceWatcher.FactoryUsername,
                 Title = newTitle,
                 EDRecipient_MessageId = recipients,
-                FKEmployee_SenderUsername = App.ServiceWatcher.GetEmployee(App.Username)
+                FKEmployee_SenderUsername = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0)
             };
             CreateMessageCreatorWindow(message);
         }
@@ -316,26 +329,80 @@ namespace WPFClient
 
         void OnServiceWatcherDataUpdated(object sender, PropertyChangedEventArgs e)
         {
-            UpdateSelectionFolderContent(e.PropertyName);
+            UpdateWindow();
         }
 
-        void UpdateSelectionFolderContent(string propertyName)
+        void UpdateWindow()
         {
-            if (string.Compare("allEmployees", propertyName) == 0)
-                return;
-
-            else if (string.Compare("inboxMessages", propertyName) == 0)
+            StatusBarModel StatusBarModel = (StatusBarModel)StatusBar.DataContext;
+            if (System.Exception.Equals(App.ServiceWatcher.DataDownloadException, null))
             {
-                folders[0].CountOfUnviewedMessages = InboxFolder.CountOfUnViewed();
-                if (selectedFolder is InboxFolder)
-                    UploadToMessageList();
+                UpdateSelectionFolderContent();
+                StatusBarModel.ShortMessage = Properties.Resources.Connected;
+                StatusBarModel.Exception = null;
             }
-            else if (string.Compare("sentboxMessages", propertyName) == 0 && selectedFolder is SentboxFolder)
-                UploadToMessageList();
+            else
+            {
+                StatusBarModel.ShortMessage = Properties.Resources.ConnectionError;
+                StatusBarModel.Exception = App.ServiceWatcher.DataDownloadException;
+            }
+        }
 
-            else if ((string.Compare("deletedInboxMessages", propertyName) == 0 || string.Compare("deletedSentboxMessages", propertyName) == 0)
-                && selectedFolder is DeletedFolder)
+        void OnStatusBarMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ShowConnectionErrorDetailsWindow();
+        }
+
+        void ShowConnectionErrorDetailsWindow()
+        {
+            StatusBarModel StatusBarModel = (StatusBarModel)StatusBar.DataContext;
+            if (!System.Exception.Equals(StatusBarModel.Exception, null))
+            {
+                ///окошко с текстом исключения!
+                ConnectionErrorDetails сonnectionErrorDetails = new ConnectionErrorDetails();
+                сonnectionErrorDetails.DataContext = new ConnectionErrorDetailsModel()
+                {
+                    Exception = StatusBarModel.Exception
+                };
+                bool? result = сonnectionErrorDetails.ShowDialog();
+                if(! bool.Equals(result, null)
+                    && result.Equals(true))
+                {
+                    App.ServiceWatcher.StopWatching();
+                    App.ServiceWatcher.DestroyCurrentChannel();
+                    App.ServiceWatcher.CreateChannel();                    
+                    App.ServiceWatcher.StartWatching();                    
+                }
+            }
+        }
+
+        void UpdateSelectionFolderContent()
+        {            
+            UpdateInboxFolderDisplay();
+            if (selectedFolder is InboxFolder)
+            {
                 UploadToMessageList();
+            }
+            else if (selectedFolder is SentboxFolder)
+            {
+                UploadToMessageList();
+            }
+            else if (selectedFolder is DeletedFolder)
+            {
+                UploadToMessageList();
+            }
+        }
+
+        void UpdateInboxFolderDisplay()
+        {
+            List<SidebarFolder> folders = (List<SidebarFolder>)Sidebar.ItemsSource;
+            foreach (SidebarFolder item in folders)
+            {
+                if (item is InboxFolder)
+                {
+                    ((InboxFolder)item).RefreshCountOfUnViewedMessages();
+                }
+            }
         }
 
         #endregion

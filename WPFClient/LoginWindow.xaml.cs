@@ -28,43 +28,30 @@ namespace WPFClient
     {
         public LoginWindow()
         {
-            Closing += new CancelEventHandler(OnLoginWindowClosing);
             InitializeComponent();
             this.Title = Properties.Resources.Login;
-            App.Username = "Ivan1";
-            App.Password = "111";
-            UsernameTexbox.Text = App.Username;
-            PasswordTexbox.Password = App.Password;
-        }
-
-        void OnLoginWindowClosing(object sender, CancelEventArgs e)
-        {
-            CheckLoginResult();
-        }
-
-        void CheckLoginResult()
-        {
-            if (App.ServiceWatcher == null)
-                App.Current.Shutdown();
+            UsernameTexbox.Text = "Ivan1";
+            PasswordTexbox.Password = "111";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
-            {              
+            {
+                App.ServiceWatcher = new ServiceWatcher(App.timeBetweenUpdating)
+                {
+                    FactoryUsername = UsernameTexbox.Text,
+                    FactoryPassword = PasswordTexbox.Password
+                };
+
                 ///quick login
-                App.Username = "Ivan1";
-                App.Password = "111";
-                //
-                UsernameTexbox.Text = App.Username;
-                PasswordTexbox.Password = App.Password;
-                var factory1 = new ChannelFactory<IService1>("*");
-                factory1.Credentials.UserName.UserName = UsernameTexbox.Text;
-                factory1.Credentials.UserName.Password = PasswordTexbox.Password;
-                IService1 proxy = factory1.CreateChannel();  
-                App.ServiceWatcher = new ServiceWatcher(proxy, App.timeBetweenUpdating);
+                App.ServiceWatcher.FactoryUsername = "Ivan1";
+                App.ServiceWatcher.FactoryPassword = "111";
+                ///
+
+                App.ServiceWatcher.CreateChannel();
                 App.ServiceWatcher.CheckUser();
-                App.Current.MainWindow.Show();               
+                this.DialogResult = true;                           
                 this.Close();
             }
             catch (System.ServiceModel.Security.MessageSecurityException ex1)

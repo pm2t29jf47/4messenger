@@ -48,11 +48,11 @@
                     <ColumnDefinition Width="auto"
                                       SharedSizeGroup="ButtonsGroup"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button Name="OkButton" Content="{x:Static res:Resources.OkButton}"
+                <Button Name="OkButton" Content="{x:Static res:Resources.Ok}"
                         Style="{StaticResource OKCancelButtonStyle}" Click="OnOkButtonClick"></Button>
                 <Button Name="CancelButton" 
                         Grid.Column="1"
-                        Content="{x:Static res:Resources.CancelButton}"                    
+                        Content="{x:Static res:Resources.Cancel}"                    
                         Style="{StaticResource OKCancelButtonStyle}" Click="OnCancelButtonClick"></Button>
             </Grid>
         </StackPanel>

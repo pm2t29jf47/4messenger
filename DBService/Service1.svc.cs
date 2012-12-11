@@ -21,7 +21,6 @@ namespace DBService
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Employee> GetAllEmployees()
         {
-            throw new Exception("xxxxxxxxxxxxxx");
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return EmployeeGateway.SelectAll(currentUsername);
         }        

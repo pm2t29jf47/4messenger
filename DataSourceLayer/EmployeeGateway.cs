@@ -41,7 +41,7 @@ namespace DataSourceLayer
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExcepion(ex, "public static List<Employee> SelectAll(string username)");
-                throw ex;           
+                throw;           
             }
         }
 
@@ -68,7 +68,7 @@ namespace DataSourceLayer
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExcepion(ex, "public static Employee SelectSecurity(string authenticationUsername, string username)");
-                throw ex;
+                throw;
             }
         }
 
@@ -95,7 +95,7 @@ namespace DataSourceLayer
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExcepion(ex, "public static Employee SelectByUsername(string selectableUsername, string username)");
-                throw ex;
+                throw;
             }
         }
 

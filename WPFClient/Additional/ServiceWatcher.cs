@@ -116,18 +116,38 @@ namespace WPFClient.Additional
                 inboxMessages = Proxy.GetInboxMessages();
                 sentboxMessages = Proxy.GetSentboxMessages();
                 deletedInboxMessages = Proxy.GetDeletedInboxMessages();
-                deletedSentboxMessages = Proxy.GetDeletedSentboxMessages();               
+                deletedSentboxMessages = Proxy.GetDeletedSentboxMessages();
             }
-            catch (EndpointNotFoundException ex2)/// сервер не отвечает
+
+            /// Сервис не отвечает
+            catch (EndpointNotFoundException ex0)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex0, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
+                DataDownloadException = ex0;
+            }
+
+            ///Креденшелы не подходят
+            catch (System.ServiceModel.Security.MessageSecurityException ex1) 
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
+                DataDownloadException = ex1;
+            }
+
+            /// Ошибка в сервисе
+            /// (маловероятна, при таком варианте скорее сработает ошибка креденшелов,
+            /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
+            catch (FaultException<System.ServiceModel.ExceptionDetail> ex2) 
             {
                 ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex2, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
                 DataDownloadException = ex2;
             }
-            catch (Exception ex1) /// остальные исключения, в т.ч. неописанные контрактом
+                
+            /// Остальные исключения
+            catch (Exception ex3) 
             {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
-                DataDownloadException = ex1;
-                throw; ///неизвестное исключение пробасывается дальше
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex3, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
+                DataDownloadException = ex3;
+                throw; ///Неизвестное исключение пробасывается дальше
             }
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("AllData"));
         }

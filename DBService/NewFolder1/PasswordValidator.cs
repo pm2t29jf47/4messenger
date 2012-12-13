@@ -8,8 +8,7 @@ using DataSourceLayer;
 using Entities;
 
 namespace DBService
-{
-    // validator that checks that username == password
+{  
     class PasswordValidator : UserNamePasswordValidator
     {
         public override void Validate(string username, string password)

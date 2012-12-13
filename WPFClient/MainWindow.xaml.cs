@@ -369,6 +369,7 @@ namespace WPFClient
                 if(! bool.Equals(result, null)
                     && result.Equals(true))
                 {
+                    ///Пересоздаем канал и перезапускаем таймер проверки сервиса
                     App.ServiceWatcher.StopWatching();
                     App.ServiceWatcher.DestroyCurrentChannel();
                     App.ServiceWatcher.CreateChannel();                    

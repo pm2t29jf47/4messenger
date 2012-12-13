@@ -16,6 +16,7 @@ using Entities;
 
 namespace DBService
 {
+    [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class Service1 : IService1
     {
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
@@ -24,8 +25,7 @@ namespace DBService
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             return EmployeeGateway.SelectAll(currentUsername);
         }        
-
-
+        
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void SendMessage(Message message)
         {            
@@ -64,7 +64,6 @@ namespace DBService
                 throw new FaultException<ArgumentException>(ex, ex.Message);
             }
         }
-
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<Message> GetInboxMessages()
@@ -131,10 +130,7 @@ namespace DBService
                 return;
             message.FKEmployee_SenderUsername = EmployeeGateway.SelectByUsername(message.SenderUsername, currentUsername);
             message.EDRecipient_MessageId = RecipientGateway.SelectByMessageId((int)message.Id, currentUsername);
-
-
         }
-
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public void CheckUser() { }
@@ -143,7 +139,7 @@ namespace DBService
         public Employee GetEmployee(string selectableUsername)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            if (selectableUsername == null)
+            if (string.Equals(selectableUsername, null))
             {
                 ArgumentNullException ex = new ArgumentNullException("selectableUsername");
                 throw new FaultException<ArgumentNullException>(ex, ex.Message);

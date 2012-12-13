@@ -42,7 +42,7 @@ namespace DataSourceLayer
                catch (Exception ex)
                {
                    ServerSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "(SqlConnection)DataSourceLayer.Gateway.GetConnection(string username)");
-                   throw ex;
+                   throw;
                }
            }
        }

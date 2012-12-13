@@ -54,7 +54,7 @@ namespace WPFClient
         /// <summary>
         /// Модель храняещаяся в DataContext-е
         /// </summary>
-        private MessageCreatorModel MessageCreatorModel
+        MessageCreatorModel MessageCreatorModel
         {
             get
             {
@@ -70,32 +70,51 @@ namespace WPFClient
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnSendMessageButtonClick(object sender, RoutedEventArgs e)
+        void OnSendMessageButtonClick(object sender, RoutedEventArgs e)
         {           
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
             try
             {
-                App.ServiceWatcher.SendMessage(mcm.Message);
+                //App.ServiceWatcher.SendMessage(mcm.Message);
+                App.ServiceWatcher.SendMessage(null);
                 this.Close();
             }
-            catch (EndpointNotFoundException ex1)
+
+            /// Сервис не отвечает
+            catch (EndpointNotFoundException ex)
             {
-                InformatonTips.SomeError.Show(ex1.InnerException.Message);
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1, "()WPFClient.MessageCreator.OnSendMessageButtonClick(object sender, RoutedEventArgs e)");
-                if (! StatusBar.Equals(MessageCreatorModel.StatusBar, null) 
-                    && ! MessageCreatorModel.StatusBar.DataContext.Equals(null))
-                {
-                    StatusBarModel statusBarModel = (StatusBarModel)MessageCreatorModel.StatusBar.DataContext;
-                    statusBarModel.Exception = ex1;
-                    statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
-                }
+                HandleException(ex);
             }
-            catch (Exception ex2)
+
+            ///Креденшелы не подходят
+            catch (System.ServiceModel.Security.MessageSecurityException ex)
             {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex2, "()WPFClient.MessageCreator.OnSendMessageButtonClick(object sender, RoutedEventArgs e)");
+                HandleException(ex);
+            }
+
+            /// Ошибка в сервисе
+            /// (маловероятна, при таком варианте скорее сработает ошибка креденшелов,
+            /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
+            catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
+            {
+                HandleException(ex);
+            }
+
+            /// Остальные исключения, в т.ч. ArgumentException, ArgumentNullException
+            catch (Exception ex)
+            {
+                HandleException(ex);
                 throw;
-            }
-            
-        }       
+            }   
+        }
+
+        void HandleException(Exception ex)
+        {
+            InformatonTips.SomeError.Show(ex.Message);
+            ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MessageCreator.OnSendMessageButtonClick(object sender, RoutedEventArgs e)");
+            StatusBarModel statusBarModel = (StatusBarModel)MessageCreatorModel.StatusBar.DataContext;
+            statusBarModel.Exception = ex;
+            statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
+        }
     }
 }

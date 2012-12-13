@@ -33,7 +33,7 @@ namespace DataSourceLayer
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExcepion(ex, "public static int? Insert(Message message, string username)");
-                throw ex;
+                throw;
             }
         }
 
@@ -107,7 +107,7 @@ namespace DataSourceLayer
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExcepion(ex, "public static Message SelectById(int id, string username)");
-                throw ex;
+                throw;
             }
         }
 
@@ -137,7 +137,7 @@ namespace DataSourceLayer
             catch (Exception ex)
             {
                 ExceptionHandler.HandleExcepion(ex, "public static List<Message> SelectBy_SenderUsername_Deleted(string username, bool deleted)");
-                throw ex;
+                throw;
             }
         }
 

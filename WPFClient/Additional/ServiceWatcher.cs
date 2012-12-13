@@ -120,36 +120,38 @@ namespace WPFClient.Additional
             }
 
             /// Сервис не отвечает
-            catch (EndpointNotFoundException ex0)
+            catch (EndpointNotFoundException ex)
             {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex0, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
-                DataDownloadException = ex0;
+                HandleDownloadDataException(ex);
             }
 
             ///Креденшелы не подходят
-            catch (System.ServiceModel.Security.MessageSecurityException ex1) 
+            catch (System.ServiceModel.Security.MessageSecurityException ex) 
             {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
-                DataDownloadException = ex1;
+                HandleDownloadDataException(ex);
             }
 
             /// Ошибка в сервисе
             /// (маловероятна, при таком варианте скорее сработает ошибка креденшелов,
             /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
-            catch (FaultException<System.ServiceModel.ExceptionDetail> ex2) 
+            catch (FaultException<System.ServiceModel.ExceptionDetail> ex) 
             {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex2, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
-                DataDownloadException = ex2;
+                HandleDownloadDataException(ex);
             }
                 
             /// Остальные исключения
-            catch (Exception ex3) 
+            catch (Exception ex) 
             {
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex3, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
-                DataDownloadException = ex3;
+                HandleDownloadDataException(ex);
                 throw; ///Неизвестное исключение пробасывается дальше
             }
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("AllData"));
+        }
+
+        void HandleDownloadDataException(Exception ex)
+        {
+            ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.Additional.ServiceWatcher.DownloadData()");
+            DataDownloadException = ex;
         }
         
 

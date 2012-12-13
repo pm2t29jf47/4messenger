@@ -21,6 +21,7 @@ using System.Threading;
 using System.Globalization;
 using System.Windows.Markup;
 using System.Diagnostics;
+using System.ServiceModel;
 
 namespace WPFClient
 {
@@ -182,13 +183,52 @@ namespace WPFClient
                 && selectedMessage != null)
             {
                 int selectedMessageId = (int)selectedMessage.Id;
-                App.ServiceWatcher.SetRecipientViewed(selectedMessageId, true);
+                try
+                {
+                    App.ServiceWatcher.SetRecipientViewed(selectedMessageId, true);
+                }
+
+                /// Сервис не отвечает
+                catch (EndpointNotFoundException ex)
+                {
+                    HandleSetMessageViewedException(ex);
+                }
+
+                ///Креденшелы не подходят
+                catch (System.ServiceModel.Security.MessageSecurityException ex)
+                {
+                    HandleSetMessageViewedException(ex);
+                }
+
+                /// Ошибка в сервисе
+                /// (маловероятна, при таком варианте скорее сработает ошибка креденшелов,
+                /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
+                catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
+                {
+                    HandleSetMessageViewedException(ex);
+                }
+
+                /// Остальные исключения
+                catch (Exception ex)
+                {
+                    HandleSetMessageViewedException(ex);
+                    throw;
+                } 
                 UploadToMessageList();
                 if (selectedFolder is InboxFolder)
                 {
                     ((InboxFolder)selectedFolder).RefreshCountOfUnViewedMessages();
                 }
             }
+        }
+
+        void HandleSetMessageViewedException(Exception ex)
+        {
+            InformatonTips.SomeError.Show(ex.Message);
+            ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MainWindow.SetMessageViewed()");
+            StatusBarModel statusBarModel = (StatusBarModel)StatusBar.DataContext;
+            statusBarModel.Exception = ex;
+            statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
         }
 
         void UploadToMessageList()

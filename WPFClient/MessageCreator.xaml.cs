@@ -83,13 +83,13 @@ namespace WPFClient
             /// Сервис не отвечает
             catch (EndpointNotFoundException ex)
             {
-                HandleException(ex);
+                HandleOnSendMessageButtonClickException(ex);
             }
 
             ///Креденшелы не подходят
             catch (System.ServiceModel.Security.MessageSecurityException ex)
             {
-                HandleException(ex);
+                HandleOnSendMessageButtonClickException(ex);
             }
 
             /// Ошибка в сервисе
@@ -97,18 +97,18 @@ namespace WPFClient
             /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
             catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
             {
-                HandleException(ex);
+                HandleOnSendMessageButtonClickException(ex);
             }
 
             /// Остальные исключения, в т.ч. ArgumentException, ArgumentNullException
             catch (Exception ex)
             {
-                HandleException(ex);
+                HandleOnSendMessageButtonClickException(ex);
                 throw;
             }   
         }
 
-        void HandleException(Exception ex)
+        void HandleOnSendMessageButtonClickException(Exception ex)
         {
             InformatonTips.SomeError.Show(ex.Message);
             ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MessageCreator.OnSendMessageButtonClick(object sender, RoutedEventArgs e)");

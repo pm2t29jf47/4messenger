@@ -9,9 +9,8 @@
 - PrepareEmployeeClass убрать свойсвам атрибут static
 - триггеры на пикчи кнопок в mainwindow
 - вынести код из обработчиов
-- rethrow исключений со старым стеком
-- если словили ошибку в passowrd validator
-
+- Service1.SetRecipientDeleted
+ 
 ####
 i)ValidationRule вызывается только при пользовательском вводе,
 при программном изменении binding свойства объектной модели ValidationRule не вызывается

@@ -16,7 +16,6 @@ namespace DataSourceLayer
     /// </summary>
     public class EmployeeGateway : Gateway
     {
-
         /// <summary> 
         /// Возвращает коллекцию всех сотрудников
         /// </summary>
@@ -40,7 +39,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "public static List<Employee> SelectAll(string username)");
+                ExceptionHandler.HandleExcepion(ex, "(List<Employee>)DataSourceLayer.EmployeeGateway.SelectAll(string username)");
                 throw;           
             }
         }
@@ -67,7 +66,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "public static Employee SelectSecurity(string authenticationUsername, string username)");
+                ExceptionHandler.HandleExcepion(ex, "(List<Employee>)DataSourceLayer.EmployeeGateway.SelectSecurity(string authenticationUsername, string username)");
                 throw;
             }
         }
@@ -94,7 +93,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "public static Employee SelectByUsername(string selectableUsername, string username)");
+                ExceptionHandler.HandleExcepion(ex, "(Employee)DataSourceLayer.EmployeeGateway.SelectByUsername(string selectableUsername, string username)");
                 throw;
             }
         }

@@ -32,7 +32,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "public static int? Insert(Message message, string username)");
+                ExceptionHandler.HandleExcepion(ex, "(int)DataSourceLayer.MessageGateway.Insert(Message message, string username)");
                 throw;
             }
         }
@@ -106,7 +106,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "public static Message SelectById(int id, string username)");
+                ExceptionHandler.HandleExcepion(ex, "(Message)DataSourceLayer.MessageGateway.SelectById(int id, string username)");
                 throw;
             }
         }
@@ -136,7 +136,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "public static List<Message> SelectBy_SenderUsername_Deleted(string username, bool deleted)");
+                ExceptionHandler.HandleExcepion(ex, "(List<Message>)DataSourceLayer.MessageGateway.SelectBy_SenderUsername_Deleted(string username, bool deleted)");
                 throw;
             }
         }

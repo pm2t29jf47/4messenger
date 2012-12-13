@@ -16,9 +16,9 @@ namespace WPFClient
     {  
         public static ServiceWatcher ServiceWatcher {get; set;}  
 
-        public static TimeSpan timeBetweenUpdating = new TimeSpan(0, 0, 50);
+        public static TimeSpan timeBetweenUpdating = new TimeSpan(0, 0, 10);
 
-        public static TimeSpan timePerMessageSetViewed = new TimeSpan(0, 0, 3);
+        public static TimeSpan timePerMessageSetViewed = new TimeSpan(0, 0, 5);
 
     }
 }

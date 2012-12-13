@@ -54,15 +54,16 @@ namespace WPFClient
                 this.DialogResult = true;                           
                 this.Close();
             }
-            catch (System.ServiceModel.Security.MessageSecurityException ex1)
+            catch (System.ServiceModel.Security.MessageSecurityException ex)
             {
                 LoginFiled.Show("Authentication filed!");
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex1,"private void Button_Click(object sender, RoutedEventArgs e)");
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.LoginWindow.Button_Click(object sender, RoutedEventArgs e)");
             }
-            catch (Exception ex2)
+            catch (Exception ex)
             {
-                LoginFiled.Show(ex2.Message);
-                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex2, "private void Button_Click(object sender, RoutedEventArgs e)");
+                LoginFiled.Show(ex.Message);
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.LoginWindow.Button_Click(object sender, RoutedEventArgs e)");
+                throw;
             }
         }
 

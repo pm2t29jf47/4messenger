@@ -312,8 +312,8 @@ namespace WPFClient
                 Deleted = false,
                 SenderUsername = App.ServiceWatcher.FactoryUsername,
                 Title = string.Empty,
-                FKEmployee_SenderUsername = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0),
-                EDRecipient_MessageId = new List<Recipient>()
+                Sender = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0),
+                Recipients = new List<Recipient>()
             };
              CreateMessageCreatorWindow(message);
         }
@@ -336,8 +336,8 @@ namespace WPFClient
                 Deleted = false,
                 SenderUsername = App.ServiceWatcher.FactoryUsername,
                 Title = newTitle,
-                EDRecipient_MessageId = recipients,
-                FKEmployee_SenderUsername = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0)
+                Recipients = recipients,
+                Sender = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0)
             };
             CreateMessageCreatorWindow(message);
         }

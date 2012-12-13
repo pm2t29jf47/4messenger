@@ -2,7 +2,6 @@
 - SqlMembershipProvider
 
 !!!
-- фильтр
 - timestamp
 - PrepareEmployeeClass убрать свойсвам атрибут static
 - триггеры на пикчи кнопок в mainwindow

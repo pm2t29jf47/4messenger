@@ -65,6 +65,7 @@ namespace ServiceInterface
         List<Message> GetMessages(Folder folder, bool deleted, bool viewed);
          
     }
+
     public enum Folder { inbox, sentbox };       
     
 }

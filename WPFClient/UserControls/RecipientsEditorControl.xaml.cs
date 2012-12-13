@@ -212,7 +212,6 @@ namespace WPFClient.UserControls
             {
                 target.Insert(index++, item);
             }
-
         }
 
         ListBoxItem GetListViewItem(ListBox source, int index)

@@ -66,9 +66,13 @@ namespace Entities
         public bool Deleted { get; set; }
 
         [DataMember]
-        public Employee FKEmployee_SenderUsername { get; set; }
+        //public Employee FKEmployee_SenderUsername { get; set; }
+
+        public Employee Sender { get; set; }
 
         [DataMember]
-        public List<Recipient> EDRecipient_MessageId { get; set; }
+        //public List<Recipient> EDRecipient_MessageId { get; set; }
+
+        public List<Recipient> Recipients { get; set; }
     }
 }

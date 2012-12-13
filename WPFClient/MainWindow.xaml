@@ -136,7 +136,7 @@
                     <!--ФИО отправителя-->
                     <TextBlock Grid.Column="1"
                                Style="{StaticResource MessageListItemSenderStyle}"
-                               Text="{Binding Path=FKEmployee_SenderUsername.ToString, Mode=OneWay}">
+                               Text="{Binding Path=Sender.ToString, Mode=OneWay}">
                           
                     </TextBlock>
                     <!--Дата-->

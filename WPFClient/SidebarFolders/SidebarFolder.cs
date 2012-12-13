@@ -103,9 +103,9 @@ namespace WPFClient.SidebarFolders
         protected static bool IsViewedMessage(Message message)
         {
             if (message != null
-                && message.EDRecipient_MessageId != null)
+                && message.Recipients != null)
             {
-                Recipient result = message.EDRecipient_MessageId.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.ServiceWatcher.FactoryUsername) == 0);
+                Recipient result = message.Recipients.FirstOrDefault(row => string.Compare(row.RecipientUsername, App.ServiceWatcher.FactoryUsername) == 0);
                 if (result != null)
                     return result.Viewed;
                 return false;         

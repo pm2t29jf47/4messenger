@@ -146,9 +146,9 @@ namespace Entities
         }
 
         [DataMember]
-        public List<Message> EDMessage_SenderUsername { get; set; }
+        public List<Message> SentMessages { get; set; }
 
         [DataMember]
-        public List<Recipient> EDRecipient_RecipientUsername { get; set; }
+        public List<Recipient> InRecipients { get; set; }
     }
 }

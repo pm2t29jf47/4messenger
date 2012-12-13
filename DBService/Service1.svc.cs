@@ -34,7 +34,7 @@ namespace DBService
             CheckMessage(message, currentUsername);    
             message.Date = DateTime.Now;
             int insertedMessageId = MessageGateway.Insert(message, currentUsername);
-            foreach (Recipient item in message.EDRecipient_MessageId)
+            foreach (Recipient item in message.Recipients)
             {
                 Recipient recipient = new Recipient(item.RecipientUsername, insertedMessageId);
                 RecipientGateway.Insert(recipient, currentUsername);
@@ -49,9 +49,9 @@ namespace DBService
                 throw new FaultException<ArgumentNullException>(ex, ex.Message);
             }
 
-            if (message.EDRecipient_MessageId == null
+            if (message.Recipients == null
                 || message.Content == null
-                || message.FKEmployee_SenderUsername == null
+                || message.Sender == null
                 || message.SenderUsername == null
                 || message.Title == null)
             {
@@ -72,8 +72,8 @@ namespace DBService
                 || message.Id == null
                 || message.SenderUsername == null)
                 return;
-            message.FKEmployee_SenderUsername = EmployeeGateway.SelectByUsername(message.SenderUsername, currentUsername);
-            message.EDRecipient_MessageId = RecipientGateway.SelectByMessageId((int)message.Id, currentUsername);
+            message.Sender = EmployeeGateway.SelectByUsername(message.SenderUsername, currentUsername);
+            message.Recipients = RecipientGateway.SelectByMessageId((int)message.Id, currentUsername);
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]

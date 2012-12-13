@@ -54,12 +54,12 @@ namespace WPFClient.Models
             }
         }
 
-        public void FillMessageEDRecipient_MessageId()
+        public void FillMessageRecipients()
         {
-            if(message.EDRecipient_MessageId == null)
+            if(message.Recipients == null)
                 return;
 
-            foreach(Recipient item in message.EDRecipient_MessageId)
+            foreach(Recipient item in message.Recipients)
             {
                 item.FKMessage_MessageId = message;
                 item.FKEmployee_RecipientUsername = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(item.RecipientUsername, row.Username) == 0);

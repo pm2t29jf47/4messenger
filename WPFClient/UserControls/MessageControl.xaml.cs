@@ -71,11 +71,11 @@ namespace WPFClient.UserControls
 
         void SendDataToRecipientsControl()
         {
-            MessageControlModel.FillMessageEDRecipient_MessageId();
+            MessageControlModel.FillMessageRecipients();
             RecipientsControlModel rcm = new RecipientsControlModel()
             {
                 AllEmployees = MessageControlModel.AllEmployees,
-                Recipients = MessageControlModel.Message.EDRecipient_MessageId
+                Recipients = MessageControlModel.Message.Recipients
             };
             rcm.UpdateByRecipients();
             RecipientsControl.DataContext = rcm;

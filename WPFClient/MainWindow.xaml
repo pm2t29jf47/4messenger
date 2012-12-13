@@ -7,7 +7,7 @@
         Icon="Images\bug-mail.png">
     <Window.Resources>
         <Style x:Key="SidebarStyle"
-               TargetType="{x:Type ListBox}">
+               TargetType="{x:Type ItemsControl}">
             <Setter Property="Control.Background" 
                     Value="LightGray"></Setter>
             <Setter Property="HorizontalContentAlignment" 
@@ -212,16 +212,16 @@
         </Grid>
         
         <!--Sidebar-->
-        <ListBox Grid.Row="1"
-                 Grid.Column="0"
-                 Style="{StaticResource SidebarStyle}"
-                 x:Name="Sidebar">
-            <ListBox.ItemTemplate>
+        <ItemsControl x:Name="Sidebar"
+                      Grid.Row="1"
+                      Grid.Column="0" 
+                      Style="{StaticResource SidebarStyle}">
+            <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Style="{StaticResource FolderButtonStyle}"
                             Click="OnFolderClick">
-                        <StackPanel Orientation="Vertical">                            
-                            <!--Пиктограмма папки-->                           
+                        <StackPanel Orientation="Vertical">
+                            <!--Пиктограмма папки-->
                             <Image Source="{Binding Path=FolderImage, Mode=OneWay}"
                                    Style="{StaticResource FolderImageStyle}"></Image>
                             <!--Название папки-->
@@ -230,8 +230,8 @@
                         </StackPanel>
                     </Button>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </ItemsControl.ItemTemplate>            
+        </ItemsControl>
 
         <!--Список сообщений-->
         <ListBox Name="MessageList" 

@@ -77,14 +77,14 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static List<Recipient> SelectBy_RecipientUsername_Deleted(string username,bool deleted)
+        public static List<Recipient> Select(string username, bool deleted, bool viewed)
         {
             List<Recipient> rows = new List<Recipient>();
             try
             {
                 using (SqlCommand cmd = new SqlCommand("select_recipient;1", GetConnection(username)))
                 {
-                    PrepareSR1(cmd, username,deleted);
+                    PrepareSR1(cmd, username,deleted,viewed);
                     using (var reader = cmd.ExecuteReader())
                         while (reader.Read())
                             rows.Add(CreateRecipient(reader));
@@ -103,13 +103,15 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="username"></param>
-        static void PrepareSR1(SqlCommand cmd, string username, bool deleted)
+        static void PrepareSR1(SqlCommand cmd, string username, bool deleted, bool viewed)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.NVarChar, 50));
             cmd.Parameters.Add(new SqlParameter("@deleted", SqlDbType.Bit));
+            cmd.Parameters.Add(new SqlParameter("@viewed", SqlDbType.Bit));
             cmd.Parameters["@recipientUsername"].Value = username;
             cmd.Parameters["@deleted"].Value = deleted;
+            cmd.Parameters["@viewed"].Value = viewed;
         }
 
 

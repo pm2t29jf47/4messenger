@@ -8,6 +8,7 @@ using System.Collections;
 using DBService;
 using System.ComponentModel;
 using System.ServiceModel;
+using ServiceInterface;
 
 namespace WPFClient.Additional
 {
@@ -113,10 +114,14 @@ namespace WPFClient.Additional
             {
                 DataDownloadException = null;
                 allEmployees = Proxy.GetAllEmployees();
-                inboxMessages = Proxy.GetInboxMessages();
-                sentboxMessages = Proxy.GetSentboxMessages();
-                deletedInboxMessages = Proxy.GetDeletedInboxMessages();
-                deletedSentboxMessages = Proxy.GetDeletedSentboxMessages();
+                inboxMessages =  Proxy.GetMessages(Folder.inbox, false, true);
+                inboxMessages.AddRange(Proxy.GetMessages(Folder.inbox, false, false));
+                sentboxMessages = Proxy.GetMessages(Folder.sentbox,false, false);
+
+                deletedInboxMessages = Proxy.GetMessages(Folder.inbox,true,true);
+                deletedInboxMessages.AddRange(Proxy.GetMessages(Folder.inbox, true, false));
+
+                deletedSentboxMessages = Proxy.GetMessages(Folder.sentbox, true, true);
             }
 
             /// Сервис не отвечает
@@ -214,6 +219,15 @@ namespace WPFClient.Additional
         public List<Message> GetDeletedSentboxMessages()
         {
             return deletedSentboxMessages;
+        }
+
+
+
+
+
+        public List<Message> GetMessages(Folder folder, bool deleted, bool viewed)
+        {
+            return Proxy.GetMessages(Folder.inbox, false, false);
         }
     }
 }

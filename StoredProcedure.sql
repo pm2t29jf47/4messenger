@@ -24,7 +24,7 @@ GO
 /*==============================================================*/
 /* Хп. Добавляет новое письмо в таблицу                         */
 /*==============================================================*/
-ALTER procedure insert_message
+CREATE procedure insert_message
 (
 	@title	nvarchar(100),
 	@date	datetime,
@@ -48,12 +48,12 @@ as
 	AND SenderUsername = @senderUsername
 	AND Deleted = @deleted
 	AND Content = @content
-
+GO
 
 /*==============================================================*/
 /* Хп. Добавляет нового адресата в таблицу                      */
 /*==============================================================*/
-ALTER PROCEDURE insert_recipient
+CREATE PROCEDURE insert_recipient
 (
 	@recipientUsername nvarchar(50),
 	@messageId int,
@@ -94,21 +94,23 @@ GO
 /*==============================================================*/
 /* Выводит все сообщения адресата                               */
 /*==============================================================*/
-ALTER PROCEDURE [dbo].[select_recipient];1
+CREATE PROCEDURE [dbo].[select_recipient];1
 	(@recipientUsername nvarchar(50),
-	@deleted bit)
+	@deleted bit,
+	@viewed bit)
 AS
 	SET NOCOUNT ON 
 	SELECT *
 	FROM Recipient
 	WHERE RecipientUserName = @recipientUsername
-	AND Deleted = @deleted 
+	AND Deleted = @deleted
+	AND Viewed = @viewed 
 GO
 
 /*==============================================================*/
 /* Выводит всех адресатов сообщения                             */
 /*==============================================================*/
-ALTER PROCEDURE [dbo].[select_recipient];2
+CREATE PROCEDURE [dbo].[select_recipient];2
 	(@messageId int)	
 AS
 	SET NOCOUNT ON

@@ -13,6 +13,7 @@ using System.Threading;
 using System.Security;
 using System.Web.Security;
 using Entities;
+using ServiceInterface;
 
 namespace DBService
 {
@@ -65,63 +66,6 @@ namespace DBService
             }
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetInboxMessages()
-        {
-            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            List<Message> messages = new List<Message>();
-            List<Recipient> recipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(currentUsername,false);
-            foreach (Recipient item in recipients)
-                messages.Add(MessageGateway.SelectById((int)item.MessageId, currentUsername));
-
-            foreach (Message item in messages)
-            {
-                FillMessage(item, currentUsername);
-            }
-            return messages;
-        }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetSentboxMessages()
-        {
-            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            List<Message> sentMessages = MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername,false);
-            foreach (Message item in sentMessages)
-            {
-                FillMessage(item, currentUsername);
-            }
-            return sentMessages;
-        }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetDeletedInboxMessages()
-        {
-            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            var deletedMessages = new List<Message>();
-            List<Recipient> currentUserInRecipients = RecipientGateway.SelectBy_RecipientUsername_Deleted(currentUsername, true);
-            foreach (Recipient item in currentUserInRecipients)
-            {
-                Message receivedMessage = MessageGateway.SelectById((int)item.MessageId, currentUsername);
-                FillMessage(receivedMessage, currentUsername);
-                deletedMessages.Add(receivedMessage);
-            }    
-            return deletedMessages;      
-        }
-
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Message> GetDeletedSentboxMessages()
-        {
-            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            var deletedMessages = new List<Message>();
-            List<Message> currentUserInSenders = MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername, true);
-            deletedMessages.AddRange(currentUserInSenders);
-            foreach (Message item in deletedMessages)
-            {
-                FillMessage(item, currentUsername);
-            }
-            return deletedMessages;      
-        }
-
         void FillMessage(Message message, string currentUsername)
         {
             if (message == null
@@ -158,6 +102,46 @@ namespace DBService
         public void SetRecipientDeleted(int messageId, bool deleted)
         {
            ///
-        }     
+        }
+        
+        public List<Message> GetMessages(Folder folder, bool deleted, bool viewed)
+        {
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            switch (folder)
+            {
+                case Folder.inbox:
+                    {
+                        return GetInboxMessages(currentUsername, deleted, viewed);
+                    }
+                default:
+                    {
+                        return GetSentboxMessages(currentUsername, deleted);
+                    }
+            }            
+        }
+
+        List<Message> GetInboxMessages(string currentUsername, bool deleted, bool viewed)
+        {
+            List<Message> recievedMessages = new List<Message>();
+            Message result;
+            List<Recipient> recipients = RecipientGateway.Select(currentUsername, deleted, viewed);
+            foreach (Recipient item in recipients)
+            {
+                result = MessageGateway.SelectById((int)item.MessageId, currentUsername);
+                FillMessage(result, currentUsername);
+                recievedMessages.Add(result);
+            }
+            return recievedMessages;
+        }
+
+        List<Message> GetSentboxMessages(string currentUsername, bool deleted)
+        {
+            List<Message> sentMessages = MessageGateway.SelectBy_SenderUsername_Deleted(currentUsername, deleted);
+            foreach (Message item in sentMessages)
+            {
+                FillMessage(item, currentUsername);
+            }
+            return sentMessages;
+        }
     }
 }

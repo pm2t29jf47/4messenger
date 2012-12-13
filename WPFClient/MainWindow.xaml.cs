@@ -22,6 +22,8 @@ using System.Globalization;
 using System.Windows.Markup;
 using System.Diagnostics;
 using System.ServiceModel;
+using ServiceInterface;
+
 
 namespace WPFClient
 {
@@ -142,6 +144,9 @@ namespace WPFClient
                     AllEmployees = App.ServiceWatcher.GetAllEmployees(),
                     Message = selectedMessageModel.Message
                 };
+
+                var a = App.ServiceWatcher.GetMessages(Folder.sentbox, false, false);
+
             }
         }
 

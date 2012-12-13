@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InformatonTips", "Informato
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecialWords", "SpecialSymbols\SpecialWords.csproj", "{9C424B52-282C-4625-A39E-E890A68AFA65}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceInterface", "ServiceInterface\ServiceInterface.csproj", "{2227403A-548B-4789-938F-C26CDA772605}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Messenger1.vsmdi
@@ -147,6 +149,16 @@ Global
 		{9C424B52-282C-4625-A39E-E890A68AFA65}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9C424B52-282C-4625-A39E-E890A68AFA65}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9C424B52-282C-4625-A39E-E890A68AFA65}.Release|x86.ActiveCfg = Release|Any CPU
+		{2227403A-548B-4789-938F-C26CDA772605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2227403A-548B-4789-938F-C26CDA772605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2227403A-548B-4789-938F-C26CDA772605}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2227403A-548B-4789-938F-C26CDA772605}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2227403A-548B-4789-938F-C26CDA772605}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2227403A-548B-4789-938F-C26CDA772605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2227403A-548B-4789-938F-C26CDA772605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2227403A-548B-4789-938F-C26CDA772605}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2227403A-548B-4789-938F-C26CDA772605}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2227403A-548B-4789-938F-C26CDA772605}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

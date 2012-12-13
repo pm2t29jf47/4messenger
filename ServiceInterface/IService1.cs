@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.ServiceModel.Web;
 using System.Text;
 using Entities;
 
-namespace DBService
+namespace ServiceInterface
 {
     [ServiceContract]
     public interface IService1
@@ -47,34 +46,6 @@ namespace DBService
         void SendMessage(Message message);
 
         /// <summary>
-        /// Взвращает коллекцию писем из папки входящих
-        /// </summary>
-        /// <returns></returns>
-        [OperationContract]
-        List<Message> GetInboxMessages();
-
-        /// <summary>
-        /// Возвращает письма помеченные удаленными в папке входящих
-        /// </summary>
-        /// <returns></returns>
-        [OperationContract]
-        List<Message> GetDeletedInboxMessages();
-
-        /// <summary>
-        /// Возвращает письма помеченные удаленными в папке отправленных
-        /// </summary>
-        /// <returns></returns>
-        [OperationContract]
-        List<Message> GetDeletedSentboxMessages();
-
-        /// <summary>
-        /// Возвращает коллекцию отправленных писем
-        /// </summary>
-        /// <returns></returns>
-        [OperationContract]
-        List<Message> GetSentboxMessages();
-
-        /// <summary>
         /// Задает флаг прочитанности
         /// </summary>
         /// <param name="messageId"></param>
@@ -88,6 +59,12 @@ namespace DBService
         /// <param name="messageId"></param>
         /// <param name="deleted"></param>
         [OperationContract]
-        void SetRecipientDeleted(int messageId, bool deleted); 
-    }   
+        void SetRecipientDeleted(int messageId, bool deleted);
+
+        [OperationContract]
+        List<Message> GetMessages(Folder folder, bool deleted, bool viewed);
+         
+    }
+    public enum Folder { inbox, sentbox };       
+    
 }

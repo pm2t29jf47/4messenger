@@ -43,10 +43,15 @@ namespace WPFClient
         /// <param name="e"></param>
         void OnMessageCreatorDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            SendDataToMessageControl();
+        }
+
+        void SendDataToMessageControl()
+        {
             MessageControl.DataContext = new MessageControlModel()
             {
                 AllEmployees = MessageCreatorModel.AllEmployees,
-                Message = MessageCreatorModel.Message               
+                Message = MessageCreatorModel.Message
             };
             MessageControl.ControlState = WPFClient.UserControls.MessageControl.state.IsEditable;
         }
@@ -71,7 +76,12 @@ namespace WPFClient
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void OnSendMessageButtonClick(object sender, RoutedEventArgs e)
-        {           
+        {
+            SendMessage();  
+        }
+
+        void SendMessage()
+        {
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
             try
             {
@@ -83,13 +93,13 @@ namespace WPFClient
             /// Сервис не отвечает
             catch (EndpointNotFoundException ex)
             {
-                HandleOnSendMessageButtonClickException(ex);
+                HandleSendMessageException(ex);
             }
 
             ///Креденшелы не подходят
             catch (System.ServiceModel.Security.MessageSecurityException ex)
             {
-                HandleOnSendMessageButtonClickException(ex);
+                HandleSendMessageException(ex);
             }
 
             /// Ошибка в сервисе
@@ -97,18 +107,18 @@ namespace WPFClient
             /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
             catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
             {
-                HandleOnSendMessageButtonClickException(ex);
+                HandleSendMessageException(ex);
             }
 
             /// Остальные исключения, в т.ч. ArgumentException, ArgumentNullException
             catch (Exception ex)
             {
-                HandleOnSendMessageButtonClickException(ex);
+                HandleSendMessageException(ex);
                 throw;
-            }   
+            } 
         }
 
-        void HandleOnSendMessageButtonClickException(Exception ex)
+        void HandleSendMessageException(Exception ex)
         {
             InformatonTips.SomeError.Show(ex.Message);
             ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MessageCreator.OnSendMessageButtonClick(object sender, RoutedEventArgs e)");

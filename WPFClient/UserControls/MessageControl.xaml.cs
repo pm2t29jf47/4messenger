@@ -66,6 +66,11 @@ namespace WPFClient.UserControls
         /// <param name="e"></param>
         void OnMessageControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            SendDataToRecipientsControl();
+        }
+
+        void SendDataToRecipientsControl()
+        {
             MessageControlModel.FillMessageEDRecipient_MessageId();
             RecipientsControlModel rcm = new RecipientsControlModel()
             {

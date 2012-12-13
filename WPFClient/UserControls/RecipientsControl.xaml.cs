@@ -102,6 +102,11 @@ namespace WPFClient
         /// <param name="e"></param>
         void OnAddButtonClick(object sender, RoutedEventArgs e)
         {
+            CreateRecipientsEditorWindow();
+        }
+
+        void CreateRecipientsEditorWindow()
+        {
             RecipientsEditor recipientsEditor = new RecipientsEditor();
             recipientsEditor.DataContext = new RecipientsEditorModel()
             {

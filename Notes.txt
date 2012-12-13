@@ -2,13 +2,11 @@
 - SqlMembershipProvider
 
 !!!
-- добавить namespaces в обработчики искл
 - фильтр
 - убрать возможность выбора в sidebar-е
 - timestamp
 - PrepareEmployeeClass убрать свойсвам атрибут static
 - триггеры на пикчи кнопок в mainwindow
-- вынести код из обработчиков
 - Service1.SetRecipientDeleted
  
 ####

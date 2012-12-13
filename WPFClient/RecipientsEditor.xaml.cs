@@ -42,17 +42,27 @@ namespace WPFClient
 
         void OnRecipientsEditorDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            RecipientsEditorControlModel recm = new RecipientsEditorControlModel();           
+            SendDataToRecipientsEditorControl();
+        }
+
+        void SendDataToRecipientsEditorControl()
+        {
+            RecipientsEditorControlModel recm = new RecipientsEditorControlModel();
             foreach (var item in RecipientsEditorModel.AllEmployees)
                 recm.AllEmployees.Add(item);
 
             foreach (var item in RecipientsEditorModel.RecipientsEmployees)
                 recm.SelectedEmployees.Add(item);
-          
+
             RecipientsEditorControl.DataContext = recm;
         }
 
-        private void OnOkButtonClick(object sender, RoutedEventArgs e)
+        void OnOkButtonClick(object sender, RoutedEventArgs e)
+        {
+            SendDataToInnerModel();            
+        }
+
+        void SendDataToInnerModel()
         {
             RecipientsEditorControlModel recm = (RecipientsEditorControlModel)this.RecipientsEditorControl.DataContext;
             RecipientsEditorModel.RecipientsEmployees.Clear();
@@ -60,7 +70,7 @@ namespace WPFClient
                 RecipientsEditorModel.RecipientsEmployees.Add(item);
 
             DialogResult = true;
-            this.Close();            
+            this.Close();   
         }
 
         private void OnCancelButtonClick(object sender, RoutedEventArgs e)

@@ -25,12 +25,24 @@ namespace WPFClient
 
         private void OnReconnectButtonClick(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+            SetDialogState(true);
+            CloseWindow();
         }
 
         private void OnCancelButtonClick(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = false;
+            SetDialogState(false);
+            CloseWindow();
+        }
+
+        void SetDialogState(bool state)
+        {
+            this.DialogResult = state;
+        }
+
+        void CloseWindow()
+        {
+            this.Close();
         }
     }
 }

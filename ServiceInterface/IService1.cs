@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using Entities;
+using Entities.Additional;
 
 namespace ServiceInterface
 {
@@ -62,7 +63,7 @@ namespace ServiceInterface
         void SetRecipientDeleted(int messageId, bool deleted);
 
         [OperationContract]
-        List<Message> GetMessages(Folder folder, bool deleted, bool viewed);
+        MessagesPack GetMessages(Folder folder, bool deleted, bool viewed, List<VersionedMessage> sourceCollection);
          
     }
 

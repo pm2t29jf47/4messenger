@@ -172,7 +172,8 @@ namespace DataSourceLayer
                 Date = (DateTime.Parse(reader["Date"].ToString())),
                 SenderUsername = (string) reader["SenderUsername"],
                 Content = (string) reader["Content"],
-                Deleted = bool.Parse(reader["Deleted"].ToString())
+                Deleted = bool.Parse(reader["Deleted"].ToString()),
+                Version = (byte[])reader["Version"]
             };
         }
 

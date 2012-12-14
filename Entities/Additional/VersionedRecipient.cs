@@ -11,7 +11,7 @@ namespace Entities.Additional
 
         public int MessageId { get; set; }
 
-        public byte[] Version;
+        public byte[] Version { get; set; }
 
         public VersionedEmployee RecipientEmployee { get; set; }
 

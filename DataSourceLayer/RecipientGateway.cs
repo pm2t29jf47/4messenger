@@ -229,7 +229,8 @@ namespace DataSourceLayer
                 int.Parse(reader["MessageId"].ToString()))
                 {
                     Deleted = bool.Parse(reader["Deleted"].ToString()),
-                    Viewed = bool.Parse(reader["Viewed"].ToString())
+                    Viewed = bool.Parse(reader["Viewed"].ToString()),
+                    Version = (byte[])reader["Version"]
                 };
         }         
     }

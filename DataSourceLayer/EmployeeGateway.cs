@@ -108,7 +108,8 @@ namespace DataSourceLayer
                 FirstName = (string)reader["FirstName"],
                 SecondName = (string)reader["SecondName"],
                 Role = (string)reader["Role"],
-                Password = security ? (string)reader["Password"] : null
+                Password = security ? (string)reader["Password"] : null,
+                Version = (byte[])reader["Version"]
             };
         }
 

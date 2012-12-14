@@ -34,7 +34,14 @@ CREATE procedure insert_message
 	@id int output	
 )
 as
-	insert into Message values(
+	insert into Message(
+	Title,
+	[Date],
+	Content,
+	SenderUsername,
+	Deleted
+	)
+	values(
 	@title,
 	@date,
 	@content,

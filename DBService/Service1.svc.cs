@@ -13,6 +13,7 @@ using System.Threading;
 using System.Security;
 using System.Web.Security;
 using Entities;
+using Entities.Additional;
 using ServiceInterface;
 
 namespace DBService
@@ -103,21 +104,22 @@ namespace DBService
         {
            ///
         }
-        
-        public List<Message> GetMessages(Folder folder, bool deleted, bool viewed)
+
+        public MessagesPack GetMessages(Folder folder, bool deleted, bool viewed, List<Entities.Additional.VersionedMessage> sourceCollection)
         {
-            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            switch (folder)
-            {
-                case Folder.inbox:
-                    {
-                        return GetInboxMessages(currentUsername, deleted, viewed);
-                    }
-                default:
-                    {
-                        return GetSentboxMessages(currentUsername, deleted);
-                    }
-            }            
+            //string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            //switch (folder)
+            //{
+            //    case Folder.inbox:
+            //        {
+            //            return GetInboxMessages(currentUsername, deleted, viewed);
+            //        }
+            //    default:
+            //        {
+            //            return GetSentboxMessages(currentUsername, deleted);
+            //        }
+            //}  
+            return null;
         }
 
         List<Message> GetInboxMessages(string currentUsername, bool deleted, bool viewed)
@@ -143,5 +145,7 @@ namespace DBService
             }
             return sentMessages;
         }
+
+       // MessagesPack CreateMessagesPack(List<Messages>
     }
 }

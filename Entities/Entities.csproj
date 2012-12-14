@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Additional\VersionedEmployee.cs" />
+    <Compile Include="Additional\VersionedMessage.cs" />
+    <Compile Include="Additional\VersionedRecipient.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -28,41 +28,28 @@ namespace Entities
         /// Идентификатор сотрудника-получателя
         /// </summary>
         [DataMember]
-        public string RecipientUsername
-        {
-            get;
-            internal set;
-        }
+        public string RecipientUsername { get; internal set; }
 
         /// <summary>
         /// Идентификатор сообщения
         /// </summary>
         [DataMember]
-        public int? MessageId
-        {
-            get;
-            internal set;
-        }
+        public int? MessageId { get; internal set;}
 
         /// <summary>
         /// Флаг для переноса полученых писем в папку удаленных
         /// </summary>
         [DataMember]
-        public bool Deleted
-        {
-            get;
-            set;
-        }
+        public bool Deleted { get; set; }
 
         /// <summary>
         /// Флаг прочтенности письма получателем
         /// </summary>
         [DataMember]
-        public bool Viewed
-        {
-            get;
-            set;
-        }
+        public bool Viewed { get; set; }
+
+        [DataMember]
+        public byte[] Version { get; set; }
 
         [DataMember]
         public Employee RecipientEmployee { get; set; } 

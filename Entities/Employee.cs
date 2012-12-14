@@ -63,6 +63,15 @@ namespace Entities
         [DataMember]
         public string Role { get; set; }
 
+        [DataMember]
+        public byte[] Version { get; set; }
+
+        [DataMember]
+        public List<Message> SentMessages { get; set; }
+
+        [DataMember]
+        public List<Recipient> InRecipients { get; set; }
+
         /************************************************************/
 
         static string currentUsername = string.Empty;
@@ -144,11 +153,5 @@ namespace Entities
             }
             return result;
         }
-
-        [DataMember]
-        public List<Message> SentMessages { get; set; }
-
-        [DataMember]
-        public List<Recipient> InRecipients { get; set; }
     }
 }

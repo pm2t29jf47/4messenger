@@ -66,6 +66,9 @@ namespace Entities
         public bool Deleted { get; set; }
 
         [DataMember]
+        public byte[] Version { get; set; }
+
+        [DataMember]
         //public Employee FKEmployee_SenderUsername { get; set; }
 
         public Employee Sender { get; set; }

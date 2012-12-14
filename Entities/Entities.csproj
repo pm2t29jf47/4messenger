@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Additional\MessagesPack.cs" />
     <Compile Include="Additional\VersionedEmployee.cs" />
     <Compile Include="Additional\VersionedMessage.cs" />
     <Compile Include="Additional\VersionedRecipient.cs" />

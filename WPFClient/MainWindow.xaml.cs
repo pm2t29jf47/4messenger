@@ -27,6 +27,15 @@ using ServiceInterface;
 
 namespace WPFClient
 {
+    [Flags]
+    public enum MessageFlags
+    {
+        Deleted = 1,
+        Viewed = 2,
+        Flagged = 4,
+        ResponceRequired = 8
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -46,12 +55,18 @@ namespace WPFClient
             Interval = App.timePerMessageSetViewed
         };
 
+        public void ololo(MessageFlags ff)
+        {
+            int a = 10;
+        }
+
         public MainWindow()
         {
             Loaded += new RoutedEventHandler(OnMainWindowLoaded);
             messageIsViewedTimer.Tick += new EventHandler(OnmessageIsViewedTimerTick);
             SetCulture("ru");
             InitializeComponent();
+            ololo(MessageFlags.Deleted | MessageFlags.Flagged);
         }
 
         void SetCulture(string culture)
@@ -144,9 +159,6 @@ namespace WPFClient
                     AllEmployees = App.ServiceWatcher.GetAllEmployees(),
                     Message = selectedMessageModel.Message
                 };
-
-                var a = App.ServiceWatcher.GetMessages(Folder.sentbox, false, false);
-
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
+using Entities.Additional;
 using System.Threading;
 using System.Collections;
 using DBService;
@@ -92,11 +93,15 @@ namespace WPFClient.Additional
 
         List<Employee> allEmployees = new List<Employee>();
 
-        List<Message> inboxMessages = new List<Message>();
+        List<Message> undeletedUnviewedInboxMessages = new List<Message>();
 
-        List<Message> sentboxMessages = new List<Message>();
+        List<Message> undeletedViewedInboxMessages = new List<Message>();
 
-        List<Message> deletedInboxMessages = new List<Message>();
+        List<Message> deletetUnviewedInboxMessages = new List<Message>();
+
+        List<Message> deletedViewedInboxMessages = new List<Message>();
+
+        List<Message> undeletedSentboxMessages = new List<Message>();
 
         List<Message> deletedSentboxMessages = new List<Message>();
 
@@ -113,15 +118,20 @@ namespace WPFClient.Additional
             try
             {
                 DataDownloadException = null;
-                allEmployees = Proxy.GetAllEmployees();
-                inboxMessages =  Proxy.GetMessages(Folder.inbox, false, true);
-                inboxMessages.AddRange(Proxy.GetMessages(Folder.inbox, false, false));
-                sentboxMessages = Proxy.GetMessages(Folder.sentbox,false, false);
+                allEmployees = Proxy.GetAllEmployees(); //?
 
-                deletedInboxMessages = Proxy.GetMessages(Folder.inbox,true,true);
-                deletedInboxMessages.AddRange(Proxy.GetMessages(Folder.inbox, true, false));
+               // undeletedUnviewedInboxMessages = Proxy.GetMessages(Folder.inbox, false, false, null);
+               // undeletedViewedInboxMessages = Proxy.GetMessages(Folder.inbox, false, true, null);
+             //   deletetUnviewedInboxMessages = Proxy.GetMessages(Folder.inbox, true, false, null);
+             //   deletedViewedInboxMessages = Proxy.GetMessages(Folder.inbox, true, true, null);
+             //   undeletedSentboxMessages = Proxy.GetMessages(Folder.sentbox, false, true, null);
+            //    deletedSentboxMessages = Proxy.GetMessages(Folder.sentbox, true, true, null);
 
-                deletedSentboxMessages = Proxy.GetMessages(Folder.sentbox, true, true);
+
+                var b = Proxy.GetMessages(Folder.sentbox, true, true, null);
+
+
+                var a = CreateVersionedMessages(deletedSentboxMessages);
             }
 
             /// Сервис не отвечает
@@ -151,6 +161,52 @@ namespace WPFClient.Additional
                 throw; ///Неизвестное исключение пробасывается дальше
             }
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("AllData"));
+        }
+
+        List<VersionedMessage> CreateVersionedMessages(List<Message> messages)
+        {
+            List<VersionedMessage> versionedMessages = new List<VersionedMessage>();
+            foreach (Message item in messages)
+            {
+                VersionedEmployee versionedEmployee = CreateVersionedEmployee(item.Sender);
+                List<VersionedRecipient> versionedRecipients = CreateVersionedRecipients(item.Recipients);
+
+                versionedMessages.Add(new VersionedMessage
+                {
+                    Id = (int)item.Id,
+                    Recipients = versionedRecipients,
+                    Sender = versionedEmployee,
+                    Version = item.Version
+                });
+                
+            }
+            return versionedMessages;
+        }
+
+
+        List<VersionedRecipient> CreateVersionedRecipients(List<Recipient> recipients)
+        {
+            List<VersionedRecipient> versionedRecipients = new List<VersionedRecipient>();
+            foreach(Recipient item in recipients)
+            {
+                versionedRecipients.Add(
+                    new VersionedRecipient()
+                    {
+                        MessageId = (int)item.MessageId,
+                        RecipientUsername = item.RecipientUsername,
+                        Version = item.Version
+                    });
+            }
+            return versionedRecipients;
+        }
+
+        VersionedEmployee CreateVersionedEmployee(Employee employee)
+        {
+            return new VersionedEmployee()
+            {
+                Username = employee.Username,
+                Version = employee.Version,
+            };
         }
 
         void HandleDownloadDataException(Exception ex)
@@ -193,17 +249,17 @@ namespace WPFClient.Additional
 
         public List<Message> GetInboxMessages()
         {
-            return inboxMessages;         
+            return null;//inboxMessages;         
         }
 
         public List<Message> GetDeletedInboxMessages()
         {
-            return deletedInboxMessages;
+            return null;// deletedInboxMessages;
         }
 
         public List<Message> GetSentboxMessages()
         {
-            return sentboxMessages;
+            return null;// sentboxMessages;
         }
 
         public void SetRecipientViewed(int messageId, bool viewed)
@@ -221,14 +277,9 @@ namespace WPFClient.Additional
             return deletedSentboxMessages;
         }
 
-
-
-
-
-        public List<Message> GetMessages(Folder folder, bool deleted, bool viewed)
+        public MessagesPack GetMessages(Folder folder, bool deleted, bool viewed, List<Entities.Additional.VersionedMessage> sourceCollection)
         {
-            return Proxy.GetMessages(Folder.inbox, false, false);
+            return null;
         }
     }
 }
-

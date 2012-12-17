@@ -3,9 +3,7 @@
 
 !!!
 - PrepareEmployeeClass убрать свойсвам атрибут static
-- бага RecipientEmployeeEditor
 - exception handlers descriptions
-- принудительное обновление
  
 ####
 i)ValidationRule вызывается только при пользовательском вводе,

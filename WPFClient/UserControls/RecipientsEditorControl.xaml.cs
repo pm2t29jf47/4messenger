@@ -131,7 +131,7 @@ namespace WPFClient.UserControls
       
         void OnAllEmployeesListBoxPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            DoDrag(sender, e);
+            DoDrag(sender, e);     
         }
 
         ListBox DraggedListBox;
@@ -149,7 +149,7 @@ namespace WPFClient.UserControls
                     {
                         List<Employee> dataToSend = GetSelectedItems(parent);
                         DraggedListBox = parent;
-                        DragDrop.DoDragDrop(parent, dataToSend, DragDropEffects.Move);
+                        DragDrop.DoDragDrop(parent, dataToSend, DragDropEffects.Move);                      
                     }
                 }
             }
@@ -178,7 +178,7 @@ namespace WPFClient.UserControls
             int indexUnderMouse = this.GetCurrentIndex(target, e.GetPosition);
             if(indexUnderMouse < 0)
             {
-                indexUnderMouse = target.Items.Count;
+                indexUnderMouse = target.Items.Count == 0 ? 0 : target.Items.Count - 1;
             }           
             List<Employee> externalSelectedEmployees = (List<Employee>)e.Data.GetData(typeof(List<Employee>));
             ObservableCollection<Employee> sourceListBoxCollection = (ObservableCollection<Employee>)source.ItemsSource;
@@ -208,6 +208,10 @@ namespace WPFClient.UserControls
 
         void InsertCollection(List<Employee> source, ObservableCollection<Employee> target, int index)
         {
+            if (target.Count <= index)
+            {
+                index =  target.Count == 0 ? 0 : target.Count - 1;
+            }
             foreach (Employee item in source)
             {
                 target.Insert(index++, item);

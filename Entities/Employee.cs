@@ -15,7 +15,7 @@ namespace Entities
     /// Класс представляющий строку таблицы Employee
     /// </summary>  
     [DataContract]
-    public class Employee
+    public class Employee : Entity
     {
         /// <summary>
         /// Основной конструктор
@@ -62,9 +62,6 @@ namespace Entities
         /// </summary>
         [DataMember]
         public string Role { get; set; }
-
-        [DataMember]
-        public byte[] Version { get; set; }
 
         [DataMember]
         public List<Message> Sent { get; set; }

@@ -43,8 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Additional\EmployeePack.cs" />
     <Compile Include="Additional\MessagesPack.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="Entity.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recipient.cs" />

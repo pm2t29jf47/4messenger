@@ -98,6 +98,31 @@ namespace DataSourceLayer
             }
         }
 
+        public static List<string> SelectIds(string connectionUsername)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("select_employee;3", GetConnection(connectionUsername)))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result.Add(reader["Username"].ToString());
+                        }
+                        return result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExcepion(ex, "(Employee)DataSourceLayer.EmployeeGateway.SelectByUsername(string selectableUsername, string username)");
+                throw;
+            }
+        }
+
         /// <summary> 
         /// Создает объек типа Employee по данным из таблицы 
         /// </summary>

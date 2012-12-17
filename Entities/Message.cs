@@ -11,7 +11,7 @@ namespace Entities
     /// Класс представляющий строку таблицы Message 
     /// </summary>
     [DataContract]
-    public class Message
+    public class Message : Entity
     {
         /// <summary>
         /// Основной конструктор
@@ -64,9 +64,6 @@ namespace Entities
         /// </summary>
         [DataMember]
         public bool Deleted { get; set; }
-
-        [DataMember]
-        public byte[] Version { get; set; }
 
         [DataMember]
         //public Employee FKEmployee_SenderUsername { get; set; }

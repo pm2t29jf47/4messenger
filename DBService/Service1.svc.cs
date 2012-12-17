@@ -23,10 +23,35 @@ namespace DBService
     public class Service1 : IService1
     {
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public List<Employee> GetAllEmployees()
+        public EmployeePack GetAllEmployees(byte[] recentVersion)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return EmployeeGateway.SelectAll(currentUsername);
+            List<Employee> allEmployees = EmployeeGateway.SelectAll(currentUsername);
+            EmployeePack pack = new EmployeePack();
+            pack.Employees = GetRecentVersionEmployees(allEmployees, recentVersion);
+            pack.CountInDB = allEmployees.Count;
+            return pack;
+        }
+
+        List<Employee> GetRecentVersionEmployees(List<Employee> employees, byte[] recentVersion)
+        {
+            List<Employee> result = new List<Employee>();
+            SqlBinary sqlRecentVersion = new SqlBinary(recentVersion);
+            foreach (Employee item in employees)
+            {
+                SqlBinary sqlCurrentVersion = new SqlBinary(item.Version);
+                if (sqlCurrentVersion.CompareTo(sqlRecentVersion) > 0)
+                {
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
+
+        public List<string> GetAllEmployeesIds()
+        {
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            return EmployeeGateway.SelectIds(currentUsername);           
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
@@ -134,7 +159,7 @@ namespace DBService
             MessagesPack messagesPack = new MessagesPack();
             //Сумма Id всех полученных сообщений
             messagesPack.CountInDB = recievedMessages.Count();
-            ///Сообщения с версией выше чем у клиента
+            ///Сообщения с версией выше чем у клиента  
             messagesPack.Messages = GetRecentVersionMessages(recievedMessages, recentVersion);
             ///Звполнить Sender, Recipients
             foreach (Message item in messagesPack.Messages)
@@ -156,7 +181,7 @@ namespace DBService
                 FillMessage(item, currentUsername);
             }
             return messagesPack;
-        } 
+        }
 
         List<Message> GetRecentVersionMessages(List<Message> messages, byte[] recentVersion)
         {
@@ -209,5 +234,7 @@ namespace DBService
             }
             return recievedMessagesIds;
         }
+
+
     }
 }

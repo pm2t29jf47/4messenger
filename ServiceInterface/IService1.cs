@@ -22,7 +22,10 @@ namespace ServiceInterface
         /// Возвращает коллекцию содержащую всех сотрудников 
         /// </summary>
         [OperationContract]
-        List<Employee> GetAllEmployees();
+        EmployeePack GetAllEmployees(byte[] recentVersion);
+
+        [OperationContract]
+        List<string> GetAllEmployeesIds();
 
         /// <summary>
         /// Возвращает сотрудника по его иднтификатору

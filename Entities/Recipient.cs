@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Entities
 {
     [DataContract]
-    public class Recipient
+    public class Recipient : Entity
     {
         /// <summary>
         /// Основной конструктор
@@ -47,9 +47,6 @@ namespace Entities
         /// </summary>
         [DataMember]
         public bool Viewed { get; set; }
-
-        [DataMember]
-        public byte[] Version { get; set; }
 
         [DataMember]
         public Employee RecipientEmployee { get; set; } 

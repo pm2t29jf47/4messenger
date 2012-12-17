@@ -130,7 +130,7 @@ namespace WPFClient.Additional
             try
             {
                 DataDownloadException = null;
-                AllEmployees = Proxy.GetAllEmployees(); //?   
+                UpdateEmployees(AllEmployees);   
 
                 MessageTypes messageTypes = new MessageTypes();
                 UpdateMessages(FolderType.inbox,messageTypes, InboxMessages);
@@ -179,25 +179,38 @@ namespace WPFClient.Additional
             }            
         }
 
-        void UpdateMessages(FolderType folderType,MessageTypes messageTypes, List<Message> messages)
+        void UpdateEmployees(List<Employee> employees)
         {
-            byte[] recentVersion;
-            MessagesPack pack;
-            recentVersion = GetMaxTimestamp(messages);
-            pack = Proxy.GetMessages(folderType, messageTypes, recentVersion);
-            if (!UpdateCollectionByPack(pack, messages))
+            List<Entity> entities = new List<Entity>();
+            entities.AddRange(employees);
+            byte[] recentVersion = GetMaxTimestamp(entities);
+            EmployeePack pack = Proxy.GetAllEmployees(recentVersion);
+            if (!UpdateEmployeesByPack(pack, employees))
             {
-                List<int> idCollection = Proxy.GetMessagesIds(folderType, messageTypes);
-                TrimCollection(idCollection, messages);
+                List<string> usernamesCollection = Proxy.GetAllEmployeesIds();
+                TrimEmployees(usernamesCollection, employees);
             }
         }
 
-        byte[] GetMaxTimestamp(List<Message> messages)
+        void UpdateMessages(FolderType folderType,MessageTypes messageTypes, List<Message> messages)
+        {
+            List<Entity> entities = new List<Entity>();
+            entities.AddRange(messages);
+            byte[] recentVersion = GetMaxTimestamp(entities); 
+            MessagesPack pack = Proxy.GetMessages(folderType, messageTypes, recentVersion);
+            if (!UpdateMessagesByPack(pack, messages))
+            {
+                List<int> idCollection = Proxy.GetMessagesIds(folderType, messageTypes);
+                TrimMessages(idCollection, messages);
+            }
+        }
+
+        byte[] GetMaxTimestamp(List<Entity> Entities)
         {
             byte[] currentMax = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
             SqlBinary sqlCurrentMax = new SqlBinary(currentMax);
             SqlBinary sqlCurrent;
-            foreach (Message item in messages)
+            foreach (Entity item in Entities)
             {
                 sqlCurrent = new SqlBinary(item.Version);
                 if (sqlCurrentMax.CompareTo(sqlCurrent) < 0)
@@ -206,7 +219,7 @@ namespace WPFClient.Additional
             return sqlCurrentMax.Value;
         }
 
-        bool UpdateCollectionByPack(MessagesPack pack, List<Message> messages)
+        bool UpdateMessagesByPack(MessagesPack pack, List<Message> messages)
         {
             if (pack.Messages.Count > 0)
             {
@@ -230,7 +243,31 @@ namespace WPFClient.Additional
             return (messages.Count == pack.CountInDB);
         }
 
-        void TrimCollection(List<int> ids, List<Message> messages)
+        bool UpdateEmployeesByPack(EmployeePack pack, List<Employee> employees)
+        {
+            if (pack.Employees.Count > 0)
+            {
+                Employee employee;
+                foreach (Employee item in pack.Employees)
+                {
+                    employee = employees.FirstOrDefault(row => string.Compare(row.Username, item.Username) == 0);
+                    if (employee == null)
+                    {
+                        employees.Add(item);
+                    }
+                    else
+                    {
+                        employees.Remove(employee);
+                        employees.Add(item);
+                    }
+                }
+                /// Восстанавливаем нормальный порядок
+                employees = employees.OrderBy(row => row.SecondName).ToList();
+            }
+            return (employees.Count == pack.CountInDB);
+        }
+
+        void TrimMessages(List<int> ids, List<Message> messages)
         {
             List<Message> removed = new List<Message>();
             foreach (Message item in messages)
@@ -243,6 +280,22 @@ namespace WPFClient.Additional
             foreach (Message item in removed)
             {
                 messages.Remove(item);
+            }
+        }
+
+        void TrimEmployees(List<string> usernames, List<Employee> employees)
+        {
+            List<Employee> removed = new List<Employee>();
+            foreach (Employee item in employees)
+            {
+                if (!usernames.Contains(item.Username))
+                {
+                    removed.Add(item);
+                }
+            }
+            foreach (Employee item in removed)
+            {
+                employees.Remove(item);
             }
         }
 

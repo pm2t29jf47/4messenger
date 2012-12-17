@@ -125,6 +125,14 @@ namespace WPFClient.Additional
             CreateDataUpdatedEvent(new PropertyChangedEventArgs("AllData"));
         }
 
+        public void ForceDataDownload()
+        {
+            timer.Stop();
+            DownloadData();
+            timer.Start();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("AllData"));
+        }
+
         void DownloadData()
         {
             try

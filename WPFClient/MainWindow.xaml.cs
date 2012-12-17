@@ -29,15 +29,6 @@ using System.Collections;
 
 namespace WPFClient
 {
-    [Flags]
-    public enum MessageFlags
-    {
-        Deleted = 1,
-        Viewed = 2,
-        Flagged = 4,
-        ResponceRequired = 8
-    }
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -85,7 +76,13 @@ namespace WPFClient
             PrepareEmployeeClass();
             CreateServiceWatcherHandler();
             App.ServiceWatcher.CreateChannel();
-            App.ServiceWatcher.StartWatching();            
+            App.ServiceWatcher.StartWatching();    
+            MessageList.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(OnMessageListLostKeyboardFocus);
+        }
+
+        void OnMessageListLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            int a = 10;
         }
 
         void PrepareWindow()
@@ -115,7 +112,7 @@ namespace WPFClient
              {
                  DisabledImage = @"Images\mail_new_disabled.png",
                  EnabledImage = @"Images\mail_new.png",
-                 IsEnabled = false
+                 IsEnabled = true
              };
              ReplyMessageButton.DataContext = new ButtonModel()
              {
@@ -168,12 +165,12 @@ namespace WPFClient
             if (MessageList.SelectedItem != null)
             {
                 CheckToolbarButtonsStateByMessageListClick();
-                MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;                
+                MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;
                 if ((selectedFolder is InboxFolder || selectedFolder is DeletedFolder)
                     && selectedMessageModel.Viewed == false)
                 {
                     messageViewedTimer.Stop();
-                    this.singleSelectedInMessageList = selectedMessageModel;                    
+                    this.singleSelectedInMessageList = selectedMessageModel;
                     messageViewedTimer.Start();
                 }
                 MessageControl.DataContext = new MessageControlModel()
@@ -181,6 +178,11 @@ namespace WPFClient
                     AllEmployees = App.ServiceWatcher.AllEmployees,
                     Message = selectedMessageModel.Message
                 };
+            }
+            else
+            {
+                CheckToolbarButtonsStateByFolderClick(); 
+                MessageControl.DataContext = null;
             }
         }
 
@@ -228,6 +230,7 @@ namespace WPFClient
                 try
                 {
                     App.ServiceWatcher.SetRecipientViewed(selectedMessageId, true);
+                    App.ServiceWatcher.ForceDataDownload();
                 }
 
                 /// Сервис не отвечает
@@ -346,7 +349,8 @@ namespace WPFClient
 
         void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            DeleteMessages();   
+            DeleteMessages();
+            App.ServiceWatcher.ForceDataDownload();
         }
 
         void DeleteMessages()
@@ -359,11 +363,11 @@ namespace WPFClient
                     {
                         return;
                     }
-                    RemoveMessagesPermanently(MessageList.SelectedItems);
+                    DeleteMessagesPermanently(MessageList.SelectedItems);
                 }
                 else
                 {
-                    RemoveMessagesTemporarily(MessageList.SelectedItems);
+                    DeleteMessagesTemporarily(MessageList.SelectedItems);
                 }
             }
             /// Сервис не отвечает
@@ -404,7 +408,7 @@ namespace WPFClient
             statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
         }
 
-        void RemoveMessagesPermanently(IList models)
+        void DeleteMessagesPermanently(IList models)
         {
             foreach (MessageListItemModel item in models)
             {
@@ -419,7 +423,7 @@ namespace WPFClient
             }
         }
 
-        void RemoveMessagesTemporarily(IList models)
+        void DeleteMessagesTemporarily(IList models)
         {
             foreach (MessageListItemModel item in models)
             {
@@ -437,6 +441,7 @@ namespace WPFClient
         void OnRecoverMessageButtonClick(object sender, RoutedEventArgs e)
         {
             RecoverMessages();
+            App.ServiceWatcher.ForceDataDownload();
         }
 
         private void RecoverMessages()

@@ -2,10 +2,7 @@
 - SqlMembershipProvider
 
 !!!
-
 - PrepareEmployeeClass убрать свойсвам атрибут static
-- триггеры на пикчи кнопок в mainwindow
-- Service1.SetRecipientDeleted
 - бага RecipientEmployeeEditor
 - exception handlers descriptions
 - принудительное обновление

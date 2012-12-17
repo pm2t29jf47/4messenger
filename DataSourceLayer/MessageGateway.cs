@@ -69,6 +69,8 @@ namespace DataSourceLayer
                 {
                     Direction = ParameterDirection.Output
                 });
+            cmd.Parameters.Add(
+                new SqlParameter("@lastUpdate", SqlDbType.DateTime));
         }
 
         /// <summary> 
@@ -81,6 +83,7 @@ namespace DataSourceLayer
             cmd.Parameters["@senderUsername"].Value = message.SenderUsername;
             cmd.Parameters["@content"].Value = message.Content;
             cmd.Parameters["@deleted"].Value = false;
+            cmd.Parameters["@lastUpdate"].Value = DateTime.Now;
         }
 
         /// <summary>

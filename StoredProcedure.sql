@@ -210,6 +210,7 @@ CREATE procedure insert_message
 	@content nvarchar(1000),
 	@senderUsername	nvarchar(50),
 	@deleted bit,
+	@lastUpdate datetime,
 	@id int output	
 )
 as
@@ -218,14 +219,16 @@ as
 	[Date],
 	Content,
 	SenderUsername,
-	Deleted
+	Deleted,
+	LastUpdate
 	)
 	values(
 	@title,
 	@date,
 	@content,
 	@senderUsername,
-	@deleted
+	@deleted,
+	@lastUpdate
 	)
 	select @id = Id
 	from Message 
@@ -234,6 +237,7 @@ as
 	AND SenderUsername = @senderUsername
 	AND Deleted = @deleted
 	AND Content = @content
+	AND LastUpdate = @lastUpdate
 GO
   
 /*==============================================================*/

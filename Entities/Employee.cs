@@ -67,10 +67,10 @@ namespace Entities
         public byte[] Version { get; set; }
 
         [DataMember]
-        public List<Message> SentMessages { get; set; }
+        public List<Message> Sent { get; set; }
 
         [DataMember]
-        public List<Recipient> InRecipients { get; set; }
+        public List<Recipient> Recipients { get; set; }
 
         /************************************************************/
 

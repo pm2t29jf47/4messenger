@@ -19,12 +19,12 @@ namespace DataSourceLayer
         /// <summary> 
         /// Возвращает коллекцию всех сотрудников
         /// </summary>
-        public static List<Employee> SelectAll(string username)
+        public static List<Employee> SelectAll(string connectionUsername)
         {
             List<Employee> rows = new List<Employee>();
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select_employee;1", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("select_employee;1", GetConnection(connectionUsername)))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     using (var reader = cmd.ExecuteReader())
@@ -48,13 +48,13 @@ namespace DataSourceLayer
         /// Возвращает объект Employee с заполненым полем пароля
         /// </summary>
         /// <param name="authenticationUsername"></param>
-        /// <param name="username"></param>
+        /// <param name="connectionUsername"></param>
         /// <returns></returns>
-        public static Employee SelectSecurity(string authenticationUsername, string username)
+        public static Employee SelectSecurity(string authenticationUsername, string connectionUsername)
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select_employee;2", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("select_employee;2", GetConnection(connectionUsername)))
                 {
                     PrepareSE2(cmd, authenticationUsername);
                     using (var reader = cmd.ExecuteReader())
@@ -77,11 +77,11 @@ namespace DataSourceLayer
         /// <param name="id"></param>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static Employee SelectByUsername(string selectableUsername, string username)
+        public static Employee Select(string selectableUsername, string connectionUsername)
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select_employee;2", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("select_employee;2", GetConnection(connectionUsername)))
                 {
                     PrepareSE2(cmd, selectableUsername);
                     using (var reader = cmd.ExecuteReader())

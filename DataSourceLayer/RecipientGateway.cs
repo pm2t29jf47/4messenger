@@ -19,14 +19,15 @@ namespace DataSourceLayer
         /// Добавляет нового адресата к письму
         /// </summary>
         /// <param name="recipient"></param>
-        public static void Insert(Recipient recipient, string username)
+        public static void Insert(Recipient recipient, string connectionUsername)
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("insert_recipient", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("insert_recipient", GetConnection(connectionUsername)))
                 {
                     PrepareIR(cmd, recipient);
                     cmd.ExecuteNonQuery();
+                    MessageGateway.Update((int)recipient.MessageId, connectionUsername);
                 }
             }
             catch (Exception ex)
@@ -77,14 +78,14 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static List<Recipient> Select(string username, bool deleted, bool viewed)
+        public static List<Recipient> Select(string recipientUsername, string connectionUsername, bool deleted, bool viewed)
         {
             List<Recipient> rows = new List<Recipient>();
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select_recipient;1", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("select_recipient;1", GetConnection(connectionUsername)))
                 {
-                    PrepareSR1(cmd, username,deleted,viewed);
+                    PrepareSR1(cmd, recipientUsername, deleted, viewed);
                     using (var reader = cmd.ExecuteReader())
                         while (reader.Read())
                             rows.Add(CreateRecipient(reader));
@@ -121,12 +122,12 @@ namespace DataSourceLayer
         /// <param name="messageId"></param>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static List<Recipient> SelectByMessageId(int messageId, string username)
+        public static List<Recipient> Select(int messageId, string connectionUsername)
         {
             List<Recipient> rows = new List<Recipient>();
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select_recipient;2", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("select_recipient;2", GetConnection(connectionUsername)))
                 {
                     PrepareSR2(cmd, messageId);
                     using (var reader = cmd.ExecuteReader())
@@ -161,14 +162,15 @@ namespace DataSourceLayer
         /// <param name="username"></param>
         /// <param name="messageId"></param>
         /// <param name="viewed"></param>
-        public static void UpdateViewed(string username, int messageId, bool viewed)
+        public static void Update(string recipientUsername, int messageId, bool viewed, string connectionUsername)
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("update_recipient;1", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("update_recipient;1", GetConnection(connectionUsername)))
                 {
-                    PrepareUR1(cmd, username, messageId, viewed);
+                    PrepareUR1(cmd, recipientUsername, messageId, viewed);
                     cmd.ExecuteNonQuery();
+                    MessageGateway.Update(messageId, connectionUsername);
                 }
             }
             catch (Exception ex)

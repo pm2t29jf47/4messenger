@@ -153,7 +153,7 @@
                 </Grid>
             </Border>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Path=IsViewed, Mode=OneWay}" Value="False">
+                <DataTrigger Binding="{Binding Path=Viewed, Mode=OneWay}" Value="False">
                     <Setter TargetName="MessageImage" Property="Source" Value="Images\mail2.png"></Setter>
                     <Setter Property="ListBoxItem.Foreground" Value="Red"></Setter>
                 </DataTrigger>

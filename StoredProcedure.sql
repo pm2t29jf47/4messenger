@@ -152,6 +152,28 @@ AS
 	AND Deleted = @deleted
 GO
 
+/*==============================================================*/
+/* Выводит Id сообщений по отправителю                          */
+/*==============================================================*/
+CREATE PROCEDURE select_message;3
+(@senderUsername nvarchar(50),
+@deleted bit)
+AS
+	SELECT Id
+	FROM Message
+	WHERE SenderUsername = @senderUsername
+	AND Deleted = @deleted
+GO
+
+CREATE PROCEDURE update_message;1
+(@id int,
+@lastUpdate datetime)
+AS
+	UPDATE Message
+	SET LastUpdate = @lastUpdate
+	WHERE Id = @id
+GO
+
 /***************************************************************************************************************/
 
 /*==============================================================*/
@@ -167,4 +189,4 @@ AS
 	WHERE 	RecipientUsername = @recipientUsername
 	AND MessageId = @messageId
 GO
-	
+

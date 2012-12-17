@@ -7,6 +7,7 @@
 - триггеры на пикчи кнопок в mainwindow
 - Service1.SetRecipientDeleted
 - бага RecipientEmployeeEditor
+- exception handlers desc
  
 ####
 i)ValidationRule вызывается только при пользовательском вводе,

@@ -16,24 +16,32 @@ namespace WPFClient.SidebarFolders
 
         public override List<MessageListItemModel> GetFolderContent()
         {
-            List<Message> deletedInboxMessages = App.ServiceWatcher.GetDeletedInboxMessages();
-            List<Message> deletedSentboxMessages = App.ServiceWatcher.GetDeletedSentboxMessages();
-            List<MessageListItemModel> messageModels = new List<MessageListItemModel>();
-            foreach (Message item in deletedInboxMessages)
+            List<MessageListItemModel> messageModels = new List<MessageListItemModel>();  
+            foreach (Message item in App.ServiceWatcher.DeletedInboxMessages)
             {
                 messageModels.Add(
                     new MessageListItemModel()
                     {
                         Message = item,
-                        IsViewed = IsViewedMessage(item)
+                        Viewed = false
                     });
             }
-            foreach (Message item in deletedSentboxMessages)
+            foreach( Message item in App.ServiceWatcher.ViewedDeletedInboxMessages)
             {
                 messageModels.Add(
                     new MessageListItemModel()
                     {
-                        Message = item                        
+                        Message = item,
+                        Viewed = true
+                    });
+            }
+            foreach (Message item in App.ServiceWatcher.DeletedSentboxMessages)
+            {
+                messageModels.Add(
+                    new MessageListItemModel()
+                    {
+                        Message = item,
+                        Viewed = true
                     });
             }            
             return messageModels;

@@ -30,7 +30,7 @@ namespace WPFClient
         {
             InitializeComponent();
             this.Title = Properties.Resources.Login;
-            UsernameTexbox.Text = "Ivan1";
+            UsernameTexbox.Text = "ivan1";
             PasswordTexbox.Password = "111";
         }
 
@@ -45,7 +45,7 @@ namespace WPFClient
                 };
 
                 ///quick login
-                App.ServiceWatcher.FactoryUsername = "Ivan1";
+                App.ServiceWatcher.FactoryUsername = "ivan1";
                 App.ServiceWatcher.FactoryPassword = "111";
                 ///
 

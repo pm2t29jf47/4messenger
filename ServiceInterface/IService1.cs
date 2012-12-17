@@ -63,10 +63,16 @@ namespace ServiceInterface
         void SetRecipientDeleted(int messageId, bool deleted);
 
         [OperationContract]
-        MessagesPack GetMessages(Folder folder, bool deleted, bool viewed, List<VersionedMessage> sourceCollection);
+        MessagesPack GetMessages(FolderType folderType, MessageTypes messageTypes, Byte[] recentVersion);
+
+        [OperationContract]
+        List<int> GetMessagesIds(FolderType folderType, MessageTypes messageTypes);
          
     }
 
-    public enum Folder { inbox, sentbox };       
+    public enum FolderType { inbox, sentbox }; 
+    
+    [ Flags ]
+    public enum MessageTypes { deleted = 1, viewed = 2};
     
 }

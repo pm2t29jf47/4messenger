@@ -19,11 +19,11 @@ namespace DataSourceLayer
         /// <summary> 
         /// Производит вставку письма в таблицу 
         /// </summary>
-        public static int Insert(Message message, string username)
+        public static int Insert(Message message, string connectionUsername)
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("insert_message", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("insert_message", GetConnection(connectionUsername)))
                 {
                     PrepareIM(cmd, message);                    
                     cmd.ExecuteNonQuery();
@@ -87,16 +87,15 @@ namespace DataSourceLayer
         /// Возвращает сообщение по его идентификатору 
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="username"></param>
+        /// <param name="connectionUsername"></param>
         /// <returns></returns>
-        public static Message SelectById(int id, string username)
+        public static Message Select(int id, string connectionUsername)
         {          
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select_message;1", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("select_message;1", GetConnection(connectionUsername)))
                 {
-                    PrepareSM1(cmd, id);           
-                    Message msg;
+                    PrepareSM1(cmd, id);   
                     using (var reader = cmd.ExecuteReader())
                     {
                         reader.Read();
@@ -116,14 +115,14 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static List<Message> SelectBy_SenderUsername_Deleted(string username, bool deleted)
+        public static List<Message> Select(string senderUsername ,string connectionUsername, bool deleted)
         {
             List<Message> rows = new List<Message>();
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select_message;2", GetConnection(username)))
+                using (SqlCommand cmd = new SqlCommand("select_message;2", GetConnection(connectionUsername)))
                 {
-                    PrepareSM2(cmd, username, deleted);
+                    PrepareSM2(cmd, senderUsername, deleted);
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -142,6 +141,55 @@ namespace DataSourceLayer
         }
 
         /// <summary>
+        /// Возвращает коллекцию Id отправленных сообщений
+        /// </summary>
+        /// <param name="senderUsername"></param>
+        /// <param name="connectionUsername"></param>
+        /// <param name="deleted"></param>
+        /// <returns></returns>
+        public static List<int> SelectIds(string senderUsername, string connectionUsername, bool deleted)
+        {
+            List<int> rows = new List<int>();
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("select_message;3", GetConnection(connectionUsername)))
+                {
+                    PrepareSM2(cmd, senderUsername, deleted);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            rows.Add(int.Parse(reader["Id"].ToString()));
+                        }
+                    }
+                    return rows;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExcepion(ex, "(List<int>)DataSourceLayer.MessageGateway.SelectIds(string senderUsername, string connectionUsername, bool deleted)");
+                throw;
+            }
+        }
+
+        public static void Update(int id, string connectionUsername)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("select_message;3", GetConnection(connectionUsername)))
+                {
+                    PrepareUM1(cmd, id, DateTime.Now);
+                    cmd.ExecuteNonQuery();                   
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExcepion(ex, "(List<int>)DataSourceLayer.MessageGateway.SelectIds(string senderUsername, string connectionUsername, bool deleted)");
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Подготавливает команду для выполнения ХП select_message;2 (SM2)
         /// </summary>
         /// <param name="cmd"></param>
@@ -153,6 +201,15 @@ namespace DataSourceLayer
             cmd.Parameters.Add(new SqlParameter("@deleted", SqlDbType.Bit));
             cmd.Parameters["@senderUsername"].Value = username;
             cmd.Parameters["@deleted"].Value = deleted;
+        }
+
+        private static void PrepareUM1(SqlCommand cmd, int id, DateTime lastUpdate)
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int, 50));
+            cmd.Parameters.Add(new SqlParameter("@lastUpdate", SqlDbType.DateTime));
+            cmd.Parameters["@id"].Value = id;
+            cmd.Parameters["@lastUpdate"].Value = lastUpdate;
         }
 
         /// <summary>

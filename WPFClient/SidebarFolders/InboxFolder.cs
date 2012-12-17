@@ -16,29 +16,33 @@ namespace WPFClient.SidebarFolders
 
         public override List<MessageListItemModel> GetFolderContent()
         {
-            List<Message> inboxMessages = App.ServiceWatcher.GetInboxMessages();    
             List<MessageListItemModel> messageModels = new List<MessageListItemModel>();
-            foreach (Message item in inboxMessages)
+            foreach (Message item in App.ServiceWatcher.InboxMessages)
             {
                 messageModels.Add(
                     new MessageListItemModel()
                     {
                         Message = item,
-                        IsViewed = IsViewedMessage(item)
+                        Viewed = false
                     });
             }
+            foreach (Message item in App.ServiceWatcher.ViewedInboxMessages)
+            {
+                messageModels.Add(
+                    new MessageListItemModel()
+                    {
+                        Message = item,
+                        Viewed = true
+                    });
+            }
+            messageModels = messageModels.OrderBy(row => row.Date).ToList();
             return messageModels;
         }
 
         public void RefreshCountOfUnViewedMessages()
         {
-            int result = 0;
-            List<Message> inboxMessages = App.ServiceWatcher.GetInboxMessages();
-            foreach (Message item in inboxMessages)
-            {
-                if (!IsViewedMessage(item))
-                    result++;
-            }
+            int result = App.ServiceWatcher.InboxMessages.Count;
+            
             if (CountOfUnviewedMessages != result)
             {
                 CountOfUnviewedMessages = result;                

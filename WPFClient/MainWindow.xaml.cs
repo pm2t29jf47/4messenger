@@ -50,23 +50,17 @@ namespace WPFClient
 
         SidebarFolder selectedFolder;
 
-        DispatcherTimer messageIsViewedTimer = new System.Windows.Threading.DispatcherTimer()
+        DispatcherTimer messageViewedTimer = new System.Windows.Threading.DispatcherTimer()
         {
             Interval = App.timePerMessageSetViewed
-        };
-
-        public void ololo(MessageFlags ff)
-        {
-            int a = 10;
-        }
+        };     
 
         public MainWindow()
         {
             Loaded += new RoutedEventHandler(OnMainWindowLoaded);
-            messageIsViewedTimer.Tick += new EventHandler(OnmessageIsViewedTimerTick);
+            messageViewedTimer.Tick += new EventHandler(OnmessageViewedTimerTick);
             SetCulture("ru");
-            InitializeComponent();
-            ololo(MessageFlags.Deleted | MessageFlags.Flagged);
+            InitializeComponent();            
         }
 
         void SetCulture(string culture)
@@ -124,8 +118,7 @@ namespace WPFClient
         {
             folders.Add(new InboxFolder());
             folders.Add(new SentboxFolder());
-            folders.Add(new DeletedFolder());
-           
+            folders.Add(new DeletedFolder());           
         }
 
         void ShowLoginWindow()
@@ -148,15 +141,15 @@ namespace WPFClient
                 CheckDeleteReplyButtonsState();
                 MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;                
                 if ((selectedFolder is InboxFolder || selectedFolder is DeletedFolder)
-                    && selectedMessageModel.IsViewed == false)
+                    && selectedMessageModel.Viewed == false)
                 {
-                    messageIsViewedTimer.Stop();
+                    messageViewedTimer.Stop();
                     this.singleSelectedInMessageList = selectedMessageModel;                    
-                    messageIsViewedTimer.Start();
+                    messageViewedTimer.Start();
                 }
                 MessageControl.DataContext = new MessageControlModel()
                 {
-                    AllEmployees = App.ServiceWatcher.GetAllEmployees(),
+                    AllEmployees = App.ServiceWatcher.AllEmployees,
                     Message = selectedMessageModel.Message
                 };
             }
@@ -187,14 +180,14 @@ namespace WPFClient
             } 
         }
 
-        void OnmessageIsViewedTimerTick(object sender, EventArgs e)
+        void OnmessageViewedTimerTick(object sender, EventArgs e)
         {
             SetMessageViewed();     
         }
 
         void SetMessageViewed()
         {
-            messageIsViewedTimer.Stop();
+            messageViewedTimer.Stop();
             MessageListItemModel selectedMessage = (MessageListItemModel)MessageList.SelectedItem;
             if (this.singleSelectedInMessageList.Equals(selectedMessage)
                 && selectedMessage != null)
@@ -279,7 +272,7 @@ namespace WPFClient
         /// <param name="e"></param>
         public void OnFolderClick(object sender, RoutedEventArgs e)
         {
-            messageIsViewedTimer.Stop();
+            messageViewedTimer.Stop();
             MessageList.SelectedItems.Clear();
             LoadFolderData(sender);
             
@@ -324,7 +317,7 @@ namespace WPFClient
                 Deleted = false,
                 SenderUsername = App.ServiceWatcher.FactoryUsername,
                 Title = string.Empty,
-                Sender = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0),
+                Sender = App.ServiceWatcher.AllEmployees.FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0),
                 Recipients = new List<Recipient>()
             };
              CreateMessageCreatorWindow(message);
@@ -349,7 +342,7 @@ namespace WPFClient
                 SenderUsername = App.ServiceWatcher.FactoryUsername,
                 Title = newTitle,
                 Recipients = recipients,
-                Sender = App.ServiceWatcher.GetAllEmployees().FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0)
+                Sender = App.ServiceWatcher.AllEmployees.FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0)
             };
             CreateMessageCreatorWindow(message);
         }
@@ -359,7 +352,7 @@ namespace WPFClient
             MessageCreator messageCreator = new MessageCreator();
             messageCreator.DataContext = new MessageCreatorModel()
             {
-                AllEmployees = App.ServiceWatcher.GetAllEmployees(),
+                AllEmployees = App.ServiceWatcher.AllEmployees,
                 Message = message,
                 StatusBar = this.StatusBar
             };

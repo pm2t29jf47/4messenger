@@ -10,18 +10,27 @@ using DBService;
 using System.ComponentModel;
 using System.ServiceModel;
 using ServiceInterface;
+using System.Data.SqlTypes;
 
 namespace WPFClient.Additional
 {
     /// <summary>
     /// im watching u!
     /// </summary>
-    public class ServiceWatcher : IService1
+    public class ServiceWatcher
     {  
         public ServiceWatcher( TimeSpan timeSpan)
         {
-            timer.Interval = timeSpan;
-            timer.Tick += new EventHandler(OntimerTick);
+            this.timer.Interval = timeSpan;
+            this.timer.Tick += new EventHandler(OntimerTick);
+            this.AllEmployees = new List<Employee>();
+            this.InboxMessages = new List<Message>();
+            this.SentboxMessages = new List<Message>();
+            this.DeletedInboxMessages = new List<Message>();
+            this.DeletedSentboxMessages = new List<Message>();
+            this.ViewedDeletedInboxMessages = new List<Message>();
+            this.ViewedInboxMessages = new List<Message>();
+           
         }
      
         public void StartWatching()
@@ -89,28 +98,31 @@ namespace WPFClient.Additional
         }
   
 
-        public Exception DataDownloadException { get; set; } 
+        public Exception DataDownloadException { get; private set; }
 
-        List<Employee> allEmployees = new List<Employee>();
+        public List<Employee> AllEmployees { get; private set; }
 
-        List<Message> undeletedUnviewedInboxMessages = new List<Message>();
+        public List<Message> InboxMessages { get; private set; }
 
-        List<Message> undeletedViewedInboxMessages = new List<Message>();
+        public List<Message> ViewedInboxMessages { get; private set; }
 
-        List<Message> deletetUnviewedInboxMessages = new List<Message>();
+        public List<Message> DeletedInboxMessages { get; private set; }
 
-        List<Message> deletedViewedInboxMessages = new List<Message>();
+        public List<Message> ViewedDeletedInboxMessages { get; private set; }
 
-        List<Message> undeletedSentboxMessages = new List<Message>();
+        public List<Message> SentboxMessages { get; private set; }
 
-        List<Message> deletedSentboxMessages = new List<Message>();
+        public List<Message> DeletedSentboxMessages { get; private set; }
 
 
         System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
 
         void OntimerTick(object sender, EventArgs e)
         {
+            timer.Stop();
             DownloadData();
+            timer.Start();
+            CreateDataUpdatedEvent(new PropertyChangedEventArgs("AllData"));
         }
 
         void DownloadData()
@@ -118,20 +130,25 @@ namespace WPFClient.Additional
             try
             {
                 DataDownloadException = null;
-                allEmployees = Proxy.GetAllEmployees(); //?
+                AllEmployees = Proxy.GetAllEmployees(); //?   
 
-               // undeletedUnviewedInboxMessages = Proxy.GetMessages(Folder.inbox, false, false, null);
-               // undeletedViewedInboxMessages = Proxy.GetMessages(Folder.inbox, false, true, null);
-             //   deletetUnviewedInboxMessages = Proxy.GetMessages(Folder.inbox, true, false, null);
-             //   deletedViewedInboxMessages = Proxy.GetMessages(Folder.inbox, true, true, null);
-             //   undeletedSentboxMessages = Proxy.GetMessages(Folder.sentbox, false, true, null);
-            //    deletedSentboxMessages = Proxy.GetMessages(Folder.sentbox, true, true, null);
+                MessageTypes messageTypes = new MessageTypes();
+                UpdateMessages(FolderType.inbox,messageTypes, InboxMessages);
 
+                messageTypes = MessageTypes.viewed;
+                UpdateMessages(FolderType.inbox, messageTypes, ViewedInboxMessages);
 
-                var b = Proxy.GetMessages(Folder.sentbox, true, true, null);
+                messageTypes = MessageTypes.deleted;
+                UpdateMessages(FolderType.inbox, messageTypes, DeletedInboxMessages);
 
+                messageTypes = MessageTypes.deleted | MessageTypes.viewed;
+                UpdateMessages(FolderType.inbox, messageTypes, ViewedDeletedInboxMessages);
 
-                var a = CreateVersionedMessages(deletedSentboxMessages);
+                messageTypes = new MessageTypes();
+                UpdateMessages(FolderType.sentbox, messageTypes, SentboxMessages);
+
+                messageTypes = MessageTypes.deleted;
+                UpdateMessages(FolderType.sentbox, messageTypes, DeletedSentboxMessages);               
             }
 
             /// Сервис не отвечает
@@ -159,54 +176,74 @@ namespace WPFClient.Additional
             {
                 HandleDownloadDataException(ex);
                 throw; ///Неизвестное исключение пробасывается дальше
-            }
-            CreateDataUpdatedEvent(new PropertyChangedEventArgs("AllData"));
+            }            
         }
 
-        List<VersionedMessage> CreateVersionedMessages(List<Message> messages)
+        void UpdateMessages(FolderType folderType,MessageTypes messageTypes, List<Message> messages)
         {
-            List<VersionedMessage> versionedMessages = new List<VersionedMessage>();
+            byte[] recentVersion;
+            MessagesPack pack;
+            recentVersion = GetMaxTimestamp(messages);
+            pack = Proxy.GetMessages(folderType, messageTypes, recentVersion);
+            if (!UpdateCollectionByPack(pack, messages))
+            {
+                List<int> idCollection = Proxy.GetMessagesIds(folderType, messageTypes);
+                TrimCollection(idCollection, messages);
+            }
+        }
+
+        byte[] GetMaxTimestamp(List<Message> messages)
+        {
+            byte[] currentMax = new byte[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+            SqlBinary sqlCurrentMax = new SqlBinary(currentMax);
+            SqlBinary sqlCurrent;
             foreach (Message item in messages)
             {
-                VersionedEmployee versionedEmployee = CreateVersionedEmployee(item.Sender);
-                List<VersionedRecipient> versionedRecipients = CreateVersionedRecipients(item.Recipients);
+                sqlCurrent = new SqlBinary(item.Version);
+                if (sqlCurrentMax.CompareTo(sqlCurrent) < 0)
+                    sqlCurrentMax = sqlCurrent;                
+            }
+            return sqlCurrentMax.Value;
+        }
 
-                versionedMessages.Add(new VersionedMessage
+        bool UpdateCollectionByPack(MessagesPack pack, List<Message> messages)
+        {
+            if (pack.Messages.Count > 0)
+            {
+                Message message;
+                foreach (Message item in pack.Messages)
                 {
-                    Id = (int)item.Id,
-                    Recipients = versionedRecipients,
-                    Sender = versionedEmployee,
-                    Version = item.Version
-                });
-                
-            }
-            return versionedMessages;
-        }
-
-
-        List<VersionedRecipient> CreateVersionedRecipients(List<Recipient> recipients)
-        {
-            List<VersionedRecipient> versionedRecipients = new List<VersionedRecipient>();
-            foreach(Recipient item in recipients)
-            {
-                versionedRecipients.Add(
-                    new VersionedRecipient()
+                    message = messages.FirstOrDefault(row => row.Id == item.Id);
+                    if (message == null)
                     {
-                        MessageId = (int)item.MessageId,
-                        RecipientUsername = item.RecipientUsername,
-                        Version = item.Version
-                    });
+                        messages.Add(item);
+                    }
+                    else
+                    {
+                        messages.Remove(message);
+                        messages.Add(item);
+                    }
+                }
+                /// Восстанавливаем нормальный порядок
+                messages = messages.OrderBy(row => row.Date).ToList();
             }
-            return versionedRecipients;
+            return (messages.Count == pack.CountInDB);
         }
 
-        VersionedEmployee CreateVersionedEmployee(Employee employee)
+        void TrimCollection(List<int> ids, List<Message> messages)
         {
-            return new VersionedEmployee()
+            List<Message> removed = new List<Message>();
+            foreach (Message item in messages)
             {
-                Username = employee.Username,
-                Version = employee.Version,
-            };
+                if (!ids.Contains((int)item.Id))
+                {
+                    removed.Add(item);
+                }
+            }
+            foreach (Message item in removed)
+            {
+                messages.Remove(item);
+            }
         }
 
         void HandleDownloadDataException(Exception ex)
@@ -232,11 +269,6 @@ namespace WPFClient.Additional
             Proxy.CheckUser(); 
         }
 
-        public List<Employee> GetAllEmployees()
-        {
-            return allEmployees;             
-        }
-
         public Employee GetEmployee(string username)
         {
             return Proxy.GetEmployee(username);  
@@ -245,22 +277,7 @@ namespace WPFClient.Additional
         public void SendMessage(Message message)
         {
             Proxy.SendMessage(message);
-        }
-
-        public List<Message> GetInboxMessages()
-        {
-            return null;//inboxMessages;         
-        }
-
-        public List<Message> GetDeletedInboxMessages()
-        {
-            return null;// deletedInboxMessages;
-        }
-
-        public List<Message> GetSentboxMessages()
-        {
-            return null;// sentboxMessages;
-        }
+        }  
 
         public void SetRecipientViewed(int messageId, bool viewed)
         {
@@ -271,15 +288,6 @@ namespace WPFClient.Additional
         {
             throw new NotImplementedException();
         }
-
-        public List<Message> GetDeletedSentboxMessages()
-        {
-            return deletedSentboxMessages;
-        }
-
-        public MessagesPack GetMessages(Folder folder, bool deleted, bool viewed, List<Entities.Additional.VersionedMessage> sourceCollection)
-        {
-            return null;
-        }
+       
     }
 }

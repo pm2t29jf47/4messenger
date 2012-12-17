@@ -373,13 +373,13 @@ namespace WPFClient
             /// Сервис не отвечает
             catch (EndpointNotFoundException ex)
             {
-                HandleException(ex);
+                HandleException(ex, "()WPFClient.MainWindow.DeleteMessages()");
             }
 
             ///Креденшелы не подходят
             catch (System.ServiceModel.Security.MessageSecurityException ex)
             {
-                HandleException(ex);
+                HandleException(ex, "()WPFClient.MainWindow.DeleteMessages()");
             }
 
             /// Ошибка в сервисе
@@ -387,22 +387,22 @@ namespace WPFClient
             /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
             catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
             {
-                HandleException(ex);
+                HandleException(ex, "()WPFClient.MainWindow.DeleteMessages()");
             }
 
             /// Остальные исключения, в т.ч. ArgumentException, ArgumentNullException
             catch (Exception ex)
             {
-                HandleException(ex);
+                HandleException(ex, "()WPFClient.MainWindow.DeleteMessages()");
                 throw;
             }
 
         }
 
-        void HandleException(Exception ex)
+        void HandleException(Exception ex, string methodDescriptor)
         {
             InformatonTips.SomeError.Show(ex.Message);
-            ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MessageCreator.OnSendMessageButtonClick(object sender, RoutedEventArgs e)");
+            ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, methodDescriptor);
             StatusBarModel statusBarModel = (StatusBarModel)StatusBar.DataContext;
             statusBarModel.Exception = ex;
             statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
@@ -463,13 +463,13 @@ namespace WPFClient
             /// Сервис не отвечает
             catch (EndpointNotFoundException ex)
             {
-                HandleException(ex);
+                HandleException(ex, "()WPFClient.MainWindow.RecoverMessages()");
             }
 
             ///Креденшелы не подходят
             catch (System.ServiceModel.Security.MessageSecurityException ex)
             {
-                HandleException(ex);
+                HandleException(ex, "()WPFClient.MainWindow.RecoverMessages()");
             }
 
             /// Ошибка в сервисе
@@ -477,13 +477,13 @@ namespace WPFClient
             /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
             catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
             {
-                HandleException(ex);
+                HandleException(ex, "()WPFClient.MainWindow.RecoverMessages()");
             }
 
             /// Остальные исключения, в т.ч. ArgumentException, ArgumentNullException
             catch (Exception ex)
             {
-                HandleException(ex);
+                HandleException(ex, "()WPFClient.MainWindow.RecoverMessages()");
                 throw;
             }
         }

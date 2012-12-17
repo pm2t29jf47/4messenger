@@ -108,7 +108,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "(Message)DataSourceLayer.MessageGateway.SelectById(int id, string username)");
+                ExceptionHandler.HandleExcepion(ex, "(Message)DataSourceLayer.MessageGateway.Select(int id, string connectionUsername)");
                 throw;
             }
         }
@@ -138,7 +138,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "(List<Message>)DataSourceLayer.MessageGateway.SelectBy_SenderUsername_Deleted(string username, bool deleted)");
+                ExceptionHandler.HandleExcepion(ex, "(List<Message>)DataSourceLayer.MessageGateway.Select(string senderUsername ,string connectionUsername, bool deleted)");
                 throw;
             }
         }
@@ -187,7 +187,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "(List<int>)DataSourceLayer.MessageGateway.SelectIds(string senderUsername, string connectionUsername, bool deleted)");
+                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.MessageGateway.SelectIds(string senderUsername, string connectionUsername, bool deleted)");
                 throw;
             }
         }
@@ -261,7 +261,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "(Message)DataSourceLayer.MessageGateway.SelectById(int id, string username)");
+                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.MessageGateway.Update(int id, bool deleted, string connectionUsername)");
                 throw;
             }            
         }
@@ -287,7 +287,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "(Message)DataSourceLayer.MessageGateway.SelectById(int id, string username)");
+                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.MessageGateway.Delete(int id, string connectionUsername)");
                 throw;
             }
         }

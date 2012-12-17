@@ -93,7 +93,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "(Employee)DataSourceLayer.EmployeeGateway.SelectByUsername(string selectableUsername, string username)");
+                ExceptionHandler.HandleExcepion(ex, "(Employee)DataSourceLayer.EmployeeGateway.Select(string selectableUsername, string connectionUsername)");
                 throw;
             }
         }
@@ -118,7 +118,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "(Employee)DataSourceLayer.EmployeeGateway.SelectByUsername(string selectableUsername, string username)");
+                ExceptionHandler.HandleExcepion(ex, "(Employee)DataSourceLayer.EmployeeGateway.SelectIds(string connectionUsername)");
                 throw;
             }
         }

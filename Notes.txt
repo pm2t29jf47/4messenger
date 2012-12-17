@@ -3,7 +3,6 @@
 
 !!!
 - PrepareEmployeeClass убрать свойсвам атрибут static
-- exception handlers descriptions
  
 ####
 i)ValidationRule вызывается только при пользовательском вводе,

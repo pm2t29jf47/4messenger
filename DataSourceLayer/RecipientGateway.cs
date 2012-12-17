@@ -94,7 +94,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "(List<Recipient>)DataSourceLayer.RecipientGateway.SelectBy_RecipientUsername_Deleted(string username,bool deleted)");
+                ExceptionHandler.HandleExcepion(ex, "(List<Recipient>)DataSourceLayer.RecipientGateway.Select(string recipientUsername, string connectionUsername, bool deleted, bool viewed)");
                 throw;
             }
         }
@@ -138,7 +138,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "(List<Recipient>)DataSourceLayer.RecipientGateway.SelectByMessageId(int messageId, string username)");
+                ExceptionHandler.HandleExcepion(ex, "(List<Recipient>)DataSourceLayer.RecipientGateway.Select(int messageId, string connectionUsername)");        
                 throw;
             }
         }
@@ -175,7 +175,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.RecipientGateway.UpdateViewed(string username, int messageId, bool viewed)");
+                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.RecipientGateway.Update(string recipientUsername, int messageId, bool viewed, string connectionUsername)");
                 throw;
             }
         }
@@ -249,7 +249,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.RecipientGateway.UpdateViewed(string username, int messageId, bool viewed)");
+                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.RecipientGateway.UpdateDeleted(string recipientUsername, int messageId, bool deleted, string connectionUsername)");
                 throw;
             }
         }
@@ -299,7 +299,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.RecipientGateway.UpdateViewed(string username, int messageId, bool viewed)");
+                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.RecipientGateway.Delete(string recipientUsername, int messageId, string connectionUsername)");
                 throw;
             }
         }

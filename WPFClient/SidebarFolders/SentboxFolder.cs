@@ -23,7 +23,8 @@ namespace WPFClient.SidebarFolders
                  messageModels.Add(
                      new MessageListItemModel()
                      {
-                         Message = item
+                         Message = item,
+                         Type = MessageType.sentbox
                      });
              }
              return messageModels;

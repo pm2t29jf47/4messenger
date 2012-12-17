@@ -66,6 +66,16 @@ namespace ServiceInterface
         void SetRecipientDeleted(int messageId, bool deleted);
 
         [OperationContract]
+        [FaultContract(typeof(ArgumentException))]
+        void SetMessageDeleted(int messageId, bool deleted);
+
+        [OperationContract]
+        void PermanentlyDeleteRecipient(int messageId);
+
+        [OperationContract]
+        void PermanentlyDeleteMessage(int messageId);
+
+        [OperationContract]
         MessagesPack GetMessages(FolderType folderType, MessageTypes messageTypes, Byte[] recentVersion);
 
         [OperationContract]

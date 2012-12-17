@@ -234,6 +234,83 @@ namespace DataSourceLayer
                     Viewed = bool.Parse(reader["Viewed"].ToString()),
                     Version = (byte[])reader["Version"]
                 };
-        }         
+        }
+
+        public static void UpdateDeleted(string recipientUsername, int messageId, bool deleted, string connectionUsername)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("update_recipient;2", GetConnection(connectionUsername)))
+                {
+                    PrepareUR2(cmd, recipientUsername, messageId, deleted);
+                    cmd.ExecuteNonQuery();
+                    MessageGateway.Update(messageId, connectionUsername);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.RecipientGateway.UpdateViewed(string username, int messageId, bool viewed)");
+                throw;
+            }
+        }
+
+        static void PrepareUR2(SqlCommand cmd, string username, int messageId, bool deleted)
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            CreateUR2Parameters(cmd);
+            SetUR2Parameters(cmd, username, messageId, deleted);
+        }
+
+        /// <summary>
+        /// Задает параметры хранимой процедуры update_recipient
+        /// </summary>
+        /// <param name="cmd"></param>
+        static void CreateUR2Parameters(SqlCommand cmd)
+        {
+            cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.NVarChar, 50));
+            cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
+            cmd.Parameters.Add(new SqlParameter("@deleted", SqlDbType.Bit));
+        }
+
+        /// <summary>
+        /// Заполняет параметры хранимой процедуры update_recipient;1
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="username"></param>
+        /// <param name="messageId"></param>
+        /// <param name="viewed"></param>
+        static void SetUR2Parameters(SqlCommand cmd, string username, int messageId, bool deleted)
+        {
+            cmd.Parameters["@recipientUsername"].Value = username;
+            cmd.Parameters["@messageId"].Value = messageId;
+            cmd.Parameters["@deleted"].Value = deleted;
+        }
+
+        public static void Delete(string recipientUsername, int messageId, string connectionUsername)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("delete_recipient;1", GetConnection(connectionUsername)))
+                {
+                    PrepareDR1(cmd, recipientUsername, messageId);
+                    cmd.ExecuteNonQuery();
+                    MessageGateway.Update(messageId, connectionUsername);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExcepion(ex, "()DataSourceLayer.RecipientGateway.UpdateViewed(string username, int messageId, bool viewed)");
+                throw;
+            }
+        }
+
+        static void PrepareDR1(SqlCommand cmd, string recipientUsername, int messageId)
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@messageId", SqlDbType.Int));
+            cmd.Parameters.Add(new SqlParameter("@recipientUsername", SqlDbType.NVarChar, 50));
+            cmd.Parameters["@messageId"].Value = messageId;
+            cmd.Parameters["@recipientUsername"].Value = recipientUsername;
+        }
     }
 }

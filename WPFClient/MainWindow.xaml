@@ -179,9 +179,10 @@
             <ToolBar>
                 <Button Name="CreateMessageButton" 
                         Click="OnCreateMessageButtonClick"
-                        Margin="5">
+                        Margin="5"
+                        IsEnabled="{Binding Path=IsEnabled, Mode=TwoWay}">
                     <StackPanel>
-                        <Image Source="Images\mail_new.png"
+                        <Image Source="{Binding Path=ImagePath, Mode=OneWay}"
                                Style="{StaticResource DefaultImageWidthStyle}"></Image>
                         <Label Content="{x:Static res:Resources.NewMessageLabel}"
                                Style="{StaticResource MarginStyle}"></Label>
@@ -190,9 +191,10 @@
                 <Separator></Separator>
                 <Button Name="ReplyMessageButton"
                         Click="OnReplyMessageButtonClick"
-                        Style="{StaticResource MarginStyle}">
+                        Style="{StaticResource MarginStyle}"
+                        IsEnabled="{Binding Path=IsEnabled, Mode=TwoWay}">
                     <StackPanel>
-                        <Image Source="Images\mail_forward.png"
+                        <Image Source="{Binding Path=ImagePath, Mode=OneWay}"
                                Style="{StaticResource DefaultImageWidthStyle}"></Image>
                         <Label Content="{x:Static res:Resources.ReplyMessageLabel}"
                                Style="{StaticResource MarginStyle}"></Label>
@@ -200,11 +202,23 @@
                 </Button>
                 <Button Name="DeleteMessageButton" 
                         Click="OnDeleteMessageButtonClick"
-                        Style="{StaticResource MarginStyle}">
+                        Style="{StaticResource MarginStyle}"
+                        IsEnabled="{Binding Path=IsEnabled, Mode=TwoWay}">
                     <StackPanel>
-                        <Image Source="Images\mail_delete.png"
+                        <Image Source="{Binding Path=ImagePath, Mode=OneWay}"
                                Style="{StaticResource DefaultImageWidthStyle}"></Image>
                         <Label Content="{x:Static res:Resources.DeleteMessageLabel}"
+                               Style="{StaticResource MarginStyle}"></Label>
+                    </StackPanel>
+                </Button>
+                <Button Name="RecoverMessageButton" 
+                        Click="OnRecoverMessageButtonClick"
+                        Style="{StaticResource MarginStyle}"
+                        IsEnabled="{Binding Path=IsEnabled, Mode=TwoWay}">
+                    <StackPanel>
+                        <Image Source="{Binding Path=ImagePath, Mode=OneWay}"
+                               Style="{StaticResource DefaultImageWidthStyle}"></Image>
+                        <Label Content="{x:Static res:Resources.RecoverMessageLabel}"
                                Style="{StaticResource MarginStyle}"></Label>
                     </StackPanel>
                 </Button>

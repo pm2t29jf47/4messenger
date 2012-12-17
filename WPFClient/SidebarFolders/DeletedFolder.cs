@@ -23,7 +23,8 @@ namespace WPFClient.SidebarFolders
                     new MessageListItemModel()
                     {
                         Message = item,
-                        Viewed = false
+                        Viewed = false,
+                        Type = MessageType.inbox                     
                     });
             }
             foreach( Message item in App.ServiceWatcher.ViewedDeletedInboxMessages)
@@ -32,7 +33,8 @@ namespace WPFClient.SidebarFolders
                     new MessageListItemModel()
                     {
                         Message = item,
-                        Viewed = true
+                        Viewed = true,
+                        Type = MessageType.inbox
                     });
             }
             foreach (Message item in App.ServiceWatcher.DeletedSentboxMessages)
@@ -41,7 +43,8 @@ namespace WPFClient.SidebarFolders
                     new MessageListItemModel()
                     {
                         Message = item,
-                        Viewed = true
+                        Viewed = true,
+                        Type = MessageType.sentbox  
                     });
             }            
             return messageModels;

@@ -48,6 +48,7 @@ namespace DBService
             return result;
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public List<string> GetAllEmployeesIds()
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
@@ -121,12 +122,8 @@ namespace DBService
             RecipientGateway.Update(currentUsername, messageId, viewed, currentUsername);
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
-        public void SetRecipientDeleted(int messageId, bool deleted)
-        {
-            ///
-        }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public MessagesPack GetMessages(FolderType folderType, MessageTypes messageTypes, Byte[] recentVersion)
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
@@ -236,5 +233,44 @@ namespace DBService
         }
 
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public void SetMessageDeleted(int messageId, bool deleted)
+        {
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            Message message = MessageGateway.Select(messageId, currentUsername);
+            if (string.Compare(message.SenderUsername, currentUsername) != 0)
+            {
+                ArgumentException ex = new ArgumentException("message.SenderUsername must be equal current username");
+                throw new FaultException<ArgumentException>(ex, ex.Message);
+            }
+            MessageGateway.Update(messageId, deleted, currentUsername);           
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public void SetRecipientDeleted(int messageId, bool deleted)
+        {
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            RecipientGateway.UpdateDeleted(currentUsername, messageId, deleted, currentUsername);            
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public void PermanentlyDeleteRecipient(int messageId)
+        {
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            RecipientGateway.Delete(currentUsername, messageId, currentUsername);
+        }
+
+        [PrincipalPermission(SecurityAction.Demand, Role = "users")]
+        public void PermanentlyDeleteMessage(int messageId)
+        {
+            string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
+            Message removedMessage = MessageGateway.Select(messageId, currentUsername);
+            if (string.Compare(removedMessage.SenderUsername, currentUsername) != 0)
+            {
+                ArgumentException ex = new ArgumentException("message.SenderUsername must be equal current username");
+                throw new FaultException<ArgumentException>(ex, ex.Message);
+            }
+            MessageGateway.Delete(messageId, currentUsername);
+        }       
     }
 }

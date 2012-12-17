@@ -277,6 +277,24 @@ namespace WPFClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recover.
+        /// </summary>
+        public static string RecoverMessageLabel {
+            get {
+                return ResourceManager.GetString("RecoverMessageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message will be removed permanently.
+        /// </summary>
+        public static string RemoveWarningText {
+            get {
+                return ResourceManager.GetString("RemoveWarningText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reply.
         /// </summary>
         public static string ReplyMessageLabel {
@@ -363,6 +381,15 @@ namespace WPFClient.Properties {
         public static string UsernameLabel {
             get {
                 return ResourceManager.GetString("UsernameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }

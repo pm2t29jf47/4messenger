@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Additional", "Additional", 
 	ProjectSection(SolutionItems) = preProject
 		Notes.txt = Notes.txt
 		StoredProcedure.sql = StoredProcedure.sql
+		Triggers.sql = Triggers.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerSideExceptionHandler", "ServerSideExceptionHandler\ServerSideExceptionHandler.csproj", "{98E57650-2ED0-43FA-9239-17A7BE7CB477}"

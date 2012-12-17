@@ -23,6 +23,8 @@ using System.Windows.Markup;
 using System.Diagnostics;
 using System.ServiceModel;
 using ServiceInterface;
+using WPFClient.ToolbarButtons;
+using System.Collections;
 
 
 namespace WPFClient
@@ -77,7 +79,7 @@ namespace WPFClient
         }
 
         void OnMainWindowLoaded(object sender, RoutedEventArgs e)
-        {
+        {           
             PrepareWindow();
             ShowLoginWindow();
             PrepareEmployeeClass();
@@ -89,8 +91,7 @@ namespace WPFClient
         void PrepareWindow()
         {
             PreareSidebar();
-            this.ReplyMessageButton.IsEnabled = false;
-            this.DeleteMessageButton.IsEnabled = false;
+            PrepareToolbar();
             MessageControl.ControlState = MessageControl.state.IsReadOnly;
             PrepareStatusBar();
         }
@@ -107,6 +108,34 @@ namespace WPFClient
             FillFoldersNames(folders);   
             Sidebar.ItemsSource = folders;
         }
+
+        void PrepareToolbar()
+         {
+             CreateMessageButton.DataContext = new ButtonModel()
+             {
+                 DisabledImage = @"Images\mail_new_disabled.png",
+                 EnabledImage = @"Images\mail_new.png",
+                 IsEnabled = false
+             };
+             ReplyMessageButton.DataContext = new ButtonModel()
+             {
+                 DisabledImage = @"Images\mail_forward_disabled.png",
+                 EnabledImage = @"Images\mail_forward.png",
+                 IsEnabled = false
+             };
+             DeleteMessageButton.DataContext = new ButtonModel()
+             {
+                 DisabledImage = @"Images\mail_delete_disabled.png",
+                 EnabledImage = @"Images\mail_delete.png",
+                 IsEnabled = false
+             };
+             RecoverMessageButton.DataContext = new ButtonModel()
+             {
+                 DisabledImage = @"Images\mail_ok_disabled.png",
+                 EnabledImage = @"Images\mail_ok.png",
+                 IsEnabled = false
+             };
+         }
 
         void PrepareStatusBar()
         {
@@ -138,7 +167,7 @@ namespace WPFClient
         {
             if (MessageList.SelectedItem != null)
             {
-                CheckDeleteReplyButtonsState();
+                CheckToolbarButtonsStateByMessageListClick();
                 MessageListItemModel selectedMessageModel = (MessageListItemModel)MessageList.SelectedItem;                
                 if ((selectedFolder is InboxFolder || selectedFolder is DeletedFolder)
                     && selectedMessageModel.Viewed == false)
@@ -155,7 +184,7 @@ namespace WPFClient
             }
         }
 
-        void CheckDeleteReplyButtonsState()
+        void CheckToolbarButtonsStateByMessageListClick()
         {
             switch (MessageList.SelectedItems.Count)
             {
@@ -163,18 +192,21 @@ namespace WPFClient
                     {
                         this.ReplyMessageButton.IsEnabled = false;
                         this.DeleteMessageButton.IsEnabled = false;
+                        this.RecoverMessageButton.IsEnabled = false;
                         break;
                     }
                 case 1:
                     {
                         this.ReplyMessageButton.IsEnabled = true;
                         this.DeleteMessageButton.IsEnabled = true;
+                        this.RecoverMessageButton.IsEnabled = selectedFolder is DeletedFolder;
                         break;
                     }
                 default:
                     {
                         this.ReplyMessageButton.IsEnabled = false;
                         this.DeleteMessageButton.IsEnabled = true;
+                        this.RecoverMessageButton.IsEnabled = selectedFolder is DeletedFolder;
                         break;
                     }
             } 
@@ -256,7 +288,10 @@ namespace WPFClient
                 foreach (MessageListItemModel item in savedSelectedItems)
                 {
                     MessageListItemModel findItem = loadedMessageModels.FirstOrDefault(row => row.Id == item.Id);
-                    MessageList.SelectedItems.Add(findItem);
+                    if (findItem != null)
+                    {
+                        MessageList.SelectedItems.Add(findItem);
+                    }
                 }               
             }            
         }
@@ -285,13 +320,19 @@ namespace WPFClient
             this.singleSelectedInMessageList = null;
             this.selectedFolder = sidebarFolder;            
             UploadToMessageList();
+            CheckToolbarButtonsStateByFolderClick();
+        }
+
+        void CheckToolbarButtonsStateByFolderClick()
+        {
             this.ReplyMessageButton.IsEnabled = false;
             this.DeleteMessageButton.IsEnabled = false;
+            this.RecoverMessageButton.IsEnabled = false;   
         }
 
         #endregion
 
-        #region "Create" "Reply" "Delete" buttons
+        #region "Create" "Reply" "Delete" "Recover" buttons
 
         void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
         {
@@ -305,7 +346,141 @@ namespace WPFClient
 
         void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
         {
-   
+            DeleteMessages();   
+        }
+
+        void DeleteMessages()
+        {
+            try
+            {
+                if (selectedFolder is DeletedFolder)
+                {
+                    if (!InformatonTips.RemoveDialog.Show(Properties.Resources.RemoveWarningText, Properties.Resources.Warning))
+                    {
+                        return;
+                    }
+                    RemoveMessagesPermanently(MessageList.SelectedItems);
+                }
+                else
+                {
+                    RemoveMessagesTemporarily(MessageList.SelectedItems);
+                }
+            }
+            /// Сервис не отвечает
+            catch (EndpointNotFoundException ex)
+            {
+                HandleException(ex);
+            }
+
+            ///Креденшелы не подходят
+            catch (System.ServiceModel.Security.MessageSecurityException ex)
+            {
+                HandleException(ex);
+            }
+
+            /// Ошибка в сервисе
+            /// (маловероятна, при таком варианте скорее сработает ошибка креденшелов,
+            /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
+            catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
+            {
+                HandleException(ex);
+            }
+
+            /// Остальные исключения, в т.ч. ArgumentException, ArgumentNullException
+            catch (Exception ex)
+            {
+                HandleException(ex);
+                throw;
+            }
+
+        }
+
+        void HandleException(Exception ex)
+        {
+            InformatonTips.SomeError.Show(ex.Message);
+            ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MessageCreator.OnSendMessageButtonClick(object sender, RoutedEventArgs e)");
+            StatusBarModel statusBarModel = (StatusBarModel)StatusBar.DataContext;
+            statusBarModel.Exception = ex;
+            statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
+        }
+
+        void RemoveMessagesPermanently(IList models)
+        {
+            foreach (MessageListItemModel item in models)
+            {
+                if (item.Type == MessageType.inbox)
+                {
+                    App.ServiceWatcher.PermanentlyDeleteRecipient((int)item.Id);
+                }
+                else
+                {
+                    App.ServiceWatcher.PermanentlyDeleteMessage((int)item.Id);
+                }
+            }
+        }
+
+        void RemoveMessagesTemporarily(IList models)
+        {
+            foreach (MessageListItemModel item in models)
+            {
+                if (item.Type == MessageType.inbox)
+                {
+                    App.ServiceWatcher.SetRecipientDeleted((int)item.Id, true);
+                }
+                else
+                {
+                    App.ServiceWatcher.SetMessageDeleted((int)item.Id, true);
+                }
+            }
+        }
+
+        void OnRecoverMessageButtonClick(object sender, RoutedEventArgs e)
+        {
+            RecoverMessages();
+        }
+
+        private void RecoverMessages()
+        {
+            try
+            {
+                foreach (MessageListItemModel item in MessageList.SelectedItems)
+                {
+                    if (item.Type == MessageType.inbox)
+                    {
+                        App.ServiceWatcher.SetRecipientDeleted((int)item.Id, false);
+                    }
+                    else
+                    {
+                        App.ServiceWatcher.SetMessageDeleted((int)item.Id, false);
+                    }
+                }
+            }
+            /// Сервис не отвечает
+            catch (EndpointNotFoundException ex)
+            {
+                HandleException(ex);
+            }
+
+            ///Креденшелы не подходят
+            catch (System.ServiceModel.Security.MessageSecurityException ex)
+            {
+                HandleException(ex);
+            }
+
+            /// Ошибка в сервисе
+            /// (маловероятна, при таком варианте скорее сработает ошибка креденшелов,
+            /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
+            catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
+            {
+                HandleException(ex);
+            }
+
+            /// Остальные исключения, в т.ч. ArgumentException, ArgumentNullException
+            catch (Exception ex)
+            {
+                HandleException(ex);
+                throw;
+            }
         }
         
         void CreateNewMessage()

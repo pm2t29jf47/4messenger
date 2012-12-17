@@ -2,12 +2,13 @@
 - SqlMembershipProvider
 
 !!!
-- timestamp
+
 - PrepareEmployeeClass убрать свойсвам атрибут static
 - триггеры на пикчи кнопок в mainwindow
 - Service1.SetRecipientDeleted
 - бага RecipientEmployeeEditor
-- exception handlers desc
+- exception handlers descriptions
+- принудительное обновление
  
 ####
 i)ValidationRule вызывается только при пользовательском вводе,

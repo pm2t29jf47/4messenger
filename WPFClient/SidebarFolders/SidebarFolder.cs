@@ -99,5 +99,5 @@ namespace WPFClient.SidebarFolders
             if (PropertyChanged != null)
                 PropertyChanged(this, e);
         }
-    }
+    }    
 }

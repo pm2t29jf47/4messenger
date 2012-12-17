@@ -42,7 +42,7 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="message"></param>
-        private static void PrepareIM(SqlCommand cmd, Message message)
+        static void PrepareIM(SqlCommand cmd, Message message)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             CreateIMParameters(cmd);
@@ -52,7 +52,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Задает параметры хранимой процедуры insert_mesage 
         /// </summary>
-        private static void CreateIMParameters(SqlCommand cmd)
+        static void CreateIMParameters(SqlCommand cmd)
         {
             cmd.Parameters.Add(
                 new SqlParameter("@title", SqlDbType.NVarChar, 100));
@@ -74,7 +74,7 @@ namespace DataSourceLayer
         /// <summary> 
         /// Заполняет параметры хранимой процедуры insert_mesage 
         /// </summary>
-        private static void SetIMParameters(SqlCommand cmd, Message message)
+        static void SetIMParameters(SqlCommand cmd, Message message)
         {
             cmd.Parameters["@title"].Value = message.Title;
             cmd.Parameters["@date"].Value = message.Date;
@@ -176,7 +176,7 @@ namespace DataSourceLayer
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("select_message;3", GetConnection(connectionUsername)))
+                using (SqlCommand cmd = new SqlCommand("update_message;1", GetConnection(connectionUsername)))
                 {
                     PrepareUM1(cmd, id, DateTime.Now);
                     cmd.ExecuteNonQuery();                   
@@ -194,7 +194,7 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="username"></param>
-        private static void PrepareSM2(SqlCommand cmd, string username, bool deleted)
+        static void PrepareSM2(SqlCommand cmd, string username, bool deleted)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@senderUsername", SqlDbType.NVarChar, 50));
@@ -203,7 +203,7 @@ namespace DataSourceLayer
             cmd.Parameters["@deleted"].Value = deleted;
         }
 
-        private static void PrepareUM1(SqlCommand cmd, int id, DateTime lastUpdate)
+        static void PrepareUM1(SqlCommand cmd, int id, DateTime lastUpdate)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int, 50));
@@ -218,7 +218,7 @@ namespace DataSourceLayer
         /// <param name="reader"></param>
         /// <param name="recipients"></param>
         /// <returns></returns>
-        private static Message CreateMessage(SqlDataReader reader)
+        static Message CreateMessage(SqlDataReader reader)
         {
             if(!reader.HasRows)
                 return null;
@@ -239,11 +239,64 @@ namespace DataSourceLayer
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="messageId"></param>
-        private static void PrepareSM1(SqlCommand cmd, int messageId)
+        static void PrepareSM1(SqlCommand cmd, int messageId)
         {
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
             cmd.Parameters["@id"].Value = messageId;
         }
+
+        public static void Update(int id, bool deleted, string connectionUsername)
+        {            
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("update_message;2", GetConnection(connectionUsername)))
+                {
+                    PrepareUM2(cmd, id, deleted);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExcepion(ex, "(Message)DataSourceLayer.MessageGateway.SelectById(int id, string username)");
+                throw;
+            }            
+        }
+
+        static void PrepareUM2(SqlCommand cmd, int messageId, bool deleted)
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+            cmd.Parameters.Add(new SqlParameter("@deleted", SqlDbType.Bit));
+            cmd.Parameters["@id"].Value = messageId;
+            cmd.Parameters["@deleted"].Value = deleted;
+        }
+
+        public static void Delete(int id, string connectionUsername)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("delete_message;1", GetConnection(connectionUsername)))
+                {
+                    PrepareDM1(cmd, id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleExcepion(ex, "(Message)DataSourceLayer.MessageGateway.SelectById(int id, string username)");
+                throw;
+            }
+        }
+
+        static void PrepareDM1(SqlCommand cmd, int messageId)
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+            cmd.Parameters["@id"].Value = messageId;
+        }
+
+
+
     }
 }

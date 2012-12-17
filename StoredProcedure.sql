@@ -31,42 +31,6 @@ GO
 /***************************************************************************************************************/
 
 /*==============================================================*/
-/* Хп. Добавляет новое письмо в таблицу                         */
-/*==============================================================*/
-CREATE procedure insert_message
-(
-	@title	nvarchar(100),
-	@date	datetime,
-	@content nvarchar(1000),
-	@senderUsername	nvarchar(50),
-	@deleted bit,
-	@id int output	
-)
-as
-	insert into Message(
-	Title,
-	[Date],
-	Content,
-	SenderUsername,
-	Deleted
-	)
-	values(
-	@title,
-	@date,
-	@content,
-	@senderUsername,
-	@deleted
-	)
-	select @id = Id
-	from Message 
-	where Title = @title 
-	AND [Date] = @date
-	AND SenderUsername = @senderUsername
-	AND Deleted = @deleted
-	AND Content = @content
-GO
-
-/*==============================================================*/
 /* Хп. Добавляет нового адресата в таблицу                      */
 /*==============================================================*/
 CREATE PROCEDURE insert_recipient
@@ -105,8 +69,6 @@ BEGIN
 END
 GO
 
-/***************************************************************************************************************/
-
 /*==============================================================*/
 /* Выводит все сообщения адресата                               */
 /*==============================================================*/
@@ -133,6 +95,46 @@ AS
 	SELECT *
 	FROM Recipient
 	WHERE MessageId = @messageId
+GO
+
+/*==============================================================*/
+/* Обновляет поле viewed                                        */
+/*==============================================================*/
+CREATE PROCEDURE update_recipient;1
+(@recipientUsername nvarchar(50),
+@messageId int,
+@viewed bit)
+AS
+	UPDATE Recipient
+	SET Viewed = @viewed
+	WHERE 	RecipientUsername = @recipientUsername
+	AND MessageId = @messageId
+GO
+
+/*==============================================================*/
+/* Обновляет поле deleted                                       */
+/*==============================================================*/
+CREATE PROCEDURE update_recipient;2
+(@recipientUsername nvarchar(50),
+@messageId int,
+@deleted bit)
+AS
+	UPDATE Recipient
+	SET Deleted = @deleted
+	WHERE 	RecipientUsername = @recipientUsername
+	AND MessageId = @messageId
+GO
+
+/*==============================================================*/
+/* Полностью удаляет получателя                                 */
+/*==============================================================*/
+CREATE PROCEDURE delete_recipient;1
+(@recipientUsername nvarchar(50),
+@messageId int)
+AS
+	DELETE Recipient
+	WHERE RecipientUsername = @recipientUsername
+	AND MessageId = @messageId
 GO
 
 /***************************************************************************************************************/
@@ -174,6 +176,9 @@ AS
 	AND Deleted = @deleted
 GO
 
+/*==============================================================*/
+/* Обновляет LastUpdate письма                                  */
+/*==============================================================*/
 CREATE PROCEDURE update_message;1
 (@id int,
 @lastUpdate datetime)
@@ -183,19 +188,62 @@ AS
 	WHERE Id = @id
 GO
 
-/***************************************************************************************************************/
+/*==============================================================*/
+/* Обновляет Deleted письма                                     */
+/*==============================================================*/
+CREATE PROCEDURE update_message;2
+(@id int,
+@deleted bit)
+AS
+	UPDATE Message
+	SET Deleted = @deleted
+	WHERE Id = @id
+GO
 
 /*==============================================================*/
-/* Обновляет поле viewed                                        */
+/* Хп. Добавляет новое письмо в таблицу                         */
 /*==============================================================*/
-CREATE PROCEDURE update_recipient;1
-(@recipientUsername nvarchar(50),
-@messageId int,
-@viewed bit)
-AS
-	UPDATE Recipient
-	SET Viewed = @viewed
-	WHERE 	RecipientUsername = @recipientUsername
-	AND MessageId = @messageId
+CREATE procedure insert_message
+(
+	@title	nvarchar(100),
+	@date	datetime,
+	@content nvarchar(1000),
+	@senderUsername	nvarchar(50),
+	@deleted bit,
+	@id int output	
+)
+as
+	insert into Message(
+	Title,
+	[Date],
+	Content,
+	SenderUsername,
+	Deleted
+	)
+	values(
+	@title,
+	@date,
+	@content,
+	@senderUsername,
+	@deleted
+	)
+	select @id = Id
+	from Message 
+	where Title = @title 
+	AND [Date] = @date
+	AND SenderUsername = @senderUsername
+	AND Deleted = @deleted
+	AND Content = @content
 GO
+  
+/*==============================================================*/
+/* Полностью удаляет письмо                                     */
+/*==============================================================*/
+CREATE PROCEDURE delete_message;1
+(@id int)
+AS
+	DELETE Message
+	WHERE Id = @id
+GO
+
 

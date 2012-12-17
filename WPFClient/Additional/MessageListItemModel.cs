@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
+using WPFClient.SidebarFolders;
 
 namespace WPFClient.Additional
 {
@@ -60,5 +61,11 @@ namespace WPFClient.Additional
                     viewed = value;
             }
         }
+
+        public MessageType Type { get; set; }
     }
+
+    public enum MessageType { inbox, sentbox}
+
+
 }

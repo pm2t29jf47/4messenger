@@ -219,4 +219,13 @@
   <data name="Reconnect" xml:space="preserve">
     <value>Reconnect</value>
   </data>
+  <data name="RecoverMessageLabel" xml:space="preserve">
+    <value>Recover</value>
+  </data>
+  <data name="RemoveWarningText" xml:space="preserve">
+    <value>Message will be removed permanently</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
 </root>

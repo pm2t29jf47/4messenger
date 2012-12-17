@@ -219,4 +219,13 @@
   <data name="Reconnect" xml:space="preserve">
     <value>Переподключиться</value>
   </data>
+  <data name="RecoverMessageLabel" xml:space="preserve">
+    <value>Восстановить</value>
+  </data>
+  <data name="RemoveWarningText" xml:space="preserve">
+    <value>Сообщение будет удалено навсегда</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Предупреждение</value>
+  </data>
 </root>

@@ -339,8 +339,22 @@ namespace WPFClient.Additional
 
         public void SetRecipientDeleted(int messageId, bool deleted)
         {
-            throw new NotImplementedException();
+            Proxy.SetRecipientDeleted(messageId, deleted);
         }
-       
+
+        public void SetMessageDeleted(int messageId, bool deleted)
+        {
+            Proxy.SetMessageDeleted(messageId, deleted);
+        }
+
+        public void PermanentlyDeleteRecipient(int messageId)
+        {
+            Proxy.PermanentlyDeleteRecipient(messageId);
+        }
+
+        public void PermanentlyDeleteMessage(int messageId)
+        {
+            Proxy.PermanentlyDeleteMessage(messageId);
+        }      
     }
 }

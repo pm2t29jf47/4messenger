@@ -35,6 +35,7 @@ namespace Entities
         /// Первичный ключ 
         /// </summary>   
         [DataMember]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int? Id { get; protected set; }
 
         /// <summary> 
@@ -64,7 +65,7 @@ namespace Entities
         /// Отпраитель
         /// </summary>
         [DataMember]
-        [ForeignKey("Sender")]        
+        [Required]
         public string SenderUsername { get; set; }
 
         /// <summary> 
@@ -74,12 +75,10 @@ namespace Entities
         [Required]
         public bool Deleted { get; set; }
 
-        [DataMember]        
-        [ForeignKey("Username")]
-        //[InverseProperty("Sent")]
-        public Employee Sender { get; set; }
+        [DataMember]
+        public virtual Employee Sender { get; set; }
 
-        [DataMember]    
-        public List<Recipient> Recipients { get; set; }
+        [DataMember]       
+        public virtual List<Recipient> Recipients { get; set; }
     }
 }

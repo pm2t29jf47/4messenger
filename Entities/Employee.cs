@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 
@@ -74,11 +75,11 @@ namespace Entities
         [Required]
         public string Role { get; set; }
 
-        [DataMember]
-        public List<Message> Sent { get; set; }
+        [DataMember]       
+        public virtual List<Message> Sent { get; set; }
 
-        [DataMember]
-        public List<Recipient> Recipients { get; set; }
+        [DataMember]       
+        public virtual List<Recipient> Recipients { get; set; }
 
         /************************************************************/
 

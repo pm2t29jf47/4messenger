@@ -30,9 +30,9 @@ namespace Entities
         /// Идентификатор сотрудника-получателя
         /// </summary>
         [DataMember]
-        [Key, Column(Order = 1)]
-        [ForeignKey("RecipientEmployee")]
+        [Key, Column(Order = 1)]       
         [StringLength(50)]
+        [ForeignKey("RecipientEmployee")]
         public string RecipientUsername { get; internal set; }
 
         /// <summary>
@@ -57,15 +57,11 @@ namespace Entities
         [Required]
         public bool Viewed { get; set; }
 
-        [DataMember]
-        [ForeignKey("Username")]
-        //[InverseProperty("Recipients")]
-        public Employee RecipientEmployee { get; set; } 
+        [DataMember]      
+        public virtual Employee RecipientEmployee { get; set; } 
 
-        [DataMember]
-        [ForeignKey("Id")]
-        //[InverseProperty("Recipients")]
-        public Message Message { get; set; }
+        [DataMember]       
+        public virtual Message Message { get; set; }
    
     }
 }

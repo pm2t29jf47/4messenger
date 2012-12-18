@@ -20,22 +20,12 @@ namespace TestProject1
         public void TestMethod1()
         {
             //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CustomDbContext>());
-            string cnString = ConfigurationManager.ConnectionStrings["EFDB"].ConnectionString;
-            CustomDbContext dc = new CustomDbContext(cnString);
-            dc.Database.Initialize(false);
-            Employee a = dc.Employees.FirstOrDefault();            
-
-          //  var a = EFDataSourceLayer.EmployeeGateway.SelectAll("a");
-
-            
-          
-           
-
-                
+            //string cnString = ConfigurationManager.ConnectionStrings["EFDB"].ConnectionString;
+            //CustomDbContext dc = new CustomDbContext(cnString);
+            //dc.Database.Initialize(false);
+            //var a = dc.Messages.FirstOrDefault();
+            //dc.Messages.Remove(a);
+            //dc.SaveChanges();  
         }
-
-
-
-   
     }
 }

@@ -21,11 +21,12 @@ namespace TestProject1
         {
             //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CustomDbContext>());
             //string cnString = ConfigurationManager.ConnectionStrings["EFDB"].ConnectionString;
-            //CustomDbContext dc = new CustomDbContext(cnString);
+            //CustomDbContext dc = new CustomDbContext();
             //dc.Database.Initialize(false);
-            //var a = dc.Messages.FirstOrDefault();
-            //dc.Messages.Remove(a);
-            //dc.SaveChanges();  
+            //var a = new Recipient("ivan",4) {Deleted = false, Viewed = false };
+            //dc.Recipients.Add(a);
+            //dc.SaveChanges();
+           
         }
     }
 }

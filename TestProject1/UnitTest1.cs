@@ -7,6 +7,9 @@ using DataSourceLayer;
 using DBService;
 using WPFClient.Additional;
 using Entities;
+using EFDataSourceLayer;
+using System.Data.Entity;
+using System.Configuration;
 
 namespace TestProject1
 {
@@ -16,10 +19,23 @@ namespace TestProject1
         [TestMethod]
         public void TestMethod1()
         {
-          //MessageGateway.Insert(new Message
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CustomDbContext>());
+            string cnString = ConfigurationManager.ConnectionStrings["EFDB"].ConnectionString;
+            CustomDbContext dc = new CustomDbContext(cnString);
+            dc.Database.Initialize(false);
+            Employee a = dc.Employees.FirstOrDefault();            
+
+          //  var a = EFDataSourceLayer.EmployeeGateway.SelectAll("a");
+
+            
+          
+           
+
                 
         }
 
-       
+
+
+   
     }
 }

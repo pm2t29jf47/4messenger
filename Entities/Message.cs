@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Entities
 {
@@ -39,40 +41,45 @@ namespace Entities
         /// Название письма 
         /// </summary>
         [DataMember]
+        [StringLength(100)]
+        [Required]
         public string Title { get; set; }
 
         /// <summary> 
         /// Дата отправления 
         /// </summary>
         [DataMember]
+        [Required]
         public DateTime Date { get; set; }
 
         /// <summary> 
         /// Содержимое 
         /// </summary>
         [DataMember]
+        [StringLength(1000)]
+        [Required]
         public string Content { get; set; }
 
         /// <summary> 
         /// Отпраитель
         /// </summary>
         [DataMember]
+        [ForeignKey("Sender")]        
         public string SenderUsername { get; set; }
 
         /// <summary> 
         /// Флаг для переноса отправленных писем в папку удаленных
         /// </summary>
         [DataMember]
+        [Required]
         public bool Deleted { get; set; }
 
-        [DataMember]
-        //public Employee FKEmployee_SenderUsername { get; set; }
-
+        [DataMember]        
+        [ForeignKey("Username")]
+        //[InverseProperty("Sent")]
         public Employee Sender { get; set; }
 
-        [DataMember]
-        //public List<Recipient> EDRecipient_MessageId { get; set; }
-
+        [DataMember]    
         public List<Recipient> Recipients { get; set; }
     }
 }

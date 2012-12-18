@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Xml.Schema;
+using System.ComponentModel.DataAnnotations;
 
 
 
@@ -33,6 +34,8 @@ namespace Entities
         /// Уникальное имя пользователя
         /// </summary>   
         [DataMember]
+        [Key] 
+        [StringLength (50)]
         public string Username
         {
             get;
@@ -43,24 +46,32 @@ namespace Entities
         /// Пароль
         /// </summary>
         [DataMember]
+        [StringLength(50)]
+        [Required]
         public string Password { get; set; }
 
         /// <summary>
         /// Имя сотрудника
         /// </summary>
         [DataMember]
+        [StringLength(50)]
+        [Required]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Фамилия сотрудника
         /// </summary>
         [DataMember]
+        [StringLength(50)]
+        [Required]
         public string SecondName { get; set; }
 
         /// <summary>
         /// Роль(и)
         /// </summary>
         [DataMember]
+        [StringLength(50)]
+        [Required]
         public string Role { get; set; }
 
         [DataMember]

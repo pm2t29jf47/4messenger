@@ -66,7 +66,7 @@ namespace DataSourceLayer
             }
             catch (Exception ex)
             {
-                ExceptionHandler.HandleExcepion(ex, "(List<Employee>)DataSourceLayer.EmployeeGateway.SelectSecurity(string authenticationUsername, string username)");
+                ExceptionHandler.HandleExcepion(ex, "(Employee)DataSourceLayer.EmployeeGateway.SelectSecurity(string authenticationUsername, string username)");
                 throw;
             }
         }

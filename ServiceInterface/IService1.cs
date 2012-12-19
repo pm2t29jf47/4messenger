@@ -86,6 +86,11 @@ namespace ServiceInterface
     public enum FolderType { inbox, sentbox }; 
     
     [ Flags ]
-    public enum MessageTypes { deleted = 1, viewed = 2};
+    public enum MessageTypes 
+    {
+        Unknown = 0,
+        Deleted = 1,
+        Viewed = 2
+    };
     
 }

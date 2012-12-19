@@ -15,7 +15,7 @@ namespace EFDataSourceLayer
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            ///Каскадное удаление Recipients по Message
+            ///Каскадное удаление Recipients при удалении Message
             modelBuilder.Entity<Message>().HasMany(a => a.Recipients).WithRequired(b => b.Message).WillCascadeOnDelete(true);
             ///Запрет на каскадное удаление Messages при удалении Employee
             modelBuilder.Entity<Employee>().HasMany(a => a.Sent).WithRequired(b => b.Sender).WillCascadeOnDelete(false);

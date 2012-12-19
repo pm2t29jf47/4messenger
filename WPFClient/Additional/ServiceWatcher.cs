@@ -140,7 +140,7 @@ namespace WPFClient.Additional
                 DataDownloadException = null;
                 UpdateEmployees(AllEmployees);   
 
-                MessageTypes messageTypes = new MessageTypes();
+                MessageTypes messageTypes;
                 UpdateMessages(FolderType.inbox,messageTypes, InboxMessages);
 
                 messageTypes = MessageTypes.viewed;

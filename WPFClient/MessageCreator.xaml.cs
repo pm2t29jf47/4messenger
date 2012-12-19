@@ -85,6 +85,7 @@ namespace WPFClient
             MessageControlModel mcm = (MessageControlModel)MessageControl.DataContext;
             try
             {
+                mcm.Message.Sender = null;
                 App.ServiceWatcher.SendMessage(mcm.Message);
                 App.ServiceWatcher.ForceDataDownload();
                 this.Close();

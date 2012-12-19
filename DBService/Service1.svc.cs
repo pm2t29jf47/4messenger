@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using DataSourceLayer;
+//using EFDataSourceLayer;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Security.Permissions;
@@ -52,7 +53,7 @@ namespace DBService
         public List<string> GetAllEmployeesIds()
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
-            return EmployeeGateway.SelectIds(currentUsername);           
+            return EmployeeGateway.SelectIds(currentUsername); 
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
@@ -60,13 +61,14 @@ namespace DBService
         {
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             CheckMessage(message, currentUsername);
-            message.Date = DateTime.Now;
+            PrepareMessage(message);
             int insertedMessageId = MessageGateway.Insert(message, currentUsername);
             foreach (Recipient item in message.Recipients)
             {
                 Recipient recipient = new Recipient(item.RecipientUsername, insertedMessageId);
                 RecipientGateway.Insert(recipient, currentUsername);
             }
+
         }
 
         void CheckMessage(Message message, string currentUsername)
@@ -76,22 +78,69 @@ namespace DBService
                 ArgumentNullException ex = new ArgumentNullException("message");
                 throw new FaultException<ArgumentNullException>(ex, ex.Message);
             }
-
-            if (message.Recipients == null
-                || message.Content == null
-                || message.Sender == null
-                || message.SenderUsername == null
-                || message.Title == null)
+            if (message.Recipients == null)
             {
-                ArgumentException ex = new ArgumentException("Only message.Id can be NULL");
+                ArgumentException ex = new ArgumentException("message.Recipients cannot be NULL");
                 throw new FaultException<ArgumentException>(ex, ex.Message);
             }
+            if(message.Content == null)
+            {
+                ArgumentException ex = new ArgumentException("message.Content cannot be NULL");
+                throw new FaultException<ArgumentException>(ex, ex.Message);
+            }
+            ///Можно нечаянно добавить нового пользователя
+            if(message.Sender != null)
+            {
+                ArgumentException ex = new ArgumentException("message.Sender must be NULL");
+                throw new FaultException<ArgumentException>(ex, ex.Message);
+            }
+            if(message.SenderUsername == null)
+            {
+                ArgumentException ex = new ArgumentException("message.SenderUsername cannot be NULL");
+                throw new FaultException<ArgumentException>(ex, ex.Message);
+            }
+            if(message.Title == null)
+            {
+                ArgumentException ex = new ArgumentException("message.Title cannot be NULL");
+                throw new FaultException<ArgumentException>(ex, ex.Message);
+            }
+
+            foreach (Recipient item in message.Recipients)
+            {
+                ///Можно нечаянно добавить нового пользователя
+                if (item.RecipientEmployee != null)
+                {
+                    ArgumentException ex = new ArgumentException("message.Recipients[i].RecipientEmployee must be NULL");
+                    throw new FaultException<ArgumentException>(ex, ex.Message);
+                }
+                ///Чтобы не было конфликта
+                if (item.Message != null)
+                {
+                    ArgumentException ex = new ArgumentException("message.Recipients[i].Message must be NULL");
+                    throw new FaultException<ArgumentException>(ex, ex.Message);
+                }
+                /// еще не известно какой Id
+                if (item.MessageId != null)
+                {
+                    ArgumentException ex = new ArgumentException("message.Recipients[i].MessageId must be NULL");
+                    throw new FaultException<ArgumentException>(ex, ex.Message);
+                }
+            }
+           
+
+
             ///нельзя отсылать письма под чужим именем   
             if (string.Compare(currentUsername, message.SenderUsername) != 0)
             {
                 ArgumentException ex = new ArgumentException("message.SenderUsername must be equal current username");
                 throw new FaultException<ArgumentException>(ex, ex.Message);
             }
+        }
+
+        void PrepareMessage(Message message)
+        {
+            message.Date = DateTime.Now;
+            message.LastUpdate = DateTime.Now;
         }
 
         void FillMessage(Message message, string currentUsername)
@@ -112,7 +161,7 @@ namespace DBService
                 ArgumentNullException ex = new ArgumentNullException("selectableUsername");
                 throw new FaultException<ArgumentNullException>(ex, ex.Message);
             }
-            return EmployeeGateway.Select(selectableUsername, currentUsername);
+            return EmployeeGateway.Select(selectableUsername, currentUsername);            
         }
 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
@@ -150,7 +199,7 @@ namespace DBService
             List<Recipient> recipients = RecipientGateway.Select(currentUsername, currentUsername, deleted, viewed);
             foreach (Recipient item in recipients)
             {
-                result = MessageGateway.Select((int)item.MessageId, currentUsername);                
+                result = MessageGateway.Select((int)item.MessageId, currentUsername);
                 recievedMessages.Add(result);
             }
             MessagesPack messagesPack = new MessagesPack();
@@ -163,7 +212,7 @@ namespace DBService
             {
                 FillMessage(item, currentUsername);
             }
-            return messagesPack;
+            return messagesPack;           
         }
 
         MessagesPack GetSentboxMessages(string currentUsername, MessageTypes messageTypes, Byte[] recentVersion)
@@ -177,7 +226,7 @@ namespace DBService
             {
                 FillMessage(item, currentUsername);
             }
-            return messagesPack;
+            return messagesPack;            
         }
 
         List<Message> GetRecentVersionMessages(List<Message> messages, byte[] recentVersion)
@@ -215,12 +264,12 @@ namespace DBService
         List<int> GetSentboxMessagesIds(string currentUsername, MessageTypes messageTypes)
         {
             bool deleted = messageTypes.HasFlag(MessageTypes.deleted);
-            return MessageGateway.SelectIds(currentUsername, currentUsername, deleted);            
+            return MessageGateway.SelectIds(currentUsername, currentUsername, deleted); 
         }
 
         List<int> GetInboxMessagesIds(string currentUsername, MessageTypes messageTypes)
         {
-            List<int> recievedMessagesIds = new List<int>();      
+            List<int> recievedMessagesIds = new List<int>();
             bool deleted = messageTypes.HasFlag(MessageTypes.deleted);
             bool viewed = messageTypes.HasFlag(MessageTypes.viewed);
             ///Ищем в получателях

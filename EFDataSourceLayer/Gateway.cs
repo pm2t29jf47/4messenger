@@ -27,6 +27,7 @@ namespace EFDataSourceLayer
            {
                if (customDbContextPool.ContainsKey(username))
                {
+                   var a = customDbContextPool[username].Database.Connection;
                    if (customDbContextPool[username].Database.Connection.State == System.Data.ConnectionState.Open) ///Broken не работает    
                    {
                        return customDbContextPool[username];

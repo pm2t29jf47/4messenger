@@ -76,6 +76,10 @@ namespace Entities
         public bool Deleted { get; set; }
 
         [DataMember]
+        [Required]
+        public DateTime LastUpdate { get; set; }
+
+        [DataMember]
         public virtual Employee Sender { get; set; }
 
         [DataMember]       

@@ -26,6 +26,7 @@ namespace WPFClient.SidebarFolders
         {
             if (hasUnprocessedData)
             {
+                hasUnprocessedData = false;
                 messageModels.Clear();
                 foreach (Message item in inboxMessages)
                 {
@@ -92,8 +93,11 @@ namespace WPFClient.SidebarFolders
 
         public void RefreshFolderContent()
         {
-
-
+            hasUnprocessedData = true;
+            UpdateMessages(ServiceInterface.FolderType.Inbox, ServiceInterface.MessageTypes.Unknown, inboxMessages);
+            UpdateMessages(ServiceInterface.FolderType.Inbox, ServiceInterface.MessageTypes.Viewed, viewedInboxMessages);
+            var a= (MainWindow) App.Current.MainWindow;
+            
         }
     }
 }

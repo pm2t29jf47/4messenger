@@ -102,7 +102,7 @@ namespace WPFClient.SidebarFolders
                 PropertyChanged(this, e);
         }
 
-        void UpdateMessages(FolderType folderType, MessageTypes messageTypes, List<Message> messages)
+        protected void UpdateMessages(FolderType folderType, MessageTypes messageTypes, List<Message> messages)
         {
             List<Entity> entities = new List<Entity>();
             entities.AddRange(messages);

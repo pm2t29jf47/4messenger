@@ -22,10 +22,11 @@ namespace DBService
 {
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class Service1 : IService1
-    {
+    { 
         [PrincipalPermission(SecurityAction.Demand, Role = "users")]
         public EmployeePack GetAllEmployees(byte[] recentVersion)
         {
+            var a = OperationContext.Current.Host.Extensions.Count;
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             List<Employee> allEmployees = EmployeeGateway.SelectAll(currentUsername);
             EmployeePack pack = new EmployeePack();
@@ -178,7 +179,7 @@ namespace DBService
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             switch (folderType)
             {
-                case FolderType.inbox:
+                case FolderType.Inbox:
                     {
                         return GetInboxMessages(currentUsername, messageTypes, recentVersion);
                     }
@@ -193,8 +194,8 @@ namespace DBService
         {
             List<Message> recievedMessages = new List<Message>();
             Message result;
-            bool deleted = messageTypes.HasFlag(MessageTypes.deleted);
-            bool viewed = messageTypes.HasFlag(MessageTypes.viewed);
+            bool deleted = messageTypes.HasFlag(MessageTypes.Deleted);
+            bool viewed = messageTypes.HasFlag(MessageTypes.Viewed);
             ///Ищем в получателях
             List<Recipient> recipients = RecipientGateway.Select(currentUsername, currentUsername, deleted, viewed);
             foreach (Recipient item in recipients)
@@ -217,7 +218,7 @@ namespace DBService
 
         MessagesPack GetSentboxMessages(string currentUsername, MessageTypes messageTypes, Byte[] recentVersion)
         {
-            bool deleted = messageTypes.HasFlag(MessageTypes.deleted);
+            bool deleted = messageTypes.HasFlag(MessageTypes.Deleted);
             List<Message> sentMessages = MessageGateway.Select(currentUsername, currentUsername, deleted);
             MessagesPack messagesPack = new MessagesPack();
             messagesPack.CountInDB = sentMessages.Count();
@@ -250,7 +251,7 @@ namespace DBService
             string currentUsername = ServiceSecurityContext.Current.PrimaryIdentity.Name;
             switch (folderType)
             {
-                case FolderType.inbox:
+                case FolderType.Inbox:
                     {
                         return GetInboxMessagesIds(currentUsername, messageTypes);
                     }
@@ -263,15 +264,15 @@ namespace DBService
 
         List<int> GetSentboxMessagesIds(string currentUsername, MessageTypes messageTypes)
         {
-            bool deleted = messageTypes.HasFlag(MessageTypes.deleted);
+            bool deleted = messageTypes.HasFlag(MessageTypes.Deleted);
             return MessageGateway.SelectIds(currentUsername, currentUsername, deleted); 
         }
 
         List<int> GetInboxMessagesIds(string currentUsername, MessageTypes messageTypes)
         {
             List<int> recievedMessagesIds = new List<int>();
-            bool deleted = messageTypes.HasFlag(MessageTypes.deleted);
-            bool viewed = messageTypes.HasFlag(MessageTypes.viewed);
+            bool deleted = messageTypes.HasFlag(MessageTypes.Deleted);
+            bool viewed = messageTypes.HasFlag(MessageTypes.Viewed);
             ///Ищем в получателях
             List<Recipient> recipients = RecipientGateway.Select(currentUsername, currentUsername, deleted, viewed);
             foreach (Recipient item in recipients)

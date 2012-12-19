@@ -83,7 +83,11 @@ namespace ServiceInterface
          
     }
 
-    public enum FolderType { inbox, sentbox }; 
+    public enum FolderType 
+    { 
+        Inbox,
+        Sentbox 
+    }; 
     
     [ Flags ]
     public enum MessageTypes 

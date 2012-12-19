@@ -62,10 +62,14 @@ namespace WPFClient.Additional
             }
         }
 
-        public MessageType Type { get; set; }
+        public MessageParentType Type { get; set; }
     }
 
-    public enum MessageType { inbox, sentbox}
+    public enum MessageParentType 
+    { 
+        Inbox, 
+        Sentbox
+    }
 
 
 }

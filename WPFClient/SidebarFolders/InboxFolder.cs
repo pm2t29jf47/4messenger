@@ -14,41 +14,86 @@ namespace WPFClient.SidebarFolders
             FolderLabel = Properties.Resources.InboxFolderLabel;
         }
 
+        List<Message> inboxMessages = new List<Message>();
+
+        List<Message> viewedInboxMessages = new List<Message>();
+
+        List<MessageListItemModel> messageModels = new List<MessageListItemModel>();
+
+        bool hasUnprocessedData = true;
+
         public override List<MessageListItemModel> GetFolderContent()
         {
-            List<MessageListItemModel> messageModels = new List<MessageListItemModel>();
-            foreach (Message item in App.ServiceWatcher.InboxMessages)
+            if (hasUnprocessedData)
             {
-                messageModels.Add(
-                    new MessageListItemModel()
-                    {
-                        Message = item,
-                        Viewed = false,
-                        Type = MessageType.inbox
-                    });
+                messageModels.Clear();
+                foreach (Message item in inboxMessages)
+                {
+                    messageModels.Add(
+                        new MessageListItemModel()
+                        {
+                            Message = item,
+                            Viewed = false,
+                            Type = MessageParentType.Inbox
+                        });
+                }
+                foreach (Message item in viewedInboxMessages)
+                {
+                    messageModels.Add(
+                        new MessageListItemModel()
+                        {
+                            Message = item,
+                            Viewed = true,
+                            Type = MessageParentType.Inbox
+                        });
+                }
+                messageModels = messageModels.OrderBy(row => row.Date).ToList();
+                return messageModels;
             }
-            foreach (Message item in App.ServiceWatcher.ViewedInboxMessages)
+            else
             {
-                messageModels.Add(
-                    new MessageListItemModel()
-                    {
-                        Message = item,
-                        Viewed = true,
-                        Type = MessageType.inbox
-                    });
+                return messageModels;
             }
-            messageModels = messageModels.OrderBy(row => row.Date).ToList();
-            return messageModels;
+
+            //List<MessageListItemModel> messageModels = new List<MessageListItemModel>();
+            //foreach (Message item in App.ServiceWatcher.InboxMessages)
+            //{
+            //    messageModels.Add(
+            //        new MessageListItemModel()
+            //        {
+            //            Message = item,
+            //            Viewed = false,
+            //            Type = MessageParentType.Inbox
+            //        });
+            //}
+            //foreach (Message item in App.ServiceWatcher.ViewedInboxMessages)
+            //{
+            //    messageModels.Add(
+            //        new MessageListItemModel()
+            //        {
+            //            Message = item,
+            //            Viewed = true,
+            //            Type = MessageParentType.Inbox
+            //        });
+            //}
+            //messageModels = messageModels.OrderBy(row => row.Date).ToList();
+            //return messageModels;
         }
 
         public void RefreshCountOfUnViewedMessages()
         {
-            int result = App.ServiceWatcher.InboxMessages.Count;
-            
-            if (CountOfUnviewedMessages != result)
+            int result = inboxMessages.Count;
+
+            if (base.CountOfUnviewedMessages != result)
             {
-                CountOfUnviewedMessages = result;                
+                base.CountOfUnviewedMessages = result;                
             }            
+        }
+
+        public void RefreshFolderContent()
+        {
+
+
         }
     }
 }

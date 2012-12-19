@@ -62,7 +62,7 @@ namespace WPFClient.Models
             foreach(Recipient item in message.Recipients)
             {
                 item.Message = message;
-                item.RecipientEmployee = App.ServiceWatcher.AllEmployees.FirstOrDefault(row => string.Compare(item.RecipientUsername, row.Username) == 0);
+                item.RecipientEmployee = App.mainWindow.AllEmployeesModel.FirstOrDefault(row => string.Compare(item.RecipientUsername, row.Username) == 0);
             }
         }
     }

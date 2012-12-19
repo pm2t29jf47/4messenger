@@ -62,9 +62,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Additional\AllEmployeesModel.cs" />
     <Compile Include="Additional\CustomStringComparer.cs" />
     <Compile Include="Additional\MessageListItemModel.cs" />
-    <Compile Include="Additional\ServiceWatcher.cs" />
+    <Compile Include="Additional\AdditionalTools.cs" />
     <Compile Include="Additional\StatusBarModel.cs" />
     <Compile Include="ConnectionErrorDetails.xaml.cs">
       <DependentUpon>ConnectionErrorDetails.xaml</DependentUpon>

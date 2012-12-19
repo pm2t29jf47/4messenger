@@ -24,7 +24,7 @@ namespace WPFClient.SidebarFolders
                     {
                         Message = item,
                         Viewed = false,
-                        Type = MessageType.inbox                     
+                        Type = MessageParentType.Inbox                     
                     });
             }
             foreach( Message item in App.ServiceWatcher.ViewedDeletedInboxMessages)
@@ -34,7 +34,7 @@ namespace WPFClient.SidebarFolders
                     {
                         Message = item,
                         Viewed = true,
-                        Type = MessageType.inbox
+                        Type = MessageParentType.Inbox
                     });
             }
             foreach (Message item in App.ServiceWatcher.DeletedSentboxMessages)
@@ -44,7 +44,7 @@ namespace WPFClient.SidebarFolders
                     {
                         Message = item,
                         Viewed = true,
-                        Type = MessageType.sentbox  
+                        Type = MessageParentType.Sentbox  
                     });
             }            
             return messageModels;

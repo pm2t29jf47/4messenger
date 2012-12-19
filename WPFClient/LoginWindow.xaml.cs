@@ -38,19 +38,10 @@ namespace WPFClient
         {
             try
             {
-                App.ServiceWatcher = new ServiceWatcher(App.timeBetweenUpdating)
-                {
-                    FactoryUsername = UsernameTexbox.Text,
-                    FactoryPassword = PasswordTexbox.Password
-                };
-
-                ///quick login
-                App.ServiceWatcher.FactoryUsername = "ivan1";
-                App.ServiceWatcher.FactoryPassword = "111";
-                ///
-
-                App.ServiceWatcher.CreateChannel();
-                App.ServiceWatcher.CheckUser();
+                App.factory.Credentials.UserName.UserName = UsernameTexbox.Text;
+                App.factory.Credentials.UserName.Password = PasswordTexbox.Password;
+                App.proxy =  App.factory.CreateChannel();
+                App.proxy.CheckUser();        
                 this.DialogResult = true;                           
                 this.Close();
             }

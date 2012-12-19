@@ -25,6 +25,7 @@ using System.ServiceModel;
 using ServiceInterface;
 using WPFClient.ToolbarButtons;
 using System.Collections;
+using Entities.Additional;
 
 
 namespace WPFClient
@@ -43,15 +44,20 @@ namespace WPFClient
 
         SidebarFolder selectedFolder;
 
+        public AllEmployeesModel AllEmployeesModel { get; set; }
+
         DispatcherTimer messageViewedTimer = new System.Windows.Threading.DispatcherTimer()
         {
             Interval = App.timePerMessageSetViewed
-        };     
+        };
+        DispatcherTimer serviceWatcherTimer = new System.Windows.Threading.DispatcherTimer()
+        {
+            Interval = App.timeBetweenUpdating
+        }; 
 
         public MainWindow()
         {
-            Loaded += new RoutedEventHandler(OnMainWindowLoaded);
-            messageViewedTimer.Tick += new EventHandler(OnmessageViewedTimerTick);
+            Loaded += new RoutedEventHandler(OnMainWindowLoaded);            
             SetCulture("ru");
             InitializeComponent();            
         }
@@ -69,20 +75,28 @@ namespace WPFClient
                   XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         }
 
+        #endregion
+
+        #region Prepare window components
+
         void OnMainWindowLoaded(object sender, RoutedEventArgs e)
-        {           
+        {
+            SetApp();
             PrepareWindow();
             ShowLoginWindow();
             PrepareEmployeeClass();
             CreateServiceWatcherHandler();
-            App.ServiceWatcher.CreateChannel();
-            App.ServiceWatcher.StartWatching();    
-            MessageList.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(OnMessageListLostKeyboardFocus);
+            CreateMessageViewedTimerHandler();
         }
 
-        void OnMessageListLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        void CreateMessageViewedTimerHandler()
         {
-            int a = 10;
+            messageViewedTimer.Tick += new EventHandler(OnmessageViewedTimerTick);
+        }
+
+        void SetApp()
+        {
+            App.mainWindow = this;            
         }
 
         void PrepareWindow()
@@ -91,11 +105,17 @@ namespace WPFClient
             PrepareToolbar();
             MessageControl.ControlState = MessageControl.state.IsReadOnly;
             PrepareStatusBar();
+            PrepareAllEmployeesModel();
+        }
+
+        void PrepareAllEmployeesModel()
+        {
+            AllEmployeesModel = new AllEmployeesModel();
         }
 
         void PrepareEmployeeClass()
         {
-            Employee.CurrentUsername = App.ServiceWatcher.FactoryUsername;
+            Employee.CurrentUsername = App.factory.Credentials.UserName.UserName;
             Employee.NamePrefix = Properties.Resources.Me;
         }
         
@@ -160,6 +180,10 @@ namespace WPFClient
             this.Show();
         }
 
+        #endregion
+
+        #region MessageList behaviour
+
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (MessageList.SelectedItem != null)
@@ -175,7 +199,7 @@ namespace WPFClient
                 }
                 MessageControl.DataContext = new MessageControlModel()
                 {
-                    AllEmployees = App.ServiceWatcher.AllEmployees,
+                    AllEmployees = this.AllEmployeesModel.Employees,
                     Message = selectedMessageModel.Message
                 };
             }
@@ -213,6 +237,10 @@ namespace WPFClient
                     }
             } 
         }
+
+        #endregion
+
+        #region Set message vieved by timer tick
 
         void OnmessageViewedTimerTick(object sender, EventArgs e)
         {
@@ -335,7 +363,7 @@ namespace WPFClient
 
         #endregion
 
-        #region "Create" "Reply" "Delete" "Recover" buttons
+        #region "Create" "Reply" "Delete" "Recover" behaviour
 
         void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
         {
@@ -412,7 +440,7 @@ namespace WPFClient
         {
             foreach (MessageListItemModel item in models)
             {
-                if (item.Type == MessageType.inbox)
+                if (item.Type == MessageParentType.Inbox)
                 {
                     App.ServiceWatcher.PermanentlyDeleteRecipient((int)item.Id);
                 }
@@ -427,7 +455,7 @@ namespace WPFClient
         {
             foreach (MessageListItemModel item in models)
             {
-                if (item.Type == MessageType.inbox)
+                if (item.Type == MessageParentType.Inbox)
                 {
                     App.ServiceWatcher.SetRecipientDeleted((int)item.Id, true);
                 }
@@ -450,7 +478,7 @@ namespace WPFClient
             {
                 foreach (MessageListItemModel item in MessageList.SelectedItems)
                 {
-                    if (item.Type == MessageType.inbox)
+                    if (item.Type == MessageParentType.Inbox)
                     {
                         App.ServiceWatcher.SetRecipientDeleted((int)item.Id, false);
                     }
@@ -495,9 +523,9 @@ namespace WPFClient
                 Content = string.Empty,
                 Date = new DateTime(),
                 Deleted = false,
-                SenderUsername = App.ServiceWatcher.FactoryUsername,
+                SenderUsername = App.factory.Credentials.UserName.UserName,
                 Title = string.Empty,
-                Sender = App.ServiceWatcher.AllEmployees.FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0),
+                Sender = this.AllEmployeesModel.Employees.FirstOrDefault(row => string.Compare(App.App.factory.Credentials.UserName.UserName, row.Username) == 0),
                 Recipients = new List<Recipient>()
             };
              CreateMessageCreatorWindow(message);
@@ -519,10 +547,10 @@ namespace WPFClient
                 Content = string.Empty,
                 Date = new DateTime(),
                 Deleted = false,
-                SenderUsername = App.ServiceWatcher.FactoryUsername,
+                SenderUsername = App.factory.Credentials.UserName.UserName,
                 Title = newTitle,
                 Recipients = recipients,
-                Sender = App.ServiceWatcher.AllEmployees.FirstOrDefault(row => string.Compare(App.ServiceWatcher.FactoryUsername, row.Username) == 0)
+                Sender = this.AllEmployeesModel.Employees.FirstOrDefault(row => string.Compare(App.factory.Credentials.UserName.UserName, row.Username) == 0)
             };
             CreateMessageCreatorWindow(message);
         }
@@ -532,7 +560,7 @@ namespace WPFClient
             MessageCreator messageCreator = new MessageCreator();
             messageCreator.DataContext = new MessageCreatorModel()
             {
-                AllEmployees = App.ServiceWatcher.AllEmployees,
+                AllEmployees = this.AllEmployeesModel.Employees,
                 Message = message,
                 StatusBar = this.StatusBar
             };
@@ -551,16 +579,22 @@ namespace WPFClient
 
         #endregion
 
-        #region ServiceWatcher        
+        #region Updating inner data       
 
         void CreateServiceWatcherHandler()
         {
-            App.ServiceWatcher.DataUpdated += new Additional.ServiceWatcher.eventHandler(OnServiceWatcherDataUpdated);
+            this.serviceWatcherTimer.Tick += new EventHandler(OnserviceWatcherTimerTick);
         }
 
-        void OnServiceWatcherDataUpdated(object sender, PropertyChangedEventArgs e)
+        void OnserviceWatcherTimerTick(object sender, EventArgs e)
         {
+            UpdateInnerData();
             UpdateWindow();
+        }
+
+        void UpdateInnerData()
+        {
+            AllEmployeesModel.RefreshEmployees();
         }
 
         void UpdateWindow()
@@ -578,6 +612,39 @@ namespace WPFClient
                 statusBarModel.Exception = App.ServiceWatcher.DataDownloadException;
             }
         }
+
+        void UpdateSelectionFolderContent()
+        {
+            UpdateInboxFolderDisplay();
+            if (selectedFolder is InboxFolder)
+            {
+                UploadToMessageList();
+            }
+            else if (selectedFolder is SentboxFolder)
+            {
+                UploadToMessageList();
+            }
+            else if (selectedFolder is DeletedFolder)
+            {
+                UploadToMessageList();
+            }
+        }
+
+        void UpdateInboxFolderDisplay()
+        {
+            List<SidebarFolder> folders = (List<SidebarFolder>)Sidebar.ItemsSource;
+            foreach (SidebarFolder item in folders)
+            {
+                if (item is InboxFolder)
+                {
+                    ((InboxFolder)item).RefreshCountOfUnViewedMessages();
+                }
+            }
+        }
+
+        #endregion
+
+        #region StatusBar behaviour
 
         void OnStatusBarMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -604,35 +671,6 @@ namespace WPFClient
                     App.ServiceWatcher.DestroyCurrentChannel();
                     App.ServiceWatcher.CreateChannel();                    
                     App.ServiceWatcher.StartWatching();                    
-                }
-            }
-        }
-
-        void UpdateSelectionFolderContent()
-        {            
-            UpdateInboxFolderDisplay();
-            if (selectedFolder is InboxFolder)
-            {
-                UploadToMessageList();
-            }
-            else if (selectedFolder is SentboxFolder)
-            {
-                UploadToMessageList();
-            }
-            else if (selectedFolder is DeletedFolder)
-            {
-                UploadToMessageList();
-            }
-        }
-
-        void UpdateInboxFolderDisplay()
-        {
-            List<SidebarFolder> folders = (List<SidebarFolder>)Sidebar.ItemsSource;
-            foreach (SidebarFolder item in folders)
-            {
-                if (item is InboxFolder)
-                {
-                    ((InboxFolder)item).RefreshCountOfUnViewedMessages();
                 }
             }
         }

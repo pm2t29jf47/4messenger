@@ -20,7 +20,7 @@ namespace WPFClient
 
         public static TimeSpan timePerMessageSetViewed = new TimeSpan(0, 0, 5);
 
-        public static ChannelFactory<IService1> factory = new ChannelFactory<IService1>("*");
+        public static ChannelFactory<IService1> factory;
 
         public static IService1 proxy;
 

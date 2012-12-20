@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
-using WPFClient.Additional;
+using WPFClient.OtherModels;
 
 namespace WPFClient.SidebarFolders
 {
@@ -49,36 +49,8 @@ namespace WPFClient.SidebarFolders
                         });
                 }
                 messageModels = messageModels.OrderBy(row => row.Date).ToList();
-                return messageModels;
             }
-            else
-            {
-                return messageModels;
-            }
-
-            //List<MessageListItemModel> messageModels = new List<MessageListItemModel>();
-            //foreach (Message item in App.ServiceWatcher.InboxMessages)
-            //{
-            //    messageModels.Add(
-            //        new MessageListItemModel()
-            //        {
-            //            Message = item,
-            //            Viewed = false,
-            //            Type = MessageParentType.Inbox
-            //        });
-            //}
-            //foreach (Message item in App.ServiceWatcher.ViewedInboxMessages)
-            //{
-            //    messageModels.Add(
-            //        new MessageListItemModel()
-            //        {
-            //            Message = item,
-            //            Viewed = true,
-            //            Type = MessageParentType.Inbox
-            //        });
-            //}
-            //messageModels = messageModels.OrderBy(row => row.Date).ToList();
-            //return messageModels;
+            return messageModels;
         }
 
         public void RefreshCountOfUnViewedMessages()
@@ -91,13 +63,11 @@ namespace WPFClient.SidebarFolders
             }            
         }
 
-        public void RefreshFolderContent()
+        public override void RefreshFolderContent()
         {
             hasUnprocessedData = true;
-            UpdateMessages(ServiceInterface.FolderType.Inbox, ServiceInterface.MessageTypes.Unknown, inboxMessages);
-            UpdateMessages(ServiceInterface.FolderType.Inbox, ServiceInterface.MessageTypes.Viewed, viewedInboxMessages);
-            var a= (MainWindow) App.Current.MainWindow;
-            
+            base.UpdateMessages(ServiceInterface.FolderType.Inbox, ServiceInterface.MessageTypes.Unknown, inboxMessages);
+            base.UpdateMessages(ServiceInterface.FolderType.Inbox, ServiceInterface.MessageTypes.Viewed, viewedInboxMessages);
         }
     }
 }

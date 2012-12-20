@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
+using System.Windows.Controls.Primitives;
 
-namespace WPFClient.Models
+namespace WPFClient.ControlsModels
 {
-    class RecipientsEditorModel
+    class MessageCreatorModel
     {
         /// <summary>
         /// Коллекция содержащая всех возможных для выбора сотрудников
@@ -16,7 +17,7 @@ namespace WPFClient.Models
         /// <summary>
         /// Коллекция содержащая всех возможных для выбора сотрудников
         /// </summary>
-        public List<Employee> AllEmployees 
+        public List<Employee> AllEmployees
         {
             get
             {
@@ -31,34 +32,21 @@ namespace WPFClient.Models
             }
         }
 
-        /// <summary>
-        /// Коллекция содержащая выбраных пользователем сотрудников
-        /// </summary>
-        List<Employee> recipientsEmployees = new List<Employee>();
+        Message message = new Message();
 
-        /// <summary>
-        /// Коллекция содержащая выбраных пользователем сотрудников
-        /// </summary>
-        public List<Employee> RecipientsEmployees 
+        public Message Message
         {
             get
             {
-                return recipientsEmployees;
+                return message;
             }
             set
             {
-                if (recipientsEmployees == value)
+                if (message == value)
                     return;
 
-                recipientsEmployees = value;
+                message = value;
             }
         }
-
     }
 }
-
-            
-        
-  
-
-

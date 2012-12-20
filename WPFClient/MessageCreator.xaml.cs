@@ -11,10 +11,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Entities;
-using WPFClient.Models;
+using WPFClient.ControlsModels;
 using System.ServiceModel;
 using WPFClient.Additional;
 using System.Windows.Controls.Primitives;
+using WPFClient.OtherModels;
 
 namespace WPFClient
 {
@@ -32,8 +33,7 @@ namespace WPFClient
         public MessageCreator()
         {
             InitializeComponent();
-            DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageCreatorDataContextChanged);
-            
+            DataContextChanged += new DependencyPropertyChangedEventHandler(OnMessageCreatorDataContextChanged);            
         }
 
         /// <summary>
@@ -86,8 +86,9 @@ namespace WPFClient
             try
             {
                 mcm.Message.Sender = null;
-                App.ServiceWatcher.SendMessage(mcm.Message);
-                App.ServiceWatcher.ForceDataDownload();
+                App.proxy.SendMessage(mcm.Message);
+                MainWindow MainWindow = (MainWindow)App.Current.MainWindow;
+                MainWindow.UpdateWindow();
                 this.Close();
             }
 
@@ -123,9 +124,8 @@ namespace WPFClient
         {
             InformatonTips.SomeError.Show(ex.Message);
             ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MessageCreator.OnSendMessageButtonClick(object sender, RoutedEventArgs e)");
-            StatusBarModel statusBarModel = (StatusBarModel)MessageCreatorModel.StatusBar.DataContext;
-            statusBarModel.Exception = ex;
-            statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
+            MainWindow MainWindow = (MainWindow)App.Current.MainWindow;
+            MainWindow.DisplayExceptionDetailInStatusBar(ex); 
         }
     }
 }

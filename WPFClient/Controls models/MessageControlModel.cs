@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Entities;
 
-namespace WPFClient.Models
+namespace WPFClient.ControlsModels
 {
     class MessageControlModel
     { 
@@ -62,7 +62,7 @@ namespace WPFClient.Models
             foreach(Recipient item in message.Recipients)
             {
                 item.Message = message;
-                item.RecipientEmployee = App.mainWindow.AllEmployeesModel.FirstOrDefault(row => string.Compare(item.RecipientUsername, row.Username) == 0);
+                item.RecipientEmployee = App.mainWindow.AllEmployeesModel.Employees.FirstOrDefault(row => string.Compare(item.RecipientUsername, row.Username) == 0);
             }
         }
     }

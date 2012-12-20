@@ -62,32 +62,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Additional\AllEmployeesModel.cs" />
+    <Compile Include="Other Models\AllEmployeesModel.cs" />
     <Compile Include="Additional\CustomStringComparer.cs" />
-    <Compile Include="Additional\MessageListItemModel.cs" />
+    <Compile Include="Other Models\MessageListItemModel.cs" />
     <Compile Include="Additional\AdditionalTools.cs" />
-    <Compile Include="Additional\StatusBarModel.cs" />
+    <Compile Include="Other Models\StatusBarModel.cs" />
     <Compile Include="ConnectionErrorDetails.xaml.cs">
       <DependentUpon>ConnectionErrorDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\ConnectionErrorDetailsModel.cs" />
+    <Compile Include="Other Models\ConnectionErrorDetailsModel.cs" />
     <Compile Include="SidebarFolders\DeletedFolder.cs" />
     <Compile Include="SidebarFolders\InboxFolder.cs" />
     <Compile Include="SidebarFolders\SentboxFolder.cs" />
-    <Compile Include="Models\MessageControlModel.cs" />
+    <Compile Include="Controls models\MessageControlModel.cs" />
     <Compile Include="MessageCreator.xaml.cs">
       <DependentUpon>MessageCreator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\MessageCreatorModel.cs" />
-    <Compile Include="Models\RecipientsEditorControlModel.cs" />
-    <Compile Include="Models\RecipientsEditorModel.cs" />
-    <Compile Include="Models\RecipientsControlModel.cs" />
+    <Compile Include="Controls models\MessageCreatorModel.cs" />
+    <Compile Include="Controls models\RecipientsEditorControlModel.cs" />
+    <Compile Include="Controls models\RecipientsEditorModel.cs" />
+    <Compile Include="Controls models\RecipientsControlModel.cs" />
     <Compile Include="Properties\Resources.ru.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.ru.resx</DependentUpon>
     </Compile>
-    <Compile Include="ToolbarButtons\ButtonModel.cs" />
+    <Compile Include="Other Models\ButtonModel.cs" />
     <Compile Include="UserControls\RecipientsControl.xaml.cs">
       <DependentUpon>RecipientsControl.xaml</DependentUpon>
     </Compile>
@@ -256,6 +256,7 @@
     <Resource Include="Images\mail_new_disabled.png" />
     <Resource Include="Images\mail_ok_disabled.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

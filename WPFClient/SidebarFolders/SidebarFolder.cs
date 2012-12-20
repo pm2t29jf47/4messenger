@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Entities;
-using WPFClient.Additional;
+using WPFClient.OtherModels;
 using System.ComponentModel;
 using ServiceInterface;
 using Entities.Additional;
+using WPFClient.Additional;
 
 namespace WPFClient.SidebarFolders
 {
@@ -67,12 +68,7 @@ namespace WPFClient.SidebarFolders
             {
                 return folderImage;
             }
-        }
-
-        public virtual List<MessageListItemModel> GetFolderContent()
-        {
-            return null;
-        }
+        }        
 
         int countOfUnviewedMessages = 0;
 
@@ -94,6 +90,18 @@ namespace WPFClient.SidebarFolders
 
         }
 
+        public virtual List<MessageListItemModel> GetFolderContent()
+        {
+            return null;
+        }
+
+        public virtual void RefreshFolderContent()
+        {
+            
+        }
+
+        #region Property changed event
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         void CreatePropertyChangedEvent(PropertyChangedEventArgs e)
@@ -102,57 +110,75 @@ namespace WPFClient.SidebarFolders
                 PropertyChanged(this, e);
         }
 
+        #endregion
+
+        #region updating messages
+
         protected void UpdateMessages(FolderType folderType, MessageTypes messageTypes, List<Message> messages)
         {
+            
             List<Entity> entities = new List<Entity>();
             entities.AddRange(messages);
             byte[] recentVersion = AdditionalTools.GetMaxTimestamp(entities);
             MessagesPack pack = App.proxy.GetMessages(folderType, messageTypes, recentVersion);
-            if (!UpdateMessagesByPack(pack, messages))
+            List<Message> messagesBuf = new List<Message>();
+            messagesBuf.AddRange(messages);
+            if (!UpdateMessagesByPack(pack, messagesBuf))
             {
-                List<int> idCollection = App.proxy.GetMessagesIds(folderType, messageTypes);
-                TrimMessages(idCollection, messages);
+                TrimMessages(messagesBuf, folderType, messageTypes);
             }
+            UploadFromMessagesBuf(messages, messagesBuf);
         }
 
-        bool UpdateMessagesByPack(MessagesPack pack, List<Message> messages)
+        bool UpdateMessagesByPack(MessagesPack pack, List<Message> messagesBuf)
         {
             if (pack.Messages.Count > 0)
             {
                 Message message;
                 foreach (Message item in pack.Messages)
                 {
-                    message = messages.FirstOrDefault(row => row.Id == item.Id);
+                    message = messagesBuf.FirstOrDefault(row => row.Id == item.Id);
                     if (message == null)
                     {
-                        messages.Add(item);
+                        messagesBuf.Add(item);
                     }
                     else
                     {
-                        messages.Remove(message);
-                        messages.Add(item);
+                        messagesBuf.Remove(message);
+                        messagesBuf.Add(item);
                     }
                 }
                 /// Восстанавливаем нормальный порядок
-                messages = messages.OrderBy(row => row.Date).ToList();
+                messagesBuf = messagesBuf.OrderBy(row => row.Date).ToList();
             }
-            return (messages.Count == pack.CountInDB);
+            return (messagesBuf.Count == pack.CountInDB);
         }
 
-        void TrimMessages(List<int> ids, List<Message> messages)
+        void TrimMessages(List<Message> messagesBuf, FolderType folderType, MessageTypes messageTypes)
         {
+            List<int> idCollection = App.proxy.GetMessagesIds(folderType, messageTypes);
             List<Message> removed = new List<Message>();
-            foreach (Message item in messages)
+            foreach (Message item in messagesBuf)
             {
-                if (!ids.Contains((int)item.Id))
+                if (!idCollection.Contains((int)item.Id))
                 {
                     removed.Add(item);
                 }
             }
             foreach (Message item in removed)
             {
-                messages.Remove(item);
+                messagesBuf.Remove(item);
             }
         }
+
+        void UploadFromMessagesBuf(List<Message> messages, List<Message> messagesBuf)
+        {
+            messages.Clear();
+            messages.AddRange(messagesBuf);
+        }
+
+        #endregion
+
+        
     }    
 }

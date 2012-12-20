@@ -7,7 +7,7 @@ using System.ComponentModel;
 using WPFClient.Additional;
 using SpecialWords;
 
-namespace WPFClient.Models
+namespace WPFClient.ControlsModels
 {
     public class RecipientsControlModel : INotifyPropertyChanged, IDataErrorInfo
     {

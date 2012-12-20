@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Entities;
-using WPFClient.Models;
+using WPFClient.ControlsModels;
 using System.ComponentModel;
 
 namespace WPFClient.UserControls

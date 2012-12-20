@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Entities;
 using System.Collections.ObjectModel;
-using WPFClient.Models;
+using WPFClient.ControlsModels;
 using System.Windows.Controls.Primitives;
 
 namespace WPFClient.UserControls

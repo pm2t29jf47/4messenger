@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 
-namespace WPFClient.ToolbarButtons
+namespace WPFClient.OtherModels
 {
     public class ButtonModel : INotifyPropertyChanged
     {

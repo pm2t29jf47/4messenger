@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 using Entities;
-using WPFClient.Models;
+using WPFClient.ControlsModels;
 using WPFClient.UserControls;
 using WPFClient.Additional;
 using WPFClient.SidebarFolders;
@@ -23,9 +23,9 @@ using System.Windows.Markup;
 using System.Diagnostics;
 using System.ServiceModel;
 using ServiceInterface;
-using WPFClient.ToolbarButtons;
 using System.Collections;
 using Entities.Additional;
+using WPFClient.OtherModels;
 
 
 namespace WPFClient
@@ -75,6 +75,13 @@ namespace WPFClient
                   XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         }
 
+        public void DisplayExceptionDetailInStatusBar(Exception ex)
+        {
+            StatusBarModel statusBarModel = (StatusBarModel)StatusBar.DataContext;
+            statusBarModel.ShortMessage = (ex == null) ? Properties.Resources.Connected : Properties.Resources.ConnectionError;
+            statusBarModel.Exception = ex;
+        }
+
         #endregion
 
         #region Prepare window components
@@ -86,12 +93,56 @@ namespace WPFClient
             ShowLoginWindow();
             PrepareEmployeeClass();
             CreateServiceWatcherHandler();
+            FirstDataLoad();            
             CreateMessageViewedTimerHandler();
         }
 
         void CreateMessageViewedTimerHandler()
         {
             messageViewedTimer.Tick += new EventHandler(OnmessageViewedTimerTick);
+        }
+
+        void FirstDataLoad()
+        {
+            try
+            {                
+                UpdateWindow();
+            }
+            catch (EndpointNotFoundException ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MainWindow.UpdateWindow()");
+                DisplayExceptionDetailInStatusBar(ex);
+            }
+
+            ///Креденшелы не проходят проверку
+            catch (System.ServiceModel.Security.MessageSecurityException ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MainWindow.UpdateWindow()");
+                DisplayExceptionDetailInStatusBar(ex);
+            }
+
+            /// Ошибка в сервисе
+            /// (маловероятна, при таком варианте скорее сработает ошибка креденшелов,
+            /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
+            catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MainWindow.UpdateWindow()");
+                DisplayExceptionDetailInStatusBar(ex);
+            }
+
+            /// Остальные исключения
+            catch (Exception ex)
+            {            
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MainWindow.UpdateWindow()");
+                DisplayExceptionDetailInStatusBar(ex);              
+                throw; ///Неизвестное исключение пробасывается дальше
+            }
+            serviceWatcherTimer.Start();
+        }
+
+        void CreateServiceWatcherHandler()
+        {
+            this.serviceWatcherTimer.Tick += new EventHandler(OnserviceWatcherTimerTick);
         }
 
         void SetApp()
@@ -182,7 +233,7 @@ namespace WPFClient
 
         #endregion
 
-        #region MessageList behaviour
+        #region MessageList selection changed
 
         void OnMessageListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -257,20 +308,20 @@ namespace WPFClient
                 int selectedMessageId = (int)selectedMessage.Id;
                 try
                 {
-                    App.ServiceWatcher.SetRecipientViewed(selectedMessageId, true);
-                    App.ServiceWatcher.ForceDataDownload();
+                    App.proxy.SetRecipientViewed(selectedMessageId, true);
+                    UpdateWindow();
                 }
 
                 /// Сервис не отвечает
                 catch (EndpointNotFoundException ex)
                 {
-                    HandleSetMessageViewedException(ex);
+                    HandleException(ex, "()WPFClient.MainWindow.SetMessageViewed()");
                 }
 
                 ///Креденшелы не подходят
                 catch (System.ServiceModel.Security.MessageSecurityException ex)
                 {
-                    HandleSetMessageViewedException(ex);
+                    HandleException(ex, "()WPFClient.MainWindow.SetMessageViewed()");
                 }
 
                 /// Ошибка в сервисе
@@ -278,13 +329,13 @@ namespace WPFClient
                 /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
                 catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
                 {
-                    HandleSetMessageViewedException(ex);
+                    HandleException(ex, "()WPFClient.MainWindow.SetMessageViewed()");
                 }
 
                 /// Остальные исключения
                 catch (Exception ex)
                 {
-                    HandleSetMessageViewedException(ex);
+                    HandleException(ex, "()WPFClient.MainWindow.SetMessageViewed()");
                     throw;
                 } 
                 UploadToMessageList();
@@ -295,37 +346,34 @@ namespace WPFClient
             }
         }
 
-        void HandleSetMessageViewedException(Exception ex)
-        {
-            InformatonTips.SomeError.Show(ex.Message);
-            ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MainWindow.SetMessageViewed()");
-            StatusBarModel statusBarModel = (StatusBarModel)StatusBar.DataContext;
-            statusBarModel.Exception = ex;
-            statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
-        }
-
         void UploadToMessageList()
         {
-            List<MessageListItemModel> savedSelectedItems = new List<MessageListItemModel>();
-
-            foreach (MessageListItemModel item in MessageList.SelectedItems)
+            if (this.selectedFolder != null)
             {
-                savedSelectedItems.Add(item);
-            }
-            List<MessageListItemModel> loadedMessageModels = this.selectedFolder.GetFolderContent();
-            MessageList.ItemsSource = loadedMessageModels;
-            if (savedSelectedItems.Count != 0)
-            {
-                foreach (MessageListItemModel item in savedSelectedItems)
+                List<MessageListItemModel> savedSelectedModels = new List<MessageListItemModel>();
+                foreach (MessageListItemModel item in MessageList.SelectedItems)
                 {
-                    MessageListItemModel findItem = loadedMessageModels.FirstOrDefault(row => row.Id == item.Id);
-                    if (findItem != null)
+                    savedSelectedModels.Add(item);
+                }
+                List<MessageListItemModel> loadedMessageModels = this.selectedFolder.GetFolderContent();
+                MessageList.ItemsSource = loadedMessageModels;
+                MessageList.SelectedItems.Clear();
+                if (savedSelectedModels.Count != 0)
+                {
+                    foreach (MessageListItemModel savedSelectedModel in savedSelectedModels)
                     {
-                        MessageList.SelectedItems.Add(findItem);
+                        foreach (var item in MessageList.Items)
+                        {
+                            if (((MessageListItemModel)item).Id == savedSelectedModel.Id)
+                            {
+                                MessageList.SelectedItems.Add(item);
+                            }
+                        }
+                        MessageList.Items.Refresh();
                     }
-                }               
-            }            
-        }
+                }
+            }
+        }        
 
         #endregion
 
@@ -363,7 +411,7 @@ namespace WPFClient
 
         #endregion
 
-        #region "Create" "Reply" "Delete" "Recover" behaviour
+        #region "Create" "Reply" "Delete" "Recover" click
 
         void OnCreateMessageButtonClick(object sender, RoutedEventArgs e) 
         {
@@ -377,36 +425,22 @@ namespace WPFClient
 
         void OnDeleteMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            DeleteMessages();
-            App.ServiceWatcher.ForceDataDownload();
-        }
-
-        void DeleteMessages()
-        {
             try
             {
-                if (selectedFolder is DeletedFolder)
-                {
-                    if (!InformatonTips.RemoveDialog.Show(Properties.Resources.RemoveWarningText, Properties.Resources.Warning))
-                    {
-                        return;
-                    }
-                    DeleteMessagesPermanently(MessageList.SelectedItems);
-                }
-                else
-                {
-                    DeleteMessagesTemporarily(MessageList.SelectedItems);
-                }
+                DeleteMessages();
+                UpdateWindow();
             }
             /// Сервис не отвечает
             catch (EndpointNotFoundException ex)
             {
+                DisplayExceptionDetailInStatusBar(ex);
                 HandleException(ex, "()WPFClient.MainWindow.DeleteMessages()");
             }
 
             ///Креденшелы не подходят
             catch (System.ServiceModel.Security.MessageSecurityException ex)
             {
+                DisplayExceptionDetailInStatusBar(ex);
                 HandleException(ex, "()WPFClient.MainWindow.DeleteMessages()");
             }
 
@@ -415,25 +449,40 @@ namespace WPFClient
             /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
             catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
             {
+                DisplayExceptionDetailInStatusBar(ex);
                 HandleException(ex, "()WPFClient.MainWindow.DeleteMessages()");
             }
 
             /// Остальные исключения, в т.ч. ArgumentException, ArgumentNullException
             catch (Exception ex)
             {
+                DisplayExceptionDetailInStatusBar(ex);
                 HandleException(ex, "()WPFClient.MainWindow.DeleteMessages()");
                 throw;
             }
+        }
 
+        void DeleteMessages()
+        {            
+            if (selectedFolder is DeletedFolder)
+            {
+                if (!InformatonTips.RemoveDialog.Show(Properties.Resources.RemoveWarningText, Properties.Resources.Warning))
+                {
+                    return;
+                }
+                DeleteMessagesPermanently(MessageList.SelectedItems);
+            }
+            else
+            {
+                DeleteMessagesTemporarily(MessageList.SelectedItems);
+            }           
         }
 
         void HandleException(Exception ex, string methodDescriptor)
         {
             InformatonTips.SomeError.Show(ex.Message);
             ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, methodDescriptor);
-            StatusBarModel statusBarModel = (StatusBarModel)StatusBar.DataContext;
-            statusBarModel.Exception = ex;
-            statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
+            DisplayExceptionDetailInStatusBar(ex);
         }
 
         void DeleteMessagesPermanently(IList models)
@@ -442,11 +491,11 @@ namespace WPFClient
             {
                 if (item.Type == MessageParentType.Inbox)
                 {
-                    App.ServiceWatcher.PermanentlyDeleteRecipient((int)item.Id);
+                    App.proxy.PermanentlyDeleteRecipient((int)item.Id);
                 }
                 else
                 {
-                    App.ServiceWatcher.PermanentlyDeleteMessage((int)item.Id);
+                    App.proxy.PermanentlyDeleteMessage((int)item.Id);
                 }
             }
         }
@@ -457,36 +506,21 @@ namespace WPFClient
             {
                 if (item.Type == MessageParentType.Inbox)
                 {
-                    App.ServiceWatcher.SetRecipientDeleted((int)item.Id, true);
+                    App.proxy.SetRecipientDeleted((int)item.Id, true);
                 }
                 else
                 {
-                    App.ServiceWatcher.SetMessageDeleted((int)item.Id, true);
+                    App.proxy.SetMessageDeleted((int)item.Id, true);
                 }
             }
         }
 
         void OnRecoverMessageButtonClick(object sender, RoutedEventArgs e)
         {
-            RecoverMessages();
-            App.ServiceWatcher.ForceDataDownload();
-        }
-
-        private void RecoverMessages()
-        {
             try
             {
-                foreach (MessageListItemModel item in MessageList.SelectedItems)
-                {
-                    if (item.Type == MessageParentType.Inbox)
-                    {
-                        App.ServiceWatcher.SetRecipientDeleted((int)item.Id, false);
-                    }
-                    else
-                    {
-                        App.ServiceWatcher.SetMessageDeleted((int)item.Id, false);
-                    }
-                }
+                RecoverMessages();
+                UpdateWindow();
             }
             /// Сервис не отвечает
             catch (EndpointNotFoundException ex)
@@ -515,7 +549,23 @@ namespace WPFClient
                 throw;
             }
         }
-        
+
+        private void RecoverMessages()
+        {
+
+            foreach (MessageListItemModel item in MessageList.SelectedItems)
+            {
+                if (item.Type == MessageParentType.Inbox)
+                {
+                    App.proxy.SetRecipientDeleted((int)item.Id, false);
+                }
+                else
+                {
+                    App.proxy.SetMessageDeleted((int)item.Id, false);
+                }
+            }
+        }
+           
         void CreateNewMessage()
         {
              Message message = new Message()
@@ -525,7 +575,7 @@ namespace WPFClient
                 Deleted = false,
                 SenderUsername = App.factory.Credentials.UserName.UserName,
                 Title = string.Empty,
-                Sender = this.AllEmployeesModel.Employees.FirstOrDefault(row => string.Compare(App.App.factory.Credentials.UserName.UserName, row.Username) == 0),
+                Sender = this.AllEmployeesModel.Employees.FirstOrDefault(row => string.Compare(App.factory.Credentials.UserName.UserName, row.Username) == 0),
                 Recipients = new List<Recipient>()
             };
              CreateMessageCreatorWindow(message);
@@ -561,8 +611,7 @@ namespace WPFClient
             messageCreator.DataContext = new MessageCreatorModel()
             {
                 AllEmployees = this.AllEmployeesModel.Employees,
-                Message = message,
-                StatusBar = this.StatusBar
+                Message = message
             };
             messageCreator.Title = Properties.Resources.MessageCreatorTitle; ///? тоже в дата контекст ?
             messageCreator.Show();
@@ -578,73 +627,8 @@ namespace WPFClient
         }
 
         #endregion
-
-        #region Updating inner data       
-
-        void CreateServiceWatcherHandler()
-        {
-            this.serviceWatcherTimer.Tick += new EventHandler(OnserviceWatcherTimerTick);
-        }
-
-        void OnserviceWatcherTimerTick(object sender, EventArgs e)
-        {
-            UpdateInnerData();
-            UpdateWindow();
-        }
-
-        void UpdateInnerData()
-        {
-            AllEmployeesModel.RefreshEmployees();
-        }
-
-        void UpdateWindow()
-        {
-            StatusBarModel statusBarModel = (StatusBarModel)StatusBar.DataContext;
-            if (System.Exception.Equals(App.ServiceWatcher.DataDownloadException, null))
-            {
-                UpdateSelectionFolderContent();
-                statusBarModel.ShortMessage = Properties.Resources.Connected;
-                statusBarModel.Exception = null;
-            }
-            else
-            {
-                statusBarModel.ShortMessage = Properties.Resources.ConnectionError;
-                statusBarModel.Exception = App.ServiceWatcher.DataDownloadException;
-            }
-        }
-
-        void UpdateSelectionFolderContent()
-        {
-            UpdateInboxFolderDisplay();
-            if (selectedFolder is InboxFolder)
-            {
-                UploadToMessageList();
-            }
-            else if (selectedFolder is SentboxFolder)
-            {
-                UploadToMessageList();
-            }
-            else if (selectedFolder is DeletedFolder)
-            {
-                UploadToMessageList();
-            }
-        }
-
-        void UpdateInboxFolderDisplay()
-        {
-            List<SidebarFolder> folders = (List<SidebarFolder>)Sidebar.ItemsSource;
-            foreach (SidebarFolder item in folders)
-            {
-                if (item is InboxFolder)
-                {
-                    ((InboxFolder)item).RefreshCountOfUnViewedMessages();
-                }
-            }
-        }
-
-        #endregion
-
-        #region StatusBar behaviour
+        
+        #region StatusBar click
 
         void OnStatusBarMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -654,7 +638,7 @@ namespace WPFClient
         void ShowConnectionErrorDetailsWindow()
         {
             StatusBarModel StatusBarModel = (StatusBarModel)StatusBar.DataContext;
-            if (!System.Exception.Equals(StatusBarModel.Exception, null))
+            if (StatusBarModel.Exception != null)
             {
                 ///окошко с текстом исключения!
                 ConnectionErrorDetails сonnectionErrorDetails = new ConnectionErrorDetails();
@@ -666,11 +650,83 @@ namespace WPFClient
                 if(! bool.Equals(result, null)
                     && result.Equals(true))
                 {
-                    ///Пересоздаем канал и перезапускаем таймер проверки сервиса
-                    App.ServiceWatcher.StopWatching();
-                    App.ServiceWatcher.DestroyCurrentChannel();
-                    App.ServiceWatcher.CreateChannel();                    
-                    App.ServiceWatcher.StartWatching();                    
+                   RecreateProxy();                                                  
+                }
+            }
+        }
+
+        void RecreateProxy()
+        {
+            if (App.proxy != null)
+            {
+                ((System.ServiceModel.Channels.IChannel)App.proxy).Close();
+            }
+            App.proxy = App.factory.CreateChannel();    
+        }
+
+        #endregion
+
+        #region Updating inner data
+
+        void OnserviceWatcherTimerTick(object sender, EventArgs e)
+        {
+            serviceWatcherTimer.Stop();
+            try
+            {                
+                UpdateWindow();
+            }
+            catch (EndpointNotFoundException ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MainWindow.UpdateWindow()");
+                DisplayExceptionDetailInStatusBar(ex);
+            }
+
+            ///Креденшелы не проходят проверку
+            catch (System.ServiceModel.Security.MessageSecurityException ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MainWindow.UpdateWindow()");
+                DisplayExceptionDetailInStatusBar(ex);
+            }
+
+            /// Ошибка в сервисе
+            /// (маловероятна, при таком варианте скорее сработает ошибка креденшелов,
+            /// т.к. проверка паролей происходит на каждом запросе к сервису и ей необходима БД)
+            catch (FaultException<System.ServiceModel.ExceptionDetail> ex)
+            {
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MainWindow.UpdateWindow()");
+                DisplayExceptionDetailInStatusBar(ex);
+            }
+
+            /// Остальные исключения
+            catch (Exception ex)
+            {            
+                ClientSideExceptionHandler.ExceptionHandler.HandleExcepion(ex, "()WPFClient.MainWindow.UpdateWindow()");
+                DisplayExceptionDetailInStatusBar(ex);              
+                throw; ///Неизвестное исключение пробасывается дальше
+            }
+            serviceWatcherTimer.Start();
+        }
+
+        public void UpdateWindow()
+        {
+            AllEmployeesModel.RefreshEmployees();
+            List<SidebarFolder> folders = (List<SidebarFolder>)Sidebar.ItemsSource;
+            foreach (SidebarFolder item in folders)
+            {
+                item.RefreshFolderContent();
+            }
+            UpdateInboxFolderDisplay();
+            UploadToMessageList();
+        }
+
+        void UpdateInboxFolderDisplay()
+        {
+            List<SidebarFolder> folders = (List<SidebarFolder>)Sidebar.ItemsSource;
+            foreach (SidebarFolder item in folders)
+            {
+                if (item is InboxFolder)
+                {
+                    ((InboxFolder)item).RefreshCountOfUnViewedMessages();
                 }
             }
         }

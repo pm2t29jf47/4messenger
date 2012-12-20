@@ -5,7 +5,7 @@ using System.Text;
 using Entities;
 using WPFClient.SidebarFolders;
 
-namespace WPFClient.Additional
+namespace WPFClient.OtherModels
 {
     class MessageListItemModel : Message
     {

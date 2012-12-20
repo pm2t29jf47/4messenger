@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 
-namespace WPFClient.Additional
+namespace WPFClient.OtherModels
 {
     class StatusBarModel : INotifyPropertyChanged
     {

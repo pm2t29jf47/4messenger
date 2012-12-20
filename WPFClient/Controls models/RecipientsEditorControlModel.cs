@@ -5,7 +5,7 @@ using System.Text;
 using Entities;
 using System.Collections.ObjectModel;
 
-namespace WPFClient.Models
+namespace WPFClient.ControlsModels
 {
     class RecipientsEditorControlModel
     {
